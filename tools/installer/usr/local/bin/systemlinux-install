@@ -78,7 +78,9 @@ else
     [ -b "$PART" ] || { echo "systemlinux-install: $PART is not a block device" >&2; exit 1; }
     grep -q "^$PART " /proc/self/mounts && { echo "systemlinux-install: $PART is mounted" >&2; exit 1; }
     if [ -z "$ESP" ]; then
-        mapfile -t esps < <(lsblk -rno NAME,PARTTYPE | awk '$2=="c12a7328-f81f-11d2-ba4b-00a0c93ec93b"{print "/dev/"$1}')
+        # Find EFI System Partitions by PARTTYPE GUID (c12a7328-f81f-11d2-ba4b-00a0c93ec93b)
+        # Use lsblk with --output to get consistent format
+        mapfile -t esps < <(lsblk -rno NAME,PARTTYPE 2>/dev/null | awk '$2=="c12a7328-f81f-11d2-ba4b-00a0c93ec93b" {print "/dev/"$1}')
         case "${#esps[@]}" in
             1) ESP=${esps[0]}; echo "Using existing EFI System Partition: $ESP" ;;
             0) echo "systemlinux-install: no EFI System Partition found; pass --esp to name one" >&2; exit 1 ;;
@@ -153,6 +155,8 @@ if [ -n "$DISK" ]; then
     dd if=/dev/zero of="$DISK" bs=1M count=4 status=none
     SZ=$(blockdev --getsz "$DISK")
     [ "$SZ" -gt 16384 ] && dd if=/dev/zero of="$DISK" bs=512 seek=$((SZ - 8192)) count=8192 status=none 2>/dev/null || true
+    # Use 'U' for EFI System Partition (short for the GUID c12a7328-f81f-11d2-ba4b-00a0c93ec93b)
+    # and 'L' for Linux filesystem
     printf 'label: gpt\n,512M,U\n,,L\n' | sfdisk --wipe always --wipe-partitions always "$DISK"
     blockdev --rereadpt "$DISK" || true
     udevadm settle --timeout=10 || true
@@ -227,7 +231,8 @@ grub-install --target=x86_64-efi --efi-directory="$DATA/boot/efi" --boot-directo
 if [ -d /sys/firmware/efi/efivars ]; then
     PARTNUM=$(cat "/sys/class/block/$(basename "$ESPDEV")/partition" 2>/dev/null || true)
     DISKDEV=${DISK:-$(lsblk -no PKNAME "$ESPDEV" | head -1 | sed 's#^#/dev/#')}
-    [ -n "$PARTNUM" ] && efibootmgr -c -d "$DISKDEV" -p "$PARTNUM" -L systemLinux -l '\EFI\BOOT\BOOTX64.EFI' || true
+    # UEFI paths use backslashes; escape them for the shell
+    [ -n "$PARTNUM" ] && efibootmgr -c -d "$DISKDEV" -p "$PARTNUM" -L systemLinux -l '\\EFI\\BOOT\\BOOTX64.EFI' || true
 fi
 if [ "$LUKS" = 1 ]; then
     echo "$LUKSUUID" > "$DATA/boot/luks-uuid"

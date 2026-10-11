@@ -16,10 +16,20 @@ case "$MODE" in build|strip) [ -n "$TARGET" ] ;; *) false ;; esac || { sed -n '2
 expand_paths() {
     (
         cd "$1"
-        grep -v '^[@#]' "$2" | grep -v '^[[:space:]]*$' | while read -r g; do
-            for p in $g; do
-                if [ -e "$p" ] || [ -L "$p" ]; then printf '%s\n' "$p"; fi
-            done
+        grep -v '^[@#]' "$2" | grep -v '^[[:space:]]*$' | while IFS= read -r g; do
+            # Handle globs properly - use find for glob expansion to handle spaces
+            case "$g" in
+                *[*?[]*)
+                    # It's a glob pattern
+                    find . -path "./$g" -prune -print 2>/dev/null | sed 's#^\./##'
+                    ;;
+                *)
+                    # Exact path
+                    if [ -e "$g" ] || [ -L "$g" ]; then
+                        printf '%s\n' "$g"
+                    fi
+                    ;;
+            esac
         done
     )
 }
@@ -39,6 +49,7 @@ for m in "$PROFILES"/*.list; do
         expand_paths "$ROOTFS" "$m" > "$list"
         if [ ! -s "$list" ]; then echo "skipping profile $name: nothing in $ROOTFS matches" >&2; rm -f "$list"; continue; fi
         tar -C "$ROOTFS" -cJf "$TARGET/profile-$name.tar.xz" -T "$list"
+        # Extract all @requires lines (supporting multiple dependencies)
         sed -n 's/^@requires[[:space:]]*//p' "$m" > "$TARGET/profile-$name.requires"
         ( cd "$TARGET" && sha256sum "profile-$name.tar.xz" > "profile-$name.tar.xz.sha256" )
         rm -f "$list"

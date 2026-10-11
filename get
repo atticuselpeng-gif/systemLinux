@@ -166,22 +166,26 @@ cd "$BUILD"
 MAKEVARS=''
 if [ -x ./configure ]; then
     printf 'get: configure --prefix=%s\n' "$PREFIX"
-    # CONFARGS is deliberately word-split
-    # shellcheck disable=SC2086
-    ./configure --prefix="$PREFIX" $CONFARGS || die "configure failed"
+    # Split CONFARGS into array to preserve quoted arguments
+    # shellcheck disable=SC2206
+    CONFARGS_ARRAY=($CONFARGS)
+    ./configure --prefix="$PREFIX" "${CONFARGS_ARRAY[@]}" || die "configure failed"
 else
     MAKEVARS="PREFIX=$PREFIX"
 fi
 
 [ -f Makefile ] || [ -f makefile ] || [ -f GNUmakefile ] || die "no Makefile found (and no configure script to create one)"
 printf 'get: make -j%s\n' "$JOBS"
+# shellcheck disable=SC2086
 make -j"$JOBS" ${MAKEVARS:+"$MAKEVARS"} || die "make failed"
 
 printf 'get: make install (prefix %s%s)\n' "$PREFIX" "${DESTDIR_ARG:+, staged in $DESTDIR_ARG}"
 if [ -n "$DESTDIR_ARG" ]; then
     mkdir -p "$DESTDIR_ARG"
+    # shellcheck disable=SC2086
     make install DESTDIR="$DESTDIR_ARG" ${MAKEVARS:+"$MAKEVARS"} || die "make install failed"
 else
+    # shellcheck disable=SC2086
     make install ${MAKEVARS:+"$MAKEVARS"} || die "make install failed (try again with sudo, or a --prefix you can write to)"
 fi
 printf 'get: done\n'

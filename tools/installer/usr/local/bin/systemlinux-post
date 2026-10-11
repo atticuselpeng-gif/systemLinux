@@ -6,3 +6,37 @@ ROOT=$1
 [ -d "$ROOT/etc" ] || { echo "target root $ROOT not found" >&2; exit 1; }
 rm -f "$ROOT/etc/machine-id" "$ROOT/var/lib/dbus/machine-id"
 rm -f "$ROOT"/etc/ssh/ssh_host_*
+# Regenerate SSH host keys on first boot
+mkdir -p "$ROOT/etc/ssh"
+cat > "$ROOT/etc/ssh/sshd_config.d/00-systemlinux.conf" <<'EOF'
+# systemLinux: regenerate host keys on first boot
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+EOF
+cat > "$ROOT/usr/local/bin/systemlinux-ssh-keygen" <<'EOF'
+#!/bin/sh
+# Regenerate SSH host keys if missing (run on first boot)
+for key in rsa ecdsa ed25519; do
+    [ -f "/etc/ssh/ssh_host_${key}_key" ] || ssh-keygen -t "$key" -f "/etc/ssh/ssh_host_${key}_key" -N ""
+done
+systemctl reload sshd 2>/dev/null || true
+EOF
+chmod 755 "$ROOT/usr/local/bin/systemlinux-ssh-keygen"
+mkdir -p "$ROOT/etc/systemd/system"
+cat > "$ROOT/etc/systemd/system/systemlinux-ssh-keygen.service" <<'EOF'
+[Unit]
+Description=Generate SSH host keys
+Before=sshd.service
+ConditionPathExists=!/etc/ssh/ssh_host_rsa_key
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/systemlinux-ssh-keygen
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+mkdir -p "$ROOT/etc/systemd/system/multi-user.target.wants"
+ln -sf /etc/systemd/system/systemlinux-ssh-keygen.service "$ROOT/etc/systemd/system/multi-user.target.wants/systemlinux-ssh-keygen.service"

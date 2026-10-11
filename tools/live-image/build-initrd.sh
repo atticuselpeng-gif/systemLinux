@@ -16,6 +16,8 @@ rm -rf "$WORK/root" && mkdir -p "$WORK/root/bin" "$WORK/root/sbin" "$WORK/root/e
 echo "== copying busybox and cryptsetup from the build host"
 "$REPO/tools/overlay-common/copy-bin.sh" "$WORK/root" busybox cryptsetup
 BB=$(readlink -f "$(command -v busybox)"); CS=$(readlink -f "$(command -v cryptsetup)")
+[ -x "$WORK/root/bin/busybox" ] || { echo "ERROR: busybox not copied to initramfs" >&2; exit 1; }
+[ -x "$WORK/root/sbin/cryptsetup" ] || { echo "ERROR: cryptsetup not copied to initramfs" >&2; exit 1; }
 ln -sf "$BB" "$WORK/root/bin/busybox"
 ln -sf "$CS" "$WORK/root/sbin/cryptsetup"
 

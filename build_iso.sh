@@ -26,10 +26,11 @@ ISO=${ISO:-$BUILD_DIR/systemLinux-$IMAGE_VERSION-x86_64.iso}
 cd "$BUILD_DIR"
 # fail early, with the fix, instead of halfway through the kernel build
 missing=
-for t in xorriso mksquashfs mformat cpio make gcc flex bison bc perl pahole busybox cryptsetup efibootmgr mkfs.fat grub-install; do
+for t in xorriso mksquashfs mformat cpio make gcc flex bison bc perl pahole busybox cryptsetup efibootmgr mkfs.fat grub-install grub-mkimage; do
     command -v "$t" >/dev/null || missing="$missing $t"
 done
 command -v grub-mkrescue >/dev/null || command -v grub2-mkrescue >/dev/null || missing="$missing grub-mkrescue"
+command -v grub-script-check >/dev/null || command -v grub2-script-check >/dev/null || missing="$missing grub-script-check"
 if [ -n "$missing" ]; then
     echo "ERROR: missing build tools:$missing"
     echo "  (the installer needs the grub-* command names; on Fedora add symlinks from grub2-*)"
@@ -40,6 +41,7 @@ fi
 # Fedora and friends name the GRUB tools grub2-*
 GRUB_MKRESCUE=$(command -v grub-mkrescue || command -v grub2-mkrescue || echo grub-mkrescue)
 GRUB_SCRIPT_CHECK=$(command -v grub-script-check || command -v grub2-script-check || echo grub-script-check)
+GRUB_MKIMAGE=$(command -v grub-mkimage || command -v grub2-mkimage || echo grub-mkimage)
 
 echo "=== [1/7] BUILDING THE FULL KERNEL ==="
 if [ ! -f "$KERNEL" ]; then "$BUILD_DIR/tools/kernel-full/build-kernel.sh"; fi
@@ -90,7 +92,7 @@ sudo mkdir -p "$STAGE"
 sudo cp -a "$ROOTFS/." "$STAGE/"
 sudo "$BUILD_DIR/tools/overlay-common/strip-gentoo.sh" "$STAGE"
 # the installer's boot/disk tools (the build host's own binaries and libraries)
-sudo "$BUILD_DIR/tools/overlay-common/copy-bin.sh" "$STAGE" grub-install grub-mkimage grub-probe grub-editenv \
+sudo "$BUILD_DIR/tools/overlay-common/copy-bin.sh" "$STAGE" grub-install "$GRUB_MKIMAGE" grub-probe grub-editenv \
     grub-set-default grub-reboot efibootmgr mkfs.fat
 GRUBDATA=0
 for d in /usr/lib/grub /usr/lib64/grub /usr/share/grub /usr/lib/grub2 /usr/share/grub2; do
@@ -107,7 +109,7 @@ sudo "$BUILD_DIR/tools/live-image/strip-live.sh" "$STAGE"
 sudo "$BUILD_DIR/tools/profiles/profiles.sh" strip "$STAGE"
 echo "$IMAGE_VERSION" | sudo tee "$STAGE/usr/share/systemlinux/image-version" >/dev/null
 sudo install -Dm644 "$KERNEL" "$STAGE/boot/vmlinuz"
-sudo mksquashfs "$STAGE" "$WORKSPACE/live/rootfs.squashfs" -comp zstd -Xcompression-level 19 -b 1M -noappend -no-xattrs
+sudo mksquashfs "$STAGE" "$WORKSPACE/live/rootfs.squashfs" -comp zstd -Xcompression-level 6 -b 1M -noappend -no-xattrs
 sudo rm -rf "$STAGE"
 sudo chown "$USER" "$WORKSPACE/live/rootfs.squashfs"
 ls -lh "$WORKSPACE/live/rootfs.squashfs"

@@ -4,7 +4,7 @@
 #        password is read from stdin, twice: password, then confirmation)
 set -eu
 BRAND=systemLinux
-VERSION=2.0
+VERSION=$(cat /usr/share/systemlinux/image-version 2>/dev/null || echo "2.0")
 USERN='' SUDO=1
 while [ $# -gt 0 ]; do
     case "$1" in

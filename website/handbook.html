@@ -87,7 +87,7 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
         <pre class="term"><span class="p">$</span> grub-install --target=x86_64-efi --efi-directory=/mnt/target-data/boot/efi \
     --boot-directory=/mnt/target-data/boot --removable
 <span class="p">$</span> PARTNUM=1
-<span class="p">$</span> efibootmgr -c -d "$DISK" -p "$PARTNUM" -L systemLinux -l '\EFI\BOOT\BOOTX64.EFI'   <span class="c"># best-effort; fine to fail without efivars</span>
+<span class="p">$</span> efibootmgr -c -d "$DISK" -p "$PARTNUM" -L systemLinux -l '\\EFI\\BOOT\\BOOTX64.EFI'   <span class="c"># best-effort; fine to fail without efivars</span>
 <span class="p">$</span> DUUID=$(blkid -s UUID -o value "${DISK}2")
 <span class="p">$</span> systemlinux-grubcfg /mnt/target-data/boot "$DUUID"
 <span class="p">$</span> grub-editenv /mnt/target-data/boot/grub/grubenv create

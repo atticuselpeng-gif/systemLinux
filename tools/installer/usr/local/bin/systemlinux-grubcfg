@@ -50,7 +50,7 @@ for v in $(ls -1 "$BOOT/images" | grep -v '\.part$' | sort -rV); do
 
 menuentry "$label" --id "$v" {
     search --no-floppy --fs-uuid --set=root $UUID
-    linux /boot/images/$v/vmlinuz systemlinux.image=/boot/images/$v/rootfs.squashfs systemlinux.data=UUID=$UUID systemlinux.version=$v quiet loglevel=3 console=tty0
+    linux /boot/images/$v/vmlinuz systemlinux.image=/boot/images/$v/rootfs.squashfs systemlinux.data=UUID=$UUID quiet loglevel=3 console=tty0
     initrd /boot/images/$v/initrd.img
 }
 ENTRY
@@ -59,7 +59,7 @@ ENTRY
 
 menuentry "systemLinux $v (debug: show all messages)" --id "$v-debug" {
     search --no-floppy --fs-uuid --set=root $UUID
-    linux /boot/images/$v/vmlinuz systemlinux.image=/boot/images/$v/rootfs.squashfs systemlinux.data=UUID=$UUID systemlinux.version=$v systemd.show_status=1 console=tty0
+    linux /boot/images/$v/vmlinuz systemlinux.image=/boot/images/$v/rootfs.squashfs systemlinux.data=UUID=$UUID systemd.show_status=1 console=tty0
     initrd /boot/images/$v/initrd.img
 }
 ENTRY

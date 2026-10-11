@@ -28,8 +28,9 @@ emergency() {
 }
 # A LUKS header always starts with the 6-byte magic "LUKS" 0xba 0xbe (true for both LUKS1 and
 # LUKS2), so this needs no more than dd/od -- no blkid dependency for a check this simple.
+# od output format varies: busybox uses spaces, GNU may use newlines. Normalize by removing all whitespace.
 is_luks() {
-    [ "$(dd if="$1" bs=6 count=1 2>/dev/null | od -An -tx1 | tr -d ' \n')" = "4c554b53babe" ]
+    [ "$(dd if="$1" bs=6 count=1 2>/dev/null | od -An -tx1 | tr -d ' \t\n\r')" = "4c554b53babe" ]
 }
 
 ISO_HINT= DEBUG=0 SHELL_FIRST=0 TORAM=0 WAIT=60 IMAGE= DATA=
@@ -71,15 +72,27 @@ scan_once() {
         mount -o ro "$dev" "$mp" 2>/dev/null || continue
         if has_root "$mp"; then MEDIUM=$mp; return 0; fi
         k=0
-        for iso in ${ISO_HINT:+"$mp$ISO_HINT"} "$mp"/systemlinux*.iso "$mp"/*/systemlinux*.iso "$mp"/*.iso "$mp"/*/*.iso; do
-            [ -f "$iso" ] || continue
-            k=$((k + 1)); imp=/mnt/i$n-$k
-            mkdir -p "$imp"
-            if mount -o loop,ro "$iso" "$imp" 2>/dev/null; then
-                if has_root "$imp"; then MEDIUM=$imp; return 0; fi
-                umount "$imp" 2>/dev/null
-            fi
+        # Use a function to avoid glob expansion issues when no matches
+        check_isos() {
+            for iso in "$@"; do
+                [ -f "$iso" ] || continue
+                k=$((k + 1)); imp=/mnt/i$n-$k
+                mkdir -p "$imp"
+                if mount -o loop,ro "$iso" "$imp" 2>/dev/null; then
+                    if has_root "$imp"; then MEDIUM=$imp; return 0; fi
+                    umount "$imp" 2>/dev/null
+                fi
+            done
+            return 1
+        }
+        # Build array of ISO paths, skipping non-existent globs
+        set --
+        [ -n "${ISO_HINT:-}" ] && [ -f "$mp$ISO_HINT" ] && set -- "$@" "$mp$ISO_HINT"
+        for f in "$mp"/systemlinux*.iso "$mp"/*/systemlinux*.iso "$mp"/*.iso "$mp"/*/*.iso; do
+            [ -f "$f" ] && set -- "$@" "$f"
         done
+        check_isos "$@"
+        [ -n "${MEDIUM:-}" ] && return 0
         umount "$mp" 2>/dev/null
     done
     return 1
@@ -107,8 +120,14 @@ if [ -n "$IMAGE" ]; then
         DEV=/dev/mapper/systemlinux-data
     fi
     mkdir -p /mnt/data
+    i=0
     until mount -t ext4 -o rw "$DEV" /mnt/data; do
-        emergency "could not mount $DEV"
+        i=$((i + 1))
+        if [ "$i" -ge "$WAIT" ]; then
+            emergency "could not mount $DEV after $WAIT seconds"
+        fi
+        [ "$i" = 1 ] && log "waiting for $DEV to be mountable..."
+        sleep 1
     done
     SQ=/mnt/data$IMAGE
     [ -f "$SQ" ] || emergency "image $SQ not found on $DEV"
@@ -139,6 +158,12 @@ else
     SQ=$MEDIUM/live/rootfs.squashfs
     if [ "$TORAM" = 1 ]; then
         log "copying the system into RAM (this takes a moment)..."
+        # Check available space in / (tmpfs) before copying
+        avail=$(df -k / | awk 'NR==2 {print $4}')
+        need=$(du -k "$SQ" | awk '{print $1}')
+        if [ "$avail" -lt "$((need + 50000))" ]; then
+            emergency "not enough RAM for toram (need ${need}KB, have ${avail}KB)"
+        fi
         cp "$SQ" /rootfs.squashfs && SQ=/rootfs.squashfs
     fi
 
