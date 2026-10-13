@@ -18,7 +18,7 @@ set -euo pipefail
 BUILD_DIR=$(cd "$(dirname "$0")" && pwd)
 ROOTFS=$BUILD_DIR/rootfs
 WORKSPACE=$BUILD_DIR/iso_workspace
-KERNEL=${KERNEL:-/boot/vmlinuz-$(uname -r)}
+KERNEL=${KERNEL:-}
 IMAGE_VERSION=$(cat "$BUILD_DIR/VERSION")
 PROFILES_OUT=${PROFILES_OUT:-$BUILD_DIR/profiles-out}
 ISO=${ISO:-$BUILD_DIR/systemLinux-$IMAGE_VERSION-x86_64.iso}
@@ -43,7 +43,21 @@ GRUB_SCRIPT_CHECK=$(command -v grub-script-check || command -v grub2-script-chec
 GRUB_MKIMAGE=$(command -v grub-mkimage || command -v grub2-mkimage || echo grub-mkimage)
 
 echo "=== [1/7] USING THE PREBUILT DISTRIBUTION KERNEL ==="
-[ -f "$KERNEL" ] || { echo "ERROR: kernel not found at $KERNEL (set KERNEL to a prebuilt kernel image)"; exit 1; }
+if [ -z "$KERNEL" ]; then
+    # Host /boot/vmlinuz-* is often root-only (e.g. GitHub runners), so unpack the distro kernel package instead.
+    if [ -r "/boot/vmlinuz-$(uname -r)" ]; then
+        KERNEL=/boot/vmlinuz-$(uname -r)
+    elif command -v apt-get >/dev/null && command -v dpkg-deb >/dev/null; then
+        KDIR=$(mktemp -d)
+        trap 'rm -rf "$KDIR"' EXIT
+        (cd "$KDIR" && { apt-get download "linux-image-$(uname -r)" 2>/dev/null \
+            || apt-get download "$(apt-cache depends linux-image-generic | sed -n 's/.*Depends: \(linux-image-[0-9][^ ]*\)/\1/p' | head -n1)"; })
+        for deb in "$KDIR"/linux-image-*.deb; do dpkg-deb -x "$deb" "$KDIR/x"; done
+        KERNEL=$(ls "$KDIR"/x/boot/vmlinuz-* | head -n1)
+        chmod 644 "$KERNEL"
+    fi
+fi
+[ -n "$KERNEL" ] && [ -f "$KERNEL" ] || { echo "ERROR: kernel not found at $KERNEL (set KERNEL to a prebuilt kernel image)"; exit 1; }
 
 echo "=== [2/7] INSTALLING get AND init LINKS INTO ROOTFS ==="
 sudo install -Dm755 ./get "$ROOTFS/usr/local/bin/get"
@@ -116,7 +130,7 @@ echo "$BUILD_ID" > "$WORKSPACE/live/build-id"
 BUILD_ID=$BUILD_ID WORK=$HOME/.cache/systemlinux-initrd "$BUILD_DIR/tools/live-image/build-initrd.sh" "$WORKSPACE/live/initrd.img"
 
 echo "=== [6/7] COPYING KERNEL AND WRITING grub.cfg ==="
-cp "$KERNEL" "$WORKSPACE/live/vmlinuz"
+install -m644 "$KERNEL" "$WORKSPACE/live/vmlinuz"
 cat > "$WORKSPACE/boot/grub/grub.cfg" << GRUBEOF
 set default=0
 set timeout=3
