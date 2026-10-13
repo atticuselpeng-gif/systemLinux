@@ -128,7 +128,7 @@ get https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz   # raw URL
 get --sync              # refresh the ports tree
 ```
 
-The ports root is `$GET_PORTS`, else `ports/` next to the `get` script (repo checkout), else `/usr/ports`. A bare name that exists in several categories is refused with a list of candidates. The tree currently holds about 355 recipes in `sys-app`, `dev-apps`, `dev-libs`, `shells`, `net`, `x11`, `lang`, `games`, `sec` and `text`.
+The ports root is `$GET_PORTS`, else `ports/` next to the `get` script (repo checkout), else `/usr/ports`. A bare name that exists in several categories is refused with a list of candidates. The tree currently holds about 354 recipes in `sys-app`, `dev-apps`, `dev-libs`, `shells`, `net`, `x11`, `lang`, `games`, `sec` and `text`.
 
 ### Recipe format
 
