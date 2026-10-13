@@ -1,0 +1,3 @@
+url=https://github.com/iputils/iputils/archive/refs/tags/20240117.tar.gz
+build=meson
+requires=dev-apps/meson

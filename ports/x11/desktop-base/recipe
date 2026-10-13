@@ -1,0 +1,1 @@
+requires=x11/xorg-server x11/xinit x11/xterm x11/fonts-dejavu x11/xdg-utils

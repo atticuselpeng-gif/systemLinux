@@ -1,0 +1,2 @@
+url=https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.5.tar.bz2
+requires=dev-libs/libgcrypt dev-libs/libassuan dev-libs/libksba

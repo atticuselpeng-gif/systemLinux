@@ -1,0 +1,1 @@
+requires=x11/xorg-server x11/xfce4-session x11/xfce4-panel x11/xfwm4 x11/thunar

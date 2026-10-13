@@ -1,0 +1,3 @@
+url=https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/1.2.0/pipewire-1.2.0.tar.gz
+build=meson
+requires=dev-apps/meson dev-libs/alsa-lib

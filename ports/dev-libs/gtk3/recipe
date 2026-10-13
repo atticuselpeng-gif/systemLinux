@@ -1,0 +1,3 @@
+url=https://download.gnome.org/sources/gtk/3.24/gtk-3.24.43.tar.xz
+build=meson
+requires=dev-apps/meson dev-libs/pango dev-libs/gdk-pixbuf

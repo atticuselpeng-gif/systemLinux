@@ -1,7 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 # get: download a source tarball, extract it, build it and install it.
 #
 # usage: get [options] URL
+#        get [options] category/name   (recipe from the ports tree, see README)
+#        get --sync                    refresh the ports tree
 #        get --profile NAME [--root DIR] [--url BASE]
 #   -p, --prefix DIR    install prefix (default: /usr/local)
 #   -d, --destdir DIR   stage the install under DIR (make install DESTDIR=DIR)
@@ -25,11 +27,17 @@
 #   get --profile build-toolchain && get --profile common-build-deps
 set -eu
 
+SELF=$(readlink -f "$0" 2>/dev/null || echo "$0")
+if [ -n "${GET_PORTS:-}" ]; then PORTS=$GET_PORTS
+elif [ -d "${SELF%/*}/ports" ]; then PORTS=${SELF%/*}/ports
+else PORTS=/usr/ports; fi
+DBFILE=${GET_DB:-/var/db/get/installed}
+SYNC=0 SHA='' REQUIRES='' BUILDSYS=configure
 PREFIX=/usr/local DESTDIR_ARG='' SRCDIR='' JOBS='' CONFARGS='' KEEP=0 URL='' PROFILE='' ROOT=/ BASE=''
 WORK=''
 
 die() { printf 'get: %s\n' "$*" >&2; exit 1; }
-usage() { sed -n '2,25p' "$0" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'; }
 cleanup() {
     if [ -n "$WORK" ] && [ -d "$WORK" ]; then
         if [ "$KEEP" = 1 ]; then printf 'get: work directory kept: %s\n' "$WORK" >&2; else rm -rf "$WORK"; fi
@@ -46,6 +54,7 @@ while [ $# -gt 0 ]; do
         -P|--profile) [ $# -ge 2 ] || die "$1 needs an argument"; PROFILE=$2; shift 2 ;;
         -r|--root) [ $# -ge 2 ] || die "$1 needs an argument"; ROOT=$2; shift 2 ;;
         -u|--url) [ $# -ge 2 ] || die "$1 needs an argument"; BASE=$2; shift 2 ;;
+        --sync) SYNC=1; shift ;;
         -k|--keep) KEEP=1; shift ;;
         -h|--help) usage; exit 0 ;;
         --) shift; break ;;
@@ -110,19 +119,89 @@ if [ -n "$PROFILE" ]; then
     printf 'get: profile %s installed\n' "$PROFILE"
     exit 0
 fi
+
+# recipe_get FILE KEY: print the value of KEY (recipes are parsed, never executed)
+recipe_get() { sed -n "s/^$2[[:space:]]*=[[:space:]]*//p" "$1" | head -n1 | sed 's/[[:space:]]*$//; s/^"\(.*\)"$/\1/'; }
+
+# resolve ATOM: set ATOM, URL, SHA, REQUIRES, BUILDSYS and CONFARGS from the ports tree
+resolve() {
+    case "$1" in
+        ''|*[!A-Za-z0-9._+/-]*|*..*|/*) die "invalid package atom: $1" ;;
+        */*) dir=$PORTS/$1 ;;
+        *)
+            set -- "$1" $(ls -d "$PORTS"/*/"$1" 2>/dev/null)
+            [ $# -le 2 ] || { shift; die "ambiguous name, use category/name: $(printf '%s ' "$@" | sed "s|$PORTS/||g")"; }
+            dir=${2:-} ;;
+    esac
+    [ -n "$dir" ] && [ -f "$dir/recipe" ] || die "unknown package '$1' (try: get --sync)"
+    ATOM=${dir#"$PORTS"/}
+    URL=$(recipe_get "$dir/recipe" url)
+    SHA=$(recipe_get "$dir/recipe" sha256)
+    REQUIRES=$(recipe_get "$dir/recipe" requires)
+    b=$(recipe_get "$dir/recipe" build)
+    case "$b" in ''|configure|cmake|meson) BUILDSYS=${b:-configure} ;; *) die "unsupported build type: $b" ;; esac
+    ca=$(recipe_get "$dir/recipe" configure_args)
+    if [ -n "$ca" ]; then CONFARGS="$ca${CONFARGS:+ $CONFARGS}"; fi
+    case "$REQUIRES" in *[!A-Za-z0-9._+/\ -]*) die "invalid requires in $ATOM" ;; esac
+    [ -n "$URL" ] || [ -n "$REQUIRES" ] || die "recipe $ATOM has neither url nor requires"
+}
+
+is_installed() { [ -r "$DBFILE" ] && grep -qxF "$1" "$DBFILE"; }
+mark_installed() {
+    mkdir -p "$(dirname "$DBFILE")" 2>/dev/null || return 0
+    echo "$1" >> "$DBFILE" 2>/dev/null || printf 'get: warning: cannot record %s in %s\n' "$1" "$DBFILE" >&2
+}
+
+if [ "$SYNC" = 1 ]; then
+    if [ -d "$PORTS/.git" ] || git -C "$PORTS" rev-parse --git-dir >/dev/null 2>&1; then
+        git -C "$PORTS" pull --ff-only || die "git pull failed in $PORTS"
+    elif [ -n "${GET_PORTS_URL:-}" ]; then
+        # tarball + detached .sha256 published next to it
+        command -v tar >/dev/null 2>&1 && command -v sha256sum >/dev/null 2>&1 || die "tar and sha256sum are required"
+        WORK=$(mktemp -d "${TMPDIR:-/tmp}/get.XXXXXX") || die "cannot create a work directory"
+        trap cleanup EXIT
+        fetch "$GET_PORTS_URL" "$WORK/ports.tar.xz" || die "cannot download $GET_PORTS_URL"
+        fetch "$GET_PORTS_URL.sha256" "$WORK/ports.sha256" || die "cannot download the ports checksum"
+        want=$(sed -n '1s/[[:space:]].*//p' "$WORK/ports.sha256")
+        have=$(sha256sum "$WORK/ports.tar.xz" | sed 's/[[:space:]].*//')
+        [ -n "$want" ] && [ "$want" = "$have" ] || die "ports checksum mismatch"
+        mkdir -p "$PORTS"
+        tar -xJf "$WORK/ports.tar.xz" -C "$PORTS" --strip-components=1 || die "extracting ports failed"
+    else
+        die "$PORTS is not a git checkout; set GET_PORTS_URL to a ports.tar.xz (with .sha256) or use git pull"
+    fi
+    printf 'get: ports synced (%s)\n' "$PORTS"
+    exit 0
+fi
 [ $# -ge 1 ] || { usage >&2; exit 2; }
 URL=$1; shift
+ATOM=''
 [ $# -eq 0 ] || die "only one URL is accepted"
 
 case "$URL" in
-    https://*) ;;
-    http://*|ftp://*) printf 'get: warning: %s is not encrypted and the source is not verified\n' "$URL" >&2 ;;
-    *) die "not a URL: $URL" ;;
+    *://*) ;;
+    *) resolve "$URL" ;;
 esac
 case "$JOBS" in
     ''|*[!0-9]*) [ -z "$JOBS" ] || die "--jobs needs a number" ;;
 esac
 [ -n "$JOBS" ] || JOBS=$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1)
+
+if [ -n "$ATOM" ]; then
+    if is_installed "$ATOM"; then printf 'get: %s already installed\n' "$ATOM"; exit 0; fi
+    case ":${GET_STACK:-}:" in *":$ATOM:"*) die "dependency cycle: ${GET_STACK#:} -> $ATOM" ;; esac
+    export GET_STACK="${GET_STACK:+$GET_STACK:}$ATOM"
+    for r in $REQUIRES; do
+        "$SELF" -p "$PREFIX" -j "$JOBS" ${DESTDIR_ARG:+-d "$DESTDIR_ARG"} "$r" || die "dependency $r failed"
+    done
+    if [ -z "$URL" ]; then mark_installed "$ATOM"; printf 'get: %s (meta-package) done\n' "$ATOM"; exit 0; fi
+fi
+
+case "$URL" in
+    https://*) ;;
+    http://*|ftp://*) printf 'get: warning: %s is not encrypted\n' "$URL" >&2; [ -n "$SHA" ] || printf 'get: warning: source is not verified\n' >&2 ;;
+    *) die "not a URL: $URL" ;;
+esac
 
 file=${URL%%[?#]*}
 file=${file##*/}
@@ -144,6 +223,12 @@ trap 'exit 130' INT TERM HUP
 printf 'get: downloading %s\n' "$URL"
 fetch "$URL" "$WORK/$file" || die "download failed"
 
+if [ -n "$SHA" ]; then
+    command -v sha256sum >/dev/null 2>&1 || die "sha256sum is required to verify $file"
+    have=$(sha256sum "$WORK/$file" | sed 's/[[:space:]].*//')
+    [ "$have" = "$SHA" ] || die "checksum mismatch for $file"
+fi
+
 printf 'get: extracting %s\n' "$file"
 mkdir "$WORK/src"
 if [ -n "$FLAG" ]; then
@@ -164,28 +249,49 @@ fi
 cd "$BUILD"
 
 MAKEVARS=''
-if [ -x ./configure ]; then
-    printf 'get: configure --prefix=%s\n' "$PREFIX"
-    # Split CONFARGS into array to preserve quoted arguments
-    # shellcheck disable=SC2206
-    CONFARGS_ARRAY=($CONFARGS)
-    ./configure --prefix="$PREFIX" "${CONFARGS_ARRAY[@]}" || die "configure failed"
-else
-    MAKEVARS="PREFIX=$PREFIX"
-fi
+case "$BUILDSYS" in
+cmake)
+    command -v cmake >/dev/null 2>&1 || die "cmake is required (get dev-apps/cmake)"
+    printf 'get: cmake (prefix %s)\n' "$PREFIX"
+    read -r -a CONFARGS_ARRAY <<< "$CONFARGS"
+    cmake -S . -B build -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_BUILD_TYPE=Release "${CONFARGS_ARRAY[@]}" || die "cmake configure failed"
+    cmake --build build -j "$JOBS" || die "cmake build failed"
+    DESTDIR=${DESTDIR_ARG:-} cmake --install build || die "cmake install failed"
+    ;;
+meson)
+    command -v meson >/dev/null 2>&1 || die "meson is required (get dev-apps/meson)"
+    printf 'get: meson (prefix %s)\n' "$PREFIX"
+    read -r -a CONFARGS_ARRAY <<< "$CONFARGS"
+    meson setup build --prefix="$PREFIX" "${CONFARGS_ARRAY[@]}" || die "meson setup failed"
+    meson compile -C build -j "$JOBS" || die "meson compile failed"
+    DESTDIR=${DESTDIR_ARG:-} meson install -C build || die "meson install failed"
+    ;;
+*)
+    if [ -x ./configure ]; then
+        printf 'get: configure --prefix=%s\n' "$PREFIX"
+        # Split CONFARGS into array to preserve quoted arguments
+        # shellcheck disable=SC2206
+        CONFARGS_ARRAY=($CONFARGS)
+        ./configure --prefix="$PREFIX" "${CONFARGS_ARRAY[@]}" || die "configure failed"
+    else
+        MAKEVARS="PREFIX=$PREFIX"
+    fi
 
-[ -f Makefile ] || [ -f makefile ] || [ -f GNUmakefile ] || die "no Makefile found (and no configure script to create one)"
-printf 'get: make -j%s\n' "$JOBS"
-# shellcheck disable=SC2086
-make -j"$JOBS" ${MAKEVARS:+"$MAKEVARS"} || die "make failed"
+    [ -f Makefile ] || [ -f makefile ] || [ -f GNUmakefile ] || die "no Makefile found (and no configure script to create one)"
+    printf 'get: make -j%s\n' "$JOBS"
+    # shellcheck disable=SC2086
+    make -j"$JOBS" ${MAKEVARS:+"$MAKEVARS"} || die "make failed"
 
-printf 'get: make install (prefix %s%s)\n' "$PREFIX" "${DESTDIR_ARG:+, staged in $DESTDIR_ARG}"
-if [ -n "$DESTDIR_ARG" ]; then
-    mkdir -p "$DESTDIR_ARG"
-    # shellcheck disable=SC2086
-    make install DESTDIR="$DESTDIR_ARG" ${MAKEVARS:+"$MAKEVARS"} || die "make install failed"
-else
-    # shellcheck disable=SC2086
-    make install ${MAKEVARS:+"$MAKEVARS"} || die "make install failed (try again with sudo, or a --prefix you can write to)"
-fi
+    printf 'get: make install (prefix %s%s)\n' "$PREFIX" "${DESTDIR_ARG:+, staged in $DESTDIR_ARG}"
+    if [ -n "$DESTDIR_ARG" ]; then
+        mkdir -p "$DESTDIR_ARG"
+        # shellcheck disable=SC2086
+        make install DESTDIR="$DESTDIR_ARG" ${MAKEVARS:+"$MAKEVARS"} || die "make install failed"
+    else
+        # shellcheck disable=SC2086
+        make install ${MAKEVARS:+"$MAKEVARS"} || die "make install failed (try again with sudo, or a --prefix you can write to)"
+    fi
+    ;;
+esac
+[ -z "$ATOM" ] || mark_installed "$ATOM"
 printf 'get: done\n'

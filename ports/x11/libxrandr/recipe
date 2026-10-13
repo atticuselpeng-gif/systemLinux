@@ -1,0 +1,2 @@
+url=https://www.x.org/releases/individual/lib/libXrandr-1.5.4.tar.xz
+requires=x11/libxext x11/libxrender

@@ -1,0 +1,3 @@
+url=https://github.com/ccache/ccache/releases/download/v4.10/ccache-4.10.tar.xz
+build=cmake
+requires=dev-apps/cmake

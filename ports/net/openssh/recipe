@@ -1,0 +1,2 @@
+url=https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.7p1.tar.gz
+requires=dev-libs/openssl dev-libs/zlib

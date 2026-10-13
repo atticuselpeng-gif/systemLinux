@@ -1,0 +1,2 @@
+url=https://www.x.org/releases/individual/lib/libXtst-1.2.4.tar.xz
+requires=x11/libxi

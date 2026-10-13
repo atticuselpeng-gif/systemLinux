@@ -1,0 +1,2 @@
+url=https://ftp.gnu.org/gnu/binutils/binutils-2.42.tar.xz
+configure_args=--disable-nls --enable-gold

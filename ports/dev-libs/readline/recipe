@@ -1,0 +1,2 @@
+url=https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz
+requires=dev-libs/ncurses

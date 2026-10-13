@@ -1,0 +1,3 @@
+url=https://gitlab.freedesktop.org/wayland/weston/-/releases/13.0.1/downloads/weston-13.0.1.tar.xz
+build=meson
+requires=dev-apps/meson dev-libs/wayland

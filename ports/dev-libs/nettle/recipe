@@ -1,0 +1,2 @@
+url=https://ftp.gnu.org/gnu/nettle/nettle-3.10.tar.gz
+requires=dev-libs/gmp

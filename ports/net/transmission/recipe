@@ -1,0 +1,3 @@
+url=https://github.com/transmission/transmission/releases/download/4.0.6/transmission-4.0.6.tar.xz
+build=cmake
+requires=dev-apps/cmake

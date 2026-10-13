@@ -1,0 +1,3 @@
+url=https://github.com/yshui/picom/archive/refs/tags/v12.tar.gz
+build=meson
+requires=dev-apps/meson

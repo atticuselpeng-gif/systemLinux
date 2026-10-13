@@ -1,0 +1,2 @@
+url=https://ftp.gnu.org/gnu/grub/grub-2.12.tar.xz
+configure_args=--disable-werror

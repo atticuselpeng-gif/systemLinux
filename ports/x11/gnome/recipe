@@ -1,0 +1,1 @@
+requires=x11/xorg-server x11/mutter x11/gnome-shell

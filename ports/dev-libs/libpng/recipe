@@ -1,0 +1,2 @@
+url=https://download.sourceforge.net/libpng/libpng-1.6.43.tar.xz
+requires=dev-libs/zlib

@@ -1,0 +1,2 @@
+url=https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.xz
+requires=dev-libs/freetype dev-libs/expat

@@ -1,0 +1,1 @@
+requires=dev-apps/gcc dev-apps/binutils dev-apps/make dev-apps/autoconf dev-apps/automake dev-apps/libtool dev-apps/bison dev-apps/flex dev-apps/m4 dev-apps/patch dev-apps/pkgconf dev-apps/gawk
