@@ -1,0 +1,2 @@
+url=https://www.x.org/releases/individual/lib/libXfixes-6.0.1.tar.xz
+requires=x11/libx11

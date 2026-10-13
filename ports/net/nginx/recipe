@@ -1,0 +1,2 @@
+url=https://nginx.org/download/nginx-1.26.1.tar.gz
+requires=dev-libs/pcre2 dev-libs/zlib dev-libs/openssl

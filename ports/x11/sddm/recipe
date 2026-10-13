@@ -1,0 +1,3 @@
+url=https://github.com/sddm/sddm/archive/refs/tags/v0.21.0.tar.gz
+build=cmake
+requires=dev-apps/cmake dev-libs/qt6-base

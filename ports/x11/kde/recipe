@@ -1,0 +1,1 @@
+requires=x11/xorg-server x11/kde-plasma-workspace x11/kde-kwin x11/kde-dolphin x11/kde-konsole x11/sddm

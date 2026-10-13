@@ -1,0 +1,3 @@
+url=https://gitlab.freedesktop.org/libinput/libinput/-/archive/1.26.0/libinput-1.26.0.tar.gz
+build=meson
+requires=dev-apps/meson dev-libs/libevdev dev-libs/mtdev

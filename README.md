@@ -6,7 +6,7 @@
   <img src="assets/logo.png" alt="systemLinux logo: a golden wheat ear on a dark green circle" width="160">
 </p>
 
-# systemLinux 2.0
+# systemLinux 0.2.1
 
 A minimal x86_64 GNU/Linux distribution built on a custom monolithic kernel, systemd, and a
 GNU userland (GNU bash 5.3 is `/bin/bash` and `/bin/sh`, GNU coreutils, tar, sed, gawk, findutils; the `bbash` fork stays
@@ -31,14 +31,14 @@ get -d /tmp/stage -c "--disable-nls" https://example.org/bar-2.0.tgz # staged un
 
 The live ISO deliberately has no compiler or build tools. They are **profiles** you add after installing.
 
-Website: `website/` (plain HTML; the Handbook is `website/handbook.html`) · Download: [GitHub release `v2.0.0`](https://github.com/tortr-rs/systemLinux/releases/tag/v2.0.0)
+Website: `website/` (plain HTML; the Handbook is `website/handbook.html`) · Download: [GitHub release `v0.2.1`](https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.1)
 
 | File | Size | RAM needed |
 |---|---|---|
-| `systemLinux-2.0-x86_64.iso` | about 1.9 GB | about 3 GB (4 GB+ to use *copy to RAM*) |
+| `systemLinux-0.2.1-x86_64.iso` | about 1.9 GB | about 3 GB (4 GB+ to use *copy to RAM*) |
 
 ```sh
-sha256sum -c systemLinux-2.0-x86_64.iso.sha256   # the .sha256 file is on the release page
+sha256sum -c systemLinux-0.2.1-x86_64.iso.sha256   # the .sha256 file is on the release page
 ```
 
 See `ROADMAP.md` for what's still deliberately not done (NVIDIA proprietary, Secure Boot, etc.).
@@ -115,6 +115,47 @@ sudo get https://sqlite.org/2024/sqlite-autoconf-3460000.tar.gz        # a libra
 installed tools (`cmake -S . -B build -G Ninja && cmake --build build && cmake --install build`, or
 `meson setup build && meson install -C build`). A tarball with neither is built with plain `make`.
 
+## Ports tree (`get category/name`)
+
+`get` is now a bash script (`#!/bin/bash`) and resolves non-URL arguments from a ports tree, in the style of BSD ports / Gentoo atoms. Full URLs keep working exactly as before.
+
+```sh
+get sys-app/grub        # category/name atom
+get dev-apps/cmake
+get x11/kde             # meta-package: no url, only requires=
+get grub                # bare name, only if exactly one category has it
+get https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz   # raw URL
+get --sync              # refresh the ports tree
+```
+
+The ports root is `$GET_PORTS`, else `ports/` next to the `get` script (repo checkout), else `/usr/ports`. A bare name that exists in several categories is refused with a list of candidates. The tree currently holds about 354 recipes in `sys-app`, `dev-apps`, `dev-libs`, `shells`, `net`, `x11`, `lang`, `games`, `sec` and `text`.
+
+### Recipe format
+
+`ports/<category>/<name>/recipe` is plain `key=value`, one per line:
+
+| key | meaning |
+| --- | --- |
+| `url` | source archive (omit for a meta-package) |
+| `sha256` | checksum of the archive; verified, mismatch is fatal (strongly recommended) |
+| `requires` | space-separated atoms installed first |
+| `build` | `configure` (default: `./configure`, `make`, `make install`), `cmake` or `meson` |
+| `configure_args` | extra arguments for configure / cmake / meson |
+
+The starter recipes ship without `sha256` yet; add one per package as you verify it (`sha256sum file.tar.xz`).
+
+### Dependencies
+
+`requires` entries are installed first by re-invoking `get`. Installed atoms are recorded in `$GET_DB` (default `/var/db/get/installed`) and skipped next time; cycles are detected (`GET_STACK`) and abort. Note that `get` has no file tracking or uninstall yet, and packages whose build system is not make/configure/cmake/meson (or that need patches) will not build from a plain recipe.
+
+### Updating ports
+
+In a git checkout run `get --sync` (or `git pull`). Otherwise set `GET_PORTS_URL` to a `ports.tar.xz` that has a `ports.tar.xz.sha256` next to it; the checksum is verified before unpacking.
+
+### Security model
+
+Ports are untrusted input, and `get` often runs as root. Recipes are therefore **parsed** (a fixed set of keys is read with `sed`) and never `source`d, so a recipe cannot run code. Atoms and `requires` are restricted to `[A-Za-z0-9._+/-]` with no `..`, and `build` is limited to a known list. Add `sha256` so a tampered or changed tarball is rejected.
+
 ## Services
 
 systemd starts everything; use the usual tools (as root):
@@ -141,7 +182,7 @@ see the message `build_iso.sh` prints if something is missing). The installer's 
 copied from the host into the image.
 
 ```sh
-./build_iso.sh    # systemLinux-2.0-x86_64.iso and systemLinux-2.0-x86_64.iso.sha256   (or: make iso)
+./build_iso.sh    # systemLinux-0.2.1-x86_64.iso and systemLinux-0.2.1-x86_64.iso.sha256   (or: make iso)
 ```
 
 It also writes `profiles-out/profile-*.tar.xz` for the release (upload them next to the ISO; `get --profile`
@@ -157,11 +198,11 @@ as artifacts.
 ### Cutting a release
 
 1. Make sure `VERSION` and `CHANGELOG.md` are right on `main`.
-2. Tag and push: `git tag v2.0.0 && git push origin v2.0.0` (`v2.0` also triggers it; `get --profile` maps
-   `VERSION` 2.0 to the `v2.0.0` release, so prefer `v2.0.0`).
+2. Tag and push: `git tag v0.2.1 && git push origin v0.2.1` (`v0.2` also triggers it; `get --profile` maps
+   `VERSION` 0.2.1 to the `v0.2.1` release, so prefer `v0.2.1`).
 3. `.github/workflows/release.yml` builds the ISO and creates the GitHub Release with the ISO, profiles,
    `SHA256SUMS` and the changelog entry as notes (it verifies the checksums first). The website links point at
-   `releases/download/v2.0.0/`.
+   `releases/download/v0.2.1/`.
 
 The full ISO build needs a real Linux host with sudo, ~30 GB of disk and the tools listed above
 (xorriso, mtools, pahole, ...); it is not verified in the restricted agent sandbox, so run `./build_iso.sh`
@@ -169,7 +210,7 @@ locally or via the `Build ISO` workflow (`workflow_dispatch`) before pushing the
 
 ## Installing to disk
 
-1. Write the ISO to a USB stick (`dd if=systemLinux-2.0-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync`,
+1. Write the ISO to a USB stick (`dd if=systemLinux-0.2.1-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync`,
    or copy it onto a Ventoy stick) and boot it in **UEFI mode**.
 2. At the live console, run `sudo systemlinux-install` and answer its prompts (disk or
    existing partition, computer name, your account, timezone, keymap, optional LUKS

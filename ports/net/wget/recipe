@@ -1,0 +1,3 @@
+url=https://ftp.gnu.org/gnu/wget/wget-1.24.5.tar.gz
+configure_args=--with-ssl=openssl
+requires=dev-libs/openssl

@@ -1,0 +1,3 @@
+url=https://download.qt.io/official_releases/qt/6.7/6.7.2/submodules/qtbase-everywhere-src-6.7.2.tar.xz
+build=cmake
+requires=dev-apps/cmake dev-apps/ninja dev-libs/icu dev-libs/openssl dev-libs/freetype

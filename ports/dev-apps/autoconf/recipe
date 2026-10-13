@@ -1,0 +1,2 @@
+url=https://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.xz
+requires=dev-apps/m4

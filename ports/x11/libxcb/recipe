@@ -1,0 +1,2 @@
+url=https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.xz
+requires=x11/xcb-proto x11/xorgproto

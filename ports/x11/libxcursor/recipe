@@ -1,0 +1,2 @@
+url=https://www.x.org/releases/individual/lib/libXcursor-1.2.2.tar.xz
+requires=x11/libxrender

@@ -1,0 +1,3 @@
+url=https://download.kde.org/stable/plasma/6.1.1/plasma-workspace-6.1.1.tar.xz
+build=cmake
+requires=x11/kde-frameworks dev-libs/qt6-declarative dev-libs/qt6-wayland

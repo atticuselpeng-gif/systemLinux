@@ -1,0 +1,2 @@
+url=https://www.x.org/releases/individual/lib/libXext-1.3.6.tar.xz
+requires=x11/libx11

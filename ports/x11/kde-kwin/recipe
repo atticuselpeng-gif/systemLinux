@@ -1,0 +1,3 @@
+url=https://download.kde.org/stable/plasma/6.1.1/kwin-6.1.1.tar.xz
+build=cmake
+requires=x11/kde-frameworks dev-libs/libinput dev-libs/libxkbcommon

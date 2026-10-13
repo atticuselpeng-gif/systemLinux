@@ -1,0 +1,4 @@
+url=https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.7/llvm-project-18.1.7.src.tar.xz
+build=cmake
+configure_args=-DLLVM_ENABLE_PROJECTS=clang
+requires=dev-apps/cmake dev-apps/ninja

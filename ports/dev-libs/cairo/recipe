@@ -1,0 +1,3 @@
+url=https://cairographics.org/releases/cairo-1.18.0.tar.xz
+build=meson
+requires=dev-apps/meson dev-libs/pixman dev-libs/fontconfig

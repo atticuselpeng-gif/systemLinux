@@ -1,0 +1,3 @@
+url=https://download.gnome.org/sources/gdk-pixbuf/2.42/gdk-pixbuf-2.42.12.tar.xz
+build=meson
+requires=dev-apps/meson dev-libs/glib dev-libs/libpng
