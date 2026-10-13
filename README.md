@@ -155,7 +155,10 @@ In a git checkout run `get --sync` (or `git pull`). Otherwise set `GET_PORTS_URL
 ### Security model
 
 Ports are untrusted input, and `get` often runs as root. Recipes are therefore **parsed** (a fixed set of keys is read with `sed`) and never `source`d, so a recipe cannot run code. Atoms and `requires` are restricted to `[A-Za-z0-9._+/-]` with no `..`, and `build` is limited to a known list. Add `sha256` so a tampered or changed tarball is rejected.
-
+### IF there is a ports update but no new release. Run
+```sh
+ get --sync
+```
 ## Services
 
 systemd starts everything; use the usual tools (as root):
