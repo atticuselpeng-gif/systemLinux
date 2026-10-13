@@ -16,10 +16,11 @@ rm -rf "$WORK/root" && mkdir -p "$WORK/root/bin" "$WORK/root/sbin" "$WORK/root/e
 echo "== copying busybox and cryptsetup from the build host"
 "$REPO/tools/overlay-common/copy-bin.sh" "$WORK/root" busybox cryptsetup
 BB=$(readlink -f "$(command -v busybox)"); CS=$(readlink -f "$(command -v cryptsetup)")
-[ -x "$WORK/root/bin/busybox" ] || { echo "ERROR: busybox not copied to initramfs" >&2; exit 1; }
-[ -x "$WORK/root/sbin/cryptsetup" ] || { echo "ERROR: cryptsetup not copied to initramfs" >&2; exit 1; }
-ln -sf "$BB" "$WORK/root/bin/busybox"
-ln -sf "$CS" "$WORK/root/sbin/cryptsetup"
+# copy-bin.sh keeps the host paths (e.g. /usr/bin/busybox); the init script expects /bin/busybox and /sbin/cryptsetup
+[ -x "$WORK/root$BB" ] || { echo "ERROR: busybox not copied to initramfs" >&2; exit 1; }
+[ -x "$WORK/root$CS" ] || { echo "ERROR: cryptsetup not copied to initramfs" >&2; exit 1; }
+[ "$BB" = /bin/busybox ] || ln -sf "$BB" "$WORK/root/bin/busybox"
+[ "$CS" = /sbin/cryptsetup ] || ln -sf "$CS" "$WORK/root/sbin/cryptsetup"
 
 install -m755 "$HERE/init" "$WORK/root/init"
 # BUILD_ID ties this initramfs to the ISO it is shipped in (the same id goes into /live/build-id on the ISO)
