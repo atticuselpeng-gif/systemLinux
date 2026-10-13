@@ -1,6 +1,6 @@
 #!/bin/bash
 # systemLinux ISO build: a minimal live installer ISO (small initramfs + /live/rootfs.squashfs, mounted
-# with an overlayfs; nothing is loaded into a RAM disk): the full-driver kernel plus the bare minimum
+# with an overlayfs; nothing is loaded into a RAM disk): the runner's prebuilt distribution kernel plus the bare minimum
 # needed to run the installer (systemd, NetworkManager, disk/boot tools, `get`). No firmware, desktop,
 # daemons, docs, locales, compilers or language runtimes. After installing, `get --profile build-toolchain`
 # (and common-build-deps, lang-runtimes, ...) adds the build stack; `get URL` builds source tarballs.
@@ -18,15 +18,14 @@ set -euo pipefail
 BUILD_DIR=$(cd "$(dirname "$0")" && pwd)
 ROOTFS=$BUILD_DIR/rootfs
 WORKSPACE=$BUILD_DIR/iso_workspace
-# the "full" kernel is the same Linux 7.2.6 with drivers for almost everything built in
-KERNEL=${KERNEL:-$BUILD_DIR/tools/kernel-full/vmlinuz-7.2.6-full}
+KERNEL=${KERNEL:-/boot/vmlinuz-$(uname -r)}
 IMAGE_VERSION=$(cat "$BUILD_DIR/VERSION")
 PROFILES_OUT=${PROFILES_OUT:-$BUILD_DIR/profiles-out}
 ISO=${ISO:-$BUILD_DIR/systemLinux-$IMAGE_VERSION-x86_64.iso}
 cd "$BUILD_DIR"
 # fail early, with the fix, instead of halfway through the kernel build
 missing=
-for t in xorriso mksquashfs mformat cpio make gcc flex bison bc perl pahole busybox cryptsetup efibootmgr mkfs.fat grub-install grub-mkimage; do
+for t in xorriso mksquashfs mformat cpio make gcc busybox cryptsetup efibootmgr mkfs.fat grub-install grub-mkimage; do
     command -v "$t" >/dev/null || missing="$missing $t"
 done
 command -v grub-mkrescue >/dev/null || command -v grub2-mkrescue >/dev/null || missing="$missing grub-mkrescue"
@@ -43,9 +42,8 @@ GRUB_MKRESCUE=$(command -v grub-mkrescue || command -v grub2-mkrescue || echo gr
 GRUB_SCRIPT_CHECK=$(command -v grub-script-check || command -v grub2-script-check || echo grub-script-check)
 GRUB_MKIMAGE=$(command -v grub-mkimage || command -v grub2-mkimage || echo grub-mkimage)
 
-echo "=== [1/7] BUILDING THE FULL KERNEL ==="
-if [ ! -f "$KERNEL" ]; then "$BUILD_DIR/tools/kernel-full/build-kernel.sh"; fi
-[ -f "$KERNEL" ] || { echo "ERROR: kernel not found at $KERNEL"; exit 1; }
+echo "=== [1/7] USING THE PREBUILT DISTRIBUTION KERNEL ==="
+[ -f "$KERNEL" ] || { echo "ERROR: kernel not found at $KERNEL (set KERNEL to a prebuilt kernel image)"; exit 1; }
 
 echo "=== [2/7] INSTALLING get AND init LINKS INTO ROOTFS ==="
 sudo install -Dm755 ./get "$ROOTFS/usr/local/bin/get"
