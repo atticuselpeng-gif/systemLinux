@@ -6,7 +6,7 @@
   <img src="assets/logo.png" alt="systemLinux logo: a golden wheat ear on a dark green circle" width="160">
 </p>
 
-# systemLinux 2.0
+# systemLinux 0.2.1
 
 A minimal x86_64 GNU/Linux distribution built on a custom monolithic kernel, systemd, and a
 GNU userland (GNU bash 5.3 is `/bin/bash` and `/bin/sh`, GNU coreutils, tar, sed, gawk, findutils; the `bbash` fork stays
@@ -31,14 +31,14 @@ get -d /tmp/stage -c "--disable-nls" https://example.org/bar-2.0.tgz # staged un
 
 The live ISO deliberately has no compiler or build tools. They are **profiles** you add after installing.
 
-Website: `website/` (plain HTML; the Handbook is `website/handbook.html`) · Download: [GitHub release `v2.0.0`](https://github.com/tortr-rs/systemLinux/releases/tag/v2.0.0)
+Website: `website/` (plain HTML; the Handbook is `website/handbook.html`) · Download: [GitHub release `v0.2.1`](https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.1)
 
 | File | Size | RAM needed |
 |---|---|---|
-| `systemLinux-2.0-x86_64.iso` | about 1.9 GB | about 3 GB (4 GB+ to use *copy to RAM*) |
+| `systemLinux-0.2.1-x86_64.iso` | about 1.9 GB | about 3 GB (4 GB+ to use *copy to RAM*) |
 
 ```sh
-sha256sum -c systemLinux-2.0-x86_64.iso.sha256   # the .sha256 file is on the release page
+sha256sum -c systemLinux-0.2.1-x86_64.iso.sha256   # the .sha256 file is on the release page
 ```
 
 See `ROADMAP.md` for what's still deliberately not done (NVIDIA proprietary, Secure Boot, etc.).
@@ -182,7 +182,7 @@ see the message `build_iso.sh` prints if something is missing). The installer's 
 copied from the host into the image.
 
 ```sh
-./build_iso.sh    # systemLinux-2.0-x86_64.iso and systemLinux-2.0-x86_64.iso.sha256   (or: make iso)
+./build_iso.sh    # systemLinux-0.2.1-x86_64.iso and systemLinux-0.2.1-x86_64.iso.sha256   (or: make iso)
 ```
 
 It also writes `profiles-out/profile-*.tar.xz` for the release (upload them next to the ISO; `get --profile`
@@ -198,11 +198,11 @@ as artifacts.
 ### Cutting a release
 
 1. Make sure `VERSION` and `CHANGELOG.md` are right on `main`.
-2. Tag and push: `git tag v2.0.0 && git push origin v2.0.0` (`v2.0` also triggers it; `get --profile` maps
-   `VERSION` 2.0 to the `v2.0.0` release, so prefer `v2.0.0`).
+2. Tag and push: `git tag v0.2.1 && git push origin v0.2.1` (`v0.2` also triggers it; `get --profile` maps
+   `VERSION` 0.2.1 to the `v0.2.1` release, so prefer `v0.2.1`).
 3. `.github/workflows/release.yml` builds the ISO and creates the GitHub Release with the ISO, profiles,
    `SHA256SUMS` and the changelog entry as notes (it verifies the checksums first). The website links point at
-   `releases/download/v2.0.0/`.
+   `releases/download/v0.2.1/`.
 
 The full ISO build needs a real Linux host with sudo, ~30 GB of disk and the tools listed above
 (xorriso, mtools, pahole, ...); it is not verified in the restricted agent sandbox, so run `./build_iso.sh`
@@ -210,7 +210,7 @@ locally or via the `Build ISO` workflow (`workflow_dispatch`) before pushing the
 
 ## Installing to disk
 
-1. Write the ISO to a USB stick (`dd if=systemLinux-2.0-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync`,
+1. Write the ISO to a USB stick (`dd if=systemLinux-0.2.1-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync`,
    or copy it onto a Ventoy stick) and boot it in **UEFI mode**.
 2. At the live console, run `sudo systemlinux-install` and answer its prompts (disk or
    existing partition, computer name, your account, timezone, keymap, optional LUKS
