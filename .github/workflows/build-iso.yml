@@ -34,6 +34,7 @@ jobs:
           sudo apt-get install -y xorriso squashfs-tools mtools cpio busybox-static cryptsetup efibootmgr \
             dosfstools grub-efi-amd64-bin grub-pc-bin grub2-common grub-common libncurses-dev build-essential curl \
             kmod zstd xz-utils ovmf qemu-system-x86 g++
+          sudo apt-get install --reinstall -y grub-efi-amd64-bin grub-pc-bin
 
       - name: Build ISO
         run: ./build_iso.sh
