@@ -22,3 +22,4 @@ profiles-out/
 *.iso.sha256
 SHA256SUMS
 dist/
+rootfs/usr/ports/

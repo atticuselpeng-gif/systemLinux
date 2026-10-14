@@ -83,6 +83,10 @@ echo "kernel: $KVER ($KERNEL)"
 echo "=== [2/7] INSTALLING get AND dinit INTO ROOTFS ==="
 sudo install -Dm755 ./get "$ROOTFS/usr/local/bin/get"
 sudo install -Dm755 ./tools/validate-build-ready.sh "$ROOTFS/usr/local/bin/validate-build-ready"
+# the ports tree, so `get category/name` works offline; `get --sync` updates it from the latest release's ports.tar.xz
+sudo rm -rf "$ROOTFS/usr/ports"
+sudo cp -r ./ports "$ROOTFS/usr/ports"
+sudo chown -R 0:0 "$ROOTFS/usr/ports"
 # dinit is PID 1 and the only init system; systemd is removed completely
 sudo rm -f "$ROOTFS/init" "$ROOTFS/sbin/init" "$ROOTFS/sbin/lenine"
 sudo "$BUILD_DIR/tools/dinit/build.sh" "$ROOTFS"
@@ -224,6 +228,9 @@ GRUBEOF
 echo "=== [7/7] MASTERING ISO AND PACKING PROFILES ==="
 # profile-*.tar.xz (+ .sha256/.requires): upload them next to the ISO in the release; `get --profile NAME` installs them
 ROOTFS=$ROOTFS "$BUILD_DIR/tools/profiles/profiles.sh" build "$PROFILES_OUT"
+# ports.tar.xz (+ .sha256) is published with the release; `get --sync` downloads it
+tar -cJf "$PROFILES_OUT/ports.tar.xz" --owner=0 --group=0 --sort=name ports
+(cd "$PROFILES_OUT" && sha256sum ports.tar.xz > ports.tar.xz.sha256)
 "$GRUB_MKRESCUE" -o "$ISO" "$WORKSPACE" -volid SYSTEMLINUX
 sudo rm -rf "$WORKSPACE"
 (cd "$(dirname "$ISO")" && sha256sum "$(basename "$ISO")" | tee "$(basename "$ISO").sha256")
