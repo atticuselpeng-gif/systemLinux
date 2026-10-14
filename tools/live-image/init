@@ -47,6 +47,17 @@ for a in $(cat /proc/cmdline); do
     esac
 done
 
+# Distro kernels ship storage and filesystem drivers as modules (copied into the initramfs by build-initrd.sh):
+# load them before scanning for the medium. Missing ones (built in, or not shipped) are skipped silently.
+if [ -d "/lib/modules/$(uname -r)" ]; then
+    for m in usb_storage uas xhci_pci ehci_pci ohci_pci uhci_hcd ahci nvme virtio_pci virtio_blk virtio_scsi \
+             mmc_block sd_mod sr_mod isofs udf vfat exfat ext4 squashfs loop overlay dm_mod dm_crypt; do
+        modprobe "$m" 2>/dev/null
+    done
+else
+    log "no kernel modules in the initramfs; relying on built-in drivers"
+fi
+
 [ "$SHELL_FIRST" = 1 ] && emergency "systemlinux.shell=1"
 
 # The initramfs carries a build id and so does the ISO's /live directory: with several systemLinux ISOs on one
@@ -151,6 +162,8 @@ else
             sleep 1
         done
         [ -n "${MEDIUM:-}" ] && break
+        log "filesystems: $(tr -d '\t' </proc/filesystems | grep -E 'iso9660|squashfs|overlay|vfat|ext4' | tr '\n' ' ')"
+        log "block devices: $(cat /proc/partitions 2>/dev/null | awk 'NR>2 {print $4}' | tr '\n' ' ')"
         emergency "could not find the live medium (a device with /live/rootfs.squashfs)"
     done
     # (quiet on purpose: only waiting/failure messages are printed)

@@ -54,6 +54,7 @@ if [ -z "$KERNEL" ]; then
             || apt-get download "$(apt-cache depends linux-image-generic | sed -n 's/.*Depends: \(linux-image-[0-9][^ ]*\)/\1/p' | head -n1)"; })
         for deb in "$KDIR"/linux-image-*.deb; do dpkg-deb -x "$deb" "$KDIR/x"; done
         KERNEL=$(ls "$KDIR"/x/boot/vmlinuz-* | head -n1)
+        MODULES_ROOT=$KDIR/x
         chmod 644 "$KERNEL"
     fi
 fi
@@ -127,7 +128,7 @@ sudo chown "$USER" "$WORKSPACE/live/rootfs.squashfs"
 ls -lh "$WORKSPACE/live/rootfs.squashfs"
 BUILD_ID="$IMAGE_VERSION-$(date +%s)"
 echo "$BUILD_ID" > "$WORKSPACE/live/build-id"
-BUILD_ID=$BUILD_ID WORK=$HOME/.cache/systemlinux-initrd "$BUILD_DIR/tools/live-image/build-initrd.sh" "$WORKSPACE/live/initrd.img"
+KVER=$([ "${KERNEL##*/}" != "${KERNEL##*/vmlinuz-}" ] && echo "${KERNEL##*/vmlinuz-}" || uname -r) MODULES_ROOT=${MODULES_ROOT:-} BUILD_ID=$BUILD_ID WORK=$HOME/.cache/systemlinux-initrd "$BUILD_DIR/tools/live-image/build-initrd.sh" "$WORKSPACE/live/initrd.img"
 
 echo "=== [6/7] COPYING KERNEL AND WRITING grub.cfg ==="
 install -m644 "$KERNEL" "$WORKSPACE/live/vmlinuz"
