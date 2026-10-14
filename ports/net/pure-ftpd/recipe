@@ -1,0 +1,4 @@
+url=https://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.52.tar.gz
+sha256=1126f3a95856d08889ff89703cb1aa9ec9924d939d154e96904c920f05dc3c74
+configure_args=--with-tls
+requires=dev-libs/openssl

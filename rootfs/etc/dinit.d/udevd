@@ -1,6 +1,6 @@
-# Device manager (udev device manager; systemd is not part of the image).
+# Device manager: eudev's udevd (built by tools/eudev/build.sh; systemd is not part of the image).
 type = process
-command = /usr/lib/udev/udevd
+command = /usr/bin/udevd
 depends-on = early-filesystems
 restart = true
 smooth-recovery = true

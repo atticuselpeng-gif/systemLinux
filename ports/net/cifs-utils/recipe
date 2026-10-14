@@ -1,0 +1,4 @@
+url=https://download.samba.org/pub/linux-cifs/cifs-utils/cifs-utils-7.2.tar.bz2
+sha256=12564a33ed67c241d8c847924eaf04a5ae0baf19288837094dab15739d54017e
+configure_args=--disable-systemd
+requires=dev-libs/libcap-ng

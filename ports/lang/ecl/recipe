@@ -1,0 +1,3 @@
+url=https://ecl.common-lisp.dev/static/files/release/ecl-24.5.10.tgz
+sha256=e4ea65bb1861e0e495386bfa8bc673bd014e96d3cf9d91e9038f91435cbe622b
+requires=dev-libs/gmp

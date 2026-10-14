@@ -1,0 +1,3 @@
+url=https://download.savannah.nongnu.org/releases/oath-toolkit/oath-toolkit-2.6.12.tar.gz
+sha256=cafdf739b1ec4b276441c6aedae6411434bbd870071f66154b909cc6e2d9e8ba
+configure_args=--disable-pam

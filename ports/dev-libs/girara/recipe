@@ -1,0 +1,5 @@
+url=https://pwmt.org/projects/girara/download/girara-0.4.5.tar.xz
+sha256=6b7f7993f82796854d5036572b879ffaaf7e0b619d12abdb318ce14757bdda91
+build=meson
+configure_args=-Ddocs=disabled -Dtests=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/gtk3 dev-libs/json-glib

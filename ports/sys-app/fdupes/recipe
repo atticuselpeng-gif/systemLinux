@@ -1,0 +1,3 @@
+url=https://github.com/adrianlopezroche/fdupes/releases/download/v2.3.2/fdupes-2.3.2.tar.gz
+sha256=808d8decbe7fa41cab407ae4b7c14bfc27b8cb62227540c3dcb6caf980592ac7
+requires=dev-libs/pcre2 dev-libs/ncurses

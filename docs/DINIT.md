@@ -1,11 +1,18 @@
 # dinit: the init system
 
 systemLinux uses [dinit](https://github.com/davmac314/dinit) (pinned release in `tools/dinit/build.sh`, checksum verified)
-as PID 1. **systemd has been removed**: the service manager, units, generators, journald/logind/networkd/resolved,
-`systemctl` & co., `/etc/systemd` and `pam_systemd` are gone (`tools/check-no-systemd.sh` enforces this).
-Two pieces remain because other programs link to them: the `libsystemd`/`libudev` shared libraries, and the udev
-daemon, relocated to `/usr/lib/udev/udevd` (with `udevadm`). The machine id is made with `dbus-uuidgen`.
-They go away once the base is rebuilt with eudev (see the `sys-app/eudev` port).
+as PID 1 and is the only init system. **systemd has been removed completely**: the service manager, units, generators,
+journald/logind/networkd/resolved, `systemctl` & co., `systemd-udevd`, systemd's `libudev`, the NSS modules,
+`/etc/systemd` and `pam_systemd` are gone, and so are the old OpenRC scripts (`/etc/init.d`, `/etc/runlevels`).
+`tools/check-no-systemd.sh` enforces this.
+
+* The device manager is **eudev** (`/usr/bin/udevd`, `udevadm`, `libudev.so.1`), built from a pinned, checksummed
+  release by `tools/eudev/build.sh`.
+* Prebuilt programs that were linked against `libsystemd.so.0` (dbus, NetworkManager, util-linux, shadow, PAM modules,
+  pppd) get `tools/libsystemd-stub`: a small library with no systemd code that reports "not booted with systemd"
+  (no journal, no logind sessions), so they use syslog/utmp/libudev instead. Its build fails if any binary in the
+  image imports a symbol the stub does not provide.
+* The machine id is made with `dbus-uuidgen`.
 
 ## Boot handoff
 1. GRUB loads `/live/vmlinuz` + `/live/initrd.img` (installed systems: `/boot/images/<ver>/`).
@@ -19,7 +26,7 @@ They go away once the base is rebuilt with eudev (see the `sys-app/eudev` port).
 |---|---|---|---|
 | `boot` | internal | depends-on `early-filesystems`, `udev-trigger`, `system-identity`; waits-for `mount-fstab`, `zram`, `network`, `getty-tty1`, and everything linked in `boot.d/` | `default.target`/`multi-user.target` |
 | `early-filesystems` | scripted | – | `local-fs.target`, `tmp.mount`, API mounts |
-| `udevd` | process | `early-filesystems` | `systemd-udevd.service` |
+| `udevd` | process | `early-filesystems` | `systemd-udevd.service` (eudev here) |
 | `udev-trigger` | scripted | `udevd` | `systemd-udev-trigger.service` |
 | `mount-fstab` | scripted | `early-filesystems`, waits-for `udev-trigger` | `/etc/fstab` mounts (installed systems) |
 | `system-identity` | scripted | `early-filesystems` | hostname, machine-id, loopback |

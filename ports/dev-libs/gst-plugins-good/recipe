@@ -1,0 +1,5 @@
+url=https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.24.12.tar.xz
+sha256=d0e66e2f935d1575f6adbef7d0a2b3faba7360344383c51bf0233b39e0489a64
+build=meson
+configure_args=-Dtests=disabled -Dexamples=disabled -Ddoc=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/gst-plugins-base

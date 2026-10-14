@@ -1,0 +1,3 @@
+url=https://downloads.es.net/pub/iperf/iperf-3.18.tar.gz
+sha256=c0618175514331e766522500e20c94bfb293b4424eb27d7207fb427b88d20bab
+requires=dev-libs/openssl

@@ -1,0 +1,5 @@
+url=https://pcsclite.apdu.fr/files/pcsc-lite-2.3.1.tar.xz
+sha256=a641d44d57affe1edd8365dd75307afc307e7eefb4e7ad839f6f146baa41ed56
+build=meson
+configure_args=-Dlibsystemd=false -Dpolkit=false
+requires=dev-apps/meson dev-apps/ninja sys-app/eudev

@@ -33,16 +33,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xorriso squashfs-tools mtools cpio busybox-static cryptsetup efibootmgr \
             dosfstools grub-efi-amd64-bin grub-pc-bin grub2-common grub-common libncurses-dev build-essential curl \
-            kmod zstd xz-utils ovmf qemu-system-x86 g++
+            kmod zstd xz-utils ovmf qemu-system-x86 g++ gperf pkg-config libkmod-dev libblkid-dev binutils ubuntu-keyring
           sudo apt-get install --reinstall -y grub-efi-amd64-bin grub-pc-bin
 
       - name: Build ISO
         run: ./build_iso.sh
 
-      - name: Smoke test, legacy BIOS (GRUB i386-pc -> kernel -> initramfs -> dinit)
+      - name: Smoke test, legacy BIOS (GRUB i386-pc -> Ubuntu kernel -> initramfs -> dinit)
         run: tools/tests/boot-smoke.sh bios
 
-      - name: Smoke test, UEFI (GRUB x86_64-efi -> kernel -> initramfs -> dinit)
+      - name: Smoke test, UEFI (GRUB x86_64-efi -> Ubuntu kernel -> initramfs -> dinit)
         run: tools/tests/boot-smoke.sh uefi
 
       - name: Generate checksums

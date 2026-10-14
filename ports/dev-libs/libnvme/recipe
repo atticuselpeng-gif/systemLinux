@@ -1,0 +1,5 @@
+url=https://github.com/linux-nvme/libnvme/archive/refs/tags/v1.11.1.tar.gz
+sha256=6d5d8ba2cc4c94a61a994c9f7f25b3b26ef973fb5c0daa37729890903f37a1f1
+build=meson
+configure_args=-Dpython=disabled -Ddocs=false -Dtests=false
+requires=dev-apps/meson dev-apps/ninja dev-libs/json-c

@@ -1,0 +1,5 @@
+url=https://github.com/wesnoth/wesnoth/archive/refs/tags/1.18.4.tar.gz
+sha256=846f774110f83043faaa46a073215356c7055ea7691ee9414cda146b4196e6ce
+build=cmake
+configure_args=-DENABLE_TESTS=OFF
+requires=dev-apps/cmake dev-libs/boost dev-libs/sdl2 dev-libs/sdl2-image dev-libs/sdl2-mixer dev-libs/openssl

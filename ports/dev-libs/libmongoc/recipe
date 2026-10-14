@@ -1,0 +1,5 @@
+url=https://github.com/mongodb/mongo-c-driver/releases/download/1.30.2/mongo-c-driver-1.30.2.tar.gz
+sha256=56224101eccd24bd71e42f806df8332b1280c2294b21b32c2da2d0f77cfa5cbe
+build=cmake
+configure_args=-DENABLE_TESTS=OFF -DENABLE_EXAMPLES=OFF
+requires=dev-apps/cmake dev-libs/openssl

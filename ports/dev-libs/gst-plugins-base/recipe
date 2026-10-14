@@ -1,0 +1,5 @@
+url=https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.24.12.tar.xz
+sha256=f6efbaa8fea8d00bc380bccca76a530527b1f083e8523eafb3e9b1e18bc653d3
+build=meson
+configure_args=-Dintrospection=disabled -Dtests=disabled -Dexamples=disabled -Ddoc=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/gstreamer

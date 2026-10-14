@@ -1,0 +1,5 @@
+url=https://github.com/mgba-emu/mgba/archive/refs/tags/0.10.5.tar.gz
+sha256=91d6fbd32abcbdf030d58d3f562de25ebbc9d56040d513ff8e5c19bee9dacf14
+build=cmake
+configure_args=-DBUILD_QT=OFF -DBUILD_SDL=ON
+requires=dev-apps/cmake dev-libs/sdl2

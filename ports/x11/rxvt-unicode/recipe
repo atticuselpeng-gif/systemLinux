@@ -1,0 +1,4 @@
+url=http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.31.tar.bz2
+sha256=aaa13fcbc149fe0f3f391f933279580f74a96fd312d6ed06b8ff03c2d46672e8
+configure_args=--disable-perl
+requires=x11/libx11 x11/libxft

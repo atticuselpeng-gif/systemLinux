@@ -1,0 +1,4 @@
+url=https://www.musicpd.org/download/libmpdclient/2/libmpdclient-2.22.tar.xz
+sha256=eac15b82b5ba5ed0648af580221eb74657394f7fe768e966d9e9ebb27435429f
+build=meson
+requires=dev-apps/meson dev-apps/ninja

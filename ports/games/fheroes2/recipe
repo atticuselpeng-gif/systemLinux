@@ -1,0 +1,4 @@
+url=https://github.com/ihhub/fheroes2/archive/refs/tags/1.1.6.tar.gz
+sha256=2c4465806c308c8e3992a67a925aad70acdb9d0f4b5d2171969814682b8aad0b
+build=cmake
+requires=dev-apps/cmake dev-libs/sdl2 dev-libs/sdl2-mixer

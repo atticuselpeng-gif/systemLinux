@@ -1,0 +1,5 @@
+url=https://github.com/Alexays/Waybar/archive/refs/tags/0.12.0.tar.gz
+sha256=80454a0778176f575c112bdef9107f272621b578aa629bcc257ad9844a6c7165
+build=meson
+configure_args=-Dman-pages=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/gtk3 dev-libs/jsoncpp dev-apps/fmt dev-apps/spdlog

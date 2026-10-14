@@ -1,0 +1,4 @@
+url=https://mmonit.com/monit/dist/monit-5.34.4.tar.gz
+sha256=ef607cfaabfd3767d40b9b9e32032f748beebc4d686831f6111e0e68fbd1b469
+configure_args=--without-pam
+requires=dev-libs/openssl dev-libs/zlib

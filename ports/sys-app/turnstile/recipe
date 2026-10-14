@@ -1,0 +1,5 @@
+url=https://github.com/chimera-linux/turnstile/archive/refs/tags/v0.1.10.tar.gz
+sha256=186adf1402f3c63eecdbed241145cb029b7b1268c701a87381522d5b64583f2d
+build=meson
+configure_args=-Dmanage_rundir=true
+requires=dev-apps/meson dev-apps/ninja dev-libs/pam

@@ -1,0 +1,3 @@
+url=https://github.com/proftpd/proftpd/archive/refs/tags/v1.3.8c.tar.gz
+sha256=2a48f2ca338456e750d2373bf671025ed799e04e0baa16c7bb8dbfd67d8734d2
+requires=dev-libs/openssl

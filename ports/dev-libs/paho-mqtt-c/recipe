@@ -1,0 +1,5 @@
+url=https://github.com/eclipse-paho/paho.mqtt.c/archive/refs/tags/v1.3.14.tar.gz
+sha256=7af7d906e60a696a80f1b7c2bd7d6eb164aaad908ff4c40c3332ac2006d07346
+build=cmake
+configure_args=-DPAHO_WITH_SSL=ON
+requires=dev-apps/cmake dev-libs/openssl

@@ -1,0 +1,3 @@
+url=https://github.com/joewing/jwm/releases/download/v2.4.6/jwm-2.4.6.tar.xz
+sha256=b5871ec28317594b3fa22b83ed5524cc911d498c455eaab3ae68def195dd802d
+requires=x11/libx11 x11/libxft
