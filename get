@@ -1,301 +1,418 @@
 #!/bin/bash
-# get: download a source tarball, extract it, build it and install it.
+# get: the systemLinux package tool. Builds packages from source and keeps track of them.
 #
-# usage: get [options] URL
-#        get [options] category/name   (recipe from the ports tree, see README)
-#        get --sync                    refresh the ports tree
-#        get --profile NAME [--root DIR] [--url BASE]
-#   -p, --prefix DIR    install prefix (default: /usr/local)
-#   -d, --destdir DIR   stage the install under DIR (make install DESTDIR=DIR)
-#   -s, --srcdir NAME   directory inside the tarball to build (default: its only top-level directory)
-#   -j, --jobs N        parallel make jobs (default: number of CPUs)
-#   -c, --configure-args "ARGS"   extra arguments for ./configure
-#   -k, --keep          keep the temporary work directory (default: remove it)
-#   -P, --profile NAME  install a package profile (build-toolchain, common-build-deps, lang-runtimes,
-#                       desktop-runtime, ...) and the profiles it requires, instead of building a tarball
-#   -r, --root DIR      with --profile: unpack under DIR (default: /)
-#   -u, --url BASE      with --profile: where profile-NAME.tar.xz lives
-#                       (default: $GET_PROFILE_URL, or this image's GitHub release)
-#   -h, --help          show this help
+# usage: get install NAME...       build and install NAME and everything it needs
+#        get remove NAME...        uninstall NAME (refused while another package needs it)
+#        get autoremove            remove dependencies nothing needs any more
+#        get list                  installed packages (* = installed on request, not as a dependency)
+#        get search WORD           find packages in the ports tree
+#        get info NAME             recipe, dependencies and install status
+#        get files NAME            files an installed package owns
+#        get sync                  update the ports tree from the latest release
+#        get install URL           build a source tarball that has no recipe
+#        get profile NAME          unpack a prebuilt package profile (see profiles/README)
+#   -f, --force    install even if already installed / the base system provides it; remove even if needed
+#   -j N           parallel build jobs (default: number of CPUs)
+#   -k, --keep     keep the build directory
+#   -h, --help     this help
 #
-# Supported archives: .tar.gz .tgz .tar.bz2 .tbz2 .tar.xz .txz .tar
-# Build: ./configure --prefix=PREFIX (when present), make, make install.
-# Examples:
-#   get https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz
-#   get -p "$HOME/.local" https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz
-#   get -d /tmp/stage -c "--disable-nls" https://example.org/foo-1.0.tar.xz
-#   get --profile build-toolchain && get --profile common-build-deps
+# NAME is a port name (fastfetch) or category/name (text/fastfetch). Dependencies are resolved from the
+# recipes' `requires`; anything the base system already provides is not rebuilt. The build system is taken
+# from the recipe or detected (configure, autotools, cmake, meson, make). Packages are installed under
+# /usr/local; every installed file is recorded, so `get remove` deletes exactly what was installed.
 set -eu
 
 SELF=$(readlink -f "$0" 2>/dev/null || echo "$0")
 if [ -n "${GET_PORTS:-}" ]; then PORTS=$GET_PORTS
 elif [ -d "${SELF%/*}/ports" ]; then PORTS=${SELF%/*}/ports
 else PORTS=/usr/ports; fi
-DBFILE=${GET_DB:-/var/db/get/installed}
-SYNC=0 SHA='' REQUIRES='' BUILDSYS=configure
-PREFIX=/usr/local DESTDIR_ARG='' SRCDIR='' JOBS='' CONFARGS='' KEEP=0 URL='' PROFILE='' ROOT=/ BASE=''
+PREFIX=${GET_PREFIX:-/usr/local}
+DB=${GET_DB:-/var/db/get}
+BASE_LIST=${GET_BASE_LIST:-/usr/share/systemlinux/base-packages}
+PORTS_URL=${GET_PORTS_URL:-https://github.com/tortr-rs/systemLinux/releases/latest/download/ports.tar.xz}
+FORCE=0 KEEP=0 JOBS=''
 WORK=''
 
+say() { printf '\033[1m==>\033[0m %s\n' "$*"; }
 die() { printf 'get: %s\n' "$*" >&2; exit 1; }
-usage() { sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,24p' "$SELF" | sed 's/^# \{0,1\}//'; }
 cleanup() {
     if [ -n "$WORK" ] && [ -d "$WORK" ]; then
-        if [ "$KEEP" = 1 ]; then printf 'get: work directory kept: %s\n' "$WORK" >&2; else rm -rf "$WORK"; fi
+        if [ "$KEEP" = 1 ]; then printf 'get: build directory kept: %s\n' "$WORK" >&2; else rm -rf "$WORK"; fi
     fi
 }
+need_root() { [ "$(id -u)" = 0 ] || [ -n "${GET_PREFIX:-}" ] || die "$1 needs root (try: sudo get $CMD ...)"; }
+newwork() { WORK=$(mktemp -d "${TMPDIR:-/tmp}/get.XXXXXX") || die "cannot create a build directory"; trap cleanup EXIT; trap 'exit 130' INT TERM HUP; }
 
-while [ $# -gt 0 ]; do
-    case "$1" in
-        -p|--prefix) [ $# -ge 2 ] || die "$1 needs an argument"; PREFIX=$2; shift 2 ;;
-        -d|--destdir) [ $# -ge 2 ] || die "$1 needs an argument"; DESTDIR_ARG=$2; shift 2 ;;
-        -s|--srcdir) [ $# -ge 2 ] || die "$1 needs an argument"; SRCDIR=$2; shift 2 ;;
-        -j|--jobs) [ $# -ge 2 ] || die "$1 needs an argument"; JOBS=$2; shift 2 ;;
-        -c|--configure-args) [ $# -ge 2 ] || die "$1 needs an argument"; CONFARGS=$2; shift 2 ;;
-        -P|--profile) [ $# -ge 2 ] || die "$1 needs an argument"; PROFILE=$2; shift 2 ;;
-        -r|--root) [ $# -ge 2 ] || die "$1 needs an argument"; ROOT=$2; shift 2 ;;
-        -u|--url) [ $# -ge 2 ] || die "$1 needs an argument"; BASE=$2; shift 2 ;;
-        --sync) SYNC=1; shift ;;
-        -k|--keep) KEEP=1; shift ;;
-        -h|--help) usage; exit 0 ;;
-        --) shift; break ;;
-        -*) usage >&2; die "unknown option $1" ;;
-        *) break ;;
-    esac
-done
-# fetch URL OUTFILE
 fetch() {
-    if command -v curl >/dev/null 2>&1; then
-        curl -fsSL --retry 2 -o "$2" "$1" || return 1
-    elif command -v wget >/dev/null 2>&1; then
-        wget -q --tries=3 -O "$2" "$1" || return 1
-    else
-        die "need curl or wget to download"
-    fi
+    if command -v curl >/dev/null 2>&1; then curl -fL --retry 2 --progress-bar -o "$2" "$1"
+    elif command -v wget >/dev/null 2>&1; then wget -q --show-progress --tries=3 -O "$2" "$1"
+    else die "need curl or wget to download"; fi
+}
+quietfetch() {
+    if command -v curl >/dev/null 2>&1; then curl -fsSL --retry 2 -o "$2" "$1"; else wget -q --tries=3 -O "$2" "$1"; fi
 }
 
-# install_profile NAME DIR [optional]: install a profile (and, first, the ones it requires) into ROOT
+# ---- ports tree and package database ----
+recipe_get() { sed -n "s/^$2[[:space:]]*=[[:space:]]*//p" "$1" | head -n1 | sed 's/[[:space:]]*$//; s/^"\(.*\)"$/\1/'; }
+
+# atom NAME: print category/name for a port name or atom
+atom() {
+    case "$1" in ''|*[!A-Za-z0-9._+/-]*|*..*|/*) die "invalid package name: $1" ;; esac
+    local m
+    case "$1" in
+        */*) [ -f "$PORTS/$1/recipe" ] || die "unknown package '$1' (try: get sync, or get search)"; echo "$1" ;;
+        *)   m=$(cd "$PORTS" 2>/dev/null && ls -d */"$1" 2>/dev/null) || true
+             [ -n "$m" ] || die "unknown package '$1' (try: get sync, or get search)"
+             [ "$(echo "$m" | wc -l)" = 1 ] || die "'$1' is ambiguous, use one of: $(echo $m)"
+             echo "$m" ;;
+    esac
+}
+dbdir() { echo "$DB/pkgs/${1//\//__}"; }
+installed() { [ -f "$(dbdir "$1")/files" ]; }
+# provided_by_base ATOM: the base image ships this package
+provided_by_base() { [ -r "$BASE_LIST" ] && grep -qxF "${1##*/}" "$BASE_LIST"; }
+requires_of() { recipe_get "$PORTS/$1/recipe" requires; }
+installed_atoms() { [ -d "$DB/pkgs" ] && for d in "$DB"/pkgs/*/; do [ -f "$d/files" ] && basename "$d" | sed 's|__|/|'; done; true; }
+
+# ---- dependency resolution: ORDER gets every atom to build, dependencies first ----
+ORDER='' VISITING=''
+visit() {
+    local a=$1 r
+    case " $ORDER " in *" $a "*) return 0 ;; esac
+    case " $VISITING " in *" $a "*) die "dependency cycle through $a" ;; esac
+    VISITING="$VISITING $a"
+    for r in $(requires_of "$a"); do
+        r=$(atom "$r")
+        # satisfied already: skip it and everything below it
+        if installed "$r" || provided_by_base "$r"; then continue; fi
+        visit "$r"
+    done
+    VISITING=${VISITING% "$a"}
+    ORDER="$ORDER $a"
+}
+
+# ---- building ----
+# build_and_stage ATOM|"" URL SHA BUILDSYS CONFARGS: build in WORK, install into $WORK/dest
+build_and_stage() {
+    local name=$1 url=$2 sha=$3 buildsys=$4 confargs=$5 file flag src
+    case "$url" in
+        https://*) ;;
+        http://*|ftp://*) printf 'get: warning: %s is not encrypted\n' "$url" >&2 ;;
+        *) die "not a URL: $url" ;;
+    esac
+    file=${url%%[?#]*}; file=${file##*/}
+    case "$file" in
+        *.tar.gz|*.tgz) flag=z ;; *.tar.bz2|*.tbz2) flag=j ;; *.tar.xz|*.txz) flag=J ;;
+        *.tar.zst) flag=--zstd ;; *.tar) flag='' ;;
+        *) die "unsupported archive: $file" ;;
+    esac
+    say "downloading $file"
+    fetch "$url" "$WORK/$file" || die "download failed: $url"
+    if [ -n "$sha" ]; then
+        [ "$(sha256sum "$WORK/$file" | cut -d' ' -f1)" = "$sha" ] || die "checksum mismatch for $file"
+    else
+        printf 'get: warning: %s has no checksum in its recipe\n' "${name:-$file}" >&2
+    fi
+    mkdir "$WORK/src"
+    case "$flag" in
+        --zstd) tar --no-same-owner --zstd -xf "$WORK/$file" -C "$WORK/src" ;;
+        '')     tar --no-same-owner -xf "$WORK/$file" -C "$WORK/src" ;;
+        *)      tar --no-same-owner -x"$flag"f "$WORK/$file" -C "$WORK/src" ;;
+    esac || die "extracting $file failed"
+    src=$WORK/src
+    set -- "$WORK"/src/*
+    if [ $# -eq 1 ] && [ -d "$1" ]; then src=$1; fi
+    cd "$src"
+
+    # detect the build system when the recipe does not name one
+    if [ -z "$buildsys" ]; then
+        if [ -x ./configure ]; then buildsys=configure
+        elif [ -f meson.build ]; then buildsys=meson
+        elif [ -f CMakeLists.txt ]; then buildsys=cmake
+        elif [ -f configure.ac ] || [ -f configure.in ]; then buildsys=autotools
+        elif [ -f Makefile ] || [ -f makefile ] || [ -f GNUmakefile ]; then buildsys=make
+        else die "cannot tell how to build ${name:-$file} (no configure, meson.build, CMakeLists.txt or Makefile)"; fi
+    fi
+    local args=()
+    read -r -a args <<< "$confargs"
+    local dest=$WORK/dest
+    mkdir -p "$dest"
+    say "building ${name:-$file} ($buildsys, $JOBS jobs)"
+    case "$buildsys" in
+        cmake)
+            cmake -S . -B _build -G "$(command -v ninja >/dev/null && echo Ninja || echo 'Unix Makefiles')" \
+                -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$PREFIX" \
+                -DBUILD_TESTING=OFF "${args[@]}" || die "cmake configure failed"
+            cmake --build _build -j "$JOBS" || die "build failed"
+            DESTDIR=$dest cmake --install _build || die "install failed" ;;
+        meson)
+            meson setup _build --prefix="$PREFIX" --buildtype=release "${args[@]}" || die "meson setup failed"
+            meson compile -C _build -j "$JOBS" || die "build failed"
+            DESTDIR=$dest meson install -C _build --no-rebuild || die "install failed" ;;
+        autotools|configure)
+            if [ "$buildsys" = autotools ] || [ ! -x ./configure ]; then
+                if [ -x ./autogen.sh ]; then NOCONFIGURE=1 ./autogen.sh || die "autogen.sh failed"
+                else autoreconf -fi || die "autoreconf failed"; fi
+            fi
+            ./configure --prefix="$PREFIX" "${args[@]}" || die "configure failed"
+            make -j"$JOBS" || die "build failed"
+            make install DESTDIR="$dest" || die "install failed" ;;
+        make)
+            make -j"$JOBS" PREFIX="$PREFIX" prefix="$PREFIX" "${args[@]}" || die "build failed"
+            make install DESTDIR="$dest" PREFIX="$PREFIX" prefix="$PREFIX" "${args[@]}" || die "install failed" ;;
+        *) die "unknown build type: $buildsys" ;;
+    esac
+    cd /
+}
+
+# merge ATOM-or-NAME: copy $WORK/dest into / and record every file
+merge() {
+    local key=$1 dir f owner
+    dir=$(dbdir "$key")
+    (cd "$WORK/dest" && find . \( -type f -o -type l \) | sed 's|^\.||' | sort) > "$WORK/files"
+    [ -s "$WORK/files" ] || die "$key installed no files"
+    # refuse to overwrite a file another package owns
+    owner=$(awk -v me="$dir/files" 'NR==FNR {want[$0]=1; next} FILENAME != me && ($0 in want) {print FILENAME ": " $0; exit}' \
+        "$WORK/files" "$DB"/pkgs/*/files 2>/dev/null || true)
+    if [ -n "$owner" ] && [ "$FORCE" = 0 ]; then
+        f=${owner#*: }; owner=${owner%%: *}; owner=${owner%/files}
+        die "$f already belongs to $(basename "$owner" | sed 's|__|/|') (use -f to overwrite)"
+    fi
+    # the old version's files that the new one no longer has
+    if [ -f "$dir/files" ]; then
+        comm -23 <(sort "$dir/files") "$WORK/files" | while IFS= read -r f; do rm -f "$f"; done
+    fi
+    cp -a "$WORK/dest/." / || die "copying files into place failed"
+    mkdir -p "$dir"
+    cp "$WORK/files" "$dir/files"
+    ldconfig 2>/dev/null || true
+}
+
+record() { # ATOM URL REQUIRES EXPLICIT(0/1)
+    local dir; dir=$(dbdir "$1")
+    { echo "url=$2"; echo "requires=$3"; echo "date=$(date +%F)"; } > "$dir/info"
+    if [ "$4" = 1 ]; then touch "$dir/explicit"; fi
+}
+
+install_atom() { # ATOM EXPLICIT
+    local a=$1 url sha bs ca req
+    url=$(recipe_get "$PORTS/$a/recipe" url)
+    sha=$(recipe_get "$PORTS/$a/recipe" sha256)
+    bs=$(recipe_get "$PORTS/$a/recipe" build)
+    ca=$(recipe_get "$PORTS/$a/recipe" configure_args)
+    req=$(requires_of "$a")
+    say "installing $a"
+    if [ -z "$url" ]; then # meta-package: only dependencies
+        mkdir -p "$(dbdir "$a")"; : > "$(dbdir "$a")/files"; record "$a" "" "$req" "$2"; return 0
+    fi
+    newwork
+    build_and_stage "$a" "$url" "$sha" "$bs" "$ca"
+    merge "$a"
+    record "$a" "$url" "$req" "$2"
+    rm -rf "$WORK"; WORK=''
+}
+
+# ---- commands ----
+cmd_install() {
+    [ $# -ge 1 ] || die "usage: get install NAME..."
+    need_root "installing"
+    local x a want=''
+    for x in "$@"; do
+        case "$x" in
+            *://*) # a plain tarball: tracked under its file name
+                local f=${x%%[?#]*}; f=${f##*/}; local key=url/${f%%.tar*}; key=${key%.tgz}
+                newwork; build_and_stage "" "$x" "" "" ""; merge "$key"; record "$key" "$x" "" 1; rm -rf "$WORK"; WORK=''
+                say "$key installed"; continue ;;
+        esac
+        a=$(atom "$x")
+        if installed "$a" && [ "$FORCE" = 0 ]; then printf 'get: %s is already installed (get install -f %s rebuilds it)\n' "$a" "$x"; touch "$(dbdir "$a")/explicit"; continue; fi
+        if provided_by_base "$a" && [ "$FORCE" = 0 ]; then printf 'get: %s is part of the base system (get install -f %s builds it anyway)\n' "$a" "$x"; continue; fi
+        want="$want $a"
+    done
+    [ -n "$want" ] || return 0
+    ORDER='' VISITING=''
+    for a in $want; do visit "$a"; done
+    say "$(echo $ORDER | wc -w) package(s) to build:$ORDER"
+    for a in $ORDER; do
+        case " $want " in *" $a "*) install_atom "$a" 1 ;; *) install_atom "$a" 0 ;; esac
+    done
+    say "done"
+}
+
+# needed_by ATOM: installed packages that require ATOM
+needed_by() {
+    local a=$1 p r
+    for p in $(installed_atoms); do
+        [ "$p" = "$a" ] && continue
+        for r in $(sed -n 's/^requires=//p' "$(dbdir "$p")/info" 2>/dev/null); do
+            case "$r" in */*) ;; *) r=$(atom "$r" 2>/dev/null || echo "$r") ;; esac
+            [ "$r" = "$a" ] && { echo "$p"; break; }
+        done
+    done
+}
+
+remove_atom() {
+    local a=$1 dir f d users
+    dir=$(dbdir "$a")
+    installed "$a" || die "$a is not installed"
+    users=$(needed_by "$a" | tr '\n' ' ')
+    if [ -n "$users" ] && [ "$FORCE" = 0 ]; then die "$a is needed by: $users(remove those first, or use -f)"; fi
+    say "removing $a"
+    while IFS= read -r f; do rm -f "$f"; done < "$dir/files"
+    # drop directories the package left empty (never the prefix itself)
+    sed 's|/[^/]*$||' "$dir/files" | sort -ur | while IFS= read -r d; do
+        while [ -n "$d" ] && [ "$d" != "$PREFIX" ] && [ "$d" != / ] && rmdir "$d" 2>/dev/null; do d=${d%/*}; done
+    done
+    rm -rf "$dir"
+}
+
+cmd_remove() {
+    [ $# -ge 1 ] || die "usage: get remove NAME..."
+    need_root "removing"
+    local x a
+    for x in "$@"; do
+        case "$x" in url/*) a=$x ;; *) a=$(atom "$x" 2>/dev/null || true); [ -n "$a" ] || a=$(installed_atoms | grep "/$x\$" | head -n1) ;; esac
+        [ -n "$a" ] || die "$x is not installed"
+        remove_atom "$a"
+    done
+    ldconfig 2>/dev/null || true
+    say "done"
+}
+
+cmd_autoremove() {
+    need_root "removing"
+    local changed=1 p any=0
+    while [ "$changed" = 1 ]; do
+        changed=0
+        for p in $(installed_atoms); do
+            [ -f "$(dbdir "$p")/explicit" ] && continue
+            [ -z "$(needed_by "$p")" ] || continue
+            remove_atom "$p"; changed=1; any=1
+        done
+    done
+    ldconfig 2>/dev/null || true
+    [ "$any" = 1 ] && say "done" || echo "get: nothing to remove"
+}
+
+cmd_list() {
+    local p
+    for p in $(installed_atoms); do
+        if [ -f "$(dbdir "$p")/explicit" ]; then echo "* $p"; else echo "  $p"; fi
+    done
+}
+
+cmd_search() {
+    [ $# -eq 1 ] || die "usage: get search WORD"
+    [ -d "$PORTS" ] || die "no ports tree in $PORTS (try: get sync)"
+    (cd "$PORTS" && ls -d */*/ | sed 's|/$||' | grep -i -- "$1") | while IFS= read -r a; do
+        if installed "$a"; then echo "$a [installed]"; elif provided_by_base "$a"; then echo "$a [base system]"; else echo "$a"; fi
+    done
+}
+
+cmd_info() {
+    [ $# -eq 1 ] || die "usage: get info NAME"
+    local a; a=$(atom "$1")
+    echo "package:  $a"
+    sed 's/^/  /' "$PORTS/$a/recipe"
+    if installed "$a"; then echo "status:   installed $(sed -n 's/^date=//p' "$(dbdir "$a")/info" 2>/dev/null) ($(wc -l < "$(dbdir "$a")/files") files)"
+    elif provided_by_base "$a"; then echo "status:   part of the base system"
+    else echo "status:   not installed"; fi
+    local u; u=$(needed_by "$a" | tr '\n' ' '); [ -z "$u" ] || echo "needed by: $u"
+}
+
+cmd_files() {
+    [ $# -eq 1 ] || die "usage: get files NAME"
+    local a; a=$(atom "$1" 2>/dev/null || echo "$1")
+    installed "$a" || die "$1 is not installed"
+    cat "$(dbdir "$a")/files"
+}
+
+cmd_sync() {
+    if git -C "$PORTS" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        die "$PORTS is part of a git checkout: update it with git pull"
+    fi
+    need_root "updating the ports tree"
+    command -v tar >/dev/null && command -v sha256sum >/dev/null || die "tar and sha256sum are required"
+    newwork
+    say "downloading the ports tree"
+    quietfetch "$PORTS_URL" "$WORK/ports.tar.xz" || die "cannot download $PORTS_URL"
+    quietfetch "$PORTS_URL.sha256" "$WORK/ports.sha256" || die "cannot download the ports checksum"
+    [ "$(sed -n '1s/[[:space:]].*//p' "$WORK/ports.sha256")" = "$(sha256sum "$WORK/ports.tar.xz" | cut -d' ' -f1)" ] || die "ports checksum mismatch"
+    mkdir -p "$WORK/new"
+    tar --no-same-owner -xJf "$WORK/ports.tar.xz" -C "$WORK/new" --strip-components=1 || die "extracting ports failed"
+    [ -n "$(ls "$WORK/new")" ] || die "the downloaded ports tree is empty"
+    mkdir -p "$PORTS" && rm -rf "${PORTS:?}"/* && cp -a "$WORK/new/." "$PORTS/" || die "cannot update $PORTS"
+    say "ports tree updated: $(cd "$PORTS" && ls -d */*/ | wc -l) packages"
+}
+
+# get profile NAME: unpack a prebuilt profile (and the profiles it requires) published with the release
+DONE=''
 install_profile() {
     case "$1" in ''|*[!A-Za-z0-9_-]*) die "invalid profile name: $1" ;; esac
     case " $DONE " in *" $1 "*) return 0 ;; esac
     DONE="$DONE $1"
-    printf 'get: profile %s\n' "$1"
-    if ! fetch "$BASE/profile-$1.tar.xz" "$2/p.tar.xz"; then
-        [ -z "${3:-}" ] || { printf 'get: warning: required profile %s not published, skipping\n' "$1" >&2; return 0; }
+    say "profile $1"
+    local t=$WORK/profile-$1
+    if ! quietfetch "$BASE/profile-$1.tar.xz" "$t.tar.xz"; then
+        [ -z "${2:-}" ] || { printf 'get: warning: required profile %s not published, skipping\n' "$1" >&2; return 0; }
         die "cannot download profile $1 from $BASE"
     fi
-    fetch "$BASE/profile-$1.tar.xz.sha256" "$2/p.sha256" || die "cannot download the checksum of profile $1"
-    want=$(sed -n '1s/[[:space:]].*//p' "$2/p.sha256")
-    have=$(sha256sum "$2/p.tar.xz" | sed 's/[[:space:]].*//')
-    if [ -z "$want" ] || [ "$want" != "$have" ]; then die "checksum mismatch for profile $1"; fi
-    if fetch "$BASE/profile-$1.requires" "$2/p.requires" 2>/dev/null; then
-        while read -r req; do
-            [ -z "$req" ] || install_profile "$req" "$2" optional
-        done < "$2/p.requires"
+    quietfetch "$BASE/profile-$1.tar.xz.sha256" "$t.sha256" || die "cannot download the checksum of profile $1"
+    [ "$(sed -n '1s/[[:space:]].*//p' "$t.sha256")" = "$(sha256sum "$t.tar.xz" | cut -d' ' -f1)" ] || die "checksum mismatch for profile $1"
+    if quietfetch "$BASE/profile-$1.requires" "$t.requires" 2>/dev/null; then
+        local req; for req in $(cat "$t.requires"); do install_profile "$req" optional; done
     fi
-    mkdir -p "$ROOT"
-    tar -xJf "$2/p.tar.xz" -C "$ROOT" || die "extracting profile $1 failed (run as root to install into $ROOT)"
+    tar -xJf "$t.tar.xz" -C / || die "extracting profile $1 failed"
 }
-
-if [ -n "$PROFILE" ]; then
-    [ $# -eq 0 ] || die "--profile takes no URL"
-    command -v tar >/dev/null 2>&1 || die "tar is required"
-    command -v xz >/dev/null 2>&1 || die "xz is required"
-    command -v sha256sum >/dev/null 2>&1 || die "sha256sum is required"
+cmd_profile() {
+    [ $# -eq 1 ] || die "usage: get profile NAME"
+    need_root "installing a profile"
+    BASE=${GET_PROFILE_URL:-}
     if [ -z "$BASE" ]; then
-        BASE=${GET_PROFILE_URL:-}
-        if [ -z "$BASE" ]; then
-            VER=$(cat /usr/share/systemlinux/image-version 2>/dev/null) || die "no --url given and no image version found"
-            case $VER in *.*.*) TAG=v$VER ;; *) TAG=v$VER.0 ;; esac
-            BASE=https://github.com/tortr-rs/systemLinux/releases/download/$TAG
-        fi
+        local ver; ver=$(cat /usr/share/systemlinux/image-version 2>/dev/null) || die "no image version found (set GET_PROFILE_URL)"
+        BASE=https://github.com/tortr-rs/systemLinux/releases/download/v$ver
     fi
-    BASE=${BASE%/}
-    DONE=''
-    WORK=$(mktemp -d "${TMPDIR:-/tmp}/get.XXXXXX") || die "cannot create a work directory"
-    trap cleanup EXIT
-    trap 'exit 130' INT TERM HUP
-    install_profile "$PROFILE" "$WORK"
-    ldconfig -r "$ROOT" 2>/dev/null || true
-    printf 'get: profile %s installed\n' "$PROFILE"
-    exit 0
-fi
+    newwork
+    install_profile "$1"
+    ldconfig 2>/dev/null || true
+    say "profile $1 installed"
+}
 
-# recipe_get FILE KEY: print the value of KEY (recipes are parsed, never executed)
-recipe_get() { sed -n "s/^$2[[:space:]]*=[[:space:]]*//p" "$1" | head -n1 | sed 's/[[:space:]]*$//; s/^"\(.*\)"$/\1/'; }
-
-# resolve ATOM: set ATOM, URL, SHA, REQUIRES, BUILDSYS and CONFARGS from the ports tree
-resolve() {
+# ---- options and command ----
+ARGS=()
+while [ $# -gt 0 ]; do
     case "$1" in
-        ''|*[!A-Za-z0-9._+/-]*|*..*|/*) die "invalid package atom: $1" ;;
-        */*) dir=$PORTS/$1 ;;
-        *)
-            set -- "$1" $(ls -d "$PORTS"/*/"$1" 2>/dev/null)
-            [ $# -le 2 ] || { shift; die "ambiguous name, use category/name: $(printf '%s ' "$@" | sed "s|$PORTS/||g")"; }
-            dir=${2:-} ;;
+        -f|--force) FORCE=1 ;;
+        -k|--keep) KEEP=1 ;;
+        -j) [ $# -ge 2 ] || die "-j needs a number"; JOBS=$2; shift ;;
+        -j*) JOBS=${1#-j} ;;
+        -h|--help) usage; exit 0 ;;
+        --sync) ARGS+=(sync) ;;                              # old spelling
+        -P|--profile) ARGS+=(profile) ;;                     # old spelling
+        -*) die "unknown option $1 (see get --help)" ;;
+        *) ARGS+=("$1") ;;
     esac
-    [ -n "$dir" ] && [ -f "$dir/recipe" ] || die "unknown package '$1' (try: get --sync)"
-    ATOM=${dir#"$PORTS"/}
-    URL=$(recipe_get "$dir/recipe" url)
-    SHA=$(recipe_get "$dir/recipe" sha256)
-    REQUIRES=$(recipe_get "$dir/recipe" requires)
-    b=$(recipe_get "$dir/recipe" build)
-    case "$b" in ''|configure|cmake|meson) BUILDSYS=${b:-configure} ;; *) die "unsupported build type: $b" ;; esac
-    ca=$(recipe_get "$dir/recipe" configure_args)
-    if [ -n "$ca" ]; then CONFARGS="$ca${CONFARGS:+ $CONFARGS}"; fi
-    case "$REQUIRES" in *[!A-Za-z0-9._+/\ -]*) die "invalid requires in $ATOM" ;; esac
-    [ -n "$URL" ] || [ -n "$REQUIRES" ] || die "recipe $ATOM has neither url nor requires"
-}
+    shift
+done
+set -- "${ARGS[@]+"${ARGS[@]}"}"
+[ $# -ge 1 ] || { usage; exit 2; }
+case "${JOBS:-x}" in x) JOBS=$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1) ;; *[!0-9]*) die "-j needs a number" ;; esac
+# packages installed under the prefix are found by later builds
+export PKG_CONFIG_PATH="$PREFIX/lib64/pkgconfig:$PREFIX/lib/pkgconfig:$PREFIX/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+export PATH="$PREFIX/bin:$PATH"
 
-is_installed() { [ -r "$DBFILE" ] && grep -qxF "$1" "$DBFILE"; }
-mark_installed() {
-    mkdir -p "$(dirname "$DBFILE")" 2>/dev/null || return 0
-    echo "$1" >> "$DBFILE" 2>/dev/null || printf 'get: warning: cannot record %s in %s\n' "$1" "$DBFILE" >&2
-}
-
-if [ "$SYNC" = 1 ]; then
-    if [ -d "$PORTS/.git" ] || git -C "$PORTS" rev-parse --git-dir >/dev/null 2>&1; then
-        git -C "$PORTS" pull --ff-only || die "git pull failed in $PORTS"
-    else
-        # tarball + detached .sha256, published with every release (default: the latest one)
-        GET_PORTS_URL=${GET_PORTS_URL:-https://github.com/tortr-rs/systemLinux/releases/latest/download/ports.tar.xz}
-        command -v tar >/dev/null 2>&1 && command -v sha256sum >/dev/null 2>&1 || die "tar and sha256sum are required"
-        WORK=$(mktemp -d "${TMPDIR:-/tmp}/get.XXXXXX") || die "cannot create a work directory"
-        trap cleanup EXIT
-        fetch "$GET_PORTS_URL" "$WORK/ports.tar.xz" || die "cannot download $GET_PORTS_URL"
-        fetch "$GET_PORTS_URL.sha256" "$WORK/ports.sha256" || die "cannot download the ports checksum"
-        want=$(sed -n '1s/[[:space:]].*//p' "$WORK/ports.sha256")
-        have=$(sha256sum "$WORK/ports.tar.xz" | sed 's/[[:space:]].*//')
-        [ -n "$want" ] && [ "$want" = "$have" ] || die "ports checksum mismatch"
-        mkdir -p "$WORK/new"
-        tar --no-same-owner -xJf "$WORK/ports.tar.xz" -C "$WORK/new" --strip-components=1 || die "extracting ports failed"
-        [ -n "$(ls "$WORK/new")" ] || die "the downloaded ports tree is empty"
-        # replace the tree, so recipes removed upstream go away too
-        mkdir -p "$PORTS" && rm -rf "${PORTS:?}"/* && cp -a "$WORK/new/." "$PORTS/" || die "cannot update $PORTS"
-    fi
-    printf 'get: ports synced (%s)\n' "$PORTS"
-    exit 0
-fi
-[ $# -ge 1 ] || { usage >&2; exit 2; }
-URL=$1; shift
-ATOM=''
-[ $# -eq 0 ] || die "only one URL is accepted"
-
-case "$URL" in
-    *://*) ;;
-    *) resolve "$URL" ;;
+CMD=$1; shift
+case "$CMD" in
+    install|i|add)            cmd_install "$@" ;;
+    remove|rm|uninstall|del)  cmd_remove "$@" ;;
+    autoremove)               cmd_autoremove ;;
+    list|ls)                  cmd_list ;;
+    search|s)                 cmd_search "$@" ;;
+    info|show)                cmd_info "$@" ;;
+    files)                    cmd_files "$@" ;;
+    sync|update)              cmd_sync ;;
+    profile)                  cmd_profile "$@" ;;
+    help)                     usage ;;
+    *)                        set -- "$CMD" "$@"; CMD=install; cmd_install "$@" ;;   # `get NAME` = install
 esac
-case "$JOBS" in
-    ''|*[!0-9]*) [ -z "$JOBS" ] || die "--jobs needs a number" ;;
-esac
-[ -n "$JOBS" ] || JOBS=$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1)
-
-if [ -n "$ATOM" ]; then
-    if is_installed "$ATOM"; then printf 'get: %s already installed\n' "$ATOM"; exit 0; fi
-    case ":${GET_STACK:-}:" in *":$ATOM:"*) die "dependency cycle: ${GET_STACK#:} -> $ATOM" ;; esac
-    export GET_STACK="${GET_STACK:+$GET_STACK:}$ATOM"
-    for r in $REQUIRES; do
-        "$SELF" -p "$PREFIX" -j "$JOBS" ${DESTDIR_ARG:+-d "$DESTDIR_ARG"} "$r" || die "dependency $r failed"
-    done
-    if [ -z "$URL" ]; then mark_installed "$ATOM"; printf 'get: %s (meta-package) done\n' "$ATOM"; exit 0; fi
-fi
-
-case "$URL" in
-    https://*) ;;
-    http://*|ftp://*) printf 'get: warning: %s is not encrypted\n' "$URL" >&2; [ -n "$SHA" ] || printf 'get: warning: source is not verified\n' >&2 ;;
-    *) die "not a URL: $URL" ;;
-esac
-
-file=${URL%%[?#]*}
-file=${file##*/}
-case "$file" in
-    *.tar.gz|*.tgz) FLAG=z ;;
-    *.tar.bz2|*.tbz2) FLAG=j ;;
-    *.tar.xz|*.txz) FLAG=J ;;
-    *.tar) FLAG= ;;
-    *) die "unsupported archive format: ${file:-$URL} (supported: .tar.gz .tgz .tar.bz2 .tar.xz .tar)" ;;
-esac
-
-command -v make >/dev/null 2>&1 || die "make is required"
-command -v tar >/dev/null 2>&1 || die "tar is required"
-
-WORK=$(mktemp -d "${TMPDIR:-/tmp}/get.XXXXXX") || die "cannot create a work directory"
-trap cleanup EXIT
-trap 'exit 130' INT TERM HUP
-
-printf 'get: downloading %s\n' "$URL"
-fetch "$URL" "$WORK/$file" || die "download failed"
-
-if [ -n "$SHA" ]; then
-    command -v sha256sum >/dev/null 2>&1 || die "sha256sum is required to verify $file"
-    have=$(sha256sum "$WORK/$file" | sed 's/[[:space:]].*//')
-    [ "$have" = "$SHA" ] || die "checksum mismatch for $file"
-fi
-
-printf 'get: extracting %s\n' "$file"
-mkdir "$WORK/src"
-if [ -n "$FLAG" ]; then
-    tar --no-same-owner -x"$FLAG"f "$WORK/$file" -C "$WORK/src" || die "extraction failed"
-else
-    tar --no-same-owner -xf "$WORK/$file" -C "$WORK/src" || die "extraction failed"
-fi
-
-if [ -n "$SRCDIR" ]; then
-    case "$SRCDIR" in /*|..|../*|*/../*|*/..) die "--srcdir must be a relative path inside the archive" ;; esac
-    BUILD=$WORK/src/$SRCDIR
-else
-    BUILD=$WORK/src
-    set -- "$WORK"/src/*
-    if [ $# -eq 1 ] && [ -d "$1" ]; then BUILD=$1; fi
-fi
-[ -d "$BUILD" ] || die "source directory not found: ${SRCDIR:-$BUILD}"
-cd "$BUILD"
-
-MAKEVARS=''
-case "$BUILDSYS" in
-cmake)
-    command -v cmake >/dev/null 2>&1 || die "cmake is required (get dev-apps/cmake)"
-    printf 'get: cmake (prefix %s)\n' "$PREFIX"
-    read -r -a CONFARGS_ARRAY <<< "$CONFARGS"
-    cmake -S . -B build -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_BUILD_TYPE=Release "${CONFARGS_ARRAY[@]}" || die "cmake configure failed"
-    cmake --build build -j "$JOBS" || die "cmake build failed"
-    DESTDIR=${DESTDIR_ARG:-} cmake --install build || die "cmake install failed"
-    ;;
-meson)
-    command -v meson >/dev/null 2>&1 || die "meson is required (get dev-apps/meson)"
-    printf 'get: meson (prefix %s)\n' "$PREFIX"
-    read -r -a CONFARGS_ARRAY <<< "$CONFARGS"
-    meson setup build --prefix="$PREFIX" "${CONFARGS_ARRAY[@]}" || die "meson setup failed"
-    meson compile -C build -j "$JOBS" || die "meson compile failed"
-    DESTDIR=${DESTDIR_ARG:-} meson install -C build || die "meson install failed"
-    ;;
-*)
-    if [ -x ./configure ]; then
-        printf 'get: configure --prefix=%s\n' "$PREFIX"
-        # Split CONFARGS into array to preserve quoted arguments
-        # shellcheck disable=SC2206
-        CONFARGS_ARRAY=($CONFARGS)
-        ./configure --prefix="$PREFIX" "${CONFARGS_ARRAY[@]}" || die "configure failed"
-    else
-        MAKEVARS="PREFIX=$PREFIX"
-    fi
-
-    [ -f Makefile ] || [ -f makefile ] || [ -f GNUmakefile ] || die "no Makefile found (and no configure script to create one)"
-    printf 'get: make -j%s\n' "$JOBS"
-    # shellcheck disable=SC2086
-    make -j"$JOBS" ${MAKEVARS:+"$MAKEVARS"} || die "make failed"
-
-    printf 'get: make install (prefix %s%s)\n' "$PREFIX" "${DESTDIR_ARG:+, staged in $DESTDIR_ARG}"
-    if [ -n "$DESTDIR_ARG" ]; then
-        mkdir -p "$DESTDIR_ARG"
-        # shellcheck disable=SC2086
-        make install DESTDIR="$DESTDIR_ARG" ${MAKEVARS:+"$MAKEVARS"} || die "make install failed"
-    else
-        # shellcheck disable=SC2086
-        make install ${MAKEVARS:+"$MAKEVARS"} || die "make install failed (try again with sudo, or a --prefix you can write to)"
-    fi
-    ;;
-esac
-[ -z "$ATOM" ] || mark_installed "$ATOM"
-# new shared libraries (e.g. in /usr/local/lib) are only found after the linker cache is refreshed
-if [ -z "${DESTDIR_ARG:-}" ] && [ "$(id -u)" = 0 ]; then ldconfig 2>/dev/null || true; fi
-printf 'get: done\n'
