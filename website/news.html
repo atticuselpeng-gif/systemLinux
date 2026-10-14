@@ -15,6 +15,13 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
 <h1><img src="logo.svg" alt="" width="32" height="32"> systemLinux 0.2.2</h1>
 <p><a href="index.html">Home</a> | <a href="about.html">About</a> | <a href="download.html">Download</a> | <b>News</b> | <a href="get.html">get</a> | <a href="handbook.html">Handbook</a> | <a href="system.html">System</a></p>
 <hr>
+<h1>What's new (unreleased)</h1>
+  <ul class="tight">
+    <li><strong>dinit replaces systemd as PID 1.</strong> Services are small files in <code>/etc/dinit.d/</code>; use <code>dinitctl</code> and the usual <code>reboot</code>, <code>poweroff</code>, <code>halt</code>.</li>
+    <li><strong>Legacy BIOS boot.</strong> The ISO is a hybrid BIOS+UEFI image, and <code>systemlinux-install</code> installs in either mode (GPT with a BIOS boot partition and an EFI partition).</li>
+    <li><strong>180 more ports</strong> (now 534): core utilities, networking, toolchains, editors, shells and libraries, each with a verified checksum. <code>tools/ports-check.sh</code> validates them in CI.</li>
+    <li><strong>Boot fixes.</strong> A kernel without storage modules now fails the build instead of producing an ISO that cannot find its medium; copy-to-RAM works; CI boots the ISO through GRUB in QEMU in both BIOS and UEFI mode.</li>
+  </ul>
 <h1>What's new in 0.2.2</h1>
   <ul class="tight">
     <li><strong>Live boot fix.</strong> The ISO no longer stops with "could not find the live medium": the initramfs now carries and loads the storage and filesystem kernel modules.</li>

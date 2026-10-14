@@ -5,7 +5,7 @@
 # daemons, docs, locales, compilers or language runtimes. After installing, `get --profile build-toolchain`
 # (and common-build-deps, lang-runtimes, ...) adds the build stack; `get URL` builds source tarballs.
 #
-#   ./build_iso.sh    -> systemLinux-0.2.2-x86_64.iso + .sha256  (root shell, console only, installable with the handbook)
+#   ./build_iso.sh    (checks ports and dinit services first, then builds)  -> systemLinux-0.2.2-x86_64.iso + .sha256  (root shell, console only, installable with the handbook)
 #
 # Run from a normal terminal (sudo needs a password prompt). Works from any Linux host with
 # grub2, xorriso, mtools, squashfs-tools and cpio on PATH (install them with your host's own
@@ -50,6 +50,9 @@ GRUB_SCRIPT_CHECK=$(command -v grub-script-check || command -v grub2-script-chec
 GRUB_MKIMAGE=$(command -v grub-mkimage || command -v grub2-mkimage || echo grub-mkimage)
 GRUB_BIOS_SETUP=$(command -v grub-bios-setup || command -v grub2-bios-setup || echo grub-bios-setup)   # grub-install --target=i386-pc runs it
 
+echo "=== [0/7] CHECKING PORTS AND dinit SERVICES ==="
+"$BUILD_DIR/tools/ports-check.sh" 2>&1 | grep -v 'missing sha256' || { echo "ERROR: ports check failed"; exit 1; }
+[ "${PIPESTATUS[0]}" = 0 ] || exit 1
 echo "=== [1/7] USING THE PREBUILT DISTRIBUTION KERNEL ==="
 if [ -z "$KERNEL" ]; then
     # Host /boot/vmlinuz-* is often root-only (e.g. GitHub runners), so unpack the distro kernel package instead.

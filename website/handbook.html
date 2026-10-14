@@ -143,7 +143,7 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
       <div class="chapter" id="hb-11"><h2>11. If something goes wrong</h2>
         <ul>
           <li><strong>The stick does not boot:</strong> try the other firmware entry (UEFI or BIOS), write the ISO with <code>dd</code> instead of Ventoy, and check the checksum.</li>
-          <li><strong>No console after boot:</strong> use the <em>debug shell</em> entry, or remove <code>quiet</code> from the kernel command line to see systemd&rsquo;s boot messages on screen. From a running system, <code>journalctl -b</code> and <code>systemctl --failed</code>.</li>
+          <li><strong>No console after boot:</strong> use the <em>debug shell</em> entry, or remove <code>quiet</code> from the kernel command line to see the boot messages on screen. From a running system, <code>journalctl -b</code> and <code>systemctl --failed</code>.</li>
           <li><strong>No Wi-Fi:</strong> a device whose firmware is not in the bundled set will not start. A USB tether or Ethernet always works.</li>
           <li><strong>Wrong partition wiped:</strong> double-check <code>lsblk</code> output before every <code>wipefs</code>/<code>sfdisk</code> command. There&rsquo;s no undo. That&rsquo;s why chapter 3 is written out by hand: read each command before you run it.</li>
           <li><strong>LUKS passphrase not accepted at boot:</strong> the live/installed initramfs asks again on the next attempt; a truly lost passphrase means the data partition is unrecoverable by design.</li>

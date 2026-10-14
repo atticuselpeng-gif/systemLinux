@@ -20,7 +20,7 @@
 
 ### Added
 - Legacy BIOS boot: hybrid BIOS+UEFI ISO (both GRUB platforms are required at build time), `docs/BIOS.md`.
-- About 96 new ports (core utilities, networking, toolchain/developer tools, editors, shells, libraries), all with
+- About 180 new ports (core utilities, networking, toolchain/developer tools, editors, shells, libraries), all with
   `sha256`. `tools/ports-check.sh` and the `Ports check` workflow validate the tree.
 - `tools/dinit/check-services.sh`, `tools/tests/boot-smoke.sh`, `dinit-check` workflow.
 

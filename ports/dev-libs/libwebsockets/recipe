@@ -1,0 +1,4 @@
+url=https://github.com/warmcat/libwebsockets/archive/refs/tags/v4.3.3.tar.gz
+sha256=6fd33527b410a37ebc91bb64ca51bdabab12b076bc99d153d7c5dd405e4bdf90
+requires=dev-apps/cmake
+build=cmake

@@ -1,0 +1,4 @@
+url=https://github.com/capstone-engine/capstone/archive/refs/tags/5.0.1.tar.gz
+sha256=2b9c66915923fdc42e0e32e2a9d7d83d3534a45bb235e163a70047951890c01a
+requires=dev-apps/cmake
+build=cmake

@@ -1,0 +1,4 @@
+url=https://github.com/ToruNiina/toml11/archive/refs/tags/v4.0.3.tar.gz
+sha256=c8cbc7839cb3f235153045ce550e559f55a04554dfcab8743ba8a1e8ef6a54bf
+requires=dev-apps/cmake
+build=cmake

@@ -1,0 +1,4 @@
+url=https://github.com/google/re2/archive/refs/tags/2024-06-01.tar.gz
+sha256=7326c74cddaa90b12090fcfc915fe7b4655723893c960ee3c2c66e85c5504b6c
+requires=dev-apps/cmake
+build=cmake

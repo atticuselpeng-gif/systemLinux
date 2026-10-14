@@ -1,0 +1,4 @@
+url=https://github.com/albertodemichelis/squirrel/archive/refs/tags/v3.2.tar.gz
+sha256=02805414cfadd5bbb921891d3599b83375a40650abd6404a8ab407dc5e86a996
+requires=dev-apps/cmake
+build=cmake

@@ -19,7 +19,10 @@ Name is `systemLinux-$(cat VERSION)-x86_64.iso`. Release `SHA256SUMS` (ISO + pro
 mkdir dist && cp systemLinux-2.0-x86_64.iso* profiles-out/* dist/ && cd dist && sha256sum -- * | grep -v '\.sha256$' > SHA256SUMS
 ```
 
+`make check` validates the ports tree and the dinit services without building anything; `./build_iso.sh` runs the ports check first.
+
 ## Testing the ISO
+`make test-bios`, `make test-uefi` or `make test` run the QEMU smoke tests:
 ```sh
 tools/tests/boot-smoke.sh bios    # QEMU, legacy BIOS
 tools/tests/boot-smoke.sh uefi    # QEMU + OVMF

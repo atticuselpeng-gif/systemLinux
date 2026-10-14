@@ -1,0 +1,4 @@
+url=https://github.com/strukturag/libheif/archive/refs/tags/v1.17.6.tar.gz
+sha256=55bae7858bfd1679923d4a7db08ce1dcf3216667fa8f1da193a0577876b8a904
+requires=dev-apps/cmake
+build=cmake
