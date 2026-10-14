@@ -93,3 +93,8 @@ below that used to be GNOME-desktop-only now runs as plain systemd services inst
 - [ ] a real per-driver firmware trim (matching this kernel's actual driver set, not just
       whole-vendor exclusion) — safe to attempt now that there's ISO-size headroom again, no
       rush
+
+## Unreleased: dinit and BIOS
+- [x] dinit replaces systemd as PID 1 (`docs/DINIT.md`)
+- [x] legacy BIOS + UEFI hybrid ISO and installer (`docs/BIOS.md`)
+- [ ] the dinit boot and the BIOS/UEFI smoke tests have not been run yet in CI or on real hardware

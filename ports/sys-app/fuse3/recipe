@@ -1,0 +1,4 @@
+url=https://github.com/libfuse/libfuse/archive/refs/tags/fuse-3.16.2.tar.gz
+sha256=1bc306be1a1f4f6c8965fbdd79c9ccca021fdc4b277d501483a711cbd7dbcd6c
+requires=dev-apps/meson
+build=meson

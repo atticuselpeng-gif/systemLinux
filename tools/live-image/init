@@ -1,6 +1,6 @@
 #!/bin/busybox sh
 # systemLinux live init (runs from the small initramfs, as every live ISO does):
-#   find the live medium -> mount /live/rootfs.squashfs -> overlay a tmpfs on it -> switch_root to systemd.
+#   find the live medium -> mount /live/rootfs.squashfs -> overlay a tmpfs on it -> switch_root to dinit.
 # Kernel command line options:
 #   systemlinux.image=PATH systemlinux.data=UUID=...   INSTALLED mode: mount the squashfs image PATH
 #                          (relative to the data partition) with a persistent overlay stored on the data partition
@@ -9,6 +9,7 @@
 #   systemlinux.label=NAME volume label of the medium (default SYSTEMLINUX; tried via findfs before scanning)
 #   systemlinux.wait=N     seconds to wait for the medium to appear (default 60)
 #   systemlinux.debug=1    open a shell just before switching to the real root
+#   init=PATH              program to run as PID 1 (default /usr/bin/dinit, dinit's own default boot service)
 #   systemlinux.shell=1    open a shell before looking for the medium
 # The same options with a lenine. prefix are still accepted: installs from the lenine days keep them in
 # their grub.cfg, which is never rewritten.
@@ -34,7 +35,7 @@ is_luks() {
     [ "$(dd if="$1" bs=6 count=1 2>/dev/null | od -An -tx1 | tr -d ' \t\n\r')" = "4c554b53babe" ]
 }
 
-LABEL=SYSTEMLINUX ISO_HINT= DEBUG=0 SHELL_FIRST=0 TORAM=0 WAIT=60 IMAGE= DATA=
+LABEL=SYSTEMLINUX ISO_HINT= DEBUG=0 SHELL_FIRST=0 TORAM=0 WAIT=60 IMAGE= DATA= INIT=/usr/bin/dinit
 for a in $(cat /proc/cmdline); do
     case "$a" in lenine.*) a=systemlinux.${a#lenine.} ;; esac
     case "$a" in
@@ -46,6 +47,7 @@ for a in $(cat /proc/cmdline); do
         systemlinux.toram=1) TORAM=1 ;;
         systemlinux.label=*) LABEL=${a#systemlinux.label=} ;;
         systemlinux.wait=*)  WAIT=${a#systemlinux.wait=} ;;
+        init=/*)             INIT=${a#init=} ;;
     esac
 done
 
@@ -182,11 +184,11 @@ else
     SQ=$MEDIUM/live/rootfs.squashfs
     if [ "$TORAM" = 1 ]; then
         log "copying the system into RAM (this takes a moment)..."
-        # Check available space in / (tmpfs) before copying
-        avail=$(df -k / | awk 'NR==2 {print $4}')
+        # The initramfs root is a ramfs/tmpfs whose df numbers are meaningless (0 on ramfs): use MemAvailable
+        avail=$(awk '/^MemAvailable:/ {print $2}' /proc/meminfo)
         need=$(du -k "$SQ" | awk '{print $1}')
-        if [ "$avail" -lt "$((need + 50000))" ]; then
-            emergency "not enough RAM for toram (need ${need}KB, have ${avail}KB)"
+        if [ "${avail:-0}" -lt "$((need * 2 + 50000))" ]; then
+            emergency "not enough RAM for toram (need ${need}KB plus the running system, have ${avail:-0}KB)"
         fi
         cp "$SQ" /rootfs.squashfs && SQ=/rootfs.squashfs
     fi
@@ -205,10 +207,13 @@ else
     mount --move "$MEDIUM" /newroot/live-medium
 fi
 
-# the image may not carry these mount points (systemd would mount them itself, but move ours)
+# the image may not carry these mount points (dinit's early-filesystems service mounts /run, /dev/pts, ... itself, but move ours)
 mkdir -p /newroot/proc /newroot/sys /newroot/dev /newroot/run
 mount --move /proc /newroot/proc
 mount --move /sys /newroot/sys
 mount --move /dev /newroot/dev
+# dinit creates its control socket (/run/dinitctl) as soon as it starts, before any service could mount /run
+mount -t tmpfs -o mode=0755,nosuid,nodev tmpfs /newroot/run
 [ "$DEBUG" = 1 ] && emergency "systemlinux.debug=1: about to switch root"
-exec switch_root /newroot /usr/lib/systemd/systemd
+[ -x "/newroot$INIT" ] || emergency "$INIT not found in the system image"
+exec switch_root /newroot "$INIT"

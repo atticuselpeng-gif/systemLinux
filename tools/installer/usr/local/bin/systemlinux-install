@@ -3,8 +3,8 @@
 # console as root: `sudo systemlinux-install`.
 #
 # Two modes:
-#   --disk DISK        erase the whole disk: new GPT, a 512M EFI System Partition + one ext4
-#                       "data" partition holding /boot/images/<version>/{vmlinuz,initrd.img,
+#   --disk DISK        erase the whole disk: new GPT, a 1M BIOS boot partition, a 512M EFI System
+#                       Partition + one ext4 "data" partition holding /boot/images/<version>/{vmlinuz,initrd.img,
 #                       rootfs.squashfs}, /boot/grub and /persist/{upper,work}.
 #   --partition PART [--esp ESPPART]
 #                       install onto an existing partition you already freed up (e.g. by
@@ -12,10 +12,14 @@
 #                       erasing a disk -- the safe way to dual-boot. That partition is formatted
 #                       ext4 and used exactly like the "data" partition above; an existing EFI
 #                       System Partition is reused (auto-detected if there is exactly one, or
-#                       pass --esp to name it) rather than creating a new one.
+#                       pass --esp to name it) rather than creating a new one. When booted in
+#                       legacy BIOS mode no ESP is needed: GRUB (i386-pc) goes to the disk's boot
+#                       sectors (GPT disks need a BIOS boot partition, MBR disks need nothing).
 #
-# UEFI only (this system's GRUB has no legacy BIOS support). All other options can be given on
-# the command line for scripting, or left out to be asked for interactively.
+# Works from both UEFI and legacy BIOS boots: the bootloader installed matches the firmware the
+# installer was booted with (a --disk install carries both, so the disk boots on either).
+# All other options can be given on the command line for scripting, or left out to be asked for
+# interactively.
 #
 # usage: systemlinux-install (--disk DISK | --partition PART [--esp ESPPART])
 #                             [--host HOST] [--user USER] [--tz TZ] [--keymap KEYMAP]
@@ -40,7 +44,7 @@ while [ $# -gt 0 ]; do
 done
 
 [ "$(id -u)" = 0 ] || { echo "systemlinux-install: must run as root" >&2; exit 1; }
-[ -d /sys/firmware/efi ] || { echo "systemlinux-install: this machine is not booted in UEFI mode; systemLinux only installs on UEFI" >&2; exit 1; }
+if [ -d /sys/firmware/efi ]; then FW=uefi; else FW=bios; fi
 MEDIUM=/live-medium
 for f in vmlinuz initrd.img rootfs.squashfs; do
     [ -f "$MEDIUM/live/$f" ] || { echo "systemlinux-install: $MEDIUM/live/$f missing; boot the installer from the systemLinux live ISO" >&2; exit 1; }
@@ -71,13 +75,14 @@ fi
 [ -n "$DISK" ] && [ -n "$PART" ] && { echo "systemlinux-install: --disk and --partition are mutually exclusive" >&2; exit 1; }
 [ -n "$DISK" ] || [ -n "$PART" ] || { echo "systemlinux-install: nothing to install onto" >&2; exit 1; }
 
+ESPDEV=
 if [ -n "$DISK" ]; then
     [ -b "$DISK" ] || { echo "systemlinux-install: $DISK is not a block device" >&2; exit 1; }
     grep -q "^$DISK" /proc/self/mounts && { echo "systemlinux-install: $DISK has mounted partitions" >&2; exit 1; }
 else
     [ -b "$PART" ] || { echo "systemlinux-install: $PART is not a block device" >&2; exit 1; }
     grep -q "^$PART " /proc/self/mounts && { echo "systemlinux-install: $PART is mounted" >&2; exit 1; }
-    if [ -z "$ESP" ]; then
+    if [ -z "$ESP" ] && [ "$FW" = uefi ]; then
         # Find EFI System Partitions by PARTTYPE GUID (c12a7328-f81f-11d2-ba4b-00a0c93ec93b)
         # Use lsblk with --output to get consistent format
         mapfile -t esps < <(lsblk -rno NAME,PARTTYPE 2>/dev/null | awk '$2=="c12a7328-f81f-11d2-ba4b-00a0c93ec93b" {print "/dev/"$1}')
@@ -88,7 +93,7 @@ else
                ask "Which one should systemLinux use?" ESP ;;
         esac
     fi
-    [ -b "$ESP" ] || { echo "systemlinux-install: $ESP is not a block device" >&2; exit 1; }
+    [ "$FW" = bios ] || [ -b "$ESP" ] || { echo "systemlinux-install: $ESP is not a block device" >&2; exit 1; }
 fi
 
 # ---- gather account/locale details -------------------------------------------------------
@@ -155,19 +160,21 @@ if [ -n "$DISK" ]; then
     dd if=/dev/zero of="$DISK" bs=1M count=4 status=none
     SZ=$(blockdev --getsz "$DISK")
     [ "$SZ" -gt 16384 ] && dd if=/dev/zero of="$DISK" bs=512 seek=$((SZ - 8192)) count=8192 status=none 2>/dev/null || true
-    # Use 'U' for EFI System Partition (short for the GUID c12a7328-f81f-11d2-ba4b-00a0c93ec93b)
-    # and 'L' for Linux filesystem
-    printf 'label: gpt\n,512M,U\n,,L\n' | sfdisk --wipe always --wipe-partitions always "$DISK"
+    # Always the same GPT layout, so the disk boots on either firmware:
+    #   1: 1M BIOS boot partition (GUID 21686148-6449-6E6F-744E-656564454649) for GRUB's core.img on legacy BIOS
+    #   2: 512M EFI System Partition ('U' = c12a7328-f81f-11d2-ba4b-00a0c93ec93b)
+    #   3: ext4 data partition ('L' = Linux filesystem)
+    printf 'label: gpt\n,1M,21686148-6449-6E6F-744E-656564454649\n,512M,U\n,,L\n' | sfdisk --wipe always --wipe-partitions always "$DISK"
     blockdev --rereadpt "$DISK" || true
     udevadm settle --timeout=10 || true
-    ESPDEV=$(part "$DISK" 1); DATADEV=$(part "$DISK" 2)
+    ESPDEV=$(part "$DISK" 2); DATADEV=$(part "$DISK" 3)
     wait_for "$ESPDEV"; wait_for "$DATADEV"
     echo "== formatting"
     mkfs.vfat -F32 -n EFI "$ESPDEV"
 else
     ESPDEV=$ESP
     DATADEV=$PART
-    echo "== formatting $DATADEV (leaving $ESPDEV as it is)"
+    echo "== formatting $DATADEV (leaving ${ESPDEV:-the boot sectors} as it is)"
 fi
 
 if [ "$LUKS" = 1 ]; then
@@ -187,7 +194,7 @@ echo "== preparing the new system"
 mkdir -p "$DATA" "$SQ" "$ROOT"
 mount "$FMTDEV" "$DATA"
 mkdir -p "$DATA/boot/images/$VER.part" "$DATA/persist/upper" "$DATA/persist/work" "$DATA/boot/efi"
-mount "$ESPDEV" "$DATA/boot/efi"
+[ -z "$ESPDEV" ] || mount "$ESPDEV" "$DATA/boot/efi"
 
 echo "== copying the system image (this takes a while)"
 for f in vmlinuz initrd.img rootfs.squashfs; do
@@ -203,7 +210,7 @@ mount -t overlay overlay -o "lowerdir=$SQ,upperdir=$DATA/persist/upper,workdir=$
     echo "# /etc/fstab - generated by systemlinux-install"
     echo "# the boot files live on the data partition (mounted at /data by the initramfs)"
     echo "/data/boot  /boot  none  bind  0 0"
-    echo "UUID=$(blkid -s UUID -o value "$ESPDEV")  /boot/efi  vfat  umask=0077  0  2"
+    [ -z "$ESPDEV" ] || echo "UUID=$(blkid -s UUID -o value "$ESPDEV")  /boot/efi  vfat  umask=0077  0  2"
 } > "$ROOT/etc/fstab"
 if [ "$LUKS" = 1 ]; then
     echo "# unlocked by the initramfs from systemlinux.data=UUID=$LUKSUUID (LUKS)" >> "$ROOT/etc/fstab"
@@ -223,12 +230,19 @@ for g in users audio video input plugdev wheel networkmanager; do grep -q "^$g:"
 [ -z "$groups" ] || usermod -R "$ROOT" -aG "${groups#,}" "$USERN"
 /usr/local/bin/systemlinux-post "$ROOT"
 # the live image logs root in on tty1 by itself; an installed system asks for a login instead
-rm -rf "$ROOT/etc/systemd/system/getty@tty1.service.d"
+sed -i 's/ --autologin root//' "$ROOT/etc/dinit.d/getty-tty1"
 umount "$ROOT"; umount "$SQ"
 
 echo "== installing the bootloader"
-grub-install --target=x86_64-efi --efi-directory="$DATA/boot/efi" --boot-directory="$DATA/boot" --removable
-if [ -d /sys/firmware/efi/efivars ]; then
+if [ "$FW" = bios ] || [ -n "$DISK" ]; then
+    # legacy BIOS: GRUB's boot code goes to the disk itself (a --disk install always gets it, so it boots on BIOS too)
+    BIOSDISK=${DISK:-/dev/$(lsblk -no PKNAME "$DATADEV" | head -1)}
+    grub-install --target=i386-pc --boot-directory="$DATA/boot" --recheck "$BIOSDISK"
+fi
+if [ -n "$ESPDEV" ]; then
+    grub-install --target=x86_64-efi --efi-directory="$DATA/boot/efi" --boot-directory="$DATA/boot" --removable
+fi
+if [ "$FW" = uefi ] && [ -n "$ESPDEV" ] && [ -d /sys/firmware/efi/efivars ]; then
     PARTNUM=$(cat "/sys/class/block/$(basename "$ESPDEV")/partition" 2>/dev/null || true)
     DISKDEV=${DISK:-$(lsblk -no PKNAME "$ESPDEV" | head -1 | sed 's#^#/dev/#')}
     # UEFI paths use backslashes; escape them for the shell

@@ -1,0 +1,4 @@
+url=https://github.com/acmel/dwarves/archive/refs/tags/v1.27.tar.gz
+sha256=e350510713f4a38d1402f540e005a67fa1d62febfa45eed1fcbc04ea34ae725d
+requires=dev-apps/cmake
+build=cmake

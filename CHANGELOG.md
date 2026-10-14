@@ -1,5 +1,29 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+- Boot: a missing kernel-module tree no longer produces a silently unbootable ISO. `build-initrd.sh` used to only warn
+  when no storage/filesystem modules could be copied; the ISO then died with `could not find the live medium`
+  (the 0.2.2 symptom). It now fails the build (`ALLOW_NO_MODULES=1` opts out for a kernel with everything built in).
+- Boot: `systemlinux.toram=1` always dropped to the emergency shell, because the free-space check used `df /` of the
+  initramfs root (meaningless on ramfs/tmpfs). It now uses `MemAvailable`.
+- Boot: the CI smoke test booted the kernel directly (`-kernel`), so GRUB, `grub.cfg` and the BIOS/EFI images were never
+  exercised, and it passed at `[live] medium found` without reaching PID 1. `tools/tests/boot-smoke.sh` now boots the
+  ISO through its bootloader in both BIOS and UEFI mode and waits for dinit's `boot` service.
+
+### Changed
+- Init system: **dinit** replaces systemd as PID 1 (see `docs/DINIT.md`). Service files in `rootfs/etc/dinit.d/`, helper
+  scripts in `rootfs/usr/lib/dinit/`, shutdown/reboot/poweroff/halt are dinit's own. The initramfs hands over with
+  `switch_root /newroot /usr/bin/dinit` (`init=` overrides). The systemd units and preset were removed.
+- `systemlinux-install` now works in legacy BIOS mode too and `--disk` creates a BIOS boot partition + ESP + data (GPT).
+
+### Added
+- Legacy BIOS boot: hybrid BIOS+UEFI ISO (both GRUB platforms are required at build time), `docs/BIOS.md`.
+- About 96 new ports (core utilities, networking, toolchain/developer tools, editors, shells, libraries), all with
+  `sha256`. `tools/ports-check.sh` and the `Ports check` workflow validate the tree.
+- `tools/dinit/check-services.sh`, `tools/tests/boot-smoke.sh`, `dinit-check` workflow.
+
 ## 0.2.2
 
 ### Fixed

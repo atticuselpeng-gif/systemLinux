@@ -8,10 +8,10 @@
 
 # systemLinux 0.2.2
 
-A minimal x86_64 GNU/Linux distribution built on a custom monolithic kernel, systemd, and a
+A minimal x86_64 GNU/Linux distribution built on a custom monolithic kernel, dinit, and a
 GNU userland (GNU bash 5.3 is `/bin/bash` and `/bin/sh`, GNU coreutils, tar, sed, gawk, findutils; the `bbash` fork stays
 installed as its own command). The live ISO is **minimal installer media only**: the kernel plus the
-bare minimum needed to boot and run `systemlinux-install` (systemd, NetworkManager for a network
+bare minimum needed to boot and run `systemlinux-install` (dinit, NetworkManager for a network
 install, disk/boot tools). No desktop, daemons, firmware bundles, docs, man pages or locale packs.
 It boots like any live ISO (a compressed `rootfs.squashfs` on the ISO with a RAM layer on top) and
 can be installed to disk with the `systemlinux-install` command-line tool or, step by step
@@ -47,10 +47,10 @@ sha256sum -c systemLinux-0.2.2-x86_64.iso.sha256
 
 See `ROADMAP.md` for what's still deliberately not done (NVIDIA proprietary, Secure Boot, etc.).
 
-Boot in **UEFI mode**: legacy BIOS is not supported (the GRUB build this project ships has
-no BIOS/i386-pc modules). Each ISO has three GRUB entries: normal, *copy to RAM* (loads the
-whole system into memory so the stick can be removed), and *debug shell* (stops just before
-the real system starts).
+Boots in **UEFI mode and in legacy BIOS mode**: the ISO is a hybrid image (GRUB `i386-pc` for BIOS, GRUB
+`x86_64-efi` for UEFI; see `docs/BIOS.md`). Each ISO has four GRUB entries: normal, *copy to RAM* (loads the
+whole system into memory so the stick can be removed), *serial console* (kernel and init messages on `ttyS0`,
+used by the CI smoke test) and *debug shell* (stops just before the real system starts).
 
 ## System specifications
 
@@ -59,12 +59,14 @@ the real system starts).
   smaller config. No firmware is bundled.
 * **Live boot:** a small busybox initramfs (`tools/live-image/`) finds the medium
   (also inside an ISO file on a Ventoy stick), mounts `/live/rootfs.squashfs`, adds a
-  tmpfs overlay and switches to systemd. It can also unlock a LUKS-encrypted installed
+  tmpfs overlay and switches to dinit. It can also unlock a LUKS-encrypted installed
   system (see "Installing to disk").
 * **Shell:** GNU bash 5.3, built static by `tools/gnu-bash/build.sh` and installed as
   `/bin/bash` and `/bin/sh`. BSD tar (`bsdtar`) and friends are not installed: GNU tar is the tar.
-* **Init:** systemd 261 (PID 1, with journald, udevd and logind). The base image's own
-  services are ordinary systemd units in `/etc/systemd/system/` — see "Services" below.
+* **Init:** [dinit](https://github.com/davmac314/dinit) 0.20.0 (PID 1; built by `tools/dinit/build.sh`). The base
+  image's services are dinit service files in `/etc/dinit.d/` — see "Services" below and `docs/DINIT.md`.
+  systemd is **no longer the init system**; only its standalone udev daemon (`systemd-udevd`, `udevadm`) and
+  helpers like `systemd-machine-id-setup` are still shipped.
 * **Base:** a glibc userland with GNU bash, coreutils, tar, sed and gawk, plus the C toolchain `get`
   needs. Portage and the Gentoo tree are gone; `tools/live-image/strip-live.sh` removes docs, man pages,
   translations, the Go toolchain and other bloat from the image.
@@ -76,7 +78,7 @@ the real system starts).
   can't run one).
 * **Packages:** `get` is the package tool: `get URL` builds a source tarball, and `get --profile NAME` installs a
   package profile (see "Package profiles"). There is no other package manager.
-* **Boot/disk tools:** GRUB (UEFI x86_64 only), `efibootmgr`, `dosfstools`, util-linux, e2fsprogs,
+* **Boot/disk tools:** GRUB (`i386-pc` and `x86_64-efi`), `efibootmgr`, `dosfstools`, util-linux, e2fsprogs,
   `cryptsetup` (for LUKS). `build_iso.sh` copies these from the build host (with their libraries).
 
 ## Package profiles
@@ -132,7 +134,7 @@ get https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz   # raw URL
 get --sync              # refresh the ports tree
 ```
 
-The ports root is `$GET_PORTS`, else `ports/` next to the `get` script (repo checkout), else `/usr/ports`. A bare name that exists in several categories is refused with a list of candidates. The tree currently holds about 354 recipes in `sys-app`, `dev-apps`, `dev-libs`, `shells`, `net`, `x11`, `lang`, `games`, `sec` and `text`.
+The ports root is `$GET_PORTS`, else `ports/` next to the `get` script (repo checkout), else `/usr/ports`. A bare name that exists in several categories is refused with a list of candidates. The tree currently holds about 450 recipes in `sys-app`, `dev-apps`, `dev-libs`, `shells`, `net`, `x11`, `lang`, `games`, `sec` and `text`.
 
 ### Recipe format
 
@@ -146,7 +148,7 @@ The ports root is `$GET_PORTS`, else `ports/` next to the `get` script (repo che
 | `build` | `configure` (default: `./configure`, `make`, `make install`), `cmake` or `meson` |
 | `configure_args` | extra arguments for configure / cmake / meson |
 
-The starter recipes ship without `sha256` yet; add one per package as you verify it (`sha256sum file.tar.xz`).
+Every recipe added in the large ports expansion (see CHANGELOG) has a verified `sha256`; the original starter recipes still lack one (add it as you verify them with `sha256sum file.tar.xz`). `tools/ports-check.sh` validates the whole tree (layout, keys, checksum format, `requires` targets, cycles); `tools/ports-check.sh --verify [ATOM...]` also downloads the sources and compares the checksums, and `--strict` makes a missing `sha256` an error. CI runs it for every change under `ports/`.
 
 ### Dependencies
 
@@ -165,26 +167,30 @@ Ports are untrusted input, and `get` often runs as root. Recipes are therefore *
 ```
 ## Services
 
-systemd starts everything; use the usual tools (as root):
+dinit starts everything (as root):
 
 ```sh
-systemctl status [unit]             # what is running (and what failed)
-journalctl -b [-u unit]             # this boot's log, or one service's
-systemctl start|stop|restart <unit>
-reboot | poweroff | halt
+dinitctl list                       # what is running
+dinitctl status <service>
+dinitctl start|stop|restart <service>
+dinitctl enable|disable <service>   # add/remove it from the boot target (/etc/dinit.d/boot.d)
+reboot | poweroff | halt | shutdown # dinit's own shutdown tools
 ```
 
-The live image ships no extra services beyond systemd and NetworkManager. Add your own units under
-`/etc/systemd/system/` and `systemctl enable` them.
+The services are the files in `/etc/dinit.d/`: `boot` (internal target), `early-filesystems`, `udevd`, `udev-trigger`,
+`mount-fstab`, `system-identity`, `zram`, `dbus-prepare`, `dbus`, `NetworkManager`, `network` (internal),
+`getty-tty1`, and on installed systems `ssh-keygen`. Add your own file there and `dinitctl enable` it. `docs/DINIT.md`
+explains the types and dependencies used and how the old systemd units map to them. There is no journal: dinit logs
+to the console (`/dev/console`); add `-l /var/log/dinit.log` to its command line if you want a file.
 
 The live ISO logs root in on tty1 automatically; an installed system asks for a login. Add
 `console=ttyS0` to the kernel command line for a login prompt on the first serial port, and
-use the *debug* GRUB entry (or drop `quiet`) to see systemd's boot messages.
+use the *debug* GRUB entry (or drop `quiet`) to see the boot messages.
 
 ## Building the ISO
 
-Run on any Linux host with `grub`, `xorriso`, `mtools`, `squashfs-tools`, `cpio`, `busybox`,
-`cryptsetup`, `efibootmgr` and `dosfstools` on `PATH` (install them with your own package manager;
+Run on any Linux host with `grub` (both the `i386-pc` and `x86_64-efi` platform files), `xorriso`, `mtools`, `squashfs-tools`, `cpio`, `busybox`,
+`cryptsetup`, `efibootmgr`, `dosfstools`, `g++` and `curl` (for dinit) on `PATH` (install them with your own package manager;
 see the message `build_iso.sh` prints if something is missing). The installer's boot tools are
 copied from the host into the image.
 
@@ -193,7 +199,7 @@ copied from the host into the image.
 ```
 
 It also writes `profiles-out/profile-*.tar.xz` for the release (upload them next to the ISO; `get --profile`
-downloads them from the release matching the image version). The script builds (once) the full kernel, installs `get` into `rootfs/`, links `init` to systemd,
+downloads them from the release matching the image version). The script builds (once) the full kernel, installs `get` into `rootfs/`, builds dinit with `tools/dinit/build.sh` and links `init` to it,
 fixes the D-Bus launch helper permissions, brands the image with `systemlinux-provision`, copies the
 installer and its boot tools into the squashfs stage, strips the stage with
 `tools/live-image/strip-live.sh`, compresses everything into `rootfs.squashfs` (zstd), builds the small
@@ -218,7 +224,7 @@ locally or via the `Build ISO` workflow (`workflow_dispatch`) before pushing the
 ## Installing to disk
 
 1. Write the ISO to a USB stick (`dd if=systemLinux-0.2.2-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync`,
-   or copy it onto a Ventoy stick) and boot it in **UEFI mode**.
+   or copy it onto a Ventoy stick) and boot it in UEFI or legacy BIOS mode.
 2. At the live console, run `sudo systemlinux-install` and answer its prompts (disk or
    existing partition, computer name, your account, timezone, keymap, optional LUKS
    encryption). Or follow the fully manual steps in the Handbook on the website if you'd
@@ -234,8 +240,8 @@ The full guide, including troubleshooting and recovery, is the Handbook on the w
 ## Known limitations
 
 * The live system keeps your changes only in RAM: they are lost on reboot until installed to disk.
-* **UEFI only.** Legacy BIOS boot is not supported at all (the GRUB build shipped here has
-  no BIOS/i386-pc modules).
+* BIOS boot of a `--partition` install needs a disk GRUB can embed into: an MBR disk, or a GPT disk that has a
+  BIOS boot partition (a `--disk` install creates one). See `docs/BIOS.md`.
 * `systemlinux-install` erases a whole disk or a partition you name; there is no automatic
   partition resizing. Shrink an existing Windows or Linux partition yourself first if you
   want to dual-boot.

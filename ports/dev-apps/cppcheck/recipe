@@ -1,0 +1,4 @@
+url=https://github.com/danmar/cppcheck/archive/refs/tags/2.14.2.tar.gz
+sha256=9c3acea5f489336bd83a8ea33917a9a04a80c56d874bf270287e7de27acf2d00
+requires=dev-apps/cmake
+build=cmake

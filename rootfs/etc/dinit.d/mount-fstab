@@ -1,0 +1,6 @@
+# Mount /etc/fstab (the installed system's /boot bind mount and /boot/efi). The live image has no fstab.
+type = scripted
+command = /usr/lib/dinit/mount-fstab
+depends-on = early-filesystems
+waits-for = udev-trigger
+restart = false

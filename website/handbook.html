@@ -17,7 +17,7 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
 <hr>
 <h1>The systemLinux Handbook</h1>
   <p class="sub">From the downloaded ISO to an installed system that updates itself. Every command is written out.</p>
-  <div class="note"><strong>Warning:</strong> installing erases whichever disk or partition you point it at. Back up first. <strong>UEFI only.</strong> Legacy BIOS boot is not supported.</div>
+  <div class="note"><strong>Warning:</strong> installing erases whichever disk or partition you point it at. Back up first. Both UEFI and legacy BIOS boot are supported by <code>systemlinux-install</code>; the manual steps below describe the UEFI layout (for BIOS add a 1 MiB BIOS boot partition and run <code>grub-install --target=i386-pc DISK</code>).</div>
   <div class="handbook">
     <aside><h2>Chapters</h2><ol>
       <li><a href="#hb-1">Make a bootable USB stick</a></li>
@@ -39,7 +39,7 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
         <p>Replace <code>/dev/sdX</code> with the stick (check with <code>lsblk</code>). On Windows use Rufus in <em>DD image</em> mode or balenaEtcher.</p></div>
 
       <div class="chapter" id="hb-2"><h2>2. Boot the live system</h2>
-        <p>Restart, open your firmware&rsquo;s boot menu (usually F12, F10, Esc or F8) and pick the stick&rsquo;s <strong>UEFI</strong> entry. The boot menu offers:</p>
+        <p>Restart, open your firmware&rsquo;s boot menu (usually F12, F10, Esc or F8) and pick the stick&rsquo;s entry (UEFI or legacy BIOS). The boot menu offers:</p>
         <ul><li><strong>systemLinux</strong>: the normal live session, a root shell on the console.</li><li><strong>copy to RAM</strong>: loads the whole system into memory so you can remove the stick.</li><li><strong>debug shell</strong>: shows every message and stops just before the real system starts. Use it if the normal entry does not work.</li></ul>
         <p>Nothing is written to your disks until you follow chapter 3 or run <code>systemlinux-install</code>. Bring up networking first if you need it (<code>nmcli device wifi connect &lt;ssid&gt; password &lt;pass&gt;</code>, or plug in Ethernet).</p></div>
 
@@ -80,7 +80,7 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
 <span class="p">$</span> ln -sf ../usr/share/zoneinfo/Region/City "$ROOT/etc/localtime"   <span class="c"># e.g. Europe/Lisbon</span>
 <span class="p">$</span> echo LANG=C.UTF-8 > "$ROOT/etc/locale.conf"
 <span class="p">$</span> systemlinux-provision --user yourname "$ROOT"    <span class="c"># reads your password from stdin (twice), creates the account, sudoers, branding</span>
-<span class="p">$</span> rm -rf "$ROOT/etc/systemd/system/getty@tty1.service.d"   <span class="c"># ask for a login on tty1 (the live image logs root in)</span>
+<span class="p">$</span> sed -i 's/ --autologin root//' "$ROOT/etc/dinit.d/getty-tty1"   <span class="c"># ask for a login on tty1 (the live image logs root in)</span>
 <span class="p">$</span> chpasswd -R "$ROOT"                         <span class="c"># set the root password, "root:yourpassword"</span></pre>
 
         <h3>Step 5: install GRUB</h3>
@@ -142,7 +142,7 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
 
       <div class="chapter" id="hb-11"><h2>11. If something goes wrong</h2>
         <ul>
-          <li><strong>The stick does not boot:</strong> choose the UEFI entry, write the ISO with <code>dd</code> instead of Ventoy, and check the checksum.</li>
+          <li><strong>The stick does not boot:</strong> try the other firmware entry (UEFI or BIOS), write the ISO with <code>dd</code> instead of Ventoy, and check the checksum.</li>
           <li><strong>No console after boot:</strong> use the <em>debug shell</em> entry, or remove <code>quiet</code> from the kernel command line to see systemd&rsquo;s boot messages on screen. From a running system, <code>journalctl -b</code> and <code>systemctl --failed</code>.</li>
           <li><strong>No Wi-Fi:</strong> a device whose firmware is not in the bundled set will not start. A USB tether or Ethernet always works.</li>
           <li><strong>Wrong partition wiped:</strong> double-check <code>lsblk</code> output before every <code>wipefs</code>/<code>sfdisk</code> command. There&rsquo;s no undo. That&rsquo;s why chapter 3 is written out by hand: read each command before you run it.</li>

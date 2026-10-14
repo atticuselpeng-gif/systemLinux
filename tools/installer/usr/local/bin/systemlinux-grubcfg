@@ -1,5 +1,5 @@
 #!/bin/sh
-# Write GRUB's menu for an installed systemLinux (UEFI only): one entry per image in
+# Write GRUB's menu for an installed systemLinux (UEFI and legacy BIOS): one entry per image in
 # BOOTDIR/images/<version>/.
 # usage: systemlinux-grubcfg BOOTDIR DATA_UUID [LUKS_UUID]
 # Entry ids are the version numbers, so `grub-set-default <version>` picks the default and

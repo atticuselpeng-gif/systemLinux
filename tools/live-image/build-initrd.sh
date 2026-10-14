@@ -10,6 +10,7 @@
 # initramfs; init loads them before looking for the live medium.
 #   KVER=...        kernel release the ISO embeds (default: the running kernel)
 #   MODULES_ROOT=.. directory that holds lib/modules/KVER (default: / ; build_iso.sh sets it when it unpacks a kernel package)
+#   ALLOW_NO_MODULES=1  do not fail when no modules can be copied (kernel with everything built in)
 #   INITRD_MODULES  space separated module names to include (default list below)
 #
 # usage: WORK=~/.cache/systemlinux-initrd ./build-initrd.sh OUTPUT
@@ -32,6 +33,12 @@ BB=$(readlink -f "$(command -v busybox)"); CS=$(readlink -f "$(command -v crypts
 install -m755 "$HERE/init" "$WORK/root/init"
 # BUILD_ID ties this initramfs to the ISO it is shipped in (the same id goes into /live/build-id on the ISO)
 [ -n "${BUILD_ID:-}" ] && echo "$BUILD_ID" > "$WORK/root/build-id"
+# A distro kernel without its storage/filesystem modules in the initramfs boots into "could not find the live medium".
+# That used to be only a warning, so the broken ISO was still produced: fail the build unless the kernel has everything built in.
+nomods() {
+    if [ "${ALLOW_NO_MODULES:-0}" = 1 ]; then echo "WARNING: $1; the live ISO only boots if the kernel has storage/filesystem support built in" >&2
+    else echo "ERROR: $1 (set ALLOW_NO_MODULES=1 only for a kernel with isofs/squashfs/overlay/loop and the storage drivers built in)" >&2; exit 1; fi
+}
 echo "== copying kernel modules for live-medium discovery"
 KVER=${KVER:-$(uname -r)}
 MODULES_ROOT=${MODULES_ROOT:-}
@@ -68,9 +75,9 @@ if [ -f "$MODDIR/modules.dep" ] && command -v depmod >/dev/null; then
     cp "$MODDIR"/modules.{order,builtin,builtin.modinfo} "$DEST/" 2>/dev/null || true
     depmod -b "$WORK/root" "$KVER"
     echo "   $count kernel modules for $KVER"
-    [ "$count" -gt 0 ] || echo "WARNING: no kernel modules copied; the live ISO only boots if the kernel has storage/filesystem support built in" >&2
+    [ "$count" -gt 0 ] || nomods "no kernel modules copied"
 else
-    echo "WARNING: no module tree (modules.dep/depmod) for kernel $KVER under ${MODULES_ROOT:-/}; the live ISO only boots if the kernel has storage/filesystem support built in" >&2
+    nomods "no module tree (modules.dep/depmod) for kernel $KVER under ${MODULES_ROOT:-/}"
 fi
 
 "$WORK/root/bin/busybox" --list 2>/dev/null | grep -qx modprobe || echo "WARNING: busybox has no modprobe applet; kernel modules cannot be loaded" >&2

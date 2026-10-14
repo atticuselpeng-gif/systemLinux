@@ -1,0 +1,4 @@
+url=https://github.com/zeux/pugixml/archive/refs/tags/v1.14.tar.gz
+sha256=610f98375424b5614754a6f34a491adbddaaec074e9044577d965160ec103d2e
+requires=dev-apps/cmake
+build=cmake

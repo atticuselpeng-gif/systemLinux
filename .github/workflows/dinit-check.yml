@@ -1,0 +1,26 @@
+name: dinit services check
+
+# Builds dinit and runs dinit-check over rootfs/etc/dinit.d (syntax, dependencies, cycles, helper scripts).
+on:
+  pull_request:
+    paths:
+      - "rootfs/etc/dinit.d/**"
+      - "rootfs/usr/lib/dinit/**"
+      - "tools/dinit/**"
+      - ".github/workflows/dinit-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dinit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build dinit
+        run: |
+          sudo apt-get update && sudo apt-get install -y g++ make curl
+          sudo tools/dinit/build.sh /tmp/dinit-root
+      - name: Check the service descriptions
+        run: DINIT_CHECK=/tmp/dinit-root/usr/bin/dinit-check tools/dinit/check-services.sh

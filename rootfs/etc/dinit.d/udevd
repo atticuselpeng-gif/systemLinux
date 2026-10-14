@@ -1,0 +1,6 @@
+# Device manager (the standalone udev daemon from the systemd package; systemd itself is not PID 1 any more).
+type = process
+command = /usr/lib/systemd/systemd-udevd
+depends-on = early-filesystems
+restart = true
+smooth-recovery = true

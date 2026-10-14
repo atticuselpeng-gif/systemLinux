@@ -1,0 +1,7 @@
+# Network management, only so the installer and `get` can fetch (foreground; dinit supervises it).
+type = process
+command = /usr/bin/NetworkManager --no-daemon
+depends-on = dbus
+depends-on = udev-trigger
+restart = true
+smooth-recovery = true

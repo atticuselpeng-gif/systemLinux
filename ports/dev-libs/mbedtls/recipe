@@ -1,0 +1,4 @@
+url=https://github.com/Mbed-TLS/mbedtls/archive/refs/tags/mbedtls-3.6.0.tar.gz
+sha256=b527b4e859c1dd38c0f3ecc4fd784ce53326f19996f9328af75ce46f88136627
+requires=dev-apps/cmake
+build=cmake

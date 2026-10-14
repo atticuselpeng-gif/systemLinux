@@ -1,0 +1,10 @@
+# The boot target dinit starts at PID 1 start-up. `dinitctl stop boot` (or `shutdown`) runs the shutdown.
+type = internal
+depends-on = early-filesystems
+depends-on = udev-trigger
+depends-on = system-identity
+waits-for = mount-fstab
+waits-for = zram
+waits-for = network
+waits-for = getty-tty1
+waits-for.d = boot.d
