@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>systemLinux 0.2.1: news</title>
+<title>systemLinux 0.2.2: news</title>
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <style>
 body{font-family:monospace;max-width:50em;margin:1em auto;padding:0 1em;line-height:1.4}
@@ -12,17 +12,18 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
 </style>
 </head>
 <body>
-<h1><img src="logo.svg" alt="" width="32" height="32"> systemLinux 0.2.1</h1>
+<h1><img src="logo.svg" alt="" width="32" height="32"> systemLinux 0.2.2</h1>
 <p><a href="index.html">Home</a> | <a href="about.html">About</a> | <a href="download.html">Download</a> | <b>News</b> | <a href="get.html">get</a> | <a href="handbook.html">Handbook</a> | <a href="system.html">System</a></p>
 <hr>
-<h1>What's new in 0.2.1</h1>
+<h1>What's new in 0.2.2</h1>
   <ul class="tight">
+    <li><strong>Live boot fix.</strong> The ISO no longer stops with "could not find the live medium": the initramfs now carries and loads the storage and filesystem kernel modules.</li>
     <li><strong><code>goget</code> is now <code>get</code>.</strong> A small POSIX <code>sh</code> script: <code>get URL</code> downloads a source tarball, builds it and installs it. <code>goget</code> and its image updater are gone.</li>
     <li><strong>Minimal installer-only ISO.</strong> The live image is the kernel plus the bare minimum to run <code>systemlinux-install</code>. No desktop, no extra daemons, no compilers.</li>
     <li><strong>Build stack on demand.</strong> After installing, <code>get --profile build-toolchain</code> (and <code>common-build-deps</code>, <code>lang-runtimes</code>) adds what you need; <code>validate-build-ready</code> checks it.</li>
   </ul>
   <p>Breaking changes and the full list are in the <a href="https://github.com/tortr-rs/systemLinux/blob/main/CHANGELOG.md">changelog</a>.</p>
 <hr>
-<p>systemLinux 0.2.1. Owned by everyone who uses it. <a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></p>
+<p>systemLinux 0.2.2. Owned by everyone who uses it. <a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></p>
 </body>
 </html>
