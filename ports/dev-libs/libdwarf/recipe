@@ -1,0 +1,4 @@
+url=https://github.com/davea42/libdwarf-code/releases/download/v0.11.1/libdwarf-0.11.1.tar.xz
+sha256=b5be211b1bd0c1ee41b871b543c73cbff5822f76994f6b160fc70d01d1b5a1bf
+build=meson
+requires=dev-apps/meson dev-apps/ninja dev-libs/zlib

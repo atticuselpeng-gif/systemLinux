@@ -1,0 +1,5 @@
+url=https://distfiles.audacious-media-player.org/audacious-4.4.2.tar.bz2
+sha256=34509504f8c93b370420d827703519f0681136672e42d56335f26f7baec95005
+build=meson
+configure_args=-Dqt=false -Dgtk=true
+requires=dev-apps/meson dev-apps/ninja dev-libs/gtk3

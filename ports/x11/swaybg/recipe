@@ -1,0 +1,5 @@
+url=https://github.com/swaywm/swaybg/releases/download/v1.2.1/swaybg-1.2.1.tar.gz
+sha256=6af1fdf0e57b1cc5345febed786b761fea0e170943a82639f94cfaed7df84f8f
+build=meson
+configure_args=-Dman-pages=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/cairo dev-libs/gdk-pixbuf

@@ -1,0 +1,3 @@
+url=https://github.com/hanslub42/rlwrap/releases/download/0.46.1/rlwrap-0.46.1.tar.gz
+sha256=2711986a1248f6ac59e2aecf5586205835970040d300a42b4bf8014397e73e37
+requires=dev-libs/readline

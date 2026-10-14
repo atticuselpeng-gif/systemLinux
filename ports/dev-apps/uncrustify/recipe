@@ -1,0 +1,4 @@
+url=https://github.com/uncrustify/uncrustify/archive/refs/tags/uncrustify-0.80.1.tar.gz
+sha256=0e2616ec2f78e12816388c513f7060072ff7942b42f1175eb28b24cb75aaec48
+build=cmake
+requires=dev-apps/cmake dev-apps/python

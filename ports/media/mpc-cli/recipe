@@ -1,0 +1,5 @@
+url=https://www.musicpd.org/download/mpc/0/mpc-0.35.tar.xz
+sha256=382959c3bfa2765b5346232438650491b822a16607ff5699178aa1386e3878d4
+build=meson
+configure_args=-Ddocumentation=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/libmpdclient

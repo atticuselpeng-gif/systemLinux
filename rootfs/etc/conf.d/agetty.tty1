@@ -1,2 +1,0 @@
-# OpenRC Native Auto-Login Target Configuration
-agetty_options="--autologin root --noclear"

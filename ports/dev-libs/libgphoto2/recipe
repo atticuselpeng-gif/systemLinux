@@ -1,0 +1,3 @@
+url=https://github.com/gphoto/libgphoto2/releases/download/v2.5.31/libgphoto2-2.5.31.tar.xz
+sha256=8fc7bf40f979459509b87dd4ff1aae9b6c1c2b4724d37db576081eec15406ace
+requires=dev-libs/libusb dev-libs/libexif

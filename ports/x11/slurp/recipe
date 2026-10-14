@@ -1,0 +1,5 @@
+url=https://github.com/emersion/slurp/releases/download/v1.5.0/slurp-1.5.0.tar.gz
+sha256=eeb282b2adc8db5614b852596340b69da6f3954cf6cfbdc4392da509c934208a
+build=meson
+configure_args=-Dman-pages=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/cairo dev-libs/libxkbcommon

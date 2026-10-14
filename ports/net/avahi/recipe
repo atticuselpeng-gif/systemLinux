@@ -1,0 +1,4 @@
+url=https://github.com/avahi/avahi/releases/download/v0.8/avahi-0.8.tar.gz
+sha256=060309d7a333d38d951bc27598c677af1796934dbd98e1024e7ad8de798fedda
+configure_args=--disable-qt5 --disable-gtk3 --disable-mono --disable-python --disable-manpages --with-distro=none --disable-libsystemd
+requires=dev-libs/expat dev-libs/libdaemon sys-app/dbus

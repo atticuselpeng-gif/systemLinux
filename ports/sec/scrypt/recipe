@@ -1,0 +1,3 @@
+url=https://www.tarsnap.com/scrypt/scrypt-1.3.3.tgz
+sha256=1c2710517e998eaac2e97db11f092e37139e69886b21a1b2661f64e130215ae9
+requires=dev-libs/openssl

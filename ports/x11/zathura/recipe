@@ -1,0 +1,5 @@
+url=https://pwmt.org/projects/zathura/download/zathura-0.5.11.tar.xz
+sha256=54458a9998af0fb8faef2e934a81127bbe4b790c86dcd2c8b8f32365f3d1b53c
+build=meson
+configure_args=-Dmanpages=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/girara dev-libs/sqlite

@@ -54,9 +54,10 @@ used by the CI smoke test) and *debug shell* (stops just before the real system 
 
 ## System specifications
 
-* **Kernel:** monolithic Linux 7.2.6 with drivers for almost everything built in
-  (`kernel_7.2.6-full.config`). Built by `tools/kernel-full/`; `kernel_7.2.6.config` is the original,
-  smaller config. No firmware is bundled.
+* **Kernel:** the newest Ubuntu `linux-image-generic` (currently 7.3.0 from Ubuntu 26.10), downloaded from the Ubuntu
+  archive and checksum-verified at build time by `tools/ubuntu-kernel/fetch.sh` (pin a series with
+  `UBUNTU_SERIES=...`). Its full module tree ships in the image. No firmware is bundled. The old custom monolithic
+  configs (`kernel_7.2.6*.config`, `tools/kernel-full/`) are kept for reference.
 * **Live boot:** a small busybox initramfs (`tools/live-image/`) finds the medium
   (also inside an ISO file on a Ventoy stick), mounts `/live/rootfs.squashfs`, adds a
   tmpfs overlay and switches to dinit. It can also unlock a LUKS-encrypted installed
@@ -65,8 +66,9 @@ used by the CI smoke test) and *debug shell* (stops just before the real system 
   `/bin/bash` and `/bin/sh`. BSD tar (`bsdtar`) and friends are not installed: GNU tar is the tar.
 * **Init:** [dinit](https://github.com/davmac314/dinit) 0.20.0 (PID 1; built by `tools/dinit/build.sh`). The base
   image's services are dinit service files in `/etc/dinit.d/` — see "Services" below and `docs/DINIT.md`.
-  systemd is **removed** (no service manager, units, `systemctl`, journal); only the udev daemon
-  (`/usr/lib/udev/udevd`, `udevadm`) and the `libsystemd`/`libudev` libraries that other programs link to remain.
+  systemd is **removed completely**: no service manager, journal, logind, `systemctl` or systemd-udevd. The device
+  manager is eudev (`tools/eudev/build.sh`), and `libsystemd.so.0` is a no-op stub (`tools/libsystemd-stub`) for the
+  prebuilt programs still linked to it.
 * **Base:** a glibc userland with GNU bash, coreutils, tar, sed and gawk, plus the C toolchain `get`
   needs. Portage and the Gentoo tree are gone; `tools/live-image/strip-live.sh` removes docs, man pages,
   translations, the Go toolchain and other bloat from the image.

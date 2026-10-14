@@ -1,7 +1,7 @@
 #!/bin/bash
 # systemLinux ISO build: a minimal live installer ISO (small initramfs + /live/rootfs.squashfs, mounted
-# with an overlayfs; nothing is loaded into a RAM disk): the runner's prebuilt distribution kernel plus the bare minimum
-# needed to run the installer (dinit, NetworkManager, disk/boot tools, `get`). No firmware, desktop,
+# with an overlayfs; nothing is loaded into a RAM disk): the latest Ubuntu generic kernel plus the bare minimum
+# needed to run the installer (dinit, eudev, NetworkManager, disk/boot tools, `get`). No firmware, desktop,
 # daemons, docs, locales, compilers or language runtimes. After installing, `get --profile build-toolchain`
 # (and common-build-deps, lang-runtimes, ...) adds the build stack; `get URL` builds source tarballs.
 #
@@ -15,6 +15,10 @@
 # copied from the build host together with their libraries. The ISO is always a hybrid BIOS+UEFI image:
 # grub-pc-bin (i386-pc) and grub-efi-amd64-bin (x86_64-efi) are both required, and the build stops if one is missing.
 # dinit (PID 1) is built from a pinned release tarball by tools/dinit/build.sh (needs g++, make and curl).
+# There is no systemd: eudev (tools/eudev/build.sh; needs gperf, pkg-config, libkmod and libblkid headers) is the
+# device manager, and tools/libsystemd-stub builds the no-op libsystemd.so.0 the prebuilt programs still link to.
+# The kernel is the newest Ubuntu linux-image-generic, downloaded and verified by tools/ubuntu-kernel/fetch.sh
+# (pin a series with UBUNTU_SERIES=..., or set KERNEL=/path/to/vmlinuz and MODULES_ROOT to use another kernel).
 set -euo pipefail
 
 BUILD_DIR=$(cd "$(dirname "$0")" && pwd)
@@ -27,9 +31,11 @@ ISO=${ISO:-$BUILD_DIR/systemLinux-$IMAGE_VERSION-x86_64.iso}
 cd "$BUILD_DIR"
 # fail early, with the fix, instead of halfway through the kernel build
 missing=
-for t in xorriso mksquashfs mformat cpio make gcc g++ curl busybox cryptsetup efibootmgr mkfs.fat grub-install grub-mkimage; do
+for t in xorriso mksquashfs mformat cpio make gcc g++ curl busybox cryptsetup efibootmgr mkfs.fat grub-install grub-mkimage \
+         gperf pkg-config depmod xz zstd ar nm readelf; do
     command -v "$t" >/dev/null || missing="$missing $t"
 done
+pkg-config --exists libkmod blkid 2>/dev/null || missing="$missing libkmod-dev/libblkid-dev(for eudev)"
 command -v grub-mkrescue >/dev/null || command -v grub2-mkrescue >/dev/null || missing="$missing grub-mkrescue"
 command -v grub-script-check >/dev/null || command -v grub2-script-check >/dev/null || missing="$missing grub-script-check"
 # both GRUB platforms are needed: i386-pc for legacy BIOS, x86_64-efi for UEFI (the installer ships both too)
@@ -44,8 +50,8 @@ if [ -n "$missing" ]; then
     echo "ERROR: missing build tools:$missing"
     echo "  (the installer needs the grub-* command names; on Fedora add symlinks from grub2-*)"
     echo "  (grub-<platform>-modules = GRUB platform files: Debian grub-pc-bin / grub-efi-amd64-bin, Fedora grub2-pc-modules / grub2-efi-x64-modules)"
-    echo "  Fedora: sudo dnf install xorriso squashfs-tools mtools cpio busybox cryptsetup efibootmgr dosfstools grub2-efi-x64 grub2-efi-x64-modules grub2-pc grub2-pc-modules grub2-tools gcc-c++ curl flex bison bc dwarves elfutils-libelf-devel openssl-devel openssl-devel-engine grub2-tools-extra"
-    echo "  Debian: sudo apt install xorriso squashfs-tools mtools cpio busybox cryptsetup efibootmgr dosfstools grub-efi-amd64-bin grub-pc-bin g++ curl flex bison bc dwarves libelf-dev libssl-dev grub-common"
+    echo "  Fedora: sudo dnf install xorriso squashfs-tools mtools cpio busybox cryptsetup efibootmgr dosfstools grub2-efi-x64 grub2-efi-x64-modules grub2-pc grub2-pc-modules grub2-tools gcc-c++ curl gperf pkgconf kmod kmod-devel libblkid-devel zstd xz grub2-tools-extra"
+    echo "  Debian: sudo apt install xorriso squashfs-tools mtools cpio busybox cryptsetup efibootmgr dosfstools grub-efi-amd64-bin grub-pc-bin g++ curl gperf pkg-config kmod libkmod-dev libblkid-dev zstd xz-utils binutils grub-common"
     exit 1
 fi
 # Fedora and friends name the GRUB tools grub2-*
@@ -57,38 +63,35 @@ GRUB_BIOS_SETUP=$(command -v grub-bios-setup || command -v grub2-bios-setup || e
 echo "=== [0/7] CHECKING PORTS AND dinit SERVICES ==="
 "$BUILD_DIR/tools/ports-check.sh" 2>&1 | grep -v 'missing sha256' || { echo "ERROR: ports check failed"; exit 1; }
 [ "${PIPESTATUS[0]}" = 0 ] || exit 1
-echo "=== [1/7] USING THE PREBUILT DISTRIBUTION KERNEL ==="
+echo "=== [1/7] FETCHING THE LATEST UBUNTU KERNEL ==="
 if [ -z "$KERNEL" ]; then
-    # Host /boot/vmlinuz-* is often root-only (e.g. GitHub runners), so unpack the distro kernel package instead.
-    if [ -r "/boot/vmlinuz-$(uname -r)" ]; then
-        KERNEL=/boot/vmlinuz-$(uname -r)
-    elif command -v apt-get >/dev/null && command -v dpkg-deb >/dev/null; then
-        KDIR=$(mktemp -d)
-        trap 'rm -rf "$KDIR"' EXIT
-        (cd "$KDIR" && { apt-get download "linux-image-$(uname -r)" 2>/dev/null \
-            || apt-get download "$(apt-cache depends linux-image-generic | sed -n 's/.*Depends: \(linux-image-[0-9][^ ]*\)/\1/p' | head -n1)"; })
-        for deb in "$KDIR"/linux-image-*.deb; do dpkg-deb -x "$deb" "$KDIR/x"; done
-        KERNEL=$(ls "$KDIR"/x/boot/vmlinuz-* | head -n1)
-        # Ubuntu keeps the modules (isofs, squashfs, overlay, usb, ahci...) in separate linux-modules[-extra] packages
-        KV=${KERNEL##*/vmlinuz-}
-        for pkg in "linux-modules-$KV" "linux-modules-extra-$KV"; do
-            (cd "$KDIR" && apt-get download "$pkg" 2>/dev/null) || echo "note: package $pkg not available"
-        done
-        for deb in "$KDIR"/linux-modules-*.deb; do [ -f "$deb" ] && dpkg-deb -x "$deb" "$KDIR/x"; done
-        MODULES_ROOT=$KDIR/x
-        chmod 644 "$KERNEL"
-    fi
+    KDIR=$(mktemp -d)
+    trap 'rm -rf "$KDIR"' EXIT
+    "$BUILD_DIR/tools/ubuntu-kernel/fetch.sh" "$KDIR"
+    KERNEL=$KDIR/root/boot/vmlinuz-$(cat "$KDIR/kver")
+    MODULES_ROOT=$KDIR/root
 fi
 [ -n "$KERNEL" ] && [ -f "$KERNEL" ] || { echo "ERROR: kernel not found at $KERNEL (set KERNEL to a prebuilt kernel image)"; exit 1; }
+KVER=$([ "${KERNEL##*/}" != "${KERNEL##*/vmlinuz-}" ] && echo "${KERNEL##*/vmlinuz-}" || uname -r)
+MODULES_ROOT=${MODULES_ROOT:-}
+# Ubuntu's linux-modules package ships no modules.dep (its postinst runs depmod)
+if [ -d "$MODULES_ROOT/lib/modules/$KVER" ] && [ ! -f "$MODULES_ROOT/lib/modules/$KVER/modules.dep" ]; then
+    depmod -b "$MODULES_ROOT" "$KVER"
+fi
+echo "kernel: $KVER ($KERNEL)"
 
 echo "=== [2/7] INSTALLING get AND dinit INTO ROOTFS ==="
 sudo install -Dm755 ./get "$ROOTFS/usr/local/bin/get"
 sudo install -Dm755 ./tools/validate-build-ready.sh "$ROOTFS/usr/local/bin/validate-build-ready"
-# dinit is PID 1; systemd is removed (only udev and libsystemd/libudev remain)
+# dinit is PID 1 and the only init system; systemd is removed completely
 sudo rm -f "$ROOTFS/init" "$ROOTFS/sbin/init" "$ROOTFS/sbin/lenine"
 sudo "$BUILD_DIR/tools/dinit/build.sh" "$ROOTFS"
 sudo ln -sf usr/bin/dinit "$ROOTFS/init"
 sudo ln -sf dinit "$ROOTFS/usr/bin/init"
+# eudev replaces systemd-udevd and systemd's libudev; libsystemd.so.0 becomes a no-op stub (no systemd code) for
+# the prebuilt programs still linked to it (dbus, NetworkManager, util-linux, ...)
+sudo "$BUILD_DIR/tools/eudev/build.sh" "$ROOTFS"
+sudo "$BUILD_DIR/tools/libsystemd-stub/build.sh" "$ROOTFS"
 # the boot target, services and helper scripts (rootfs/etc/dinit.d, rootfs/usr/lib/dinit) are part of rootfs/ itself
 "$BUILD_DIR/tools/check-no-systemd.sh" "$ROOTFS"
 DINIT_CHECK="$ROOTFS/usr/bin/dinit-check" "$BUILD_DIR/tools/dinit/check-services.sh"
@@ -140,13 +143,19 @@ sudo "$BUILD_DIR/tools/live-image/strip-live.sh" "$STAGE"
 sudo "$BUILD_DIR/tools/profiles/profiles.sh" strip "$STAGE"
 echo "$IMAGE_VERSION" | sudo tee "$STAGE/usr/share/systemlinux/image-version" >/dev/null
 sudo install -Dm644 "$KERNEL" "$STAGE/boot/vmlinuz"
+# the kernel's whole module tree, so the running system (live and installed) can load NIC, GPU, sound... drivers
+if [ -d "$MODULES_ROOT/lib/modules/$KVER" ]; then
+    sudo mkdir -p "$STAGE/usr/lib/modules"
+    sudo cp -a "$MODULES_ROOT/lib/modules/$KVER" "$STAGE/usr/lib/modules/"
+    sudo depmod -b "$STAGE" "$KVER"   # $STAGE/lib -> usr/lib
+fi
 sudo mksquashfs "$STAGE" "$WORKSPACE/live/rootfs.squashfs" -comp zstd -Xcompression-level 6 -b 1M -noappend -no-xattrs
 sudo rm -rf "$STAGE"
 sudo chown "$USER" "$WORKSPACE/live/rootfs.squashfs"
 ls -lh "$WORKSPACE/live/rootfs.squashfs"
 BUILD_ID="$IMAGE_VERSION-$(date +%s)"
 echo "$BUILD_ID" > "$WORKSPACE/live/build-id"
-KVER=$([ "${KERNEL##*/}" != "${KERNEL##*/vmlinuz-}" ] && echo "${KERNEL##*/vmlinuz-}" || uname -r) MODULES_ROOT=${MODULES_ROOT:-} BUILD_ID=$BUILD_ID WORK=$HOME/.cache/systemlinux-initrd "$BUILD_DIR/tools/live-image/build-initrd.sh" "$WORKSPACE/live/initrd.img"
+KVER=$KVER MODULES_ROOT=$MODULES_ROOT BUILD_ID=$BUILD_ID WORK=$HOME/.cache/systemlinux-initrd "$BUILD_DIR/tools/live-image/build-initrd.sh" "$WORKSPACE/live/initrd.img"
 
 echo "=== [6/7] COPYING KERNEL AND WRITING grub.cfg ==="
 install -m644 "$KERNEL" "$WORKSPACE/live/vmlinuz"

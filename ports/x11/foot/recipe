@@ -1,0 +1,5 @@
+url=https://codeberg.org/dnkl/foot/archive/1.21.0.tar.gz
+sha256=18044ce49099b01ca1db3c6b1b23300fdaa23848577835a72ec9481f9713b4fe
+build=meson
+configure_args=-Ddocs=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/pixman dev-libs/utf8proc

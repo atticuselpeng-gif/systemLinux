@@ -1,0 +1,4 @@
+url=https://marlam.de/msmtp/releases/msmtp-1.8.28.tar.xz
+sha256=3a57f155f54e4860f7dd42138d9bea1af615b99dfab5ab4cd728fc8c09a647a4
+configure_args=--with-tls=openssl
+requires=dev-libs/openssl

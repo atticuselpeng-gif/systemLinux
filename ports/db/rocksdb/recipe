@@ -1,0 +1,5 @@
+url=https://github.com/facebook/rocksdb/archive/refs/tags/v9.10.0.tar.gz
+sha256=fdccab16133c9d927a183c2648bcea8d956fb41eb1df2aacaa73eb0b95e43724
+build=cmake
+configure_args=-DWITH_TESTS=OFF -DWITH_BENCHMARK_TOOLS=OFF -DWITH_GFLAGS=OFF -DPORTABLE=ON
+requires=dev-apps/cmake dev-libs/snappy dev-libs/zlib dev-apps/lz4 dev-apps/zstd

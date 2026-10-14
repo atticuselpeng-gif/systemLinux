@@ -1,0 +1,5 @@
+url=https://www.swi-prolog.org/download/stable/src/swipl-9.2.9.tar.gz
+sha256=53f428e2d9bbdf30e53b06c9c42def9a13ff82fc36a111d410fc8b0bc889ee2d
+build=cmake
+configure_args=-DSWIPL_PACKAGES_JAVA=OFF -DSWIPL_PACKAGES_X=OFF -DINSTALL_DOCUMENTATION=OFF
+requires=dev-apps/cmake dev-libs/gmp dev-libs/zlib

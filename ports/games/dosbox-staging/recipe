@@ -1,0 +1,4 @@
+url=https://github.com/dosbox-staging/dosbox-staging/archive/refs/tags/v0.82.1.tar.gz
+sha256=9d943d6610b6773cb0b27ba24904c85459757fbbfa0f34c72e76082132f77568
+build=meson
+requires=dev-apps/meson dev-apps/ninja dev-libs/sdl2 dev-libs/opus

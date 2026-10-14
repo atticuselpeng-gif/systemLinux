@@ -1,0 +1,4 @@
+url=https://github.com/openzfs/zfs/releases/download/zfs-2.3.1/zfs-2.3.1.tar.gz
+sha256=053233799386920bdc636e22d0e19a8c2c3e642e8bd847ff87e108f8bb1f9006
+configure_args=--with-config=user --disable-systemd --disable-pyzfs
+requires=dev-libs/openssl dev-libs/zlib sys-app/util-linux

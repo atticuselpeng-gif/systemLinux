@@ -1,0 +1,4 @@
+url=https://cran.r-project.org/src/base/R-4/R-4.4.3.tar.gz
+sha256=0d93d224442dea253c2b086f088db6d0d3cfd9b592cd5496e8cb2143e90fc9e8
+configure_args=--without-x --enable-R-shlib
+requires=dev-libs/readline dev-libs/pcre2 dev-libs/zlib dev-apps/bzip2 dev-apps/xz net/curl

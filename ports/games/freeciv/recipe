@@ -1,0 +1,5 @@
+url=https://files.freeciv.org/stable/freeciv-3.1.4.tar.xz
+sha256=14999bb903c4507cc287d5a8dd1b89eee623bb41b4e01e0836567fb5f13296e4
+build=meson
+configure_args=-Dclients=gtk3.22 -Dfcmp=cli
+requires=dev-apps/meson dev-apps/ninja dev-libs/gtk3 net/curl dev-libs/sqlite

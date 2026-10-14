@@ -1,0 +1,4 @@
+url=https://github.com/OpenPrinting/cups/releases/download/v2.4.11/cups-2.4.11-source.tar.gz
+sha256=9a88fe1da3a29a917c3fc67ce6eb3178399d68e1a548c6d86c70d9b13651fd71
+configure_args=--disable-systemd --with-tls=openssl
+requires=dev-libs/openssl dev-libs/zlib

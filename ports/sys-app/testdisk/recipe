@@ -1,0 +1,4 @@
+url=https://www.cgsecurity.org/testdisk-7.2.tar.bz2
+sha256=f8343be20cb4001c5d91a2e3bcd918398f00ae6d8310894a5a9f2feb813c283f
+configure_args=--without-ntfs3g --without-ewf
+requires=dev-libs/ncurses

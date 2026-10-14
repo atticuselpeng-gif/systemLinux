@@ -1,0 +1,5 @@
+url=https://downloads.videolan.org/pub/videolan/dav1d/1.5.1/dav1d-1.5.1.tar.xz
+sha256=401813f1f89fa8fd4295805aa5284d9aed9bc7fc1fdbe554af4292f64cbabe21
+build=meson
+configure_args=-Denable_tests=false
+requires=dev-apps/meson dev-apps/ninja

@@ -1,0 +1,3 @@
+url=https://luarocks.org/releases/luarocks-3.11.1.tar.gz
+sha256=c3fb3d960dffb2b2fe9de7e3cb004dc4d0b34bb3d342578af84f84325c669102
+requires=dev-apps/lua

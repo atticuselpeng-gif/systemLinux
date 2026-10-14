@@ -1,0 +1,5 @@
+url=https://archive.mariadb.org/mariadb-11.4.5/source/mariadb-11.4.5.tar.gz
+sha256=ff6595f8c482f9921e39b97fa1122377a69f0dcbd92553c6b9032cbf0e9b5354
+build=cmake
+configure_args=-DPLUGIN_ROCKSDB=NO -DPLUGIN_MROONGA=NO -DWITH_SYSTEMD=no
+requires=dev-apps/cmake dev-libs/openssl dev-libs/ncurses dev-libs/zlib

@@ -1,0 +1,3 @@
+url=https://archive.xfce.org/src/apps/xfce4-terminal/1.1/xfce4-terminal-1.1.4.tar.bz2
+sha256=873c921da1f4b986ffb459d4960789c9c063af98648c9f0ca146dc6f6f5b71b7
+requires=dev-libs/gtk3

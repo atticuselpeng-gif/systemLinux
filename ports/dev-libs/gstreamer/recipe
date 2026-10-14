@@ -1,0 +1,5 @@
+url=https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.24.12.tar.xz
+sha256=b3522d1b4fe174fff3b3c7f0603493e2367bd1c43f5804df15b634bd22b1036f
+build=meson
+configure_args=-Dintrospection=disabled -Dtests=disabled -Dexamples=disabled -Ddoc=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/glib

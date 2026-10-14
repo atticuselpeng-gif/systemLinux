@@ -1,0 +1,4 @@
+url=https://www.kernel.org/pub/linux/bluetooth/bluez-5.79.tar.xz
+sha256=4164a5303a9f71c70f48c03ff60be34231b568d93a9ad5e79928d34e6aa0ea8a
+configure_args=--disable-systemd --disable-manpages --enable-library
+requires=sys-app/dbus dev-libs/glib sys-app/eudev

@@ -1,0 +1,5 @@
+url=https://www.musicpd.org/download/mpd/0.24/mpd-0.24.2.tar.xz
+sha256=d69251fdd15bbd8fbcd1c486dd4dc6a4e008e045975b2408cb2f37461c10f1e4
+build=meson
+configure_args=-Dsystemd=disabled -Ddocumentation=disabled
+requires=dev-apps/meson dev-apps/ninja dev-apps/fmt dev-libs/alsa-lib

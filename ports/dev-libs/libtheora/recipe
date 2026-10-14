@@ -1,0 +1,4 @@
+url=https://downloads.xiph.org/releases/theora/libtheora-1.2.0.tar.xz
+sha256=ebdf77a8f5c0a8f7a9e42323844fa09502b34eb1d1fece7b5f54da41fe2122ec
+configure_args=--disable-examples
+requires=dev-libs/libogg

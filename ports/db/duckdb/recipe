@@ -1,0 +1,5 @@
+url=https://github.com/duckdb/duckdb/archive/refs/tags/v1.2.1.tar.gz
+sha256=481a05d59cb8eaf4d78e5495ab0c99ed53e3b41e84aeaf24eef4144f2c60d1cc
+build=cmake
+configure_args=-DBUILD_UNITTESTS=OFF
+requires=dev-apps/cmake

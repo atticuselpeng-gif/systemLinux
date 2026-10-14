@@ -1,0 +1,5 @@
+url=https://codeberg.org/dnkl/fuzzel/archive/1.12.0.tar.gz
+sha256=963a9c15aecf3b3234be9daa5cb40c340a0e75425d2630ba2d75c94231f393f2
+build=meson
+configure_args=-Denable-cairo=enabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/libxkbcommon dev-libs/pixman dev-libs/cairo

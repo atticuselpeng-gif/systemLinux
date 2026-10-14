@@ -1,0 +1,5 @@
+url=https://github.com/emersion/mako/releases/download/v1.10.0/mako-1.10.0.tar.gz
+sha256=a72543f7b92568a0c3c45a5c0e3487ced65c18003eecd9b7d017a6464e7cef82
+build=meson
+configure_args=-Dman-pages=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/pango dev-libs/cairo

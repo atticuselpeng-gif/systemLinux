@@ -1,0 +1,5 @@
+url=https://2.na.dl.wireshark.org/src/all-versions/wireshark-4.4.5.tar.xz
+sha256=02346f7de3d50678c200189a2ecbf4747fd83fbfc5850cadfd428fd9b1544428
+build=cmake
+configure_args=-DBUILD_wireshark=OFF -DENABLE_LUA=OFF
+requires=dev-apps/cmake dev-libs/glib dev-libs/libpcap dev-libs/libgcrypt

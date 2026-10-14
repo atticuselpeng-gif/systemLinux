@@ -1,0 +1,4 @@
+url=https://ngircd.barton.de/pub/ngircd/ngircd-27.tar.xz
+sha256=6897880319dd5e2e73c1c9019613509f88eb5b8daa5821a36fbca3d785c247b8
+configure_args=--with-openssl
+requires=dev-libs/openssl
