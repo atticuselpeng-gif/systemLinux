@@ -80,13 +80,13 @@ fi
 echo "=== [2/7] INSTALLING get AND dinit INTO ROOTFS ==="
 sudo install -Dm755 ./get "$ROOTFS/usr/local/bin/get"
 sudo install -Dm755 ./tools/validate-build-ready.sh "$ROOTFS/usr/local/bin/validate-build-ready"
-# dinit is PID 1 (systemd is no longer used as the init system; its udev daemon and tools stay installed)
+# dinit is PID 1; systemd is removed (only udev and libsystemd/libudev remain)
 sudo rm -f "$ROOTFS/init" "$ROOTFS/sbin/init" "$ROOTFS/sbin/lenine"
 sudo "$BUILD_DIR/tools/dinit/build.sh" "$ROOTFS"
 sudo ln -sf usr/bin/dinit "$ROOTFS/init"
 sudo ln -sf dinit "$ROOTFS/usr/bin/init"
 # the boot target, services and helper scripts (rootfs/etc/dinit.d, rootfs/usr/lib/dinit) are part of rootfs/ itself
-sudo rm -rf "$ROOTFS/etc/systemd/system"
+"$BUILD_DIR/tools/check-no-systemd.sh" "$ROOTFS"
 DINIT_CHECK="$ROOTFS/usr/bin/dinit-check" "$BUILD_DIR/tools/dinit/check-services.sh"
 sudo install -Dm644 "$KERNEL" "$ROOTFS/boot/vmlinuz"
 
@@ -128,7 +128,7 @@ done
 [ "$GRUBDATA" = 1 ] || { echo "ERROR: no GRUB platform files (x86_64-efi) found on the build host"; exit 1; }
 MKFS=$(readlink -f "$(command -v mkfs.fat)")
 sudo ln -sf "$(basename "$MKFS")" "$STAGE$(dirname "$MKFS")/mkfs.vfat"
-# the installer itself, and the minimal systemd preset / hostname
+# the installer itself, and the hostname
 sudo cp -a "$BUILD_DIR/tools/installer/." "$STAGE/"
 sudo chmod 755 "$STAGE"/usr/local/bin/systemlinux-*
 sudo "$BUILD_DIR/tools/live-image/strip-live.sh" "$STAGE"

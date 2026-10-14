@@ -7,6 +7,9 @@ on:
       - "rootfs/etc/dinit.d/**"
       - "rootfs/usr/lib/dinit/**"
       - "tools/dinit/**"
+      - "tools/check-no-systemd.sh"
+      - "rootfs/usr/**"
+      - "rootfs/etc/**"
       - ".github/workflows/dinit-check.yml"
   workflow_dispatch:
 
@@ -24,3 +27,5 @@ jobs:
           sudo tools/dinit/build.sh /tmp/dinit-root
       - name: Check the service descriptions
         run: DINIT_CHECK=/tmp/dinit-root/usr/bin/dinit-check tools/dinit/check-services.sh
+      - name: Make sure systemd is gone from the rootfs
+        run: tools/check-no-systemd.sh

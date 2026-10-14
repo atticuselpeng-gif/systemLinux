@@ -6,6 +6,7 @@ iso:
 check:
 	tools/ports-check.sh
 	tools/dinit/check-services.sh
+	tools/check-no-systemd.sh
 
 # boot the built ISO in QEMU (needs qemu, mtools; OVMF for uefi)
 test-bios:

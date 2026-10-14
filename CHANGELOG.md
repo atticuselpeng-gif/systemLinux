@@ -2,7 +2,16 @@
 
 ## Unreleased
 
+### Removed
+- systemd: the service manager, units, generators, journald/logind/networkd/resolved, `systemctl` & co., `/etc/systemd`,
+  `pam_systemd` and the dbus activation files for them are gone from `rootfs/` (`tools/check-no-systemd.sh`). Kept:
+  `libsystemd`/`libudev` (linked by other programs) and the udev daemon, now `/usr/lib/udev/udevd`.
+
 ### Fixed
+- Boot: `could not find the live medium` on machines/VMs whose boot device sits on an ATA/IDE, legacy SCSI, VMware or
+  Hyper-V controller (QEMU's default IDE CD-ROM, as used by the BIOS smoke test). The initramfs shipped only
+  AHCI/NVMe/USB/virtio drivers, so `/dev/sr0` never appeared. It now ships the whole ata/scsi/usb-storage/nvme/mmc/virtio
+  driver directories and the init loads drivers by device modalias (initially and on every wait-loop retry).
 - Boot: a missing kernel-module tree no longer produces a silently unbootable ISO. `build-initrd.sh` used to only warn
   when no storage/filesystem modules could be copied; the ISO then died with `could not find the live medium`
   (the 0.2.2 symptom). It now fails the build (`ALLOW_NO_MODULES=1` opts out for a kernel with everything built in).

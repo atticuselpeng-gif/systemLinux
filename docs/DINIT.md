@@ -1,9 +1,11 @@
 # dinit: the init system
 
 systemLinux uses [dinit](https://github.com/davmac314/dinit) (pinned release in `tools/dinit/build.sh`, checksum verified)
-as PID 1. systemd is **deprecated as the init system and no longer started**; the squashfs still carries its
-standalone udev daemon (`/usr/lib/systemd/systemd-udevd`, `udevadm`) and helpers (`systemd-machine-id-setup`).
-The old units under `rootfs/etc/systemd/system/` and the installer preset were removed.
+as PID 1. **systemd has been removed**: the service manager, units, generators, journald/logind/networkd/resolved,
+`systemctl` & co., `/etc/systemd` and `pam_systemd` are gone (`tools/check-no-systemd.sh` enforces this).
+Two pieces remain because other programs link to them: the `libsystemd`/`libudev` shared libraries, and the udev
+daemon, relocated to `/usr/lib/udev/udevd` (with `udevadm`). The machine id is made with `dbus-uuidgen`.
+They go away once the base is rebuilt with eudev (see the `sys-app/eudev` port).
 
 ## Boot handoff
 1. GRUB loads `/live/vmlinuz` + `/live/initrd.img` (installed systems: `/boot/images/<ver>/`).
@@ -35,7 +37,7 @@ The old units under `rootfs/etc/systemd/system/` and the installer preset were r
 
 ## Shutdown, reboot, poweroff
 dinit's own `shutdown`, `reboot`, `poweroff`, `halt` (installed to `/usr/bin` – `/sbin` is `/usr/bin` – replacing the old
-`systemctl` symlinks) ask PID 1 to stop `boot` and everything it started in reverse dependency order, then
+systemd tools) ask PID 1 to stop `boot` and everything it started in reverse dependency order, then
 kill remaining processes, unmount filesystems, `sync`, and power off/reboot. `zram` turns swap off in its
 `stop-command`.
 

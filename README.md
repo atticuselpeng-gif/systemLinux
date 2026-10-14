@@ -65,8 +65,8 @@ used by the CI smoke test) and *debug shell* (stops just before the real system 
   `/bin/bash` and `/bin/sh`. BSD tar (`bsdtar`) and friends are not installed: GNU tar is the tar.
 * **Init:** [dinit](https://github.com/davmac314/dinit) 0.20.0 (PID 1; built by `tools/dinit/build.sh`). The base
   image's services are dinit service files in `/etc/dinit.d/` — see "Services" below and `docs/DINIT.md`.
-  systemd is **no longer the init system**; only its standalone udev daemon (`systemd-udevd`, `udevadm`) and
-  helpers like `systemd-machine-id-setup` are still shipped.
+  systemd is **removed** (no service manager, units, `systemctl`, journal); only the udev daemon
+  (`/usr/lib/udev/udevd`, `udevadm`) and the `libsystemd`/`libudev` libraries that other programs link to remain.
 * **Base:** a glibc userland with GNU bash, coreutils, tar, sed and gawk, plus the C toolchain `get`
   needs. Portage and the Gentoo tree are gone; `tools/live-image/strip-live.sh` removes docs, man pages,
   translations, the Go toolchain and other bloat from the image.

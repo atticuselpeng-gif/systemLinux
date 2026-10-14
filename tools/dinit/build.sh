@@ -15,6 +15,6 @@ mkdir "$W/src"; tar -xzf "$W/dinit.tar.gz" -C "$W/src" --strip-components=1
 cd "$W/src"
 ./configure -q --prefix=/usr --sbindir=/usr/bin --syscontrolsocket=/run/dinitctl
 make -j"$(nproc)"
-# install(1) over the old reboot/poweroff -> systemctl symlinks would overwrite systemctl: remove them first
+# make sure no stale reboot/poweroff symlinks are in the way of make install
 for n in reboot poweroff halt shutdown soft-reboot; do rm -f "$DESTDIR/usr/bin/$n"; done
 make install DESTDIR="$DESTDIR"
