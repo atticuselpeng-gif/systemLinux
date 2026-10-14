@@ -6,6 +6,7 @@
 #                          (relative to the data partition) with a persistent overlay stored on the data partition
 #   systemlinux.iso=PATH   prefer this ISO file on the medium's partition (e.g. an ISO on a Ventoy stick)
 #   systemlinux.toram=1    copy the squashfs into RAM first (the stick can then be removed)
+#   systemlinux.label=NAME volume label of the medium (default SYSTEMLINUX; tried via findfs before scanning)
 #   systemlinux.wait=N     seconds to wait for the medium to appear (default 60)
 #   systemlinux.debug=1    open a shell just before switching to the real root
 #   systemlinux.shell=1    open a shell before looking for the medium
@@ -33,7 +34,7 @@ is_luks() {
     [ "$(dd if="$1" bs=6 count=1 2>/dev/null | od -An -tx1 | tr -d ' \t\n\r')" = "4c554b53babe" ]
 }
 
-ISO_HINT= DEBUG=0 SHELL_FIRST=0 TORAM=0 WAIT=60 IMAGE= DATA=
+LABEL=SYSTEMLINUX ISO_HINT= DEBUG=0 SHELL_FIRST=0 TORAM=0 WAIT=60 IMAGE= DATA=
 for a in $(cat /proc/cmdline); do
     case "$a" in lenine.*) a=systemlinux.${a#lenine.} ;; esac
     case "$a" in
@@ -43,6 +44,7 @@ for a in $(cat /proc/cmdline); do
         systemlinux.debug=1) DEBUG=1 ;;
         systemlinux.shell=1) SHELL_FIRST=1 ;;
         systemlinux.toram=1) TORAM=1 ;;
+        systemlinux.label=*) LABEL=${a#systemlinux.label=} ;;
         systemlinux.wait=*)  WAIT=${a#systemlinux.wait=} ;;
     esac
 done
@@ -52,8 +54,10 @@ done
 if [ -d "/lib/modules/$(uname -r)" ]; then
     for m in usb_storage uas xhci_pci ehci_pci ohci_pci uhci_hcd ahci nvme virtio_pci virtio_blk virtio_scsi \
              mmc_block sd_mod sr_mod isofs udf vfat exfat ext4 squashfs loop overlay dm_mod dm_crypt; do
-        modprobe "$m" 2>/dev/null
+        modprobe "$m" 2>/dev/null || FAILED_MODS="${FAILED_MODS:-} $m"
     done
+    [ -n "${FAILED_MODS:-}" ] && log "modules not loaded (built in or not shipped):$FAILED_MODS"
+    mdev -s 2>/dev/null
 else
     log "no kernel modules in the initramfs; relying on built-in drivers"
 fi
@@ -74,6 +78,12 @@ has_root() {
 # inside ISO files on the device (Ventoy and similar). Sets MEDIUM to the mount point that holds it.
 scan_once() {
     n=0
+    # fast path: the medium by its volume label
+    ldev=$(findfs "LABEL=$LABEL" 2>/dev/null) && [ -b "$ldev" ] && mkdir -p /mnt/label &&
+        mount -o ro "$ldev" /mnt/label 2>/dev/null && {
+        if has_root /mnt/label; then MEDIUM=/mnt/label; return 0; fi
+        umount /mnt/label 2>/dev/null
+    }
     for dev in /dev/sr[0-9]* /dev/sd[a-z] /dev/sd[a-z][0-9]* /dev/vd[a-z] /dev/vd[a-z][0-9]* \
                /dev/nvme[0-9]n[0-9] /dev/nvme[0-9]n[0-9]p[0-9]* /dev/mmcblk[0-9] /dev/mmcblk[0-9]p[0-9]* \
                /dev/mapper/*; do
@@ -163,10 +173,11 @@ else
         done
         [ -n "${MEDIUM:-}" ] && break
         log "filesystems: $(tr -d '\t' </proc/filesystems | grep -E 'iso9660|squashfs|overlay|vfat|ext4' | tr '\n' ' ')"
+        log "kernel modules loaded: $(cut -d' ' -f1 /proc/modules 2>/dev/null | tr '\n' ' ')"
         log "block devices: $(cat /proc/partitions 2>/dev/null | awk 'NR>2 {print $4}' | tr '\n' ' ')"
         emergency "could not find the live medium (a device with /live/rootfs.squashfs)"
     done
-    # (quiet on purpose: only waiting/failure messages are printed)
+    log "medium found: $MEDIUM"
 
     SQ=$MEDIUM/live/rootfs.squashfs
     if [ "$TORAM" = 1 ]; then

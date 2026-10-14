@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.2
+
+### Fixed
+- The live ISO failed to boot with `could not find the live medium (a device with /live/rootfs.squashfs)`: distro
+  kernels build isofs, squashfs, overlay, loop and the storage drivers as modules, and the initramfs had none.
+  `build_iso.sh` now fetches the `linux-modules` (and `-extra`) packages for the embedded kernel, `build-initrd.sh`
+  copies the needed modules (decompressed, with dependencies) and runs `depmod`, and `init` loads them first.
+- `init` also finds the medium by its volume label (`SYSTEMLINUX`, or `systemlinux.label=`), logs
+  `[live] medium found` and prints filesystems and block devices on failure.
+
+### Changed
+- Version 0.2.2; the ISO is `systemLinux-0.2.2-x86_64.iso`, with a BIOS+UEFI hybrid layout when `grub-pc-bin` is installed.
+- CI boots the built ISO headless in QEMU and only uploads the artifact when it reaches the live init marker.
+
 ## 2.0.0 (2.0)
 
 ### Breaking changes

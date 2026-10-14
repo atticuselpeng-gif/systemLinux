@@ -5,14 +5,14 @@
 # daemons, docs, locales, compilers or language runtimes. After installing, `get --profile build-toolchain`
 # (and common-build-deps, lang-runtimes, ...) adds the build stack; `get URL` builds source tarballs.
 #
-#   ./build_iso.sh    -> systemLinux-2.0-x86_64.iso + .sha256  (root shell, console only, installable with the handbook)
+#   ./build_iso.sh    -> systemLinux-0.2.2-x86_64.iso + .sha256  (root shell, console only, installable with the handbook)
 #
 # Run from a normal terminal (sudo needs a password prompt). Works from any Linux host with
 # grub2, xorriso, mtools, squashfs-tools and cpio on PATH (install them with your host's own
 # package manager, e.g. `emerge sys-boot/grub app-cdr/xorriso sys-fs/mtools sys-fs/squashfs-tools
 # app-arch/cpio` on Gentoo, `apt install grub2 xorriso mtools squashfs-tools cpio` on Debian, or
 # equivalent). The installer's own boot tools (grub, efibootmgr, mkfs.fat, cryptsetup, busybox) are
-# copied from the build host together with their libraries. UEFI only.
+# copied from the build host together with their libraries. Hybrid BIOS+UEFI when grub-pc-bin is installed, UEFI otherwise.
 set -euo pipefail
 
 BUILD_DIR=$(cd "$(dirname "$0")" && pwd)
@@ -54,6 +54,12 @@ if [ -z "$KERNEL" ]; then
             || apt-get download "$(apt-cache depends linux-image-generic | sed -n 's/.*Depends: \(linux-image-[0-9][^ ]*\)/\1/p' | head -n1)"; })
         for deb in "$KDIR"/linux-image-*.deb; do dpkg-deb -x "$deb" "$KDIR/x"; done
         KERNEL=$(ls "$KDIR"/x/boot/vmlinuz-* | head -n1)
+        # Ubuntu keeps the modules (isofs, squashfs, overlay, usb, ahci...) in separate linux-modules[-extra] packages
+        KV=${KERNEL##*/vmlinuz-}
+        for pkg in "linux-modules-$KV" "linux-modules-extra-$KV"; do
+            (cd "$KDIR" && apt-get download "$pkg" 2>/dev/null) || echo "note: package $pkg not available"
+        done
+        for deb in "$KDIR"/linux-modules-*.deb; do [ -f "$deb" ] && dpkg-deb -x "$deb" "$KDIR/x"; done
         MODULES_ROOT=$KDIR/x
         chmod 644 "$KERNEL"
     fi
@@ -167,7 +173,7 @@ GRUBEOF
 echo "=== [7/7] MASTERING ISO AND PACKING PROFILES ==="
 # profile-*.tar.xz (+ .sha256/.requires): upload them next to the ISO in the release; `get --profile NAME` installs them
 ROOTFS=$ROOTFS "$BUILD_DIR/tools/profiles/profiles.sh" build "$PROFILES_OUT"
-"$GRUB_MKRESCUE" -o "$ISO" "$WORKSPACE"
+"$GRUB_MKRESCUE" -o "$ISO" "$WORKSPACE" -volid SYSTEMLINUX
 sudo rm -rf "$WORKSPACE"
 (cd "$(dirname "$ISO")" && sha256sum "$(basename "$ISO")" | tee "$(basename "$ISO").sha256")
 echo "SUCCESS: $ISO"
