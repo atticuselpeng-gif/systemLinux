@@ -7,7 +7,7 @@
 #   * url (https/http/ftp, no whitespace) or requires (meta-package) is present
 #   * sha256, when present, is 64 lowercase hex digits; recipes WITHOUT sha256 are reported as warnings
 #     (the original starter recipes have none); --strict turns that into an error
-#   * build is one of configure, cmake, meson (the types `get` supports)
+#   * build is one of configure, autotools, cmake, meson, make (the types `get` supports)
 #   * every requires atom is category/name and exists; there are no dependency cycles
 # With --verify the sources are downloaded and the sha256 of every recipe that has one is compared.
 #
@@ -64,7 +64,7 @@ for recipe in "$PORTS"/*/*/recipe; do
     elif [ -n "$url" ]; then
         if [ "$STRICT" = 1 ]; then err "$atom: missing sha256"; else warn "$atom: missing sha256"; fi
     fi
-    case "$build" in ''|configure|cmake|meson) ;; *) err "$atom: unsupported build type '$build'" ;; esac
+    case "$build" in ''|configure|autotools|cmake|meson|make) ;; *) err "$atom: unsupported build type '$build'" ;; esac
     case "$req" in *[!A-Za-z0-9._+/\ -]*) err "$atom: invalid characters in requires" ;; esac
     REQ[$atom]=$req
 done

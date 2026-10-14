@@ -17,19 +17,24 @@ It boots like any live ISO (a compressed `rootfs.squashfs` on the ISO with a RAM
 can be installed to disk with the `systemlinux-install` command-line tool or, step by step
 by hand, with the Handbook below.
 
-Software is added with `get`, a small POSIX `sh` script that downloads a source tarball, builds it
-and installs it:
+Software is added with `get`, the package tool. It builds from source and keeps track of what it installed:
 
 ```sh
-get https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz                 # into /usr/local
-get -p "$HOME/.local" https://example.org/foo-1.0.tar.xz            # into your home
-get -d /tmp/stage -c "--disable-nls" https://example.org/bar-2.0.tgz # staged under DESTDIR
+get install fastfetch      # builds fastfetch and every dependency it needs, in order
+get remove fastfetch       # deletes exactly the files fastfetch installed
+get autoremove             # removes dependencies nothing needs any more
+get list                   # installed packages (* = installed on request)
+get search fetch           # find packages in the ports tree
+get info fastfetch         # recipe, dependencies, status
+get sync                   # update the ports tree from the latest release
+get install https://example.org/foo-1.0.tar.gz   # a tarball without a recipe
 ```
 
-`get` runs `./configure --prefix=PREFIX` (if present), `make` and `make install`; it handles
-`.tar.gz`, `.tgz`, `.tar.bz2`, `.tar.xz` and `.tar`. See `get --help`.
+No prefixes or flags: packages go to `/usr/local`. Dependencies the base system already provides are not
+rebuilt, and the build system (configure, autotools, CMake, Meson or make) is detected automatically.
+`get remove` refuses while another installed package still needs the package (`-f` overrides).
 
-The ISO ships the build tools a source-based system needs: gcc/g++, make, binutils, cmake, meson, ninja, autotools, pkg-config, perl and python. The ports tree is in `/usr/ports`; `get --sync` updates it from the latest release.
+The ISO ships the build tools a source-based system needs: gcc/g++, make, binutils, cmake, meson, ninja, autotools, pkg-config, perl and python. The ports tree is in `/usr/ports`; `get sync` updates it from the latest release.
 
 Website: `website/` (plain HTML; the Handbook is `website/handbook.html`) · Download: [GitHub release `v0.2.2`](https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.2)
 
@@ -78,8 +83,8 @@ used by the CI smoke test) and *debug shell* (stops just before the real system 
   way to dual-boot: no automatic resizing). Optional LUKS full-disk encryption. The
   Handbook documents the same steps by hand, for anyone who'd rather not trust a script (or
   can't run one).
-* **Packages:** `get` is the package tool: `get URL` builds a source tarball, and `get --profile NAME` installs a
-  package profile (see "Package profiles"). There is no other package manager.
+* **Packages:** `get` is the package tool: `get install NAME` builds a port and its dependencies, `get remove NAME`
+  uninstalls it, and `get profile NAME` unpacks a prebuilt package profile (see "Package profiles").
 * **Boot/disk tools:** GRUB (`i386-pc` and `x86_64-efi`), `efibootmgr`, `dosfstools`, util-linux, e2fsprogs,
   `cryptsetup` (for LUKS). `build_iso.sh` copies these from the build host (with their libraries).
 
@@ -101,42 +106,22 @@ of the live image and publishes them as `profile-NAME.tar.xz` (+ `.sha256`, `.re
 Rust is not part of the image yet; install it after `build-toolchain` with its own bootstrap
 (`curl -fsSL https://sh.rustup.rs | sh`) or build it from a source tarball with `get`.
 
-Generic workflow after installing the minimal base from the ISO:
+Everything needed to build is already in the ISO (gcc/g++, make, binutils, cmake, meson, ninja, autotools,
+pkg-config, perl, python), so `get install NAME` works straight away. `validate-build-ready` compiles
+autotools, CMake and Meson test projects and prints "build-ready: yes".
+
+## Ports tree
+
+`get` takes packages from a ports tree, in the style of BSD ports / Gentoo atoms:
 
 ```sh
-sudo get --profile build-toolchain          # compilers + headers (downloads the profile for this image version)
-sudo get --profile common-build-deps        # cmake, ninja, meson, autotools, pkgconf, ...
-sudo get --profile lang-runtimes            # Perl, Python, Go, when a package needs them
-validate-build-ready                      # compiles autotools, CMake and Meson test projects; prints "build-ready: yes"
+get install sys-app/grub    # category/name atom
+get install fastfetch       # bare name, when exactly one category has it
+get install x11/kde         # meta-package: no url, only requires=
+get sync                    # update the ports tree
 ```
 
-Then install software with `get` (an offline mirror works too: `GET_PROFILE_URL=http://host/dir get --profile …`):
-
-```sh
-sudo get https://ftp.gnu.org/gnu/coreutils/coreutils-9.5.tar.xz        # autotools, a large package
-get -p "$HOME/.local" https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz  # a small one, no root needed
-sudo get -c "--disable-docs" https://example.org/libfoo-1.2.tar.gz     # a library, with configure options
-sudo get https://sqlite.org/2024/sqlite-autoconf-3460000.tar.gz        # a library others build against
-```
-
-`get` runs `./configure` when a tarball has one; CMake and Meson projects are built by hand with the
-installed tools (`cmake -S . -B build -G Ninja && cmake --build build && cmake --install build`, or
-`meson setup build && meson install -C build`). A tarball with neither is built with plain `make`.
-
-## Ports tree (`get category/name`)
-
-`get` is now a bash script (`#!/bin/bash`) and resolves non-URL arguments from a ports tree, in the style of BSD ports / Gentoo atoms. Full URLs keep working exactly as before.
-
-```sh
-get sys-app/grub        # category/name atom
-get dev-apps/cmake
-get x11/kde             # meta-package: no url, only requires=
-get grub                # bare name, only if exactly one category has it
-get https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz   # raw URL
-get --sync              # refresh the ports tree
-```
-
-The ports root is `$GET_PORTS`, else `ports/` next to the `get` script (repo checkout), else `/usr/ports`. A bare name that exists in several categories is refused with a list of candidates. The tree currently holds about 534 recipes in `sys-app`, `dev-apps`, `dev-libs`, `shells`, `net`, `x11`, `lang`, `games`, `sec` and `text`.
+The ports root is `$GET_PORTS`, else `ports/` next to the `get` script (repo checkout), else `/usr/ports`. The tree holds about 790 recipes.
 
 ### Recipe format
 
@@ -147,26 +132,27 @@ The ports root is `$GET_PORTS`, else `ports/` next to the `get` script (repo che
 | `url` | source archive (omit for a meta-package) |
 | `sha256` | checksum of the archive; verified, mismatch is fatal (strongly recommended) |
 | `requires` | space-separated atoms installed first |
-| `build` | `configure` (default: `./configure`, `make`, `make install`), `cmake` or `meson` |
+| `build` | `configure`, `autotools` (runs `autoreconf` first), `cmake`, `meson` or `make`; detected when omitted |
 | `configure_args` | extra arguments for configure / cmake / meson |
 
 Every recipe added in the large ports expansion (see CHANGELOG) has a verified `sha256`; the original starter recipes still lack one (add it as you verify them with `sha256sum file.tar.xz`). `tools/ports-check.sh` validates the whole tree (layout, keys, checksum format, `requires` targets, cycles); `tools/ports-check.sh --verify [ATOM...]` also downloads the sources and compares the checksums, and `--strict` makes a missing `sha256` an error. CI runs it for every change under `ports/`.
 
-### Dependencies
+### Dependencies and uninstalling
 
-`requires` entries are installed first by re-invoking `get`. Installed atoms are recorded in `$GET_DB` (default `/var/db/get/installed`) and skipped next time; cycles are detected (`GET_STACK`) and abort. Note that `get` has no file tracking or uninstall yet, and packages whose build system is not make/configure/cmake/meson (or that need patches) will not build from a plain recipe.
+`requires` entries are built first, in dependency order; cycles abort. A dependency the base system already
+provides (listed in `/usr/share/systemlinux/base-packages`, written at build time) is not rebuilt. Every package
+is staged with `DESTDIR` and each installed file is recorded in `/var/db/get/pkgs/<atom>/files`, so `get remove`
+deletes exactly those files, `get files NAME` lists them, and installing a package never overwrites a file
+another package owns. Packages installed only as dependencies are removed by `get autoremove` once nothing needs them.
 
 ### Updating ports
 
-In a git checkout run `get --sync` (or `git pull`). Otherwise set `GET_PORTS_URL` to a `ports.tar.xz` that has a `ports.tar.xz.sha256` next to it; the checksum is verified before unpacking.
+`get sync` downloads `ports.tar.xz` from the latest release (verified against its `.sha256`) and replaces
+`/usr/ports`; `GET_PORTS_URL` points it elsewhere. In a git checkout, use `git pull`.
 
 ### Security model
 
 Ports are untrusted input, and `get` often runs as root. Recipes are therefore **parsed** (a fixed set of keys is read with `sed`) and never `source`d, so a recipe cannot run code. Atoms and `requires` are restricted to `[A-Za-z0-9._+/-]` with no `..`, and `build` is limited to a known list. Add `sha256` so a tampered or changed tarball is rejected.
-### IF there is a ports update but no new release. Run
-```sh
- get --sync
-```
 ## Services
 
 dinit starts everything (as root):
@@ -200,7 +186,7 @@ copied from the host into the image.
 ./build_iso.sh    # systemLinux-0.2.2-x86_64.iso and systemLinux-0.2.2-x86_64.iso.sha256   (or: make iso)
 ```
 
-It also writes `profiles-out/profile-*.tar.xz` for the release (upload them next to the ISO; `get --profile`
+It also writes `profiles-out/profile-*.tar.xz` for the release (upload them next to the ISO; `get profile`
 downloads them from the release matching the image version). The script builds (once) the full kernel, installs `get` into `rootfs/`, builds dinit with `tools/dinit/build.sh` and links `init` to it,
 fixes the D-Bus launch helper permissions, brands the image with `systemlinux-provision`, copies the
 installer and its boot tools into the squashfs stage, strips the stage with
@@ -213,7 +199,7 @@ as artifacts.
 ### Cutting a release
 
 1. Make sure `VERSION` and `CHANGELOG.md` are right on `main`.
-2. Tag and push: `git tag v0.2.2 && git push origin v0.2.2` (`v0.2` also triggers it; `get --profile` maps
+2. Tag and push: `git tag v0.2.2 && git push origin v0.2.2` (`v0.2` also triggers it; `get profile` maps
    `VERSION` 0.2.2 to the `v0.2.2` release, so prefer `v0.2.2`).
 3. `.github/workflows/release.yml` builds the ISO and creates the GitHub Release with the ISO, profiles,
    `SHA256SUMS` and the changelog entry as notes (it verifies the checksums first). The website links point at

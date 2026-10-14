@@ -153,6 +153,8 @@ for d in "$ROOTFS"/usr/lib/gcc/*/*/; do
     done
 done
 sudo ldconfig -r "$STAGE"
+# what the image provides, so `get` does not rebuild dependencies the base system already has
+sudo "$BUILD_DIR/tools/live-image/base-packages.sh" "$ROOTFS" "$STAGE" "$STAGE/usr/share/systemlinux/base-packages"
 # every library that PID 1 and the core programs need must resolve inside the image
 sudo "$BUILD_DIR/tools/live-image/check-libs.sh" "$STAGE" usr/bin/dinit usr/bin/dinitctl usr/bin/udevd usr/bin/udevadm \
     usr/bin/bash usr/bin/NetworkManager usr/bin/dbus-daemon usr/bin/agetty usr/bin/login usr/bin/mount usr/bin/ls \
