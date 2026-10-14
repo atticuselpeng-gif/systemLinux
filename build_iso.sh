@@ -155,7 +155,10 @@ done
 sudo ldconfig -r "$STAGE"
 # every library that PID 1 and the core programs need must resolve inside the image
 sudo "$BUILD_DIR/tools/live-image/check-libs.sh" "$STAGE" usr/bin/dinit usr/bin/dinitctl usr/bin/udevd usr/bin/udevadm \
-    usr/bin/bash usr/bin/NetworkManager usr/bin/dbus-daemon usr/bin/agetty usr/bin/login usr/bin/mount usr/bin/ls
+    usr/bin/bash usr/bin/NetworkManager usr/bin/dbus-daemon usr/bin/agetty usr/bin/login usr/bin/mount usr/bin/ls \
+    usr/bin/curl usr/bin/tar usr/bin/xz \
+    usr/bin/make usr/bin/gcc usr/bin/g++ 'usr/libexec/gcc/*/*/cc1' 'usr/libexec/gcc/*/*/cc1plus' usr/bin/ld usr/bin/as \
+    usr/bin/ar usr/bin/cmake usr/bin/ninja usr/bin/pkgconf usr/bin/perl usr/bin/python3 usr/bin/patch
 echo "$IMAGE_VERSION" | sudo tee "$STAGE/usr/share/systemlinux/image-version" >/dev/null
 sudo install -Dm644 "$KERNEL" "$STAGE/boot/vmlinuz"
 # the kernel's whole module tree, so the running system (live and installed) can load NIC, GPU, sound... drivers

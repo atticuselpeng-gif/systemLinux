@@ -48,7 +48,7 @@ for m in "$PROFILES"/*.list; do
         list=$(mktemp)
         expand_paths "$ROOTFS" "$m" > "$list"
         if [ ! -s "$list" ]; then echo "skipping profile $name: nothing in $ROOTFS matches" >&2; rm -f "$list"; continue; fi
-        tar -C "$ROOTFS" -cJf "$TARGET/profile-$name.tar.xz" -T "$list"
+        tar -C "$ROOTFS" --owner=0 --group=0 -cJf "$TARGET/profile-$name.tar.xz" -T "$list"
         # Extract all @requires lines (supporting multiple dependencies)
         sed -n 's/^@requires[[:space:]]*//p' "$m" > "$TARGET/profile-$name.requires"
         ( cd "$TARGET" && sha256sum "profile-$name.tar.xz" > "profile-$name.tar.xz.sha256" )

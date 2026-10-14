@@ -29,7 +29,7 @@ get -d /tmp/stage -c "--disable-nls" https://example.org/bar-2.0.tgz # staged un
 `get` runs `./configure --prefix=PREFIX` (if present), `make` and `make install`; it handles
 `.tar.gz`, `.tgz`, `.tar.bz2`, `.tar.xz` and `.tar`. See `get --help`.
 
-The live ISO deliberately has no compiler or build tools. They are **profiles** you add after installing.
+The ISO ships the build tools a source-based system needs: gcc/g++, make, binutils, cmake, meson, ninja, autotools, pkg-config, perl and python. The ports tree is in `/usr/ports`; `get --sync` updates it from the latest release.
 
 Website: `website/` (plain HTML; the Handbook is `website/handbook.html`) · Download: [GitHub release `v0.2.2`](https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.2)
 

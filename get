@@ -167,7 +167,7 @@ if [ "$SYNC" = 1 ]; then
         have=$(sha256sum "$WORK/ports.tar.xz" | sed 's/[[:space:]].*//')
         [ -n "$want" ] && [ "$want" = "$have" ] || die "ports checksum mismatch"
         mkdir -p "$WORK/new"
-        tar -xJf "$WORK/ports.tar.xz" -C "$WORK/new" --strip-components=1 || die "extracting ports failed"
+        tar --no-same-owner -xJf "$WORK/ports.tar.xz" -C "$WORK/new" --strip-components=1 || die "extracting ports failed"
         [ -n "$(ls "$WORK/new")" ] || die "the downloaded ports tree is empty"
         # replace the tree, so recipes removed upstream go away too
         mkdir -p "$PORTS" && rm -rf "${PORTS:?}"/* && cp -a "$WORK/new/." "$PORTS/" || die "cannot update $PORTS"
@@ -234,9 +234,9 @@ fi
 printf 'get: extracting %s\n' "$file"
 mkdir "$WORK/src"
 if [ -n "$FLAG" ]; then
-    tar -x"$FLAG"f "$WORK/$file" -C "$WORK/src" || die "extraction failed"
+    tar --no-same-owner -x"$FLAG"f "$WORK/$file" -C "$WORK/src" || die "extraction failed"
 else
-    tar -xf "$WORK/$file" -C "$WORK/src" || die "extraction failed"
+    tar --no-same-owner -xf "$WORK/$file" -C "$WORK/src" || die "extraction failed"
 fi
 
 if [ -n "$SRCDIR" ]; then
@@ -296,4 +296,6 @@ meson)
     ;;
 esac
 [ -z "$ATOM" ] || mark_installed "$ATOM"
+# new shared libraries (e.g. in /usr/local/lib) are only found after the linker cache is refreshed
+if [ -z "${DESTDIR_ARG:-}" ] && [ "$(id -u)" = 0 ]; then ldconfig 2>/dev/null || true; fi
 printf 'get: done\n'

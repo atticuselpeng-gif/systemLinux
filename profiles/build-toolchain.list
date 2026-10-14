@@ -1,3 +1,4 @@
+@keep
 @requires base-system
 usr/bin/gcc*
 usr/bin/g++*
@@ -32,6 +33,7 @@ usr/lib/gcc
 usr/libexec/gcc
 usr/x86_64-pc-linux-gnu
 usr/lib64/binutils
+etc/ld.so.conf.d/05binutils.conf
 usr/lib64/crt1.o
 usr/lib64/crti.o
 usr/lib64/crtn.o
