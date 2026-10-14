@@ -93,5 +93,6 @@ fi
 
 "$WORK/root/bin/busybox" --list 2>/dev/null | grep -qx modprobe || echo "WARNING: busybox has no modprobe applet; kernel modules cannot be loaded" >&2
 mkdir -p "$WORK/root"/{proc,sys,dev,mnt,newroot,overlay}
-( cd "$WORK/root" && find . | sort | cpio -o -H newc -R 0:0 --quiet ) > "$OUT"
+# zstd-compressed (the kernel unpacks it): uncompressed it is ~60 MB, which GRUB reads very slowly through BIOS disk calls
+( cd "$WORK/root" && find . | sort | cpio -o -H newc -R 0:0 --quiet ) | zstd -q -19 -T0 > "$OUT"
 ls -lh "$OUT"
