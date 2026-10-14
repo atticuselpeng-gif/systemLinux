@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>systemLinux 0.2.1: handbook</title>
+<title>systemLinux 0.32.2: handbook</title>
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <style>
 body{font-family:monospace;max-width:50em;margin:1em auto;padding:0 1em;line-height:1.4}
@@ -12,7 +12,7 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
 </style>
 </head>
 <body>
-<h1><img src="logo.svg" alt="" width="32" height="32"> systemLinux 0.2.1</h1>
+<h1><img src="logo.svg" alt="" width="32" height="32"> systemLinux 0.32.2</h1>
 <p><a href="index.html">Home</a> | <a href="about.html">About</a> | <a href="download.html">Download</a> | <a href="news.html">News</a> | <a href="get.html">get</a> | <b>Handbook</b> | <a href="system.html">System</a></p>
 <hr>
 <h1>The systemLinux Handbook</h1>
@@ -34,8 +34,8 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
     </ol></aside>
     <article>
       <div class="chapter" id="hb-1"><h2>1. Make a bootable USB stick</h2>
-        <p>Download the ISO and check it against the SHA-256 on the <a href="https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.1">release page</a>. Then copy it onto a <strong>Ventoy</strong> stick, or write it straight to a stick (this erases the stick):</p>
-        <pre class="term">sudo dd if=systemLinux-0.2.1-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync</pre>
+        <p>Download the ISO and check it against the SHA-256 on the <a href="https://github.com/tortr-rs/systemLinux/releases/tag/v0.32.2">release page</a>. Then copy it onto a <strong>Ventoy</strong> stick, or write it straight to a stick (this erases the stick):</p>
+        <pre class="term">sudo dd if=systemLinux-0.32.2-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync</pre>
         <p>Replace <code>/dev/sdX</code> with the stick (check with <code>lsblk</code>). On Windows use Rufus in <em>DD image</em> mode or balenaEtcher.</p></div>
 
       <div class="chapter" id="hb-2"><h2>2. Boot the live system</h2>
@@ -152,6 +152,6 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
     </article>
   </div>
 <hr>
-<p>systemLinux 0.2.1. Owned by everyone who uses it. <a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></p>
+<p>systemLinux 0.32.2. Owned by everyone who uses it. <a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></p>
 </body>
 </html>
