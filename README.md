@@ -33,12 +33,17 @@ The live ISO deliberately has no compiler or build tools. They are **profiles** 
 
 Website: `website/` (plain HTML; the Handbook is `website/handbook.html`) · Download: [GitHub release `v0.2.1`](https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.1)
 
-| File | Size | RAM needed |
-|---|---|---|
-| `systemLinux-0.2.1-x86_64.iso` | about 1.9 GB | about 3 GB (4 GB+ to use *copy to RAM*) |
+The `v0.2.1` release currently publishes this file:
+
+| File | Size |
+|---|---:|
+| [`systemLinux-0.2.1-x86_64.iso`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.1/systemLinux-0.2.1-x86_64.iso) | about 198 MiB |
+
+The release page does not currently include a separate checksum file. Verify the ISO against
+the SHA-256 digest recorded for the release asset:
 
 ```sh
-sha256sum -c systemLinux-0.2.1-x86_64.iso.sha256   # the .sha256 file is on the release page
+echo "95a2e80e62f0a427f800b4aa57d2053b03bfcc5c0a996a13ca91c40b29b8e7f3  systemLinux-0.2.1-x86_64.iso" | sha256sum -c -
 ```
 
 See `ROADMAP.md` for what's still deliberately not done (NVIDIA proprietary, Secure Boot, etc.).
