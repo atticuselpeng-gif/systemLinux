@@ -5,6 +5,13 @@
 # busybox and cryptsetup come from the build host (install them with its package manager; a static
 # busybox is best); copy-bin.sh copies each program with the shared libraries it needs.
 #
+# The distro kernels build most storage and filesystem drivers (isofs, squashfs, overlay, loop, usb, ahci, nvme...)
+# as modules, so those modules (plus their dependencies) are copied from the kernel's module tree into the
+# initramfs; init loads them before looking for the live medium.
+#   KVER=...        kernel release the ISO embeds (default: the running kernel)
+#   MODULES_ROOT=.. directory that holds lib/modules/KVER (default: / ; build_iso.sh sets it when it unpacks a kernel package)
+#   INITRD_MODULES  space separated module names to include (default list below)
+#
 # usage: WORK=~/.cache/systemlinux-initrd ./build-initrd.sh OUTPUT
 set -euo pipefail
 HERE=$(cd "$(dirname "$0")" && pwd)
@@ -25,6 +32,43 @@ BB=$(readlink -f "$(command -v busybox)"); CS=$(readlink -f "$(command -v crypts
 install -m755 "$HERE/init" "$WORK/root/init"
 # BUILD_ID ties this initramfs to the ISO it is shipped in (the same id goes into /live/build-id on the ISO)
 [ -n "${BUILD_ID:-}" ] && echo "$BUILD_ID" > "$WORK/root/build-id"
+echo "== copying kernel modules for live-medium discovery"
+KVER=${KVER:-$(uname -r)}
+MODULES_ROOT=${MODULES_ROOT:-}
+MODDIR=$MODULES_ROOT/lib/modules/$KVER
+INITRD_MODULES=${INITRD_MODULES:-"isofs udf squashfs overlay loop sr_mod cdrom sd_mod usb_storage uas
+    xhci_pci xhci_hcd ehci_pci ehci_hcd ohci_pci ohci_hcd uhci_hcd ahci libahci nvme nvme_core mmc_block
+    virtio_blk virtio_scsi virtio_pci vfat fat exfat ext4 nls_cp437 nls_ascii nls_utf8 dm_mod dm_crypt"}
+if [ -f "$MODDIR/modules.dep" ] && command -v depmod >/dev/null; then
+    DEST=$WORK/root/lib/modules/$KVER
+    mkdir -p "$DEST"
+    # modules.dep lines look like "kernel/fs/isofs/isofs.ko.zst: kernel/lib/zlib_inflate/..."; collect each wanted module and its deps
+    wanted=$(awk -v mods="$INITRD_MODULES" '
+        BEGIN { n = split(mods, a, /[ \t\n]+/); for (i = 1; i <= n; i++) if (a[i] != "") want[a[i]] = 1 }
+        { split($0, kv, ":"); f = kv[1]; b = f; sub(/.*\//, "", b); sub(/\.ko.*/, "", b)
+          gsub(/-/, "_", b)
+          if (b in want) { print f; m = split(kv[2], d, " "); for (i = 1; i <= m; i++) print d[i] } }' "$MODDIR/modules.dep" | sort -u)
+    count=0
+    for f in $wanted; do
+        src=$MODDIR/$f; [ -f "$src" ] || continue
+        out=$DEST/${f%.ko*}.ko; mkdir -p "$(dirname "$out")"
+        case "$src" in
+            *.ko)     cp "$src" "$out" ;;
+            *.ko.zst) zstd -dqc "$src" > "$out" ;;
+            *.ko.xz)  xz -dc "$src" > "$out" ;;
+            *.ko.gz)  gzip -dc "$src" > "$out" ;;
+            *) continue ;;
+        esac
+        count=$((count + 1))
+    done
+    cp "$MODDIR"/modules.{order,builtin,builtin.modinfo} "$DEST/" 2>/dev/null || true
+    depmod -b "$WORK/root" "$KVER"
+    echo "   $count kernel modules for $KVER"
+    [ "$count" -gt 0 ] || echo "WARNING: no kernel modules copied; the live ISO only boots if the kernel has storage/filesystem support built in" >&2
+else
+    echo "WARNING: no module tree (modules.dep/depmod) for kernel $KVER under ${MODULES_ROOT:-/}; the live ISO only boots if the kernel has storage/filesystem support built in" >&2
+fi
+
 mkdir -p "$WORK/root"/{proc,sys,dev,mnt,newroot,overlay}
 ( cd "$WORK/root" && find . | sort | cpio -o -H newc -R 0:0 --quiet ) > "$OUT"
 ls -lh "$OUT"
