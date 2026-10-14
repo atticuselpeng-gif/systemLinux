@@ -1,0 +1,4 @@
+url=https://github.com/aristocratos/btop/archive/refs/tags/v1.3.2.tar.gz
+sha256=331d18488b1dc7f06cfa12cff909230816a24c57790ba3e8224b117e3f0ae03e
+requires=dev-apps/cmake
+build=cmake

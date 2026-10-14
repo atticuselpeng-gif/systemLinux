@@ -16,14 +16,14 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
 <p><a href="index.html">Home</a> | <a href="about.html">About</a> | <a href="download.html">Download</a> | <a href="news.html">News</a> | <a href="get.html">get</a> | <a href="handbook.html">Handbook</a> | <b>System</b></p>
 <hr>
 <h2>Services</h2>
-    <p class="sub">systemd starts everything; there is nothing to configure for a normal boot. The usual tools control it (as root).</p>
+    <p class="sub">dinit starts everything; there is nothing to configure for a normal boot. The usual tools control it (as root).</p>
     <div class="table-scroll">
       <table>
-        <tr><th><code>systemctl status [unit]</code></th><td>What is running, and what failed (<code>systemctl --failed</code>)</td></tr>
-        <tr><th><code>journalctl -b [-u unit]</code></th><td>This boot&rsquo;s log, or one service&rsquo;s</td></tr>
-        <tr><th><code>systemctl start|stop|restart &lt;unit&gt;</code></th><td>Control a service: <code>NetworkManager</code>, &hellip;</td></tr>
+        <tr><th><code>dinitctl list</code></th><td>What is running (<code>dinitctl status &lt;service&gt;</code> for details)</td></tr>
+        <tr><th>Logs</th><td>dinit logs to the console; there is no journal</td></tr>
+        <tr><th><code>dinitctl start|stop|restart &lt;service&gt;</code></th><td>Control a service: <code>NetworkManager</code>, &hellip;</td></tr>
         <tr><th><code>reboot</code> / <code>poweroff</code> / <code>halt</code></th><td>Power commands</td></tr>
-        <tr><th><code>/etc/systemd/system/</code></th><td>The base image&rsquo;s own units; add yours here and <code>systemctl enable</code> them</td></tr>
+        <tr><th><code>/etc/dinit.d/</code></th><td>The base image&rsquo;s own service files; add yours here and <code>dinitctl enable</code> them</td></tr>
         <tr><th>Console</th><td>The live ISO logs root in on tty1; an installed system asks for a login. Add <code>console=ttyS0</code> to the kernel command line for a serial login</td></tr>
         <tr><th>Hostname</th><td>Read from <code>/etc/hostname</code> (<code>systemlinux</code> on the live ISO)</td></tr>
       </table>
@@ -32,7 +32,7 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
 <h2>What doesn't work yet</h2>
   <p class="sub">Known gaps. If one of these gets in your way, open an issue, or better, help fix it.</p>
   <ul class="tight">
-    <li>UEFI only: legacy BIOS boot is not supported.</li>
+    <li>Both UEFI and legacy BIOS boot are supported (see <code>docs/BIOS.md</code> in the repository).</li>
     <li>No automatic partition resizing: dual-boot means shrinking Windows or another Linux yourself first, then installing into the freed partition.</li>
     <li>No Secure Boot yet. LUKS full-disk encryption is available (chapter 4 of the handbook).</li>
     <li>There&rsquo;s no graphical login or lock screen. It&rsquo;s a console system: you log in on tty1.</li>

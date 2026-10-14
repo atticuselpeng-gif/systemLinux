@@ -1,0 +1,4 @@
+url=https://github.com/angband/angband/archive/refs/tags/4.2.5.tar.gz
+sha256=2a27ce296310c4cbf960e2eb41ef55d383e546f24533446cf224119498a99651
+requires=dev-apps/cmake
+build=cmake

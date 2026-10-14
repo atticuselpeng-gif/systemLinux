@@ -1,0 +1,4 @@
+url=https://github.com/tstack/lnav/archive/refs/tags/v0.12.2.tar.gz
+sha256=9f12e17f9f2b2f1ddf00ef3f35f61ab3c9709ddf2beaa0eeaf441462e812ca7f
+requires=dev-apps/cmake
+build=cmake

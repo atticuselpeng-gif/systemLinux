@@ -1,0 +1,4 @@
+url=https://github.com/zmap/zmap/archive/refs/tags/v4.1.1.tar.gz
+sha256=b37c4e70e4f9c12091ee10dc7f6f3518cbb7bc291b5b81a451a37632c9440047
+requires=dev-apps/cmake
+build=cmake

@@ -1,0 +1,4 @@
+url=https://github.com/capnproto/capnproto/archive/refs/tags/v1.0.2.tar.gz
+sha256=3cfd0ed58080d78b3a3381305489f2175cdaf1ef1cb55425d8fc8246a76bdff3
+requires=dev-apps/cmake
+build=cmake

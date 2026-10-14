@@ -20,23 +20,9 @@ cat > "$ROOT/usr/local/bin/systemlinux-ssh-keygen" <<'EOF'
 for key in rsa ecdsa ed25519; do
     [ -f "/etc/ssh/ssh_host_${key}_key" ] || ssh-keygen -t "$key" -f "/etc/ssh/ssh_host_${key}_key" -N ""
 done
-systemctl reload sshd 2>/dev/null || true
+dinitctl restart sshd 2>/dev/null || true
 EOF
 chmod 755 "$ROOT/usr/local/bin/systemlinux-ssh-keygen"
-mkdir -p "$ROOT/etc/systemd/system"
-cat > "$ROOT/etc/systemd/system/systemlinux-ssh-keygen.service" <<'EOF'
-[Unit]
-Description=Generate SSH host keys
-Before=sshd.service
-ConditionPathExists=!/etc/ssh/ssh_host_rsa_key
-
-[Service]
-Type=oneshot
-ExecStart=/usr/local/bin/systemlinux-ssh-keygen
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target
-EOF
-mkdir -p "$ROOT/etc/systemd/system/multi-user.target.wants"
-ln -sf /etc/systemd/system/systemlinux-ssh-keygen.service "$ROOT/etc/systemd/system/multi-user.target.wants/systemlinux-ssh-keygen.service"
+# dinit: the "ssh-keygen" service (rootfs/etc/dinit.d/ssh-keygen) is started by boot through boot.d
+mkdir -p "$ROOT/etc/dinit.d/boot.d"
+ln -sf ../ssh-keygen "$ROOT/etc/dinit.d/boot.d/ssh-keygen"

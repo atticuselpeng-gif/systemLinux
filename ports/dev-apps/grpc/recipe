@@ -1,0 +1,4 @@
+url=https://github.com/grpc/grpc/archive/refs/tags/v1.64.2.tar.gz
+sha256=c682fc39baefc6e804d735e6b48141157b7213602cc66dbe0bf375b904d8b5f9
+requires=dev-apps/cmake
+build=cmake

@@ -1,0 +1,4 @@
+url=https://github.com/unicorn-engine/unicorn/archive/refs/tags/2.0.1.post1.tar.gz
+sha256=6b276c857c69ee5ec3e292c3401c8c972bae292e0e4cb306bb9e5466c0f14737
+requires=dev-apps/cmake
+build=cmake

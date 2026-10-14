@@ -1,0 +1,6 @@
+# Device manager (udev device manager; systemd is not part of the image).
+type = process
+command = /usr/lib/udev/udevd
+depends-on = early-filesystems
+restart = true
+smooth-recovery = true

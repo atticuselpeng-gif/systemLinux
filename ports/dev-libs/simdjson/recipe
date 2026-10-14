@@ -1,0 +1,4 @@
+url=https://github.com/simdjson/simdjson/archive/refs/tags/v3.9.4.tar.gz
+sha256=9bf13be00fa1e1c5891a90dbc39b983e09972f0972a8956c20a9974cedfcca2f
+requires=dev-apps/cmake
+build=cmake

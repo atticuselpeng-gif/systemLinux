@@ -1,0 +1,4 @@
+url=https://github.com/ngtcp2/nghttp3/archive/refs/tags/v1.4.0.tar.gz
+sha256=522c8952ccae1815f34425f0c8bc6d8a4660e72dada1b4e97b8223e4c459a84a
+requires=dev-apps/cmake
+build=cmake

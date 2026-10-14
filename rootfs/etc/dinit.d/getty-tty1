@@ -1,0 +1,6 @@
+# Console on tty1. The live image logs root in by itself; the installer removes --autologin root.
+type = process
+command = /usr/bin/agetty --autologin root --noclear tty1 38400 linux
+depends-on = system-identity
+restart = true
+smooth-recovery = true

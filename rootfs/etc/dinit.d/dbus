@@ -1,0 +1,6 @@
+# System message bus (foreground; dinit supervises it).
+type = process
+command = /usr/bin/dbus-daemon --system --nofork --nopidfile
+depends-on = dbus-prepare
+restart = true
+smooth-recovery = true

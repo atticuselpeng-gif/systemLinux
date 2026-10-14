@@ -1,0 +1,4 @@
+url=https://github.com/janet-lang/janet/archive/refs/tags/v1.35.2.tar.gz
+sha256=947dfdab6c1417c7c43efef2ecb7a92a3c339ce2135233fe88323740e6e7fab1
+requires=dev-apps/meson
+build=meson

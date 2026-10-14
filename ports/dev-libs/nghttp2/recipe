@@ -1,0 +1,3 @@
+url=https://github.com/nghttp2/nghttp2/releases/download/v1.62.1/nghttp2-1.62.1.tar.xz
+sha256=2345d4dc136fda28ce243e0bb21f2e7e8ef6293d62c799abbf6f633a6887af72
+requires=dev-libs/openssl dev-libs/zlib

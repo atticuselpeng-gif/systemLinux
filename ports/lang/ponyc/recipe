@@ -1,0 +1,4 @@
+url=https://github.com/ponylang/ponyc/archive/refs/tags/0.58.5.tar.gz
+sha256=683d9e86ff1441a00cd0e8466610f6c7cf3389c46987931f23d8f1fe9eb3ff33
+requires=dev-apps/cmake
+build=cmake

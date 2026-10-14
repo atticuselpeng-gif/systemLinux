@@ -1,0 +1,38 @@
+name: Ports check
+
+# Validates ports/*/*/recipe (tools/ports-check.sh): layout, keys, checksums, dependencies, cycles.
+# The scheduled/manual run also downloads every source that has a sha256 and compares the checksum.
+on:
+  pull_request:
+    paths:
+      - "ports/**"
+      - "tools/ports-check.sh"
+      - ".github/workflows/ports-check.yml"
+  push:
+    branches: [main]
+    paths:
+      - "ports/**"
+      - "tools/ports-check.sh"
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  ports:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate port definitions
+        run: tools/ports-check.sh
+      - name: Verify source checksums
+        if: github.event_name != 'pull_request'
+        run: tools/ports-check.sh --verify
+      - name: Verify source checksums of changed ports
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --depth=1 origin "${{ github.base_ref }}"
+          atoms=$(git diff --name-only --diff-filter=AM "origin/${{ github.base_ref }}" -- 'ports/*/*/recipe' | sed 's#^ports/##; s#/recipe$##')
+          [ -z "$atoms" ] || tools/ports-check.sh --verify $atoms

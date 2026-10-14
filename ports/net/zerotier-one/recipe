@@ -1,0 +1,4 @@
+url=https://github.com/zerotier/ZeroTierOne/archive/refs/tags/1.14.0.tar.gz
+sha256=7191623a81b0d1b552b9431e8864dd3420783ee518394ac1376cee6aaf033291
+requires=dev-apps/cmake
+build=cmake

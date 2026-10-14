@@ -1,0 +1,4 @@
+url=https://github.com/nih-at/libzip/archive/refs/tags/v1.10.1.tar.gz
+sha256=d56d857d1c3ad4a7f3a4c01a51c6a6e5530e35ab93503f62276e8ba2b306186a
+requires=dev-apps/cmake
+build=cmake

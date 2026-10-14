@@ -1,0 +1,4 @@
+url=https://github.com/CleverRaven/Cataclysm-DDA/archive/refs/tags/0.H-RELEASE.tar.gz
+sha256=9fbd80d13321321d6ed1f5a736ab874e06d335429f2a51a39eefd2fa51feae68
+requires=dev-apps/cmake
+build=cmake

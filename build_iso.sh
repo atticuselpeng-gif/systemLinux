@@ -1,18 +1,20 @@
 #!/bin/bash
 # systemLinux ISO build: a minimal live installer ISO (small initramfs + /live/rootfs.squashfs, mounted
 # with an overlayfs; nothing is loaded into a RAM disk): the runner's prebuilt distribution kernel plus the bare minimum
-# needed to run the installer (systemd, NetworkManager, disk/boot tools, `get`). No firmware, desktop,
+# needed to run the installer (dinit, NetworkManager, disk/boot tools, `get`). No firmware, desktop,
 # daemons, docs, locales, compilers or language runtimes. After installing, `get --profile build-toolchain`
 # (and common-build-deps, lang-runtimes, ...) adds the build stack; `get URL` builds source tarballs.
 #
-#   ./build_iso.sh    -> systemLinux-0.2.2-x86_64.iso + .sha256  (root shell, console only, installable with the handbook)
+#   ./build_iso.sh    (checks ports and dinit services first, then builds)  -> systemLinux-0.2.2-x86_64.iso + .sha256  (root shell, console only, installable with the handbook)
 #
 # Run from a normal terminal (sudo needs a password prompt). Works from any Linux host with
 # grub2, xorriso, mtools, squashfs-tools and cpio on PATH (install them with your host's own
 # package manager, e.g. `emerge sys-boot/grub app-cdr/xorriso sys-fs/mtools sys-fs/squashfs-tools
 # app-arch/cpio` on Gentoo, `apt install grub2 xorriso mtools squashfs-tools cpio` on Debian, or
 # equivalent). The installer's own boot tools (grub, efibootmgr, mkfs.fat, cryptsetup, busybox) are
-# copied from the build host together with their libraries. Hybrid BIOS+UEFI when grub-pc-bin is installed, UEFI otherwise.
+# copied from the build host together with their libraries. The ISO is always a hybrid BIOS+UEFI image:
+# grub-pc-bin (i386-pc) and grub-efi-amd64-bin (x86_64-efi) are both required, and the build stops if one is missing.
+# dinit (PID 1) is built from a pinned release tarball by tools/dinit/build.sh (needs g++, make and curl).
 set -euo pipefail
 
 BUILD_DIR=$(cd "$(dirname "$0")" && pwd)
@@ -25,23 +27,32 @@ ISO=${ISO:-$BUILD_DIR/systemLinux-$IMAGE_VERSION-x86_64.iso}
 cd "$BUILD_DIR"
 # fail early, with the fix, instead of halfway through the kernel build
 missing=
-for t in xorriso mksquashfs mformat cpio make gcc busybox cryptsetup efibootmgr mkfs.fat grub-install grub-mkimage; do
+for t in xorriso mksquashfs mformat cpio make gcc g++ curl busybox cryptsetup efibootmgr mkfs.fat grub-install grub-mkimage; do
     command -v "$t" >/dev/null || missing="$missing $t"
 done
 command -v grub-mkrescue >/dev/null || command -v grub2-mkrescue >/dev/null || missing="$missing grub-mkrescue"
 command -v grub-script-check >/dev/null || command -v grub2-script-check >/dev/null || missing="$missing grub-script-check"
+# both GRUB platforms are needed: i386-pc for legacy BIOS, x86_64-efi for UEFI (the installer ships both too)
+for plat in i386-pc x86_64-efi; do
+    ls -d /usr/lib/grub/$plat /usr/lib64/grub/$plat /usr/lib/grub2/$plat /usr/lib64/grub2/$plat 2>/dev/null | grep -q . \
+        || missing="$missing grub-$plat-modules"
+done
 if [ -n "$missing" ]; then
     echo "ERROR: missing build tools:$missing"
     echo "  (the installer needs the grub-* command names; on Fedora add symlinks from grub2-*)"
-    echo "  Fedora: sudo dnf install xorriso squashfs-tools mtools cpio busybox cryptsetup efibootmgr dosfstools grub2-efi-x64 grub2-tools flex bison bc dwarves elfutils-libelf-devel openssl-devel openssl-devel-engine grub2-tools-extra"
-    echo "  Debian: sudo apt install xorriso squashfs-tools mtools cpio busybox cryptsetup efibootmgr dosfstools grub-efi-amd64-bin flex bison bc dwarves libelf-dev libssl-dev grub-common"
+    echo "  Fedora: sudo dnf install xorriso squashfs-tools mtools cpio busybox cryptsetup efibootmgr dosfstools grub2-efi-x64 grub2-efi-x64-modules grub2-pc grub2-pc-modules grub2-tools gcc-c++ curl flex bison bc dwarves elfutils-libelf-devel openssl-devel openssl-devel-engine grub2-tools-extra"
+    echo "  Debian: sudo apt install xorriso squashfs-tools mtools cpio busybox cryptsetup efibootmgr dosfstools grub-efi-amd64-bin grub-pc-bin g++ curl flex bison bc dwarves libelf-dev libssl-dev grub-common"
     exit 1
 fi
 # Fedora and friends name the GRUB tools grub2-*
 GRUB_MKRESCUE=$(command -v grub-mkrescue || command -v grub2-mkrescue || echo grub-mkrescue)
 GRUB_SCRIPT_CHECK=$(command -v grub-script-check || command -v grub2-script-check || echo grub-script-check)
 GRUB_MKIMAGE=$(command -v grub-mkimage || command -v grub2-mkimage || echo grub-mkimage)
+GRUB_BIOS_SETUP=$(command -v grub-bios-setup || command -v grub2-bios-setup || echo grub-bios-setup)   # grub-install --target=i386-pc runs it
 
+echo "=== [0/7] CHECKING PORTS AND dinit SERVICES ==="
+"$BUILD_DIR/tools/ports-check.sh" 2>&1 | grep -v 'missing sha256' || { echo "ERROR: ports check failed"; exit 1; }
+[ "${PIPESTATUS[0]}" = 0 ] || exit 1
 echo "=== [1/7] USING THE PREBUILT DISTRIBUTION KERNEL ==="
 if [ -z "$KERNEL" ]; then
     # Host /boot/vmlinuz-* is often root-only (e.g. GitHub runners), so unpack the distro kernel package instead.
@@ -66,20 +77,17 @@ if [ -z "$KERNEL" ]; then
 fi
 [ -n "$KERNEL" ] && [ -f "$KERNEL" ] || { echo "ERROR: kernel not found at $KERNEL (set KERNEL to a prebuilt kernel image)"; exit 1; }
 
-echo "=== [2/7] INSTALLING get AND init LINKS INTO ROOTFS ==="
+echo "=== [2/7] INSTALLING get AND dinit INTO ROOTFS ==="
 sudo install -Dm755 ./get "$ROOTFS/usr/local/bin/get"
 sudo install -Dm755 ./tools/validate-build-ready.sh "$ROOTFS/usr/local/bin/validate-build-ready"
+# dinit is PID 1; systemd is removed (only udev and libsystemd/libudev remain)
 sudo rm -f "$ROOTFS/init" "$ROOTFS/sbin/init" "$ROOTFS/sbin/lenine"
-sudo ln -sf usr/lib/systemd/systemd "$ROOTFS/init"
-sudo ln -sf ../lib/systemd/systemd "$ROOTFS/sbin/init"
-for n in reboot poweroff halt shutdown; do
-    sudo ln -sf systemctl "$ROOTFS/usr/bin/$n"
-done
-# boot to the console (there is no display manager), with NetworkManager and a tmpfs /tmp
-sudo ln -sf /usr/lib/systemd/system/multi-user.target "$ROOTFS/etc/systemd/system/default.target"
-sudo mkdir -p "$ROOTFS/etc/systemd/system/multi-user.target.wants" "$ROOTFS/etc/systemd/system/local-fs.target.wants"
-sudo ln -sf /usr/lib/systemd/system/NetworkManager.service "$ROOTFS/etc/systemd/system/multi-user.target.wants/NetworkManager.service"
-sudo ln -sf /usr/lib/systemd/system/tmp.mount "$ROOTFS/etc/systemd/system/local-fs.target.wants/tmp.mount"
+sudo "$BUILD_DIR/tools/dinit/build.sh" "$ROOTFS"
+sudo ln -sf usr/bin/dinit "$ROOTFS/init"
+sudo ln -sf dinit "$ROOTFS/usr/bin/init"
+# the boot target, services and helper scripts (rootfs/etc/dinit.d, rootfs/usr/lib/dinit) are part of rootfs/ itself
+"$BUILD_DIR/tools/check-no-systemd.sh" "$ROOTFS"
+DINIT_CHECK="$ROOTFS/usr/bin/dinit-check" "$BUILD_DIR/tools/dinit/check-services.sh"
 sudo install -Dm644 "$KERNEL" "$ROOTFS/boot/vmlinuz"
 
 echo "=== [3/7] ROOTFS FIXES AND BRANDING ==="
@@ -112,7 +120,7 @@ sudo cp -a "$ROOTFS/." "$STAGE/"
 sudo "$BUILD_DIR/tools/overlay-common/strip-gentoo.sh" "$STAGE"
 # the installer's boot/disk tools (the build host's own binaries and libraries)
 sudo "$BUILD_DIR/tools/overlay-common/copy-bin.sh" "$STAGE" grub-install "$GRUB_MKIMAGE" grub-probe grub-editenv \
-    grub-set-default grub-reboot efibootmgr mkfs.fat
+    grub-set-default grub-reboot efibootmgr mkfs.fat "$GRUB_BIOS_SETUP"
 GRUBDATA=0
 for d in /usr/lib/grub /usr/lib64/grub /usr/share/grub /usr/lib/grub2 /usr/share/grub2; do
     if [ -d "$d" ]; then sudo mkdir -p "$STAGE$d"; sudo cp -a "$d/." "$STAGE$d/"; GRUBDATA=1; fi
@@ -120,7 +128,7 @@ done
 [ "$GRUBDATA" = 1 ] || { echo "ERROR: no GRUB platform files (x86_64-efi) found on the build host"; exit 1; }
 MKFS=$(readlink -f "$(command -v mkfs.fat)")
 sudo ln -sf "$(basename "$MKFS")" "$STAGE$(dirname "$MKFS")/mkfs.vfat"
-# the installer itself, and the minimal systemd preset / hostname
+# the installer itself, and the hostname
 sudo cp -a "$BUILD_DIR/tools/installer/." "$STAGE/"
 sudo chmod 755 "$STAGE"/usr/local/bin/systemlinux-*
 sudo "$BUILD_DIR/tools/live-image/strip-live.sh" "$STAGE"
@@ -142,6 +150,16 @@ cat > "$WORKSPACE/boot/grub/grub.cfg" << GRUBEOF
 set default=0
 set timeout=3
 
+# QEMU smoke test (tools/tests/boot-smoke.sh): a disk that carries a /SMOKETEST file picks the serial entry
+# without anyone pressing a key. Real hardware never has that file, so nothing changes there.
+if search --no-floppy --file --set=smoke /SMOKETEST; then
+    serial --unit=0 --speed=115200
+    terminal_input serial
+    terminal_output serial
+    set default=serial
+    set timeout=0
+fi
+
 menuentry "systemLinux $IMAGE_VERSION" {
     # Use the device GRUB booted from (works under Ventoy's loopback); only search if the
     # kernel isn't there, so another disk's /live/vmlinuz is never picked up.
@@ -157,6 +175,14 @@ menuentry "systemLinux $IMAGE_VERSION (copy to RAM)" {
         search --no-floppy --set=root --file /live/vmlinuz
     fi
     linux /live/vmlinuz systemlinux.toram=1 quiet loglevel=3 console=tty0
+    initrd /live/initrd.img
+}
+
+menuentry "systemLinux $IMAGE_VERSION (serial console)" --id serial {
+    if [ ! -f /live/vmlinuz ]; then
+        search --no-floppy --set=root --file /live/vmlinuz
+    fi
+    linux /live/vmlinuz quiet loglevel=3 console=tty0 console=ttyS0,115200
     initrd /live/initrd.img
 }
 

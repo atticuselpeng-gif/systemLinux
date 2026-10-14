@@ -33,33 +33,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xorriso squashfs-tools mtools cpio busybox-static cryptsetup efibootmgr \
             dosfstools grub-efi-amd64-bin grub-pc-bin grub2-common grub-common libncurses-dev build-essential curl \
-            kmod zstd xz-utils ovmf qemu-system-x86
+            kmod zstd xz-utils ovmf qemu-system-x86 g++
 
       - name: Build ISO
         run: ./build_iso.sh
 
-      - name: Smoke test (boot the ISO headless in QEMU)
-        run: |
-          VERSION=$(cat VERSION)
-          ISO="systemLinux-$VERSION-x86_64.iso"
-          mkdir -p smoke
-          # boot the ISO's own kernel and initramfs (so console=ttyS0 can be added) with the ISO as the CD-ROM
-          xorriso -osirrox on -indev "$ISO" -extract /live/vmlinuz smoke/vmlinuz -extract /live/initrd.img smoke/initrd.img
-          chmod 644 smoke/*
-          : > smoke/serial.log
-          qemu-system-x86_64 -m 2G -smp 2 -no-reboot -cdrom "$ISO" \
-            -kernel smoke/vmlinuz -initrd smoke/initrd.img -append "console=ttyS0 loglevel=3" \
-            -serial file:smoke/serial.log -display none &
-          QPID=$!
-          ok=0
-          for i in $(seq 1 90); do
-            if grep -q 'could not find the live medium' smoke/serial.log; then break; fi
-            if grep -qE '\[live\] medium found|login:' smoke/serial.log; then ok=1; break; fi
-            sleep 2
-          done
-          kill $QPID 2>/dev/null || true
-          cat smoke/serial.log
-          [ "$ok" = 1 ] || { echo "smoke test failed: live medium not found"; exit 1; }
+      - name: Smoke test, legacy BIOS (GRUB i386-pc -> kernel -> initramfs -> dinit)
+        run: tools/tests/boot-smoke.sh bios
+
+      - name: Smoke test, UEFI (GRUB x86_64-efi -> kernel -> initramfs -> dinit)
+        run: tools/tests/boot-smoke.sh uefi
 
       - name: Generate checksums
         run: |
