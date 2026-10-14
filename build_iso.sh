@@ -34,12 +34,16 @@ command -v grub-mkrescue >/dev/null || command -v grub2-mkrescue >/dev/null || m
 command -v grub-script-check >/dev/null || command -v grub2-script-check >/dev/null || missing="$missing grub-script-check"
 # both GRUB platforms are needed: i386-pc for legacy BIOS, x86_64-efi for UEFI (the installer ships both too)
 for plat in i386-pc x86_64-efi; do
-    ls -d /usr/lib/grub/$plat /usr/lib64/grub/$plat /usr/lib/grub2/$plat /usr/lib64/grub2/$plat 2>/dev/null | grep -q . \
-        || missing="$missing grub-$plat-modules"
+    found=
+    for d in /usr/lib/grub /usr/lib64/grub /usr/lib/grub2 /usr/lib64/grub2 /usr/share/grub; do
+        [ -d "$d/$plat" ] && { found=1; break; }
+    done
+    [ -n "$found" ] || missing="$missing grub-$plat-modules(no $plat dir under /usr/lib*/grub*)"
 done
 if [ -n "$missing" ]; then
     echo "ERROR: missing build tools:$missing"
     echo "  (the installer needs the grub-* command names; on Fedora add symlinks from grub2-*)"
+    echo "  (grub-<platform>-modules = GRUB platform files: Debian grub-pc-bin / grub-efi-amd64-bin, Fedora grub2-pc-modules / grub2-efi-x64-modules)"
     echo "  Fedora: sudo dnf install xorriso squashfs-tools mtools cpio busybox cryptsetup efibootmgr dosfstools grub2-efi-x64 grub2-efi-x64-modules grub2-pc grub2-pc-modules grub2-tools gcc-c++ curl flex bison bc dwarves elfutils-libelf-devel openssl-devel openssl-devel-engine grub2-tools-extra"
     echo "  Debian: sudo apt install xorriso squashfs-tools mtools cpio busybox cryptsetup efibootmgr dosfstools grub-efi-amd64-bin grub-pc-bin g++ curl flex bison bc dwarves libelf-dev libssl-dev grub-common"
     exit 1
