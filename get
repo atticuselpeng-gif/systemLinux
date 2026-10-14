@@ -155,8 +155,9 @@ mark_installed() {
 if [ "$SYNC" = 1 ]; then
     if [ -d "$PORTS/.git" ] || git -C "$PORTS" rev-parse --git-dir >/dev/null 2>&1; then
         git -C "$PORTS" pull --ff-only || die "git pull failed in $PORTS"
-    elif [ -n "${GET_PORTS_URL:-}" ]; then
-        # tarball + detached .sha256 published next to it
+    else
+        # tarball + detached .sha256, published with every release (default: the latest one)
+        GET_PORTS_URL=${GET_PORTS_URL:-https://github.com/tortr-rs/systemLinux/releases/latest/download/ports.tar.xz}
         command -v tar >/dev/null 2>&1 && command -v sha256sum >/dev/null 2>&1 || die "tar and sha256sum are required"
         WORK=$(mktemp -d "${TMPDIR:-/tmp}/get.XXXXXX") || die "cannot create a work directory"
         trap cleanup EXIT
@@ -165,10 +166,11 @@ if [ "$SYNC" = 1 ]; then
         want=$(sed -n '1s/[[:space:]].*//p' "$WORK/ports.sha256")
         have=$(sha256sum "$WORK/ports.tar.xz" | sed 's/[[:space:]].*//')
         [ -n "$want" ] && [ "$want" = "$have" ] || die "ports checksum mismatch"
-        mkdir -p "$PORTS"
-        tar -xJf "$WORK/ports.tar.xz" -C "$PORTS" --strip-components=1 || die "extracting ports failed"
-    else
-        die "$PORTS is not a git checkout; set GET_PORTS_URL to a ports.tar.xz (with .sha256) or use git pull"
+        mkdir -p "$WORK/new"
+        tar --no-same-owner -xJf "$WORK/ports.tar.xz" -C "$WORK/new" --strip-components=1 || die "extracting ports failed"
+        [ -n "$(ls "$WORK/new")" ] || die "the downloaded ports tree is empty"
+        # replace the tree, so recipes removed upstream go away too
+        mkdir -p "$PORTS" && rm -rf "${PORTS:?}"/* && cp -a "$WORK/new/." "$PORTS/" || die "cannot update $PORTS"
     fi
     printf 'get: ports synced (%s)\n' "$PORTS"
     exit 0
@@ -232,9 +234,9 @@ fi
 printf 'get: extracting %s\n' "$file"
 mkdir "$WORK/src"
 if [ -n "$FLAG" ]; then
-    tar -x"$FLAG"f "$WORK/$file" -C "$WORK/src" || die "extraction failed"
+    tar --no-same-owner -x"$FLAG"f "$WORK/$file" -C "$WORK/src" || die "extraction failed"
 else
-    tar -xf "$WORK/$file" -C "$WORK/src" || die "extraction failed"
+    tar --no-same-owner -xf "$WORK/$file" -C "$WORK/src" || die "extraction failed"
 fi
 
 if [ -n "$SRCDIR" ]; then
@@ -294,4 +296,6 @@ meson)
     ;;
 esac
 [ -z "$ATOM" ] || mark_installed "$ATOM"
+# new shared libraries (e.g. in /usr/local/lib) are only found after the linker cache is refreshed
+if [ -z "${DESTDIR_ARG:-}" ] && [ "$(id -u)" = 0 ]; then ldconfig 2>/dev/null || true; fi
 printf 'get: done\n'

@@ -1,3 +1,4 @@
+@keep
 @requires common-build-deps
 usr/bin/perl*
 usr/bin/cpan*

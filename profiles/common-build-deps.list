@@ -1,3 +1,4 @@
+@keep
 @requires build-toolchain
 usr/bin/cmake
 usr/bin/ccmake

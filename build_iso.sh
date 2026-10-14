@@ -83,6 +83,10 @@ echo "kernel: $KVER ($KERNEL)"
 echo "=== [2/7] INSTALLING get AND dinit INTO ROOTFS ==="
 sudo install -Dm755 ./get "$ROOTFS/usr/local/bin/get"
 sudo install -Dm755 ./tools/validate-build-ready.sh "$ROOTFS/usr/local/bin/validate-build-ready"
+# the ports tree, so `get category/name` works offline; `get --sync` updates it from the latest release's ports.tar.xz
+sudo rm -rf "$ROOTFS/usr/ports"
+sudo cp -r ./ports "$ROOTFS/usr/ports"
+sudo chown -R 0:0 "$ROOTFS/usr/ports"
 # dinit is PID 1 and the only init system; systemd is removed completely
 sudo rm -f "$ROOTFS/init" "$ROOTFS/sbin/init" "$ROOTFS/sbin/lenine"
 sudo "$BUILD_DIR/tools/dinit/build.sh" "$ROOTFS"
@@ -141,6 +145,20 @@ sudo chmod 755 "$STAGE"/usr/local/bin/systemlinux-*
 sudo "$BUILD_DIR/tools/live-image/strip-live.sh" "$STAGE"
 # the build toolchain, build dependencies and language runtimes are post-install profiles, not live media
 sudo "$BUILD_DIR/tools/profiles/profiles.sh" strip "$STAGE"
+# The build-toolchain profile takes all of usr/lib/gcc, but the GCC runtime libraries in it are not build tools:
+# dinit (PID 1) and every other C++ program need libstdc++/libgcc_s. Without them the kernel panics at boot.
+for d in "$ROOTFS"/usr/lib/gcc/*/*/; do
+    for l in libstdc++.so.6 libgcc_s.so.1 libatomic.so.1 libgomp.so.1 libitm.so.1 libquadmath.so.0; do
+        [ -e "$d$l" ] && sudo cp -aL "$d$l" "$STAGE/usr/lib64/$l"
+    done
+done
+sudo ldconfig -r "$STAGE"
+# every library that PID 1 and the core programs need must resolve inside the image
+sudo "$BUILD_DIR/tools/live-image/check-libs.sh" "$STAGE" usr/bin/dinit usr/bin/dinitctl usr/bin/udevd usr/bin/udevadm \
+    usr/bin/bash usr/bin/NetworkManager usr/bin/dbus-daemon usr/bin/agetty usr/bin/login usr/bin/mount usr/bin/ls \
+    usr/bin/curl usr/bin/tar usr/bin/xz \
+    usr/bin/make usr/bin/gcc usr/bin/g++ 'usr/libexec/gcc/*/*/cc1' 'usr/libexec/gcc/*/*/cc1plus' usr/bin/ld usr/bin/as \
+    usr/bin/ar usr/bin/cmake usr/bin/ninja usr/bin/pkgconf usr/bin/perl usr/bin/python3 usr/bin/patch
 echo "$IMAGE_VERSION" | sudo tee "$STAGE/usr/share/systemlinux/image-version" >/dev/null
 sudo install -Dm644 "$KERNEL" "$STAGE/boot/vmlinuz"
 # the kernel's whole module tree, so the running system (live and installed) can load NIC, GPU, sound... drivers
@@ -164,8 +182,9 @@ set default=0
 set timeout=3
 
 # QEMU smoke test (tools/tests/boot-smoke.sh): a disk that carries a /SMOKETEST file picks the serial entry
-# without anyone pressing a key. Real hardware never has that file, so nothing changes there.
-if search --no-floppy --file --set=smoke /SMOKETEST; then
+# without anyone pressing a key. Real hardware never has that file, so nothing changes there. Only the first two disks
+# are looked at: searching every device with BIOS disk calls kept GRUB on "Welcome to GRUB!" for half a minute.
+if [ -f (hd0)/SMOKETEST -o -f (hd1)/SMOKETEST ]; then
     serial --unit=0 --speed=115200
     terminal_input serial
     terminal_output serial
@@ -212,6 +231,9 @@ GRUBEOF
 echo "=== [7/7] MASTERING ISO AND PACKING PROFILES ==="
 # profile-*.tar.xz (+ .sha256/.requires): upload them next to the ISO in the release; `get --profile NAME` installs them
 ROOTFS=$ROOTFS "$BUILD_DIR/tools/profiles/profiles.sh" build "$PROFILES_OUT"
+# ports.tar.xz (+ .sha256) is published with the release; `get --sync` downloads it
+tar -cJf "$PROFILES_OUT/ports.tar.xz" --owner=0 --group=0 --sort=name ports
+(cd "$PROFILES_OUT" && sha256sum ports.tar.xz > ports.tar.xz.sha256)
 "$GRUB_MKRESCUE" -o "$ISO" "$WORKSPACE" -volid SYSTEMLINUX
 sudo rm -rf "$WORKSPACE"
 (cd "$(dirname "$ISO")" && sha256sum "$(basename "$ISO")" | tee "$(basename "$ISO").sha256")
