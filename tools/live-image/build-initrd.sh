@@ -39,6 +39,10 @@ MODDIR=$MODULES_ROOT/lib/modules/$KVER
 INITRD_MODULES=${INITRD_MODULES:-"isofs udf squashfs overlay loop sr_mod cdrom sd_mod usb_storage uas
     xhci_pci xhci_hcd ehci_pci ehci_hcd ohci_pci ohci_hcd uhci_hcd ahci libahci nvme nvme_core mmc_block
     virtio_blk virtio_scsi virtio_pci vfat fat exfat ext4 nls_cp437 nls_ascii nls_utf8 dm_mod dm_crypt"}
+# Ubuntu's linux-modules packages ship no modules.dep (their postinst runs depmod): generate it in the unpacked tree
+if [ -n "$MODULES_ROOT" ] && [ -d "$MODDIR" ] && [ ! -f "$MODDIR/modules.dep" ] && command -v depmod >/dev/null; then
+    depmod -b "$MODULES_ROOT" "$KVER" || true
+fi
 if [ -f "$MODDIR/modules.dep" ] && command -v depmod >/dev/null; then
     DEST=$WORK/root/lib/modules/$KVER
     mkdir -p "$DEST"
@@ -69,6 +73,7 @@ else
     echo "WARNING: no module tree (modules.dep/depmod) for kernel $KVER under ${MODULES_ROOT:-/}; the live ISO only boots if the kernel has storage/filesystem support built in" >&2
 fi
 
+"$WORK/root/bin/busybox" --list 2>/dev/null | grep -qx modprobe || echo "WARNING: busybox has no modprobe applet; kernel modules cannot be loaded" >&2
 mkdir -p "$WORK/root"/{proc,sys,dev,mnt,newroot,overlay}
 ( cd "$WORK/root" && find . | sort | cpio -o -H newc -R 0:0 --quiet ) > "$OUT"
 ls -lh "$OUT"
