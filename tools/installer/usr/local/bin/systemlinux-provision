@@ -4,7 +4,8 @@
 #        password is read from stdin, twice: password, then confirmation)
 set -eu
 BRAND=systemLinux
-VERSION=$(cat /usr/share/systemlinux/image-version 2>/dev/null || echo "0.2.2")
+# the version being branded: given by the ISO build, else the running image's (the installer)
+VERSION=${SYSTEMLINUX_VERSION:-$(cat /usr/share/systemlinux/image-version 2>/dev/null || echo unknown)}
 USERN='' SUDO=1
 while [ $# -gt 0 ]; do
     case "$1" in

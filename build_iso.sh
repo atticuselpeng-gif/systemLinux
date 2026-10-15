@@ -115,7 +115,7 @@ sudo install -Dm755 tools/gnu-bash/bash "$ROOTFS/usr/bin/bash"
 sudo ln -sf bash "$ROOTFS/usr/bin/sh"
 sudo rm -f "$ROOTFS"/usr/bin/bsdtar "$ROOTFS"/usr/bin/bsdcat "$ROOTFS"/usr/bin/bsdcpio "$ROOTFS"/usr/bin/bsdunzip
 # issue, os-release, release files and the login banner (GNU/Linux branding)
-sudo ./tools/installer/usr/local/bin/systemlinux-provision "$ROOTFS"
+sudo SYSTEMLINUX_VERSION="$IMAGE_VERSION" ./tools/installer/usr/local/bin/systemlinux-provision "$ROOTFS"
 
 echo "=== [4/7] PREPARING ISO WORKSPACE ==="
 if mount | grep -q " $ROOTFS/"; then
