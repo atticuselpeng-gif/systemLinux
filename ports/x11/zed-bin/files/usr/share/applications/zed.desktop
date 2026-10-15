@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Zed
+Exec=zed %U
+Icon=/usr/lib/zed/share/icons/hicolor/512x512/apps/zed.png
+Terminal=false
+Type=Application
+Categories=Development;IDE;TextEditor;

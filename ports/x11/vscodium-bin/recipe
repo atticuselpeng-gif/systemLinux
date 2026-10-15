@@ -1,0 +1,8 @@
+version=1.140.06880
+description=VS Code without Microsoft telemetry
+url=https://github.com/VSCodium/vscodium/releases/download/1.140.06880/VSCodium-linux-x64-1.140.06880.tar.gz
+sha256=61223b74f9e40834117311ec4177cb386d09b84c1aae4f9e674c96580569cef3
+build=bin
+programs=bin/codium:codium
+requires=dev-libs/gtk3 sec/nss dev-libs/alsa-lib dev-libs/mesa dev-libs/libxkbcommon x11/libxcomposite x11/libxdamage x11/libxrandr x11/libxkbfile x11/libxtst x11/libxscrnsaver sys-app/cups dev-libs/vulkan-loader sys-app/dbus
+check=cmd:codium

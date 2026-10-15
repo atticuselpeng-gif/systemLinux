@@ -1,0 +1,6 @@
+version=0.64.2
+description=Music server and streamer
+url=https://github.com/navidrome/navidrome/releases/download/v0.64.2/navidrome_0.64.2_linux_amd64.tar.gz
+sha256=fdd87fd107818667c2c50bc24dc6ce856962c795b3822a91f95c066cfad2c53e
+build=bin
+check=cmd:navidrome

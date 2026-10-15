@@ -1,0 +1,8 @@
+version=9.8.1
+description=Gradle build tool (needs a JDK)
+url=https://services.gradle.org/distributions/gradle-9.8.1-bin.zip
+sha256=dce76f55f8e251a3a1f130eb120f30b3d271de2b76c9b0729d316b5a1b6dc01f
+build=bin
+programs=bin/gradle:gradle
+requires=lang/temurin-bin
+check=cmd:gradle

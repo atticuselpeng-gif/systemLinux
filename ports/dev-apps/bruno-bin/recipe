@@ -1,0 +1,7 @@
+version=4.2.1
+description=API client that stores collections in plain files (official AppImage)
+url=https://github.com/usebruno/bruno/releases/download/v4.2.1/bruno_4.2.1_x86_64_linux.AppImage
+sha256=f6b77dc322dd57b953781589a44688723cf3c06a3513c5c34d077cd75d64a941
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:bruno

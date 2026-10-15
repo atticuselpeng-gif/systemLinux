@@ -1,0 +1,6 @@
+version=0.35.0
+description=Serve files over HTTP from the command line
+url=https://github.com/svenstaro/miniserve/releases/download/v0.35.0/miniserve-0.35.0-x86_64-unknown-linux-musl
+sha256=c630ee030d5d9d83c88c5cc72f43ae215b0c214d64fd7afc92244fe369af2964
+build=bin
+check=cmd:miniserve

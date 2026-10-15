@@ -1,3 +1,8 @@
-url=https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/1.2.0/pipewire-1.2.0.tar.gz
+version=1.6.9
+description=Audio and video server (replaces PulseAudio and JACK)
+url=https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/1.6.9/pipewire-1.6.9.tar.gz
+sha256=dbc3624cf71215c26a22fc98f6f71f7b8599f5f6b415eab4a5c90ca96c170c7c
 build=meson
-requires=dev-apps/meson dev-libs/alsa-lib
+configure_args=-Dsession-managers=[] -Dlibsystemd=disabled -Dsystemd-system-service=disabled -Dsystemd-user-service=disabled -Dlogind=disabled -Dtests=disabled -Dexamples=disabled -Dman=disabled -Ddocs=disabled -Dbluez5=disabled -Dlibcamera=disabled -Droc=disabled -Djack=disabled -Dpipewire-jack=disabled -Dvulkan=disabled -Dlibffado=disabled -Decho-cancel-webrtc=disabled -Dlv2=disabled -Dsdl2=disabled -Dgstreamer=disabled -Dx11=disabled -Dlibcanberra=disabled -Davahi=disabled -Dsnap=disabled -Dselinux=disabled -Dlibmysofa=disabled -Dlibusb=disabled -Dopus=disabled -Dflatpak=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:pipewire

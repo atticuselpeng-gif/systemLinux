@@ -1,0 +1,6 @@
+version=0.35.0
+description=DNS proxy and ad blocker
+url=https://github.com/0xERR0R/blocky/releases/download/v0.35.0/blocky_v0.35.0_Linux_x86_64.tar.gz
+sha256=97ae4257e4f2ea7ee4e0622fca152019eb92224d81b41b2549f064e4cef5584e
+build=bin
+check=cmd:blocky

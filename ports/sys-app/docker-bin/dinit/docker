@@ -1,0 +1,8 @@
+# Docker engine. Add users to the "docker" group to use it without root.
+# Enable with: dinitctl enable docker
+type = process
+command = /usr/bin/dockerd
+depends-on = early-filesystems
+waits-for = network
+logfile = /var/log/docker.log
+smooth-recovery = true

@@ -3,18 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>systemLinux 0.2.2: handbook</title>
+<title>Handbook - systemLinux</title>
 <link rel="icon" type="image/svg+xml" href="logo.svg">
-<style>
-body{font-family:monospace;max-width:50em;margin:1em auto;padding:0 1em;line-height:1.4}
-pre{background:#eee;padding:.5em;overflow:auto}
-table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;text-align:left;vertical-align:top}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1><img src="logo.svg" alt="" width="32" height="32"> systemLinux 0.2.2</h1>
-<p><a href="index.html">Home</a> | <a href="about.html">About</a> | <a href="download.html">Download</a> | <a href="news.html">News</a> | <a href="get.html">get</a> | <b>Handbook</b> | <a href="system.html">System</a></p>
-<hr>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="index.html"><img src="logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="index.html">Home</a><a href="news.html">News</a><a href="about.html">About</a><a href="download.html">Download</a><a href="handbook.html" class="on">Handbook</a><a href="get.html">get</a><a href="packages.html">Packages</a><a href="packaging.html">Packaging</a><a href="system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+
+<div class="wrap page">
+<main class="main">
+<!-- content -->
 <h1>The systemLinux Handbook</h1>
   <p class="sub">From the downloaded ISO to an installed system that updates itself. Every command is written out.</p>
   <div class="note"><strong>Warning:</strong> installing erases whichever disk or partition you point it at. Back up first. Both UEFI and legacy BIOS boot are supported by <code>systemlinux-install</code>; the manual steps below describe the UEFI layout (for BIOS add a 1 MiB BIOS boot partition and run <code>grub-install --target=i386-pc DISK</code>).</div>
@@ -28,7 +32,7 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
       <li><a href="#hb-6">First boot</a></li>
       <li><a href="#hb-7">Installing software</a></li>
       <li><a href="#hb-8">Updating the system</a></li>
-      <li><a href="#hb-9">Programs you built</a></li>
+      <li><a href="#hb-9">Managing installed packages</a></li>
       <li><a href="#hb-10">Recovery</a></li>
       <li><a href="#hb-11">If something goes wrong</a></li>
     </ol></aside>
@@ -110,21 +114,19 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
         <p>GRUB shows for three seconds, then systemLinux starts to a console login. Your user can use <code>sudo</code>.</p></div>
 
       <div class="chapter" id="hb-7"><h2>7. Installing software</h2>
-        <p>Use <code>get</code> to build software from a source tarball:</p>
-<pre class="term"><span class="p">$</span> sudo get https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz         <span class="c"># into /usr/local</span>
-<span class="p">$</span> get -p "$HOME/.local" https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz   <span class="c"># into your home, no sudo</span></pre>
-        <p>The live ISO has no compiler. Add the build stack from profiles first (downloaded from this image&rsquo;s release):</p>
-<pre class="term"><span class="p">$</span> sudo get --profile build-toolchain
-<span class="p">$</span> sudo get --profile common-build-deps     <span class="c"># cmake, ninja, meson, autotools, pkgconf</span>
-<span class="p">$</span> sudo get --profile lang-runtimes         <span class="c"># Perl, Python, Go</span>
-<span class="p">$</span> validate-build-ready                 <span class="c"># compiles autotools, CMake and Meson test projects</span></pre>
-        <p>Then build anything from a source tarball, for example <code>get https://ftp.gnu.org/gnu/coreutils/coreutils-9.5.tar.xz</code> or <code>get -p "$HOME/.local" https://sqlite.org/2024/sqlite-autoconf-3460000.tar.gz</code>. CMake and Meson projects use the installed <code>cmake</code> and <code>meson</code> directly. See <code>get --help</code> for the prefix, staging and configure options.</p></div>
+        <p><code>get</code> builds software from the ports tree in <code>/usr/ports</code>; the build tools (gcc, make, cmake, meson, autotools, perl, python) are already installed. Dependencies are built first.</p>
+<pre class="term"><span class="p">$</span> sudo get install htop                  <span class="c"># build and install a package</span>
+<span class="p">$</span> sudo get install firefox               <span class="c"># Mozilla's official build (a -bin port)</span>
+<span class="p">$</span> get search editor                      <span class="c"># find packages</span>
+<span class="p">$</span> sudo get remove htop                   <span class="c"># uninstall exactly what was installed</span>
+<span class="p">$</span> sudo get sync                          <span class="c"># update the ports tree</span></pre>
+        <p>Packages install into <code>/usr</code>, configuration into <code>/etc</code>. Daemons come with a dinit service: <code>sudo dinitctl enable NAME</code>. A source tarball without a recipe works too: <code>sudo get install https://ftp.gnu.org/gnu/hello/hello-2.12.2.tar.gz</code>. Browse everything on the <a href="packages.html">Packages</a> page; to add a program, see the <a href="packaging.html">packaging guide</a>.</p></div>
 
       <div class="chapter" id="hb-8"><h2>8. Updating the system</h2>
         <p>There is no in-place updater: to move to a newer systemLinux, write the new ISO to a stick and run <code>systemlinux-install</code> again (onto a new partition, or the same one).</p></div>
 
-      <div class="chapter" id="hb-9"><h2>9. Programs you built</h2>
-        <p>Software installed with <code>get</code> goes under <code>/usr/local</code> (or the prefix you chose). Remove it with that project&rsquo;s own <code>make uninstall</code>, or build it with <code>get -d</code> into a staging directory first to see what it installs.</p></div>
+      <div class="chapter" id="hb-9"><h2>9. Managing installed packages</h2>
+        <p><code>get list</code> shows what you installed (<code>*</code> marks what you asked for, the rest are dependencies), <code>get files NAME</code> lists a package&rsquo;s files, and <code>get autoremove</code> removes dependencies nothing needs any more. A package never overwrites a file that belongs to another package or to the base system; an existing file in <code>/etc</code> is kept and the new one is installed next to it as <code>FILE.get-new</code>.</p></div>
 
       <div class="chapter" id="hb-10"><h2>10. Recovery</h2>
         <p><strong>Boot an older image:</strong> at the GRUB menu, pick a previous version. Every image installed on the disk stays listed and bootable.</p>
@@ -151,7 +153,15 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
         </ul></div>
     </article>
   </div>
-<hr>
-<p>systemLinux 0.2.2. Owned by everyone who uses it. <a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></p>
+<!-- /content -->
+</main>
+
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.2</span><span>Owned by everyone who uses it.</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
 </body>
 </html>

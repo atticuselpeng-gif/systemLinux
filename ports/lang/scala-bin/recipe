@@ -1,0 +1,8 @@
+version=3.10.0
+description=Scala 3 compiler and tools (needs a JDK)
+url=https://github.com/scala/scala3/releases/download/3.10.0/scala3-3.10.0-x86_64-pc-linux.tar.gz
+sha256=5dc94c2d4c653e29277f8b482b2c7bb90d2737838930c41422c7b253dfec1b3a
+build=bin
+programs=bin/scala:scala
+requires=lang/temurin-bin
+check=cmd:scala

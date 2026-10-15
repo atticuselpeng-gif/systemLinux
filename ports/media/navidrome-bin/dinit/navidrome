@@ -1,0 +1,8 @@
+# Navidrome music server on port 4533, music in /srv/music.
+# Enable with: dinitctl enable navidrome
+type = process
+command = /usr/bin/navidrome --datafolder /var/lib/navidrome --musicfolder /srv/music
+depends-on = early-filesystems
+waits-for = network
+logfile = /var/log/navidrome.log
+smooth-recovery = true

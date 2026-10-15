@@ -1,0 +1,8 @@
+version=1.20.4
+description=Elixir language (needs Erlang)
+url=https://github.com/elixir-lang/elixir/releases/download/v1.20.4/elixir-otp-27.zip
+sha256=4389f216eec086b34a08d70a3eb0a649d00e6631987d1cbb649a2f81092f034c
+build=bin
+programs=bin/elixir:elixir bin/elixirc:elixirc bin/iex:iex bin/mix:mix
+requires=lang/erlang
+check=cmd:elixir

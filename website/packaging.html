@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Packaging guide - systemLinux</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="index.html"><img src="logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="index.html">Home</a><a href="news.html">News</a><a href="about.html">About</a><a href="download.html">Download</a><a href="handbook.html">Handbook</a><a href="get.html">get</a><a href="packages.html">Packages</a><a href="packaging.html" class="on">Packaging</a><a href="system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+
+<div class="wrap page">
+<main class="main">
+<!-- content -->
+<h1>Packaging software for systemLinux</h1>
+<p>A package in systemLinux is a <strong>port</strong>: a folder in the ports tree with a small <code>recipe</code> file that says where the source is and how to build it. <code>get</code> reads the recipe, builds the program from source, installs it into <code>/usr</code> (configuration in <code>/etc</code>) and records every file, so <code>get remove</code> can undo it exactly. This guide shows how to write one.</p>
+<ul>
+<li><a href="#quick-start">Quick start</a></li>
+<li><a href="#the-port-folder">The port folder</a></li>
+<li><a href="#recipe-keys">Recipe keys</a></li>
+<li><a href="#build-types">Build types</a></li>
+<li><a href="#dependencies-requires-and-check">Dependencies</a></li>
+<li><a href="#patches-extra-files-and-build-scripts">Patches, extra files and build scripts</a></li>
+<li><a href="#dinit-services">dinit services</a></li>
+<li><a href="#testing-a-port">Testing a port</a></li>
+<li><a href="#rules-and-conventions">Rules and conventions</a></li>
+<li><a href="#submitting">Submitting</a></li>
+<li><a href="#worked-examples">Worked examples</a></li>
+</ul>
+<h2 id="quick-start">Quick start</h2>
+<p>Packaging GNU <code>hello</code>:</p>
+<pre>git clone https://github.com/tortr-rs/systemLinux &amp;&amp; cd systemLinux
+mkdir -p ports/text/hello
+curl -LO https://ftpmirror.gnu.org/gnu/hello/hello-2.12.2.tar.gz
+sha256sum hello-2.12.2.tar.gz</pre>
+<p><code>ports/text/hello/recipe</code>:</p>
+<pre>version=2.12.2
+description=The GNU Hello program
+url=https://ftpmirror.gnu.org/gnu/hello/hello-2.12.2.tar.gz
+sha256=&lt;the sha256sum output&gt;
+build=configure
+check=cmd:hello</pre>
+<p>Then check it and build it:</p>
+<pre>tools/ports-check.sh --verify text/hello   # layout, keys, dependencies, and the checksum
+sudo ./get install hello                   # in a checkout, get uses ./ports
+hello
+sudo ./get remove hello</pre>
+<p><code>get</code> uses the <code>ports/</code> folder next to the script when there is one, so you can test a checkout without touching <code>/usr/ports</code>. <code>GET_PORTS=/path/to/ports</code> points it at any other tree.</p>
+<h2 id="the-port-folder">The port folder</h2>
+<pre>ports/&lt;category&gt;/&lt;name&gt;/
+    recipe              required: key=value lines
+    patches/*.patch     optional: applied with patch -p1, in name order
+    dinit/&lt;service&gt;     optional: dinit service files, installed to /etc/dinit.d
+    files/&lt;path&gt;        optional: extra files copied into place relative to /
+    build.sh            optional: the build itself, for build=script</pre>
+<p><strong>Categories</strong>: put the port where people will look for it.</p>
+<table>
+<tr><th>category</th><th>for</th></tr>
+<tr><td><code>sys-app</code></td><td>system tools, daemons, file systems, monitoring</td></tr>
+<tr><td><code>dev-apps</code></td><td>developer tools, build systems, version control</td></tr>
+<tr><td><code>dev-libs</code></td><td>libraries</td></tr>
+<tr><td><code>dev-python</code></td><td>Python modules</td></tr>
+<tr><td><code>lang</code></td><td>compilers and interpreters</td></tr>
+<tr><td><code>text</code></td><td>editors, text and file tools, terminal file managers</td></tr>
+<tr><td><code>shells</code></td><td>shells and shell plugins</td></tr>
+<tr><td><code>net</code></td><td>network tools, servers, clients</td></tr>
+<tr><td><code>sec</code></td><td>security and cryptography</td></tr>
+<tr><td><code>media</code></td><td>audio, video, images</td></tr>
+<tr><td><code>x11</code></td><td>X11 and Wayland: servers, libraries, window managers, desktop apps</td></tr>
+<tr><td><code>db</code></td><td>databases</td></tr>
+<tr><td><code>games</code></td><td>games</td></tr>
+<tr><td><code>sci</code></td><td>science and math</td></tr>
+</table>
+<p><strong>Names</strong> use <code>[A-Za-z0-9._+-]</code>, lower case, the upstream name (<code>ripgrep</code>, not <code>rg</code>). A name should be unique across categories, so that <code>get install NAME</code> works without a category. Check first:</p>
+<pre>ls -d ports/*/NAME</pre>
+<h2 id="recipe-keys">Recipe keys</h2>
+<p>The recipe is plain <code>key=value</code>, one per line, read with <code>sed</code> (never run as a shell script). Unknown keys are an error in <code>tools/ports-check.sh</code>.</p>
+<table>
+<tr><th>key</th><th>required</th><th>meaning</th></tr>
+<tr><td><code>version</code></td><td>yes</td><td>upstream version, shown by <code>get list</code> and <code>get info</code></td></tr>
+<tr><td><code>description</code></td><td>yes</td><td>one line, searched by <code>get search</code></td></tr>
+<tr><td><code>url</code></td><td>yes (except meta-packages)</td><td>the source archive: <code>.tar.gz</code>, <code>.tgz</code>, <code>.tar.bz2</code>, <code>.tar.xz</code>, <code>.tar.zst</code> or <code>.tar</code></td></tr>
+<tr><td><code>sha256</code></td><td>yes</td><td>checksum of that archive; a mismatch stops the install</td></tr>
+<tr><td><code>build</code></td><td>recommended</td><td>the build type (below); detected from the source when left out</td></tr>
+<tr><td><code>configure_args</code></td><td>no</td><td>extra arguments for configure / cmake / meson / pip / cargo / go, or for build.sh</td></tr>
+<tr><td><code>make_args</code></td><td>no</td><td>extra arguments for make (configure, autotools, make, perl); for go, the packages to build</td></tr>
+<tr><td><code>requires</code></td><td>no</td><td>space-separated <code>category/name</code> atoms built first</td></tr>
+<tr><td><code>check</code></td><td>no</td><td>how to tell whether the system already has it (see below)</td></tr>
+<tr><td><code>srcdir</code></td><td>no</td><td>build in this subfolder of the source (for example one crate of a Rust workspace)</td></tr>
+</table>
+<p>A <strong>meta-package</strong> has no <code>url</code>, only <code>requires</code> (for example <code>x11/xfce4</code> pulls in the whole desktop).</p>
+<p><strong>Where to get the URL</strong>: prefer the release tarball upstream publishes (<code>releases/download/...</code>, ftp mirrors), because it usually contains a ready <code>configure</code> script. GitHub tag archives (<code>https://github.com/OWNER/REPO/archive/refs/tags/TAG.tar.gz</code>) work too; their checksums are stable. For GNU software use <code>https://ftpmirror.gnu.org/gnu/...</code>. Always <code>https</code>.</p>
+<h2 id="build-types">Build types</h2>
+<p><code>get</code> builds every port with <code>DESTDIR</code> staging into an empty folder, then copies the files into <code>/</code> and records them. The prefix is <code>/usr</code> (<code>$PREFIX</code> below), with libraries in <code>/usr/lib64</code>, configuration in <code>/etc</code> and state in <code>/var</code>; get passes those directories to every build system that takes them (<code>--libdir</code>, <code>--sysconfdir</code>, <code>--localstatedir</code> and the cmake/meson equivalents).</p>
+<table>
+<tr><th>build</th><th>what get runs</th></tr>
+<tr><td><code>configure</code></td><td><code>./configure --prefix=$PREFIX configure_args</code>, <code>make make_args</code>, <code>make install DESTDIR=...</code></td></tr>
+<tr><td><code>autotools</code></td><td>like <code>configure</code>, but first <code>./autogen.sh</code> or <code>autoreconf -fi</code> (for git archives with no <code>configure</code>)</td></tr>
+<tr><td><code>cmake</code></td><td><code>cmake -G Ninja -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF configure_args</code>, build, install</td></tr>
+<tr><td><code>meson</code></td><td><code>meson setup --prefix=$PREFIX --buildtype=release configure_args</code>, compile, install</td></tr>
+<tr><td><code>make</code></td><td><code>make PREFIX=$PREFIX prefix=$PREFIX configure_args make_args</code>, then the same with <code>install DESTDIR=...</code></td></tr>
+<tr><td><code>python</code></td><td><code>pip install --no-deps --no-build-isolation --prefix=$PREFIX</code> (needs the build backend installed: add it to <code>requires</code>)</td></tr>
+<tr><td><code>cargo</code></td><td><code>cargo install --locked --path .</code> (add <code>lang/rust</code> to <code>requires</code>)</td></tr>
+<tr><td><code>go</code></td><td><code>go build -trimpath -o $PREFIX/bin/ make_args</code> (<code>make_args</code> defaults to <code>./...</code>; name the main package, e.g. <code>./cmd/gh</code>)</td></tr>
+<tr><td><code>perl</code></td><td><code>perl Makefile.PL PREFIX=$PREFIX INSTALLDIRS=site</code>, make, install</td></tr>
+<tr><td><code>fonts</code></td><td>no build: every <code>.ttf</code>, <code>.otf</code>, <code>.ttc</code> and <code>.pcf.gz</code> goes to <code>$PREFIX/share/fonts/NAME</code>, then <code>fc-cache</code></td></tr>
+<tr><td><code>script</code></td><td>runs the port's <code>build.sh</code> (see below)</td></tr>
+</table>
+<p>Builds use all CPUs (<code>get -j N</code> to change). <code>get install -k NAME</code> keeps the build folder when something fails, so you can look at it.</p>
+<h3 id="turning-things-off">Turning things off</h3>
+<p>Builds should not need anything the port does not list in <code>requires</code>. Turn off what a desktop distribution would not want by default or what pulls in big dependencies:</p>
+<ul>
+<li><strong>documentation</strong>: <code>-Ddocs=false</code>, <code>-Dman-pages=disabled</code>, <code>--disable-gtk-doc</code>, <code>--disable-html-docs</code></li>
+<li><strong>tests and examples</strong>: <code>-Dtests=false</code>, <code>-DBUILD_TESTING=OFF</code> (already passed for cmake)</li>
+<li><strong>introspection</strong>: <code>-Dintrospection=disabled</code> (there is no gobject-introspection in the base)</li>
+<li><strong>systemd</strong>: always off: <code>-Dsystemd=disabled</code>, <code>-Dlogind=disabled</code>, <code>SYSTEMD=0</code>. systemLinux has no systemd (see <code>docs/DINIT.md</code>); programs that need sd-bus can use <code>dev-libs/basu</code>.</li>
+</ul>
+<p>Meson errors on options that do not exist, so copy option names from the project's <code>meson_options.txt</code> / <code>meson.options</code> for the exact version you package.</p>
+<h2 id="dependencies-requires-and-check">Dependencies: requires and check</h2>
+<p><code>requires</code> lists what must be installed before building: libraries, build tools, and things needed at run time. Use full atoms (<code>dev-libs/cairo</code>, not <code>cairo</code>). Build tools count too: meson ports need <code>dev-apps/meson dev-apps/ninja</code>, cmake ports <code>dev-apps/cmake</code>, Rust ports <code>lang/rust</code>, Go ports <code>dev-apps/go</code>.</p>
+<p><code>get</code> skips a dependency the system already has:</p>
+<ol>
+<li value="1">installed with get earlier, or</li>
+<li value="2">the port's <code>check</code> says the system has it, or</li>
+<li value="3">without a <code>check</code>: the base system has a package of the same name (recorded in get's database as <code>base/NAME</code>).</li>
+</ol>
+<p><code>check</code> takes one of:</p>
+<table>
+<tr><th>check</th><th>means "already there" when</th></tr>
+<tr><td><code>pkgconfig:NAME</code></td><td><code>pkg-config --exists NAME</code> (use for libraries)</td></tr>
+<tr><td><code>cmd:NAME</code></td><td><code>NAME</code> is in <code>PATH</code> (use for programs)</td></tr>
+<tr><td><code>file:/PATH</code></td><td>that file exists</td></tr>
+<tr><td><code>python:MODULE</code></td><td><code>python3 -c &quot;import MODULE&quot;</code> works</td></tr>
+</table>
+<p><strong>One set of files.</strong> get records the base system's files too, so it knows who owns every file in <code>/usr</code> and <code>/etc</code>. A port never overwrites a file another package owns (the install stops and names the owner), with one exception: a port <strong>replaces the base package with the same name</strong> in place (its files take over the base package's), for when the base copy lacks a feature. Such a port cannot be removed without <code>-f</code>, since the system would lose that package.</p>
+<p>**Always add a <code>check</code>**. It matters when the base has a package of the same name built without something you need: the base <code>cairo</code> has no X11 support, so <code>dev-libs/cairo</code> says <code>check=pkgconfig:cairo-xcb</code> and gets rebuilt for i3. It also catches name differences: the base calls the PCRE2 library <code>libpcre2</code>, so <code>dev-libs/pcre2</code> says <code>check=pkgconfig:libpcre2-8</code>; without it get would try to build it and stop at the first file <code>base/libpcre2</code> owns.</p>
+<p>To see what a library's pkg-config name is: <code>ls /usr/lib64/pkgconfig /usr/share/pkgconfig</code>, or look for the <code>.pc.in</code> / <code>pkgconfig</code> lines in the source.</p>
+<h2 id="patches-extra-files-and-build-scripts">Patches, extra files and build scripts</h2>
+<p><strong>patches/</strong>: every <code>*.patch</code> is applied with <code>patch -p1</code> from the top of the source (after <code>srcdir</code>), in name order. Number them: <code>01-fix-build-with-gcc15.patch</code>. Start each patch with a line or two saying why it is needed, and send fixes upstream when you can. Make one with:</p>
+<pre>tar xf foo-1.0.tar.gz &amp;&amp; cp -r foo-1.0 foo-1.0.orig
+# edit foo-1.0/...
+diff -ruN foo-1.0.orig foo-1.0 &gt; ports/cat/foo/patches/01-what-it-fixes.patch</pre>
+<p><strong>files/</strong>: copied into place relative to <code>/</code> after the build: <code>files/etc/greetd/config.toml</code> becomes <code>/etc/greetd/config.toml</code>. Use it for default configuration, wrapper scripts and helpers. A configuration file the user already has is never overwritten: the port's version is installed next to it as <code>FILE.get-new</code>.</p>
+<p><strong>build.sh</strong> (<code>build=script</code>): for software that none of the build types fit, for example a prebuilt toolchain (<code>lang/rust</code>) or a project with an unusual build. It runs with <code>bash -e</code> in the source folder, and gets:</p>
+<table>
+<tr><th>variable</th><th>value</th></tr>
+<tr><td><code>DESTDIR</code></td><td>the staging folder; install into <code>$DESTDIR$PREFIX/...</code></td></tr>
+<tr><td><code>PREFIX</code></td><td><code>/usr</code></td></tr>
+<tr><td><code>SYSCONFDIR</code>, <code>LOCALSTATEDIR</code></td><td><code>/etc</code>, <code>/var</code></td></tr>
+<tr><td><code>JOBS</code></td><td>parallel jobs to use</td></tr>
+<tr><td><code>PORTDIR</code></td><td>the port's own folder</td></tr>
+</table>
+<p><code>configure_args</code> are passed as its arguments. Keep it short and never write outside <code>$DESTDIR</code>.</p>
+<p><code>get</code> does not run install scripts after copying the files. Things that must happen at run time (creating a system user, a cache folder) belong in the program's start-up: for a daemon, a small start script in <code>files/usr/libexec/</code> that the dinit service runs (see <code>sys-app/greetd</code>).</p>
+<h2 id="dinit-services">dinit services</h2>
+<p>systemLinux uses <a href="https://github.com/davmac314/dinit">dinit</a> as init (<code>docs/DINIT.md</code>). A daemon port should ship a service file in <code>dinit/</code>; it is installed to <code>/etc/dinit.d/NAME</code> and the user turns it on with <code>dinitctl enable NAME</code>. Do not ship systemd units or OpenRC scripts (turn their installation off).</p>
+<p><code>ports/sys-app/seatd/dinit/seatd</code>:</p>
+<pre># Seat management daemon: gives Wayland compositors (sway, ...) access to the GPU and input devices.
+# Members of the &quot;video&quot; group may use it.
+type = process
+command = /usr/bin/seatd -g video
+depends-on = early-filesystems
+waits-for = udev-trigger
+smooth-recovery = true</pre>
+<ul>
+<li><code>type = process</code>: dinit runs the program in the foreground and restarts it. Use the daemon's "do not fork" option (<code>--nofork</code>, <code>-f</code>, <code>-D</code>, <code>--foreground</code>). Prefer this type.</li>
+<li><code>type = bgprocess</code> with <code>pid-file = /run/foo.pid</code>: only for daemons that cannot stay in the foreground.</li>
+<li><code>type = scripted</code> with <code>command =</code> (and <code>stop-command =</code>): one-off setup, like loading settings.</li>
+<li>Dependencies use the base services: <code>early-filesystems</code> (mounts), <code>udev-trigger</code> (devices), <code>system-identity</code> (hostname), <code>dbus</code>, <code>network</code> (NetworkManager up). Use <code>depends-on</code> for hard needs and <code>waits-for</code> for "start after, but do not fail without it".</li>
+<li>Programs are in <code>/usr/bin</code>.</li>
+<li>Logs: add <code>logfile = /var/log/NAME.log</code> if the daemon writes to stdout.</li>
+<li>Start a comment block with what the service does and how to use it.</li>
+</ul>
+<p>Test it on a running system: <code>dinitctl start NAME</code>, <code>dinitctl status NAME</code>, <code>dinitctl stop NAME</code>.</p>
+<p>Per-user services (PipeWire, notification daemons) are started from the user's session instead: the window manager's config (<code>exec pipewire</code> in sway), <code>~/.xinitrc</code>, or the program's own autostart. Say how in the description or a comment in the shipped config.</p>
+<h2 id="testing-a-port">Testing a port</h2>
+<ol>
+<li value="1"><strong>Check the recipe:</strong></li>
+</ol>
+<pre>tools/ports-check.sh                     # whole tree: layout, keys, requires, cycles
+tools/ports-check.sh --verify cat/name   # also downloads the source and checks sha256</pre>
+<ol>
+<li value="2"><strong>Build it on systemLinux</strong>, ideally a fresh live system (in QEMU or on real hardware), so dependencies that your own machine happens to have do not hide missing <code>requires</code>:</li>
+</ol>
+<pre>sudo ./get install -k cat/name</pre>
+<ol>
+<li value="3"><strong>Run it.</strong> Start the program, not just <code>--version</code>; for a library, build something that uses it.</li>
+<li value="4"><strong>Remove it</strong> with <code>sudo ./get remove cat/name</code> and check nothing is left behind.</li>
+<li value="5">For a service: <code>dinitctl enable NAME</code>, reboot, <code>dinitctl status NAME</code>.</li>
+</ol>
+<p>A quick way to test without booting: extract the release image and build inside it as a chroot.</p>
+<pre>bsdtar -xf systemLinux-*.iso live/rootfs.squashfs
+unsquashfs -d img live/rootfs.squashfs
+cp -r ports img/usr/ports &amp;&amp; install -m755 get img/usr/local/bin/get
+sudo mount --rbind /dev img/dev &amp;&amp; sudo mount -t proc proc img/proc
+sudo cp /etc/resolv.conf img/etc/resolv.conf
+sudo chroot img /usr/local/bin/get install cat/name</pre>
+<h2 id="rules-and-conventions">Rules and conventions</h2>
+<ul>
+<li><strong>Checksums are required.</strong> Compute them from a download you made yourself over https.</li>
+<li><strong>Latest stable release</strong>, not a git snapshot, unless upstream has no releases.</li>
+<li><strong>No network during the build</strong> except where the language tool requires it (cargo and go download their locked dependencies; meson may fetch declared subprojects).</li>
+<li><strong>Use the standard directories</strong>: <code>$PREFIX</code> (<code>/usr</code>), <code>/etc</code> for configuration, <code>/etc/dinit.d</code> for services (through <code>dinit/</code>). Nothing goes to <code>/usr/local</code>, which is left to the user.</li>
+<li><strong>One program per port.</strong> Split libraries that other ports need into their own port.</li>
+<li>**Complete <code>requires</code>.** If it links against it or runs it, list it.</li>
+<li><strong>Free software that may be redistributed.</strong> No ports that download proprietary blobs without saying so in the description.</li>
+<li><strong>Updating a port</strong>: change <code>version</code>, <code>url</code> and <code>sha256</code> together, re-test, and drop patches upstream has merged.</li>
+</ul>
+<h2 id="submitting">Submitting</h2>
+<ol>
+<li value="1">Fork <a href="https://github.com/tortr-rs/systemLinux">https://github.com/tortr-rs/systemLinux</a> and make a branch.</li>
+<li value="2">Add or update the port, run <code>tools/ports-check.sh</code>, and build it on systemLinux.</li>
+<li value="3">Open a pull request. Say what you tested (built, ran, services started) and on what (live ISO, installed system, chroot). CI runs <code>tools/ports-check.sh</code> on every change under <code>ports/</code>.</li>
+</ol>
+<p>Bug in an existing port? Open an issue with the output of <code>get install -k NAME</code>.</p>
+<h2 id="worked-examples">Worked examples</h2>
+<p><strong>Meson library</strong> (<code>ports/dev-libs/basu/recipe</code>):</p>
+<pre>version=0.2.1
+description=The sd-bus D-Bus library without systemd
+url=https://git.sr.ht/~emersion/basu/archive/v0.2.1.tar.gz
+sha256=43b327073d1ac7bc6cbc0d3dfff729348fc970dfff0551ad40e366332e990204
+build=meson
+configure_args=-Daudit=disabled -Dlibcap=disabled
+requires=dev-apps/meson dev-apps/ninja
+check=pkgconfig:basu</pre>
+<p><strong>Plain Makefile with arguments</strong> (<code>ports/x11/dmenu/recipe</code>): suckless programs hard-code old X11 paths (<code>/usr/X11R6</code>), so <code>make_args</code> points them at the right ones:</p>
+<pre>build=make
+make_args=X11INC=/usr/include X11LIB=/usr/lib64 FREETYPEINC=/usr/include/freetype2
+requires=x11/libx11 x11/libxft x11/libxinerama
+check=cmd:dmenu</pre>
+<p><strong>Rust workspace</strong> (<code>ports/sys-app/greetd/recipe</code>): <code>srcdir</code> picks the crate, and the port ships a dinit service, a start script, a PAM file and a default config:</p>
+<pre>ports/sys-app/greetd/
+    recipe                                  build=cargo, srcdir=greetd, requires=lang/rust dev-libs/pam
+    dinit/greetd                            runs /usr/libexec/greetd-start
+    files/usr/libexec/greetd-start          creates the greeter user, then execs greetd
+    files/etc/greetd/config.toml            tuigreet on tty7
+    files/etc/pam.d/greetd</pre>
+<p><strong>Go program with several commands</strong> (<code>ports/dev-apps/gh/recipe</code>): <code>make_args=./cmd/gh</code> builds only <code>gh</code>.</p>
+<p><strong>Prebuilt toolchain</strong> (<code>ports/lang/rust</code>): <code>build=script</code> with a three-line <code>build.sh</code> running the official installer into <code>$DESTDIR</code>.</p>
+<!-- /content -->
+</main>
+
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.2</span><span>Owned by everyone who uses it.</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

@@ -1,0 +1,7 @@
+version=23.1.0
+description=C/C++ language server
+url=https://github.com/clangd/clangd/releases/download/23.1.0/clangd-linux-23.1.0.zip
+sha256=e53b1a96196095faedb7642cf64964f7fb9ad4a0c1f00dd2c172a3d9dcbafdfd
+build=bin
+programs=bin/clangd:clangd
+check=cmd:clangd

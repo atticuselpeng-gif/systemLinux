@@ -1,0 +1,6 @@
+version=2.6.0
+description=Lua code formatter
+url=https://github.com/JohnnyMorganz/StyLua/releases/download/v2.6.0/stylua-linux-x86_64-musl.zip
+sha256=48ee7db28346f96f4bd545e190ab080a88a7b5a664e97649cf5d5c60426f402d
+build=bin
+check=cmd:stylua

@@ -1,0 +1,6 @@
+version=0.34.1
+description=Alert routing for Prometheus
+url=https://github.com/prometheus/alertmanager/releases/download/v0.34.1/alertmanager-0.34.1.linux-amd64.tar.gz
+sha256=265b9d1e55ef0d5306a436018af6d2b686c2ce051f03d968f7464ecb1372a7e8
+build=bin
+check=cmd:alertmanager

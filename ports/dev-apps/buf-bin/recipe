@@ -1,0 +1,6 @@
+version=1.74.0
+description=Protocol Buffers tooling
+url=https://github.com/bufbuild/buf/releases/download/v1.74.0/buf-Linux-x86_64.tar.gz
+sha256=cc482285b2c388c93f8bed0a972330695c1c8dd121d5ece460d25ceed93f21ac
+build=bin
+check=cmd:buf

@@ -1,0 +1,6 @@
+version=0.120.1
+description=Vulnerability scanner
+url=https://github.com/anchore/grype/releases/download/v0.120.1/grype_0.120.1_linux_amd64.tar.gz
+sha256=0a9ee97ef5ae2ee953b0a80098105052e846cdbe319a57d808b519c33cd1343d
+build=bin
+check=cmd:grype

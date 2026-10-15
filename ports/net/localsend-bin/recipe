@@ -1,0 +1,7 @@
+version=1.18.2
+description=Share files to nearby devices (official AppImage)
+url=https://github.com/localsend/localsend/releases/download/v1.18.2/LocalSend-1.18.2-linux-x86-64.AppImage
+sha256=19f21613d1834f6caa69517113670461a3f10b80a2a315f86548c0663d9c0aaf
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:localsend

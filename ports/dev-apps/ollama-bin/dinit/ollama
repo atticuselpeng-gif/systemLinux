@@ -1,0 +1,9 @@
+# Ollama model server on localhost:11434.
+# Enable with: dinitctl enable ollama
+type = process
+command = /usr/bin/ollama serve
+depends-on = early-filesystems
+waits-for = network
+logfile = /var/log/ollama.log
+smooth-recovery = true
+env-file = /etc/ollama.env

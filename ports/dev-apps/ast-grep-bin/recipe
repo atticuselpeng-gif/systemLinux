@@ -1,0 +1,6 @@
+version=0.50.0
+description=Structural code search and rewrite
+url=https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-x86_64-unknown-linux-gnu.zip
+sha256=0fd3f489639abb8465a914b74b8779171577582318d8a940d00399f59dba81c5
+build=bin
+check=cmd:ast-grep

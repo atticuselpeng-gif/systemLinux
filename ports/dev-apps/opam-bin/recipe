@@ -1,0 +1,6 @@
+version=2.6.1
+description=OCaml package manager
+url=https://github.com/ocaml/opam/releases/download/2.6.1/opam-2.6.1-x86_64-linux
+sha256=b533d393a6967150d6ef41cb3d71e147e93ecbabeb59e921aa412c0ae79ebe3d
+build=bin
+check=cmd:opam

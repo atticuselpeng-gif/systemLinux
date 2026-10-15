@@ -1,0 +1,6 @@
+version=4.54.1
+description=YAML, JSON and XML processor
+url=https://github.com/mikefarah/yq/releases/download/v4.54.1/yq_linux_amd64.tar.gz
+sha256=e68a456f90c577af3fe4960184b3a3cf5c461e0348407c10f107da3a5fec8972
+build=bin
+check=cmd:yq

@@ -1,0 +1,6 @@
+version=2026-10
+description=Rust language server
+url=https://github.com/rust-lang/rust-analyzer/releases/download/2026-10-12/rust-analyzer-x86_64-unknown-linux-gnu.gz
+sha256=040cab4e2abc490fadd95c3f6cbc60b941a78761dbc3acf0ec66fd7a97f31db3
+build=bin
+check=cmd:rust-analyzer

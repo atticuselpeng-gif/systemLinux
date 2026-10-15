@@ -1,0 +1,6 @@
+version=0.16.0
+description=Zig language server
+url=https://github.com/zigtools/zls/releases/download/0.16.0/zls-x86_64-linux.tar.xz
+sha256=ded6d562a0b86ee878b1ddf70ffab2797ce3cdca3b02d6077548f9d56dff96b6
+build=bin
+check=cmd:zls

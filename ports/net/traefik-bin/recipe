@@ -1,0 +1,6 @@
+version=3.7.14
+description=Reverse proxy and load balancer
+url=https://github.com/traefik/traefik/releases/download/v3.7.14/traefik_v3.7.14_linux_amd64.tar.gz
+sha256=d08641f5de2dd3788097bddab1ce4b29c10a0b788566970db707fa5c94c71f15
+build=bin
+check=cmd:traefik

@@ -1,0 +1,6 @@
+version=11.5.4
+description=Send files between computers
+url=https://github.com/schollz/croc/releases/download/v11.5.4/croc_v11.5.4_Linux-64bit.tar.gz
+sha256=577f2c4170fac3f8ab244e325cdeea5644788e1cd7620f592a5d365ee349d556
+build=bin
+check=cmd:croc

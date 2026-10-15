@@ -1,0 +1,6 @@
+version=1.2.0
+description=ls with colors and icons
+url=https://github.com/lsd-rs/lsd/releases/download/v1.2.0/lsd-v1.2.0-x86_64-unknown-linux-musl.tar.gz
+sha256=77849da1210336534258551a581401ba19ae6b8d7b66a2a1feff148ad41e3814
+build=bin
+check=cmd:lsd

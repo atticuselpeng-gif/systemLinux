@@ -1,0 +1,8 @@
+# Tailscale daemon; then run: tailscale up
+# Enable with: dinitctl enable tailscale
+type = process
+command = /usr/bin/tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/run/tailscale/tailscaled.sock
+depends-on = early-filesystems
+waits-for = network
+logfile = /var/log/tailscale.log
+smooth-recovery = true

@@ -1,0 +1,6 @@
+version=2026-02
+description=Markdown language server
+url=https://github.com/artempyanykh/marksman/releases/download/2026-02-08/marksman-linux-x64
+sha256=be5098e8213219269c47fc0d916a66fa31ce0602ec967475c722260aabf26087
+build=bin
+check=cmd:marksman

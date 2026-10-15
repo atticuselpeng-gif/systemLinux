@@ -1,0 +1,6 @@
+version=1.2.3
+description=Word-by-word diff
+url=https://ftpmirror.gnu.org/gnu/wdiff/wdiff-1.2.3.tar.gz
+sha256=29a4457eb0ed35c902e6732d71f25e1d6c7fe7fa0eda0fb6c371ed6779b49fd6
+build=configure
+check=cmd:wdiff

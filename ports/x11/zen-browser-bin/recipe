@@ -1,0 +1,8 @@
+version=1.23.2
+description=Zen web browser (Firefox based)
+url=https://github.com/zen-browser/desktop/releases/download/1.23.2b/zen.linux-x86_64.tar.xz
+sha256=5e67f4fa081b1b437243c464449ea1bd2a3b15b6f932487a8aa0c25aa8514600
+build=bin
+programs=zen:zen-browser
+requires=dev-libs/gtk3 dev-libs/pulseaudio x11/libx11 x11/libxcb x11/libxext x11/libxrandr x11/libxcomposite x11/libxdamage x11/libxfixes x11/libxtst dev-libs/alsa-lib dev-libs/fontconfig dev-libs/freetype sys-app/dbus
+check=cmd:zen-browser

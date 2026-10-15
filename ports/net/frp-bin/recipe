@@ -1,0 +1,6 @@
+version=0.71.1
+description=Fast reverse proxy (frpc, frps)
+url=https://github.com/fatedier/frp/releases/download/v0.71.1/frp_0.71.1_linux_amd64.tar.gz
+sha256=1d9875210972a5d1a62b2dc4c48df45ab0af05d3ca1b5e494a014428259df803
+build=bin
+check=cmd:frpc

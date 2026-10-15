@@ -1,0 +1,7 @@
+version=4.20260303.1
+description=Simulate keyboard and mouse input on X
+url=https://github.com/jordansissel/xdotool/archive/refs/tags/v4.20260303.1.tar.gz
+sha256=c1f971a384da588eb99ca0755fc4300316d49c1e612537e3f1de52215e104fa3
+build=make
+requires=x11/libx11 x11/libxtst x11/libxinerama dev-libs/libxkbcommon
+check=cmd:xdotool

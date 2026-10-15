@@ -1,0 +1,7 @@
+version=158.0
+description=Firefox web browser (Mozilla's official build; net/firefox-source builds it from source)
+url=https://ftp.mozilla.org/pub/firefox/releases/158.0/linux-x86_64/en-US/firefox-158.0.tar.xz
+sha256=9549b054ec4cf85f50f6a19d8c6fb79580312e71ebc4ec2cb217ec9af09dc12a
+build=script
+requires=dev-libs/gtk3 dev-libs/pulseaudio x11/libx11 x11/libxcb x11/libxext x11/libxrandr x11/libxcomposite x11/libxdamage x11/libxfixes x11/libxtst dev-libs/alsa-lib dev-libs/fontconfig dev-libs/freetype sys-app/dbus
+check=cmd:firefox

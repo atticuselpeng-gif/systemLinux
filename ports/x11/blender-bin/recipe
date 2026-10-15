@@ -1,0 +1,8 @@
+version=5.2.2
+description=Blender 3D creation suite (official build)
+url=https://download.blender.org/release/Blender5.2/blender-5.2.2-linux-x64.tar.xz
+sha256=84098912789dc450e95697c4184fb8a90acbe5111c2ba4aede3fecb57806a168
+build=bin
+programs=blender:blender
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa x11/libxxf86vm dev-libs/alsa-lib
+check=cmd:blender

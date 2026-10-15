@@ -1,0 +1,8 @@
+# greetd login manager: shows the greeter from /etc/greetd/config.toml (tuigreet by default) on tty7.
+# Enable with: dinitctl enable greetd
+type = process
+command = /usr/libexec/greetd-start
+depends-on = system-identity
+waits-for = udev-trigger
+waits-for = dbus
+smooth-recovery = true

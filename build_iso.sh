@@ -153,23 +153,15 @@ for d in "$ROOTFS"/usr/lib/gcc/*/*/; do
     done
 done
 sudo ldconfig -r "$STAGE"
-# libraries that get builds under /usr/local come first, so a rebuilt library with more features (cairo with X11, ...)
-# is the one programs load
-printf '/usr/local/lib64\n/usr/local/lib\n' | sudo tee "$STAGE/etc/ld.so.conf.d/00-usr-local.conf" >/dev/null
-sudo ldconfig -r "$STAGE"
 # help2man (run by many package builds to make man pages) imports Locale::gettext, whose compiled module was built for
 # an older Perl than the image's and does not load; fall back to untranslated messages so help2man works
 if [ -f "$STAGE/usr/bin/help2man" ]; then
     sudo sed -i 's|^use Locale::gettext qw(gettext);$|BEGIN { eval { require Locale::gettext; Locale::gettext->import(qw(gettext)); 1 } or eval q{ package Locale::gettext; sub domain { bless {}, shift } sub get { $_[1] } package main; sub gettext { $_[0] } 1 }; }|' "$STAGE/usr/bin/help2man"
 fi
-# Python modules that get installs under /usr/local are found by the system Python
-for d in "$STAGE"/usr/lib/python3.*/site-packages; do
-    [ -d "$d" ] || continue
-    v=${d%/site-packages}; v=${v##*/}
-    echo "/usr/local/lib/$v/site-packages" | sudo tee "$d/usr-local.pth" >/dev/null
-done
-# what the image provides, so `get` does not rebuild dependencies the base system already has
-sudo "$BUILD_DIR/tools/live-image/base-packages.sh" "$ROOTFS" "$STAGE" "$STAGE/usr/share/systemlinux/base-packages"
+# what the image provides, recorded in get's database as base/NAME with its files: get does not rebuild what the
+# base system already has, never overwrites base files by accident, and a port replaces its base package in place
+sudo rm -rf "$STAGE/var/db/get/pkgs"/base__*
+sudo "$BUILD_DIR/tools/live-image/base-packages.sh" "$ROOTFS" "$STAGE" "$STAGE/usr/share/systemlinux/base-packages" "$STAGE/var/db/get"
 # every library that PID 1 and the core programs need must resolve inside the image
 sudo "$BUILD_DIR/tools/live-image/check-libs.sh" "$STAGE" usr/bin/dinit usr/bin/dinitctl usr/bin/udevd usr/bin/udevadm \
     usr/bin/bash usr/bin/NetworkManager usr/bin/dbus-daemon usr/bin/agetty usr/bin/login usr/bin/mount usr/bin/ls \

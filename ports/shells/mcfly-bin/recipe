@@ -1,0 +1,6 @@
+version=0.9.4
+description=Smart shell history search
+url=https://github.com/cantino/mcfly/releases/download/v0.9.4/mcfly-v0.9.4-x86_64-unknown-linux-musl.tar.gz
+sha256=72d2c6fdaa111ac96c2cf725fc40e313e2856643482be58608911a09440313f1
+build=bin
+check=cmd:mcfly

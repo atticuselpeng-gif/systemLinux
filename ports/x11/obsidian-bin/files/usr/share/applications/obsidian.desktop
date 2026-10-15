@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Obsidian
+Exec=obsidian %U
+Icon=obsidian
+Terminal=false
+Type=Application
+Categories=Office;

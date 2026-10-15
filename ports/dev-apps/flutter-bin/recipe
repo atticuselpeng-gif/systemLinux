@@ -1,0 +1,8 @@
+version=3.47.7
+description=Flutter SDK (official build)
+url=https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.47.7-stable.tar.xz
+sha256=af7455f540df951184c7953fbe3cf884766e7541dacf8571f9f582db03dd6230
+build=bin
+programs=bin/flutter:flutter
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/gtk3
+check=cmd:flutter

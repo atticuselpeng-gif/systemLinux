@@ -1,0 +1,7 @@
+version=31.8.0
+description=Prompt theme engine
+url=https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v31.8.0/posh-linux-amd64
+sha256=c0e1c088d2b366a60e5f4047a5eb02cf6f10b03989191bbc564d733aafba307f
+build=bin
+programs=posh-linux-amd64:oh-my-posh
+check=cmd:oh-my-posh

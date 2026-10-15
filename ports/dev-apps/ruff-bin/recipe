@@ -1,0 +1,6 @@
+version=0.17.0
+description=Fast Python linter and formatter
+url=https://github.com/astral-sh/ruff/releases/download/0.17.0/ruff-x86_64-unknown-linux-musl.tar.gz
+sha256=0df9421fd0df9aa7a62dab4d1086e085b7c7888b6343fc5a9c5f630771d61aae
+build=bin
+check=cmd:ruff

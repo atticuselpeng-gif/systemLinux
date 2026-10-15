@@ -1,3 +1,8 @@
-url=https://www.kernel.org/pub/software/scm/git/git-2.45.2.tar.xz
+version=2.56.0
+description=Distributed version control system
+url=https://www.kernel.org/pub/software/scm/git/git-2.56.0.tar.xz
+sha256=26c56c296b38c0695b26fa95f475f1d01704d2d38e73465ca30b0b2f5dc789d3
+build=configure
 configure_args=--without-tcltk
-requires=dev-libs/zlib dev-libs/openssl net/curl
+requires=dev-libs/zlib dev-libs/openssl net/curl dev-libs/expat
+check=cmd:git

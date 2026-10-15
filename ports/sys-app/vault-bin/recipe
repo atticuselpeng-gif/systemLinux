@@ -1,0 +1,6 @@
+version=2.1.2
+description=HashiCorp Vault: Secrets management (official build)
+url=https://releases.hashicorp.com/vault/2.1.2/vault_2.1.2_linux_amd64.zip
+sha256=873bbdac35ca4b0c3e2886c41991ca1272fc452826208d5499f32d12cd2e76e1
+build=bin
+check=cmd:vault

@@ -1,0 +1,6 @@
+version=1.37.1+k3s1
+description=Lightweight Kubernetes
+url=https://github.com/k3s-io/k3s/releases/download/v1.37.1%2Bk3s1/k3s
+sha256=92b94582eb7b34a8cf532e6006842b9ed215a6783cf56a3dd6271fd35243b2c0
+build=bin
+check=cmd:k3s

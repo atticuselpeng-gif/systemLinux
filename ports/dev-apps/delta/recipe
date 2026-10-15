@@ -1,0 +1,7 @@
+version=0.20.1
+description=Syntax highlighting pager for git diffs
+url=https://github.com/dandavison/delta/archive/refs/tags/0.20.1.tar.gz
+sha256=d9d502396e3595ee8fd926f1ed2e54ac9935baabd3569a3753efab36304f90fa
+build=cargo
+requires=lang/rust
+check=cmd:delta

@@ -1,0 +1,7 @@
+version=0.14.9
+description=Graphical process and system monitor (btm)
+url=https://github.com/ClementTsang/bottom/archive/refs/tags/0.14.9.tar.gz
+sha256=1dbb940c763fb583b7e1c7dfa165b73ed9a0ba712e72cc97311c5b1c098d5b72
+build=cargo
+requires=lang/rust
+check=cmd:btm

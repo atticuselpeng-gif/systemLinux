@@ -1,0 +1,8 @@
+# AdGuard Home; set it up at http://localhost:3000.
+# Enable with: dinitctl enable adguardhome
+type = process
+command = /usr/bin/AdGuardHome -w /var/lib/adguardhome --no-check-update
+depends-on = early-filesystems
+waits-for = network
+logfile = /var/log/adguardhome.log
+smooth-recovery = true

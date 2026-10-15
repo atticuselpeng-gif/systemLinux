@@ -1,0 +1,8 @@
+# File Browser on port 8080, serving /srv.
+# Enable with: dinitctl enable filebrowser
+type = process
+command = /usr/bin/filebrowser -d /var/lib/filebrowser.db -r /srv -p 8080
+depends-on = early-filesystems
+waits-for = network
+logfile = /var/log/filebrowser.log
+smooth-recovery = true

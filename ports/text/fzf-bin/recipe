@@ -1,0 +1,6 @@
+version=0.74.5
+description=Command line fuzzy finder
+url=https://github.com/junegunn/fzf/releases/download/v0.74.5/fzf-0.74.5-linux_amd64.tar.gz
+sha256=d47d7f882972c7d674dbbba998ffa4116e68379616ffac7695d0671e9a722c5f
+build=bin
+check=cmd:fzf

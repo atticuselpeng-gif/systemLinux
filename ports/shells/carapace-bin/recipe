@@ -1,0 +1,6 @@
+version=1.8.0
+description=Multi-shell completion generator
+url=https://github.com/carapace-sh/carapace-bin/releases/download/v1.8.0/carapace-bin_1.8.0_linux_amd64.tar.gz
+sha256=6883bb61fe88a8f56c7b74bc9ff68445791ee22697f705b59a063443d8ffc8ad
+build=bin
+check=cmd:carapace

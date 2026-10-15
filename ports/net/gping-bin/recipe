@@ -1,0 +1,6 @@
+version=1.21.0
+description=ping with a graph
+url=https://github.com/orf/gping/releases/download/gping-v1.21.0/gping-Linux-musl-x86_64.tar.gz
+sha256=cea59e22f6faf941f054cf0925433a2e3e4e6c42dc5c778b0265279a5056aeec
+build=bin
+check=cmd:gping

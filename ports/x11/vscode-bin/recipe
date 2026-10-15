@@ -1,0 +1,8 @@
+version=1.142.0
+description=Visual Studio Code (official Microsoft build)
+url=https://vscode.download.prss.microsoft.com/dbazure/download/stable/6d62b1d5dace93a33b3a6d3eca1317bd5e15bcb1/code-stable-x64-1792034917.tar.gz
+sha256=fcc1ccb435685adcc748287bbde524589569deedb6b4ad5560071583cbe00ae0
+build=bin
+programs=bin/code:code
+requires=dev-libs/gtk3 sec/nss dev-libs/alsa-lib dev-libs/mesa dev-libs/libxkbcommon x11/libxcomposite x11/libxdamage x11/libxrandr x11/libxkbfile x11/libxtst x11/libxscrnsaver sys-app/cups dev-libs/vulkan-loader sys-app/dbus
+check=cmd:code

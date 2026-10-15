@@ -1,0 +1,7 @@
+version=0.40.4
+description=Run large language models locally
+url=https://github.com/ollama/ollama/releases/download/v0.40.4/ollama-linux-amd64.tar.zst
+sha256=15f31e9576d15a481e099b4145dba6e9f8c1f295927d6b8895300ae30ed3740a
+build=bin
+programs=bin/ollama:ollama
+check=cmd:ollama

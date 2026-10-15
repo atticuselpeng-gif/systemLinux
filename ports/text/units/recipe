@@ -1,0 +1,6 @@
+version=2.27
+description=Unit conversion calculator
+url=https://ftpmirror.gnu.org/gnu/units/units-2.27.tar.gz
+sha256=e1bbdb09672e7c08eee986749e7a1629eb84a6bdf41f5a2a79d6804444abbe10
+build=configure
+check=cmd:units

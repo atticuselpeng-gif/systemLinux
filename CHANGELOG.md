@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.2.3
+
+### Added
+- `get` is a real package manager: `get install/remove/autoremove/list/search/info/files/sync/profile`
+  (`get NAME` installs). Dependencies are resolved from the recipes' `requires`, packages the base system already
+  has are not rebuilt, every installed file is recorded so `get remove` deletes exactly what was installed, and a
+  package never overwrites a file another package owns.
+- Recipe format: `version`, `description`, `check` (`pkgconfig:`/`cmd:`/`file:`/`python:`), `srcdir`, `make_args`;
+  port folders `patches/`, `dinit/` (services), `files/` and `build.sh`. Build types: configure, autotools, cmake,
+  meson, make, python, cargo, go, perl, fonts, script.
+- Ports: the graphics stack and desktops: X.Org (libraries, Xorg 21.1, Xwayland, input/video drivers), Mesa with
+  LLVM, Wayland, wlroots, libinput, cairo with X11, pango, fonts; i3, sway, bspwm, dwm, st, foot, xterm; seatd with
+  a dinit service.
+- Ports: the greetd login manager with tuigreet (dinit service), PipeWire 1.6 and WirePlumber (started together),
+  swaylock, swayidle, grim, mako (with basu for sd-bus), dunst, i3lock, sxhkd, xclip, xsel, xdotool, brightnessctl,
+  playerctl, pamixer, geany, nsxiv; Rust 1.99 and many popular command line tools (helix, zellij, yazi, eza,
+  zoxide, bottom, delta, lazygit, gh, micro, nnn, yq, ...).
+- `docs/PACKAGING.md` (and the website's Packaging page): how to write, test and submit a port.
+- One package world: get installs into `/usr` and `/etc` like the base system, and the image records its own
+  packages in get's database (`base/NAME`, with their files). A port can no longer shadow or silently overwrite a base
+  package: it either replaces the base package of the same name in place or is refused. Existing `/etc` configuration
+  is kept (the new file is installed as `.get-new`).
+
+### Fixed
+- `help2man` works (it needed `Locale::gettext`, whose compiled module did not match the image's Perl).
+- Ports: duplicate `dev-libs/xcb-util` removed; the Python `mako` port is now `dev-python/python-mako`, so
+  `get install mako` means the notification daemon.
+
 ## 0.2.2
 
 ### Removed

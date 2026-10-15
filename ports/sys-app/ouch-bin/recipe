@@ -1,0 +1,6 @@
+version=0.8.3
+description=Compress and decompress any format
+url=https://github.com/ouch-org/ouch/releases/download/0.8.3/ouch-x86_64-unknown-linux-musl.tar.gz
+sha256=eaab9b997a823f584557ac5f85205105ae577a4c4fbd23926b686469cfa19881
+build=bin
+check=cmd:ouch

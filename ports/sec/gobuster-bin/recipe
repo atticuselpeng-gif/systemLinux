@@ -1,0 +1,6 @@
+version=3.8.2
+description=Directory, DNS and vhost brute forcing
+url=https://github.com/OJ/gobuster/releases/download/v3.8.2/gobuster_Linux_x86_64.tar.gz
+sha256=c8a8c6a966eeb011d682a0ef2305a3e3a86b8b3fabe744350c00a766cc0f8021
+build=bin
+check=cmd:gobuster

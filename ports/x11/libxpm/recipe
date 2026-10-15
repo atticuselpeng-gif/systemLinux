@@ -1,6 +1,6 @@
 version=3.5.17
 description=X Pixmap library
-url=https://www.x.org/releases/individual/lib/libXpm-3.5.17.tar.xz
+url=https://xorg.freedesktop.org/archive/individual/lib/libXpm-3.5.17.tar.xz
 sha256=64b31f81019e7d388c822b0b28af8d51c4622b83f1f0cb6fa3fc95e271226e43
 build=configure
 requires=x11/libxext

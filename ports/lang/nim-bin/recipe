@@ -1,0 +1,7 @@
+version=2.2.12
+description=Nim compiler and nimble (official build)
+url=https://nim-lang.org/download/nim-2.2.12-linux_x64.tar.xz
+sha256=7df1611449a6842af69322aa2c1206942982650a5f6bc0d37bc8ec109932f638
+build=bin
+programs=bin/nim:nim bin/nimble:nimble
+check=cmd:nim

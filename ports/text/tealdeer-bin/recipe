@@ -1,0 +1,7 @@
+version=1.9.0
+description=Fast tldr client
+url=https://github.com/tealdeer-rs/tealdeer/releases/download/v1.9.0/tealdeer-linux-x86_64-musl
+sha256=dc7263b550e90c0689ea2cb434e3144469805d5dddecbb1f7fc534e1185b7408
+build=bin
+programs=tealdeer-linux-x86_64-musl:tldr
+check=cmd:tldr

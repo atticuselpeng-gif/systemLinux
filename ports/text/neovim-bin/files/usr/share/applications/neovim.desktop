@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Neovim
+Exec=nvim %U
+Icon=nvim
+Terminal=false
+Type=Application
+Categories=Utility;TextEditor;

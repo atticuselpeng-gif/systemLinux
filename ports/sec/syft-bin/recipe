@@ -1,0 +1,6 @@
+version=1.54.1
+description=Generate software bills of materials
+url=https://github.com/anchore/syft/releases/download/v1.54.1/syft_1.54.1_linux_amd64.tar.gz
+sha256=c069905b391cc4c20a5ba65ad5c10be2a7ba074f8ea6ad203e24d14e303dad47
+build=bin
+check=cmd:syft

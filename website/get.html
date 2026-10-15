@@ -3,42 +3,73 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>systemLinux 0.2.2: get</title>
+<title>The get package tool - systemLinux</title>
 <link rel="icon" type="image/svg+xml" href="logo.svg">
-<style>
-body{font-family:monospace;max-width:50em;margin:1em auto;padding:0 1em;line-height:1.4}
-pre{background:#eee;padding:.5em;overflow:auto}
-table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;text-align:left;vertical-align:top}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1><img src="logo.svg" alt="" width="32" height="32"> systemLinux 0.2.2</h1>
-<p><a href="index.html">Home</a> | <a href="about.html">About</a> | <a href="download.html">Download</a> | <a href="news.html">News</a> | <b>get</b> | <a href="handbook.html">Handbook</a> | <a href="system.html">System</a></p>
-<hr>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="index.html"><img src="logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="index.html">Home</a><a href="news.html">News</a><a href="about.html">About</a><a href="download.html">Download</a><a href="handbook.html">Handbook</a><a href="get.html" class="on">get</a><a href="packages.html">Packages</a><a href="packaging.html">Packaging</a><a href="system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+
+<div class="wrap page">
+<main class="main">
+<!-- content -->
 <h1>get</h1>
-  <p class="sub"><code>get</code> is a small POSIX <code>sh</code> script: it downloads a source tarball, extracts it, runs <code>./configure --prefix=&hellip;</code> (if there is one), <code>make</code> and <code>make install</code>.</p>
-  <div class="two">
-    <div>
-<pre class="term"><span class="p">$</span> get https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz
-<span class="p">$</span> get -p "$HOME/.local" https://example.org/foo-1.0.tar.xz
-<span class="p">$</span> get -d /tmp/stage -c "--disable-nls" https://example.org/bar-2.0.tgz
-<span class="p">$</span> get --help</pre>
-    </div>
-    <div>
-      <ul class="tight">
-        <li><strong>Formats.</strong> <code>.tar.gz</code>, <code>.tgz</code>, <code>.tar.bz2</code>, <code>.tar.xz</code> and <code>.tar</code>. Anything else fails with a clear message.</li>
-        <li><strong>Where it goes.</strong> <code>-p DIR</code> sets the prefix (default <code>/usr/local</code>); <code>-d DIR</code> stages the install under <code>DESTDIR</code>.</li>
-        <li><strong>Clean.</strong> It builds in a temporary directory and removes it afterwards (<code>-k</code> keeps it).</li>
-        <li><strong>Tools.</strong> Uses <code>curl</code> or <code>wget</code>, <code>tar</code> and <code>make</code>.</li>
-      </ul>
-    </div>
-  </div>
+<p><code>get</code> is the systemLinux package tool. It builds packages from source using the ports tree in <code>/usr/ports</code>, installs them into <code>/usr</code> like the base system, and records every installed file (the base system's too), so a package never overwrites another one's files and removing a package deletes exactly what it installed.</p>
+<pre>get install sway            # build sway and everything it needs (get sway works too)
+get remove sway             # uninstall (refused while another package needs it)
+get autoremove              # remove dependencies nothing needs any more
+get search editor           # search names and descriptions
+get info helix              # recipe, dependencies, status
+get list                    # installed packages (* = installed on request)
+get files sway              # files a package owns
+get sync                    # update the ports tree from the latest release
+get install URL             # build a source tarball that has no recipe
+get profile build-toolchain # unpack a prebuilt profile</pre>
+<ul>
+<li><strong>Dependencies.</strong> A port's <code>requires</code> are built first, in order. Anything the base system already has is not rebuilt.</li>
+<li><strong>Build systems.</strong> configure, autotools, CMake, Meson, make, Python (pip), Cargo, Go, Perl, fonts, or a port's own build script.</li>
+<li><strong>Services.</strong> Daemons come with dinit service files: <code>dinitctl enable NAME</code> after installing.</li>
+<li><strong>Safe.</strong> Sources are checked against the recipe's sha256. Builds are staged with <code>DESTDIR</code>, and a package never overwrites a file another package owns.</li>
+<li><strong>Options.</strong> <code>-j N</code> parallel jobs, <code>-k</code> keep the build folder, <code>-f</code> force.</li>
+</ul>
 <h2>Ports</h2>
-<p>Besides plain URLs, <code>get</code> reads a ports tree: <code>get category/name</code> (or just <code>get name</code>) installs a package and its <code>requires</code> first. The tree has about 790 recipes covering core utilities, networking tools, compilers and toolchains, editors, shells, libraries, X11 and Wayland, media, security, databases, games and developer tools. Newer recipes carry a verified <code>sha256</code>; <code>tools/ports-check.sh</code> checks the whole tree in CI.</p>
-<pre>get sys-app/dinit
-get net/iperf3
-get --sync</pre>
-<hr>
-<p>systemLinux 0.2.2. Owned by everyone who uses it. <a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></p>
+<p>The ports tree has about 870 recipes: core utilities, networking, compilers and toolchains (GCC, LLVM, Rust, Go), editors, shells, libraries, the X.Org and Wayland stacks with Mesa, window managers (i3, sway, bspwm, dwm), a login manager (greetd), PipeWire audio, media, security, databases, games and developer tools.</p>
+<p>Want to add a program? See <a href="packaging.html">Packaging</a>.</p>
+<!-- /content -->
+</main>
+<!-- side -->
+<aside class="side">
+<div class="box"><h3>Get systemLinux 0.2.2</h3><div class="in">
+<p style="margin:.2em 0 .6em"><a class="btn" href="https://github.com/tortr-rs/systemLinux/releases/download/v0.2.2/systemLinux-0.2.2-x86_64.iso">Download the ISO</a></p>
+<p class="small muted" style="margin:0">x86_64, UEFI and legacy BIOS. <a href="download.html">Checksums and notes</a></p>
+</div></div>
+<div class="box"><h3>Documentation</h3><div class="in"><ul>
+<li><a href="handbook.html">Handbook</a>: installing</li>
+<li><a href="get.html">get</a>: installing software</li>
+<li><a href="packaging.html">Packaging guide</a>: writing ports</li>
+<li><a href="system.html">System</a>: services and limits</li>
+<li><a href="https://github.com/tortr-rs/systemLinux/blob/main/CHANGELOG.md">Changelog</a></li>
+</ul></div></div>
+<div class="box"><h3>Get involved</h3><div class="in"><ul>
+<li><a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></li>
+<li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li>
+<li><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports">Ports tree</a></li>
+<li><a href="packaging.html">Add a port</a></li>
+</ul></div></div>
+</aside>
+<!-- /side -->
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.2</span><span>Owned by everyone who uses it.</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
 </body>
 </html>

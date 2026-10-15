@@ -1,0 +1,7 @@
+version=4.15.2
+description=shar, uuencode and uudecode
+url=https://ftpmirror.gnu.org/gnu/sharutils/sharutils-4.15.2.tar.xz
+sha256=2b05cff7de5d7b646dc1669bc36c35fdac02ac6ae4b6c19cb3340d87ec553a9a
+build=configure
+configure_args=CPPFLAGS=-std=gnu17
+check=cmd:shar

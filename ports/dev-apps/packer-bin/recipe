@@ -1,0 +1,6 @@
+version=1.16.1
+description=HashiCorp Packer: Build machine images (official build)
+url=https://releases.hashicorp.com/packer/1.16.1/packer_1.16.1_linux_amd64.zip
+sha256=af38a9e93e4ed1b9ca68206ae969c64c300c82a3dde46a780dfa629f0867f651
+build=bin
+check=cmd:packer

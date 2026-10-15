@@ -1,0 +1,8 @@
+# Prometheus; configuration in /etc/prometheus/prometheus.yml, data in /var/lib/prometheus.
+# Enable with: dinitctl enable prometheus
+type = process
+command = /usr/bin/prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/var/lib/prometheus
+depends-on = early-filesystems
+waits-for = network
+logfile = /var/log/prometheus.log
+smooth-recovery = true

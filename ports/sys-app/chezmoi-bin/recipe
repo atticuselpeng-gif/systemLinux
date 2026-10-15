@@ -1,0 +1,6 @@
+version=2.73.1
+description=Manage dotfiles across machines
+url=https://github.com/twpayne/chezmoi/releases/download/v2.73.1/chezmoi_2.73.1_linux_amd64.tar.gz
+sha256=a3f958acb7d0e5d53fa43c2eec9bc8ae3b4fba8bcbfdce29a8881ca3ffc20a53
+build=bin
+check=cmd:chezmoi

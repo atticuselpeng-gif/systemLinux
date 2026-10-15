@@ -1,0 +1,8 @@
+version=2.0.10
+description=Scala build tool (needs a JDK)
+url=https://github.com/sbt/sbt/releases/download/v2.0.10/sbt-2.0.10.tgz
+sha256=783fe0c278564e67fbd14ecaa9ace6b9433cf8ece0ad8f50ad436cb24622105c
+build=bin
+programs=bin/sbt:sbt
+requires=lang/temurin-bin
+check=cmd:sbt

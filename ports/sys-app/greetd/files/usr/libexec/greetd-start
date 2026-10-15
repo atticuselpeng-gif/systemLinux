@@ -1,0 +1,7 @@
+#!/bin/sh
+# Start greetd; the greeter runs as the unprivileged "greeter" user, created on first start.
+if ! id greeter >/dev/null 2>&1; then
+    useradd -r -M -d /var/lib/greetd -s /usr/bin/nologin -G video greeter || exit 1
+fi
+mkdir -p /var/lib/greetd && chown greeter: /var/lib/greetd
+exec /usr/bin/greetd

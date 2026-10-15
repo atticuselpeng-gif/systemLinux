@@ -1,6 +1,6 @@
 version=21.1.15
 description=The X.Org X server
-url=https://www.x.org/releases/individual/xserver/xorg-server-21.1.15.tar.xz
+url=https://xorg.freedesktop.org/archive/individual/xserver/xorg-server-21.1.15.tar.xz
 sha256=841c82901282902725762df03adbbcd68153d4cdfb0d61df0cfd73ad677ae089
 build=meson
 configure_args=-Dxephyr=false -Dxnest=false -Dxvfb=true -Dglamor=true -Dsystemd_logind=false -Dsuid_wrapper=true -Dudev=true -Dhal=false -Dxkb_output_dir=/var/lib/xkb -Ddocs=false -Ddevel-docs=false

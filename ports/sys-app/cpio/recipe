@@ -1,0 +1,7 @@
+version=2.15
+description=GNU cpio archiver
+url=https://ftpmirror.gnu.org/gnu/cpio/cpio-2.15.tar.gz
+sha256=efa50ef983137eefc0a02fdb51509d624b5e3295c980aa127ceee4183455499e
+build=configure
+configure_args=CPPFLAGS=-std=gnu17
+check=cmd:cpio

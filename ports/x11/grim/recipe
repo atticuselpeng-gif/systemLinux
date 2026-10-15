@@ -1,0 +1,8 @@
+version=1.5.0
+description=Screenshot tool for Wayland
+url=https://gitlab.freedesktop.org/emersion/grim/-/archive/v1.5.0/grim-v1.5.0.tar.gz
+sha256=9e72a98f7621b1f5741b405b8dbd447acf7d300ddb12667ec526db1ce6154eaa
+build=meson
+configure_args=-Dman-pages=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/wayland-protocols dev-libs/pixman dev-libs/libpng dev-libs/libjpeg-turbo
+check=cmd:grim

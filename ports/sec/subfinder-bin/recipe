@@ -1,0 +1,6 @@
+version=2.17.0
+description=Subdomain discovery
+url=https://github.com/projectdiscovery/subfinder/releases/download/v2.17.0/subfinder_2.17.0_linux_amd64.zip
+sha256=a39c3e5c7a26ef3c430915c4d6cbf7716a00f26769a75e9405aba796142eba37
+build=bin
+check=cmd:subfinder

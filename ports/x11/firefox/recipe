@@ -1,1 +1,4 @@
-requires=net/firefox-source
+version=158.0
+description=Firefox web browser (installs the official build; net/firefox-source builds from source)
+requires=x11/firefox-bin
+check=cmd:firefox

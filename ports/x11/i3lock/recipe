@@ -1,0 +1,7 @@
+version=2.16
+description=Screen locker for X
+url=https://github.com/i3/i3lock/archive/refs/tags/2.16.tar.gz
+sha256=d62e81d3ab0bdd66363eec3671f2da24c7f662775705e4b33fd712796ba7e257
+build=meson
+requires=dev-apps/meson dev-apps/ninja dev-libs/cairo x11/libxcb x11/xcb-util x11/xcb-util-image x11/xcb-util-xrm dev-libs/libxkbcommon dev-libs/libev dev-libs/pam
+check=cmd:i3lock

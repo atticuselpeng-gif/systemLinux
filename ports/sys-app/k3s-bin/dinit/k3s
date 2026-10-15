@@ -1,0 +1,8 @@
+# k3s Kubernetes server (kubeconfig in /etc/rancher/k3s/k3s.yaml).
+# Enable with: dinitctl enable k3s
+type = process
+command = /usr/bin/k3s server
+depends-on = early-filesystems
+waits-for = network
+logfile = /var/log/k3s.log
+smooth-recovery = true

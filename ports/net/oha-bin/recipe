@@ -1,0 +1,6 @@
+version=1.16.0
+description=HTTP load generator
+url=https://github.com/hatoo/oha/releases/download/v1.16.0/oha-linux-amd64
+sha256=620bb9e16fb53eabc9a3fc45f88bdb41fefa3fee5c05e75892011ce320391716
+build=bin
+check=cmd:oha

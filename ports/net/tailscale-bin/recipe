@@ -1,0 +1,6 @@
+version=1.104.1
+description=Tailscale VPN (official build)
+url=https://pkgs.tailscale.com/stable/tailscale_1.104.1_amd64.tgz
+sha256=108d1d96ecf410d305571e173516f27038f870919a9b89c914a167c6d33a4528
+build=bin
+check=cmd:tailscale

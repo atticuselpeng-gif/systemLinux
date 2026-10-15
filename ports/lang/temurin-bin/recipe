@@ -1,0 +1,8 @@
+version=25.0.4.1+1
+description=Eclipse Temurin JDK 25 (OpenJDK)
+url=https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.4.1%2B1/OpenJDK25U-jdk_x64_linux_hotspot_25.0.4.1_1.tar.gz
+sha256=dbb698396d478e7fa2b1e50f4103324b2a99b90569ee27c33f2261f9215cf41e
+build=bin
+programs=bin/java:java bin/javac:javac bin/jar:jar bin/jshell:jshell bin/keytool:keytool bin/jlink:jlink bin/jpackage:jpackage bin/javadoc:javadoc bin/jcmd:jcmd bin/jstack:jstack bin/jdeps:jdeps bin/jfr:jfr
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxtst x11/libxi dev-libs/freetype dev-libs/fontconfig dev-libs/alsa-lib
+check=cmd:javac

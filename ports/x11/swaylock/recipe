@@ -1,0 +1,8 @@
+version=1.8.6
+description=Screen locker for Wayland
+url=https://github.com/swaywm/swaylock/releases/download/v1.8.6/swaylock-1.8.6.tar.gz
+sha256=a15154348fef852fdb224112d137c393c826478b777f63479beb15e8d3812eaf
+build=meson
+configure_args=-Dman-pages=disabled -Dgdk-pixbuf=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/wayland-protocols dev-libs/libxkbcommon dev-libs/cairo dev-libs/pam
+check=cmd:swaylock

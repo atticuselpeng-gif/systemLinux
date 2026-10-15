@@ -1,0 +1,7 @@
+version=25.07.1
+description=Modal terminal text editor (with runtime and grammars)
+url=https://github.com/helix-editor/helix/releases/download/25.07.1/helix-25.07.1-x86_64-linux.tar.xz
+sha256=3f08e63ecd388fff657ad39722f88bb03dcf326f1f2da2700d99e1dc40ab2e8b
+build=bin
+programs=hx
+check=cmd:hx

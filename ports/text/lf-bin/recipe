@@ -1,0 +1,6 @@
+version=42
+description=Terminal file manager
+url=https://github.com/gokcehan/lf/releases/download/r42/lf-linux-amd64.tar.gz
+sha256=c6abe6c0c11a0a4ae89754884aad67de18decc113935cbc5eaa57dc0d1850fb4
+build=bin
+check=cmd:lf

@@ -1,0 +1,8 @@
+version=10.0.402
+description=.NET SDK, current LTS (official build)
+url=https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.402/dotnet-sdk-10.0.402-linux-x64.tar.gz
+sha256=a131496fe7dac21dceea13354e50a3636126fac05d6e5ccf5fb250829c6e9b6a
+build=bin
+programs=dotnet:dotnet
+requires=dev-libs/icu
+check=cmd:dotnet

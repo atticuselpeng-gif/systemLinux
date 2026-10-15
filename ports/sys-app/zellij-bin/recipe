@@ -1,0 +1,6 @@
+version=0.45.1
+description=Terminal workspace and multiplexer
+url=https://github.com/zellij-org/zellij/releases/download/v0.45.1/zellij-no-web-x86_64-unknown-linux-musl.tar.gz
+sha256=d7bda1e18c30a688833ae7627f1d6a253bbba5349a4bc48e4f0ec008aaf75ed1
+build=bin
+check=cmd:zellij

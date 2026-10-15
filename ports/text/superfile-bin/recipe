@@ -1,0 +1,6 @@
+version=1.6.0
+description=Pretty terminal file manager (spf)
+url=https://github.com/yorukot/superfile/releases/download/v1.6.0/superfile-linux-v1.6.0-amd64.tar.gz
+sha256=d45b0e95072629a6aa7983a84eedca9cd7a98861e67ef91be1415496e3dda309
+build=bin
+check=cmd:spf

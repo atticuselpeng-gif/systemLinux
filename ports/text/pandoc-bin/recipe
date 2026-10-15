@@ -1,0 +1,6 @@
+version=3.12.1
+description=Universal document converter
+url=https://github.com/jgm/pandoc/releases/download/3.12.1/pandoc-3.12.1-linux-amd64.tar.gz
+sha256=d0c90410e90204c9ca83b8539fac5c7aed01fd537207e4585849f8abc5df20b8
+build=bin
+check=cmd:pandoc

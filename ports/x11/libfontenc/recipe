@@ -1,6 +1,6 @@
 version=1.1.8
 description=X font encoding library
-url=https://www.x.org/releases/individual/lib/libfontenc-1.1.8.tar.xz
+url=https://xorg.freedesktop.org/archive/individual/lib/libfontenc-1.1.8.tar.xz
 sha256=7b02c3d405236e0d86806b1de9d6868fe60c313628b38350b032914aa4fd14c6
 build=configure
 requires=x11/xorgproto dev-libs/zlib

@@ -1,0 +1,7 @@
+version=5.13.0
+description=3D printer slicer (official AppImage)
+url=https://github.com/Ultimaker/Cura/releases/download/5.13.0/UltiMaker-Cura-5.13.0-linux-X64.AppImage
+sha256=100f068127b2598167f00ba4db0e0699ded45adf97bbab2d22ff171a1e1ecc40
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:cura

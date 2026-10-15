@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=kitty
+Exec=kitty %U
+Icon=/usr/lib/kitty/share/icons/hicolor/256x256/apps/kitty.png
+Terminal=false
+Type=Application
+Categories=System;TerminalEmulator;

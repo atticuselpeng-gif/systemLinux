@@ -1,0 +1,8 @@
+version=3.10.0
+description=Apache Maven (needs a JDK)
+url=https://dlcdn.apache.org/maven/maven-3/3.10.0/binaries/apache-maven-3.10.0-bin.tar.gz
+sha256=a46cc51bc74fa23fd267c7a0b9132b146dcf526da60d31aa5174e565632e9e0e
+build=bin
+programs=bin/mvn:mvn
+requires=lang/temurin-bin
+check=cmd:mvn

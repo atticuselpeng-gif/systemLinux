@@ -3,20 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>systemLinux 0.2.2: news</title>
+<title>News - systemLinux</title>
 <link rel="icon" type="image/svg+xml" href="logo.svg">
-<style>
-body{font-family:monospace;max-width:50em;margin:1em auto;padding:0 1em;line-height:1.4}
-pre{background:#eee;padding:.5em;overflow:auto}
-table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;text-align:left;vertical-align:top}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1><img src="logo.svg" alt="" width="32" height="32"> systemLinux 0.2.2</h1>
-<p><a href="index.html">Home</a> | <a href="about.html">About</a> | <a href="download.html">Download</a> | <b>News</b> | <a href="get.html">get</a> | <a href="handbook.html">Handbook</a> | <a href="system.html">System</a></p>
-<hr>
-<h1>What's new in 0.2.2</h1>
-  <ul class="tight">
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="index.html"><img src="logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="index.html">Home</a><a href="news.html" class="on">News</a><a href="about.html">About</a><a href="download.html">Download</a><a href="handbook.html">Handbook</a><a href="get.html">get</a><a href="packages.html">Packages</a><a href="packaging.html">Packaging</a><a href="system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+
+<div class="wrap page">
+<main class="main">
+<!-- content -->
+<h1>News</h1>
+<div class="news-item">
+<h3>systemLinux 0.2.2 released</h3>
+<div class="date">2026-10-14</div>
+<ul class="tight">
     <li><strong>systemd is gone.</strong> dinit is the only init system and eudev the device manager. Services are small files in <code>/etc/dinit.d/</code>; use <code>dinitctl</code> and the usual <code>reboot</code>, <code>poweroff</code>, <code>halt</code>.</li>
     <li><strong>Latest Ubuntu kernel.</strong> Linux 7.3.0 from Ubuntu 26.10 with its full module tree, so network, graphics and sound drivers load on the running system.</li>
     <li><strong>About 440 more ports</strong> (now 792): libraries, X11 and Wayland tools, networking, media, security, databases and games, each with a verified checksum.</li>
@@ -28,7 +35,36 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
     <li><strong>Build stack on demand.</strong> After installing, <code>get --profile build-toolchain</code> (and <code>common-build-deps</code>, <code>lang-runtimes</code>) adds what you need; <code>validate-build-ready</code> checks it.</li>
   </ul>
   <p>Breaking changes and the full list are in the <a href="https://github.com/tortr-rs/systemLinux/blob/main/CHANGELOG.md">changelog</a>.</p>
-<hr>
-<p>systemLinux 0.2.2. Owned by everyone who uses it. <a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></p>
+</div>
+<!-- /content -->
+</main>
+<!-- side -->
+<aside class="side">
+<div class="box"><h3>Get systemLinux 0.2.2</h3><div class="in">
+<p style="margin:.2em 0 .6em"><a class="btn" href="https://github.com/tortr-rs/systemLinux/releases/download/v0.2.2/systemLinux-0.2.2-x86_64.iso">Download the ISO</a></p>
+<p class="small muted" style="margin:0">x86_64, UEFI and legacy BIOS. <a href="download.html">Checksums and notes</a></p>
+</div></div>
+<div class="box"><h3>Documentation</h3><div class="in"><ul>
+<li><a href="handbook.html">Handbook</a>: installing</li>
+<li><a href="get.html">get</a>: installing software</li>
+<li><a href="packaging.html">Packaging guide</a>: writing ports</li>
+<li><a href="system.html">System</a>: services and limits</li>
+<li><a href="https://github.com/tortr-rs/systemLinux/blob/main/CHANGELOG.md">Changelog</a></li>
+</ul></div></div>
+<div class="box"><h3>Get involved</h3><div class="in"><ul>
+<li><a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></li>
+<li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li>
+<li><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports">Ports tree</a></li>
+<li><a href="packaging.html">Add a port</a></li>
+</ul></div></div>
+</aside>
+<!-- /side -->
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.2</span><span>Owned by everyone who uses it.</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
 </body>
 </html>

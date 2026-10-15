@@ -1,0 +1,6 @@
+version=1.37.1
+description=Kubernetes command line (official build)
+url=https://dl.k8s.io/release/v1.37.1/bin/linux/amd64/kubectl
+sha256=65691ff77eb6fa44c908b77a1082c9f092c3b9733b5cefabec0d1104890e21a8
+build=bin
+check=cmd:kubectl

@@ -1,0 +1,8 @@
+version=4215
+description=Sublime Text editor (official build)
+url=https://download.sublimetext.com/sublime_text_build_4215_x64.tar.xz
+sha256=c153f418d3ab26b90ecce8c02a82e4e961025ed7a65f7e25060a5457d43e88d9
+build=bin
+programs=sublime_text:subl
+requires=dev-libs/gtk3
+check=cmd:subl

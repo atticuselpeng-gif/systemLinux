@@ -1,0 +1,6 @@
+version=0.15.1
+description=Markup-based typesetting system
+url=https://github.com/typst/typst/releases/download/v0.15.1/typst-x86_64-unknown-linux-musl.tar.xz
+sha256=a6d077d0a95eed5a2eba715b2dae06be954f624ccbf85758a03f389ded33118c
+build=bin
+check=cmd:typst

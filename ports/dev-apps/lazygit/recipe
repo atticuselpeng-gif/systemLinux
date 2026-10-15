@@ -1,0 +1,8 @@
+version=0.66.1
+description=Terminal UI for git
+url=https://github.com/jesseduffield/lazygit/archive/refs/tags/v0.66.1.tar.gz
+sha256=75d82496e7e99a4ae58279efd37186ee5d10de9bb751077775487639c07185af
+build=go
+make_args=.
+requires=dev-apps/go
+check=cmd:lazygit

@@ -1,6 +1,6 @@
 version=1.2.4
 description=X screen saver extension library
-url=https://www.x.org/releases/individual/lib/libXScrnSaver-1.2.4.tar.xz
+url=https://xorg.freedesktop.org/archive/individual/lib/libXScrnSaver-1.2.4.tar.xz
 sha256=75cd2859f38e207a090cac980d76bc71e9da99d48d09703584e00585abc920fe
 build=configure
 requires=x11/libxext

@@ -3,30 +3,76 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>systemLinux 0.2.2: home</title>
+<title>systemLinux: a small source-based gnu/linux distribution</title>
 <link rel="icon" type="image/svg+xml" href="logo.svg">
-<style>
-body{font-family:monospace;max-width:50em;margin:1em auto;padding:0 1em;line-height:1.4}
-pre{background:#eee;padding:.5em;overflow:auto}
-table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;text-align:left;vertical-align:top}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1><img src="logo.svg" alt="" width="32" height="32"> systemLinux 0.2.2</h1>
-<p><b>Home</b> | <a href="about.html">About</a> | <a href="download.html">Download</a> | <a href="news.html">News</a> | <a href="get.html">get</a> | <a href="handbook.html">Handbook</a> | <a href="system.html">System</a></p>
-<hr>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="index.html"><img src="logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="index.html" class="on">Home</a><a href="news.html">News</a><a href="about.html">About</a><a href="download.html">Download</a><a href="handbook.html">Handbook</a><a href="get.html">get</a><a href="packages.html">Packages</a><a href="packaging.html">Packaging</a><a href="system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<section class="hero"><div class="wrap">
 <h1>systemLinux</h1>
-<p>A small x86_64 GNU/Linux distribution that nobody owns and nobody profits from. The latest Ubuntu kernel, dinit (no systemd), GNU userland. Boots on legacy BIOS and UEFI. The live ISO is installer media only. Software is built from source tarballs with <code>get</code>.</p>
-<ul>
-<li><a href="download.html">Download 0.2.2</a> and <a href="news.html">what is new</a></li>
-<li><a href="handbook.html">Handbook</a>: install it, step by step</li>
-<li><a href="get.html">get</a>: build a tarball and install it</li>
-<li><a href="about.html">About</a>: why, features, what is in the image</li>
-<li><a href="system.html">System</a>: services and known limits</li>
-</ul>
-<pre>$ get https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz
-$ get -p "$HOME/.local" https://example.org/foo-1.0.tar.xz</pre>
-<hr>
-<p>systemLinux 0.2.2. Owned by everyone who uses it. <a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></p>
+<p class="lead">A small x86_64 GNU/Linux distribution: dinit instead of systemd, the newest kernel, and software
+built from source with <code>get</code>, from a ports tree of over a thousand recipes. Nobody owns it and nobody profits
+from it.</p>
+<div class="actions"><a class="btn" href="https://github.com/tortr-rs/systemLinux/releases/download/v0.2.2/systemLinux-0.2.2-x86_64.iso">Download 0.2.2</a><a class="btn ghost" href="handbook.html">Read the handbook</a><a class="btn ghost" href="packages.html">Browse packages</a></div>
+</div></section>
+<div class="wrap page">
+<main class="main">
+<!-- content -->
+<div class="features">
+<div><b>dinit, no systemd</b>Services are small files in <code>/etc/dinit.d</code>. systemd is not there at all; eudev manages devices.</div>
+<div><b>Built from source</b><code>get install NAME</code> builds a package and everything it needs from the ports tree, and <code>get remove</code> takes it out again cleanly.</div>
+<div><b>One set of files</b>Packages install into <code>/usr</code> like the base system, and get knows who owns every file.</div>
+<div><b>Official builds when it makes sense</b>Browsers, IDEs and toolchains that take hours to compile come as <code>-bin</code> ports of the upstream release.</div>
+<div><b>Newest kernel</b>Ubuntu's newest generic kernel with all its driver modules.</div>
+<div><b>BIOS and UEFI</b>One hybrid ISO; install with the handbook or <code>systemlinux-install</code>.</div>
+</div>
+<h2>Quick start</h2>
+<pre>get install sway          # build sway and everything it needs
+get install firefox       # Mozilla's official build
+get search editor         # search the ports tree
+get remove sway           # uninstall exactly what was installed</pre>
+<h2>Latest news</h2>
+<div class="news-item">
+<h3><a href="news.html">systemLinux 0.2.2 released</a></h3>
+<div class="date">2026-10-14</div>
+<p>systemd is gone completely: dinit is the only init system and eudev manages devices. The newest Ubuntu kernel with its full module tree, legacy BIOS boot, boot fixes for IDE, SCSI and virtual machines, and about 440 more ports. <a href="news.html">Read more</a></p>
+</div>
+<!-- /content -->
+</main>
+<!-- side -->
+<aside class="side">
+<div class="box"><h3>Get systemLinux 0.2.2</h3><div class="in">
+<p style="margin:.2em 0 .6em"><a class="btn" href="https://github.com/tortr-rs/systemLinux/releases/download/v0.2.2/systemLinux-0.2.2-x86_64.iso">Download the ISO</a></p>
+<p class="small muted" style="margin:0">x86_64, UEFI and legacy BIOS. <a href="download.html">Checksums and notes</a></p>
+</div></div>
+<div class="box"><h3>Documentation</h3><div class="in"><ul>
+<li><a href="handbook.html">Handbook</a>: installing</li>
+<li><a href="get.html">get</a>: installing software</li>
+<li><a href="packaging.html">Packaging guide</a>: writing ports</li>
+<li><a href="system.html">System</a>: services and limits</li>
+<li><a href="https://github.com/tortr-rs/systemLinux/blob/main/CHANGELOG.md">Changelog</a></li>
+</ul></div></div>
+<div class="box"><h3>Get involved</h3><div class="in"><ul>
+<li><a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></li>
+<li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li>
+<li><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports">Ports tree</a></li>
+<li><a href="packaging.html">Add a port</a></li>
+</ul></div></div>
+</aside>
+<!-- /side -->
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.2</span><span>Owned by everyone who uses it.</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
 </body>
 </html>

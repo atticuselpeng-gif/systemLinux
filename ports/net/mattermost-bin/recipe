@@ -1,0 +1,7 @@
+version=6.3.1
+description=Mattermost chat client (official AppImage)
+url=https://github.com/mattermost/desktop/releases/download/v6.3.1/mattermost-desktop-6.3.1-linux-x86_64.AppImage
+sha256=3699630073712b4fb65522d05d00e1493c2727af2fae08607846c24942a826e1
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:mattermost

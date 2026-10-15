@@ -1,0 +1,8 @@
+# Caddy web server; configuration in /etc/caddy/Caddyfile.
+# Enable with: dinitctl enable caddy
+type = process
+command = /usr/bin/caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
+depends-on = early-filesystems
+waits-for = network
+logfile = /var/log/caddy.log
+smooth-recovery = true

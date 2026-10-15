@@ -1,0 +1,6 @@
+version=2.8.0
+description=Run commands when files change
+url=https://github.com/watchexec/watchexec/releases/download/v2.8.0/watchexec-2.8.0-x86_64-unknown-linux-musl.tar.xz
+sha256=35ea667cbe4bc96c23ba2a1f46c94c46bc385b67165e3bf621c0e7e4959aa99b
+build=bin
+check=cmd:watchexec

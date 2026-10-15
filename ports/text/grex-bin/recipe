@@ -1,0 +1,6 @@
+version=1.4.6
+description=Generate regular expressions from examples
+url=https://github.com/pemistahl/grex/releases/download/v1.4.6/grex-v1.4.6-x86_64-unknown-linux-musl.tar.gz
+sha256=8f02f4ebe72d9e3098c646b77f7bc53ec8a8c1fb51ed042db06b739d08e56af8
+build=bin
+check=cmd:grex

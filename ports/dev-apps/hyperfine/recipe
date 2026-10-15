@@ -1,0 +1,7 @@
+version=2.0.0
+description=Command line benchmarking tool
+url=https://github.com/sharkdp/hyperfine/archive/refs/tags/v2.0.0.tar.gz
+sha256=f4b71df3c78e4cf752ca6fb6ebc4b025f7ea6a5ca5c48fea75f8a1fdb4c7d721
+build=cargo
+requires=lang/rust
+check=cmd:hyperfine

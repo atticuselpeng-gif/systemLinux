@@ -1,0 +1,8 @@
+version=34
+description=Simple image viewer for X
+url=https://codeberg.org/nsxiv/nsxiv/archive/v34.tar.gz
+sha256=eee8e947a0a4103d41d892c8b0c5ef1e5364a29a62821aab47feeb9c71a96474
+build=make
+make_args=HAVE_LIBEXIF=0
+requires=dev-libs/imlib2 x11/libx11 x11/libxft dev-libs/fontconfig dev-libs/freetype
+check=cmd:nsxiv

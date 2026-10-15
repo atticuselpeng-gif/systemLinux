@@ -1,0 +1,6 @@
+version=2.0.7
+description=HashiCorp Nomad: Workload orchestrator (official build)
+url=https://releases.hashicorp.com/nomad/2.0.7/nomad_2.0.7_linux_amd64.zip
+sha256=4c9b8a0850d6fd9caadbbab09b3e6fdf8b77aa777729543c70c61b85acca68c1
+build=bin
+check=cmd:nomad

@@ -1,0 +1,6 @@
+version=0.11.1
+description=LS_COLORS generator with themes
+url=https://github.com/sharkdp/vivid/releases/download/v0.11.1/vivid-v0.11.1-x86_64-unknown-linux-musl.tar.gz
+sha256=f1a80a39c75ceae43c4187f302e66c0a45d941ed1479456a0d5ddef665663181
+build=bin
+check=cmd:vivid

@@ -1,0 +1,7 @@
+version=25.07.1
+description=Modal terminal text editor
+url=https://github.com/helix-editor/helix/releases/download/25.07.1/helix-25.07.1-source.tar.xz
+sha256=2d0cf264ac77f8c25386a636e2b3a09a23dec555568cc9a5b2927f84322f544e
+build=script
+requires=lang/rust dev-apps/git
+check=cmd:hx

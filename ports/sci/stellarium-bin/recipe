@@ -1,0 +1,7 @@
+version=26.3
+description=Planetarium (official AppImage)
+url=https://github.com/Stellarium/stellarium/releases/download/v26.3/Stellarium-26.3-qt5-x86_64.AppImage
+sha256=d3a3b9bc2e09aea41da549edfa1671e9e5ef514cbd39249bef63d32d1339b056
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:stellarium

@@ -1,0 +1,7 @@
+version=2.3.10
+description=Arduino IDE (official AppImage)
+url=https://github.com/arduino/arduino-ide/releases/download/2.3.10/arduino-ide_2.3.10_Linux_64bit.AppImage
+sha256=79c8590a1744c220d72cbed0ea91c6e2a7f4594292699b2fb3364ebd713cd566
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:arduino-ide

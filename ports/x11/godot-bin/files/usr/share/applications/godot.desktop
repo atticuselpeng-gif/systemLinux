@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Godot Engine
+Exec=godot %U
+Icon=godot
+Terminal=false
+Type=Application
+Categories=Development;IDE;

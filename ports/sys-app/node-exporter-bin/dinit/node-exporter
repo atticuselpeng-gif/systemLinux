@@ -1,0 +1,8 @@
+# Prometheus node exporter on port 9100.
+# Enable with: dinitctl enable node-exporter
+type = process
+command = /usr/bin/node_exporter
+depends-on = early-filesystems
+waits-for = network
+logfile = /var/log/node-exporter.log
+smooth-recovery = true
