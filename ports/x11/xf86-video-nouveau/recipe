@@ -1,0 +1,6 @@
+version=1.0.18
+description=Xorg driver for NVIDIA GPUs (open source)
+url=https://www.x.org/releases/individual/driver/xf86-video-nouveau-1.0.18.tar.xz
+sha256=e82ad38e64326b733cc5b892d56f6eb63b07e8920f5ebf05864af080b2c32bfd
+build=configure
+requires=x11/xorg-server dev-libs/libdrm

@@ -1,3 +1,8 @@
+version=1.7.0
+description=Keyboard keymap library
 url=https://xkbcommon.org/download/libxkbcommon-1.7.0.tar.xz
+sha256=65782f0a10a4b455af9c6baab7040e2f537520caa2ec2092805cdfd36863b247
 build=meson
-requires=dev-apps/meson
+configure_args=-Denable-docs=false
+requires=dev-apps/meson dev-apps/ninja x11/libxcb x11/xkeyboard-config dev-libs/wayland dev-libs/wayland-protocols dev-libs/libxml2
+check=pkgconfig:xkbcommon-x11

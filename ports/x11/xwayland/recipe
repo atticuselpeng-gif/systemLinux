@@ -1,0 +1,8 @@
+version=24.1.4
+description=X server for running X programs under Wayland
+url=https://www.x.org/releases/individual/xserver/xwayland-24.1.4.tar.xz
+sha256=d96a78dbab819f55750173444444995b5031ebdcc15b77afebbd8dbc02af34f4
+build=meson
+configure_args=-Ddocs=false -Ddevel-docs=false
+requires=dev-apps/meson dev-apps/ninja x11/xorgproto x11/libxcvt x11/xtrans x11/libxkbfile x11/libxfont2 x11/libxshmfence x11/libxau x11/libxdmcp x11/xkbcomp dev-libs/pixman dev-libs/libdrm dev-libs/mesa dev-libs/libepoxy dev-libs/wayland dev-libs/wayland-protocols
+check=cmd:Xwayland

@@ -1,5 +1,8 @@
-url=https://codeberg.org/dnkl/foot/archive/1.21.0.tar.gz
-sha256=18044ce49099b01ca1db3c6b1b23300fdaa23848577835a72ec9481f9713b4fe
+version=1.20.2
+description=Fast Wayland terminal
+url=https://codeberg.org/dnkl/foot/releases/download/1.20.2/foot-1.20.2.tar.gz
+sha256=572b4a4b11c3b38113a56464fc244e5ed31a741038ef6dff826851a87dc296e0
 build=meson
-configure_args=-Ddocs=disabled
-requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/pixman dev-libs/utf8proc
+configure_args=-Ddocs=disabled -Dterminfo=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/wayland-protocols dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/pixman dev-libs/utf8proc dev-libs/fcft dev-libs/tllist
+check=cmd:foot

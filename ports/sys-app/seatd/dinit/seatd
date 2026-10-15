@@ -1,0 +1,7 @@
+# Seat management daemon: gives Wayland compositors (sway, ...) access to the GPU and input devices.
+# Members of the "video" group may use it.
+type = process
+command = /usr/local/bin/seatd -g video
+depends-on = early-filesystems
+waits-for = udev-trigger
+smooth-recovery = true

@@ -70,8 +70,18 @@ atom() {
 }
 dbdir() { echo "$DB/pkgs/${1//\//__}"; }
 installed() { [ -f "$(dbdir "$1")/files" ]; }
-# provided_by_base ATOM: the base image ships this package
-provided_by_base() { [ -r "$BASE_LIST" ] && grep -qxF "${1##*/}" "$BASE_LIST"; }
+# provided_by_base ATOM: the system already has this package. A recipe's `check` (pkgconfig:NAME, cmd:NAME or
+# file:/PATH) decides when present, so a base package built without a needed feature is not mistaken for enough;
+# otherwise the base image's package list does.
+provided_by_base() {
+    local c; c=$(recipe_get "$PORTS/$1/recipe" check 2>/dev/null)
+    case "$c" in
+        pkgconfig:*) pkg-config --exists "${c#pkgconfig:}" 2>/dev/null; return ;;
+        cmd:*)       command -v "${c#cmd:}" >/dev/null 2>&1; return ;;
+        file:/*)     [ -e "${c#file:}" ]; return ;;
+    esac
+    [ -r "$BASE_LIST" ] && grep -qxF "${1##*/}" "$BASE_LIST"
+}
 requires_of() { recipe_get "$PORTS/$1/recipe" requires; }
 installed_atoms() { [ -d "$DB/pkgs" ] && for d in "$DB"/pkgs/*/; do [ -f "$d/files" ] && basename "$d" | sed 's|__|/|'; done; true; }
 
@@ -161,7 +171,7 @@ build_and_stage() {
         cmake)
             cmake -S . -B _build -G "$(command -v ninja >/dev/null && echo Ninja || echo 'Unix Makefiles')" \
                 -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$PREFIX" \
-                -DBUILD_TESTING=OFF "${args[@]}" || die "cmake configure failed"
+                -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 "${args[@]}" || die "cmake configure failed"
             cmake --build _build -j "$JOBS" || die "build failed"
             DESTDIR=$dest cmake --install _build || die "install failed" ;;
         meson)
@@ -180,8 +190,14 @@ build_and_stage() {
             make -j"$JOBS" PREFIX="$PREFIX" prefix="$PREFIX" "${args[@]}" "${margs[@]}" || die "build failed"
             make install DESTDIR="$dest" PREFIX="$PREFIX" prefix="$PREFIX" "${args[@]}" "${margs[@]}" || die "install failed" ;;
         python)
-            python3 -m pip --version >/dev/null 2>&1 || die "python builds need pip (get install pip)"
-            python3 -m pip install --no-deps --no-build-isolation --no-warn-script-location \
+            # pip if installed, else the copy bundled with Python's ensurepip (pip runs straight from its wheel)
+            local pip=(python3 -m pip) whl
+            if ! python3 -m pip --version >/dev/null 2>&1; then
+                whl=$(python3 -c 'import ensurepip, glob, os; print(sorted(glob.glob(os.path.join(os.path.dirname(ensurepip.__file__), "_bundled", "pip-*.whl")))[-1])' 2>/dev/null) \
+                    || die "python builds need pip, and this Python has no bundled copy"
+                pip=(python3 "$whl/pip")
+            fi
+            "${pip[@]}" install --no-deps --no-build-isolation --no-warn-script-location --disable-pip-version-check \
                 --prefix="$PREFIX" --root="$dest" "${args[@]}" . || die "python build failed" ;;
         cargo)
             command -v cargo >/dev/null || die "cargo builds need Rust (get install rust)"
@@ -190,6 +206,10 @@ build_and_stage() {
             command -v go >/dev/null || die "go builds need Go (get install go)"
             mkdir -p "$dest$PREFIX/bin"
             go build -trimpath -o "$dest$PREFIX/bin/" "${args[@]}" ./... || die "go build failed" ;;
+        fonts) # no build system: install every font file found
+            mkdir -p "$dest$PREFIX/share/fonts/${name##*/}"
+            find . -type f \( -name '*.ttf' -o -name '*.otf' -o -name '*.ttc' -o -name '*.pcf.gz' \) \
+                -exec install -m644 {} "$dest$PREFIX/share/fonts/${name##*/}/" \; ;;
         perl)
             perl Makefile.PL PREFIX="$PREFIX" INSTALLDIRS=site "${args[@]}" || die "Makefile.PL failed"
             make -j"$JOBS" "${margs[@]}" || die "build failed"
@@ -226,6 +246,7 @@ merge() {
     mkdir -p "$dir"
     cp "$WORK/files" "$dir/files"
     ldconfig 2>/dev/null || true
+    if grep -q '/share/fonts/' "$WORK/files"; then fc-cache -f >/dev/null 2>&1 || true; fi
 }
 
 record() { # ATOM URL REQUIRES EXPLICIT(0/1) [VERSION]

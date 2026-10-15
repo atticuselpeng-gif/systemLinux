@@ -1,2 +1,8 @@
-url=https://www.x.org/releases/individual/lib/libX11-1.8.9.tar.xz
-requires=x11/xorgproto x11/libxcb
+version=1.8.10
+description=Core X11 client library
+url=https://www.x.org/releases/individual/lib/libX11-1.8.10.tar.xz
+sha256=2b3b3dad9347db41dca56beb7db5878f283bde1142f04d9f8e478af435dfdc53
+build=configure
+configure_args=--disable-specs
+requires=x11/xorgproto x11/libxcb x11/xtrans
+check=pkgconfig:x11

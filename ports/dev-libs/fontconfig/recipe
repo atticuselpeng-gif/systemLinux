@@ -1,2 +1,8 @@
+version=2.15.0
+description=Font configuration library
 url=https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.xz
-requires=dev-libs/freetype dev-libs/expat
+sha256=63a0658d0e06e0fa886106452b58ef04f21f58202ea02a94c39de0d3335d7c0e
+build=meson
+configure_args=-Ddoc=disabled -Dtests=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/freetype dev-libs/expat
+check=pkgconfig:fontconfig

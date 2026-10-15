@@ -1,0 +1,8 @@
+version=2.14
+description=Status bar generator for i3bar
+url=https://github.com/i3/i3status/archive/refs/tags/2.14.tar.gz
+sha256=84e89dafa5f7d81e2b6d6263db1af065d57f6ad152c0ce0d3828f561c9d8199d
+build=meson
+configure_args=-Dpulseaudio=false
+requires=dev-apps/meson dev-apps/ninja dev-libs/yajl dev-libs/libconfuse dev-libs/alsa-lib dev-libs/libnl
+check=cmd:i3status

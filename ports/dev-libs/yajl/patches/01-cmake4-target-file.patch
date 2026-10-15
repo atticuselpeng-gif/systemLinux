@@ -1,0 +1,28 @@
+diff -ru a/reformatter/CMakeLists.txt b/reformatter/CMakeLists.txt
+--- a/reformatter/CMakeLists.txt	2026-10-15 00:22:43.796857833 +0000
++++ b/reformatter/CMakeLists.txt	2026-10-15 00:22:43.803429588 +0000
+@@ -35,9 +35,8 @@
+ ENDIF (NOT WIN32)
+ 
+ # copy the binary into the output directory
+-GET_TARGET_PROPERTY(binPath json_reformat LOCATION)
+ 
+ ADD_CUSTOM_COMMAND(TARGET json_reformat POST_BUILD
+-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${binPath} ${binDir})
++    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:json_reformat> ${binDir})
+ 
+ INSTALL(TARGETS json_reformat RUNTIME DESTINATION bin)
+diff -ru a/verify/CMakeLists.txt b/verify/CMakeLists.txt
+--- a/verify/CMakeLists.txt	2026-10-15 00:22:43.799021170 +0000
++++ b/verify/CMakeLists.txt	2026-10-15 00:22:43.804086124 +0000
+@@ -29,9 +29,8 @@
+ TARGET_LINK_LIBRARIES(json_verify yajl_s)
+ 
+ # copy in the binary
+-GET_TARGET_PROPERTY(binPath json_verify LOCATION)
+ 
+ ADD_CUSTOM_COMMAND(TARGET json_verify POST_BUILD
+-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${binPath} ${binDir})
++    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:json_verify> ${binDir})
+ 
+ INSTALL(TARGETS json_verify RUNTIME DESTINATION bin)

@@ -1,0 +1,8 @@
+version=3.1.10
+description=Font loading and glyph rasterisation for Wayland apps
+url=https://codeberg.org/dnkl/fcft/releases/download/3.1.10/fcft-3.1.10.tar.gz
+sha256=6e522d0a1ac097de3f5fda47748955e4038f14fbbeade39b634cf5f6c682f70d
+build=meson
+configure_args=-Ddocs=disabled -Dtest-text-shaping=false
+requires=dev-apps/meson dev-apps/ninja dev-libs/fontconfig dev-libs/freetype dev-libs/pixman dev-libs/tllist dev-libs/harfbuzz
+check=pkgconfig:fcft

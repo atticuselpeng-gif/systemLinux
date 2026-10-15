@@ -1,3 +1,8 @@
-url=https://i3wm.org/downloads/i3-4.23.tar.xz
+version=4.24
+description=i3 tiling window manager
+url=https://i3wm.org/downloads/i3-4.24.tar.xz
+sha256=5baefd0e5e78f1bafb7ac85deea42bcd3cbfe65f1279aa96f7e49661637ac981
 build=meson
-requires=dev-apps/meson
+configure_args=-Ddocs=false -Dmans=false
+requires=dev-apps/meson dev-apps/ninja x11/libxcb x11/xcb-util x11/xcb-util-keysyms x11/xcb-util-wm x11/xcb-util-cursor x11/xcb-util-xrm dev-libs/libxkbcommon dev-libs/pango dev-libs/cairo dev-libs/yajl dev-libs/libev dev-libs/startup-notification dev-libs/pcre2
+check=cmd:i3

@@ -1,0 +1,8 @@
+version=0.1.9
+description=dmenu for Wayland
+url=https://codeberg.org/adnano/wmenu/archive/0.1.9.tar.gz
+sha256=195ad6fba5f44fdc97e638c291937ccf4983d9dba4d04348083bcab4aaa54b1c
+build=meson
+configure_args=-Dman-pages=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/wayland-protocols dev-libs/libxkbcommon dev-libs/pango dev-libs/cairo
+check=cmd:wmenu

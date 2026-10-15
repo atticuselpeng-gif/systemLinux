@@ -1,4 +1,9 @@
-url=https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.7/llvm-project-18.1.7.src.tar.xz
+version=19.1.7
+description=LLVM compiler infrastructure (needed by Mesa)
+url=https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/llvm-project-19.1.7.src.tar.xz
+sha256=82401fea7b79d0078043f7598b835284d6650a75b93e64b6f761ea7b63097501
 build=cmake
-configure_args=-DLLVM_ENABLE_PROJECTS=clang
-requires=dev-apps/cmake dev-apps/ninja
+configure_args=-DLLVM_TARGETS_TO_BUILD=X86;AMDGPU -DLLVM_BUILD_LLVM_DYLIB=ON -DLLVM_LINK_LLVM_DYLIB=ON -DLLVM_ENABLE_RTTI=ON -DLLVM_INCLUDE_TESTS=OFF -DLLVM_INCLUDE_EXAMPLES=OFF -DLLVM_INCLUDE_BENCHMARKS=OFF -DLLVM_INCLUDE_DOCS=OFF
+srcdir=llvm
+requires=dev-apps/cmake dev-libs/zlib dev-apps/zstd dev-libs/libxml2
+check=cmd:llvm-config

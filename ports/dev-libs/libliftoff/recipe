@@ -1,0 +1,7 @@
+version=0.5.0
+description=KMS plane allocation library
+url=https://gitlab.freedesktop.org/emersion/libliftoff/-/releases/v0.5.0/downloads/libliftoff-0.5.0.tar.gz
+sha256=e29af0c9dc765916c1f192f118efffc947af6600178b04d5bccca1901246f83b
+build=meson
+requires=dev-apps/meson dev-apps/ninja dev-libs/libdrm
+check=pkgconfig:libliftoff
