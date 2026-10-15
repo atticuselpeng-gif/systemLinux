@@ -153,6 +153,13 @@ for d in "$ROOTFS"/usr/lib/gcc/*/*/; do
     done
 done
 sudo ldconfig -r "$STAGE"
+# pkg-config files still naming libsystemd (dbus-1.pc: "Requires.private: libsystemd >= 209") would make
+# pkg-config fail for every build that uses them, since systemd is gone
+for pc in "$STAGE"/usr/lib64/pkgconfig/*.pc "$STAGE"/usr/share/pkgconfig/*.pc; do
+    [ -f "$pc" ] && grep -q '^Requires.*libsystemd' "$pc" || continue
+    sudo sed -i -E '/^Requires/{s/,?[[:space:]]*libsystemd([[:space:]]*[<>=]+[[:space:]]*[0-9.]+)?//; s/:[[:space:]]*,/: /}' "$pc"
+    sudo sed -i -E '/^Requires(\.private)?:[[:space:]]*$/d' "$pc"
+done
 # help2man (run by many package builds to make man pages) imports Locale::gettext, whose compiled module was built for
 # an older Perl than the image's and does not load; fall back to untranslated messages so help2man works
 if [ -f "$STAGE/usr/bin/help2man" ]; then

@@ -6,16 +6,21 @@
   <img src="assets/logo.png" alt="systemLinux logo: a golden wheat ear on a dark green circle" width="160">
 </p>
 
-# systemLinux 0.2.2
+# systemLinux 0.2.3
 
-A minimal x86_64 GNU/Linux distribution built on a custom monolithic kernel, dinit, and a
-GNU userland (GNU bash 5.3 is `/bin/bash` and `/bin/sh`, GNU coreutils, tar, sed, gawk, findutils; the `bbash` fork stays
-installed as its own command). The live ISO is **minimal installer media only**: the kernel plus the
-bare minimum needed to boot and run `systemlinux-install` (dinit, NetworkManager for a network
-install, disk/boot tools). No desktop, daemons, firmware bundles, docs, man pages or locale packs.
-It boots like any live ISO (a compressed `rootfs.squashfs` on the ISO with a RAM layer on top) and
-can be installed to disk with the `systemlinux-install` command-line tool or, step by step
-by hand, with the Handbook below.
+A small source-based x86_64 GNU/Linux distribution: **dinit** as init (no systemd anywhere, eudev for devices),
+Ubuntu's newest generic kernel with its full module tree, and a GNU userland on glibc (GNU bash 5.3 is `/bin/bash`
+and `/bin/sh`, coreutils, tar, sed, gawk, findutils). The live ISO boots in UEFI and legacy BIOS mode and installs
+with `systemlinux-install` or step by step with the Handbook. It ships the build tools, so software is built from
+source with `get` and the ports tree of over a thousand recipes.
+
+**New in 0.2.3** (see `CHANGELOG.md`):
+* **One package world:** `get` installs into `/usr` like the base system and knows which package owns every file,
+  so a package can never overwrite or shadow a base system file.
+* **214 `-bin` ports:** official upstream builds of software that takes hours to compile (Firefox, Thunderbird,
+  VS Code, Blender, GIMP, Krita, Node, Rust, LLVM, Docker, Ollama, ...) next to the source ports.
+* **More desktop ports:** the greetd login manager, PipeWire and WirePlumber, swaylock, mako, dunst, bspwm and more.
+* **A packaging guide** (`docs/PACKAGING.md`) and a new website with a searchable package list.
 
 Software is added with `get`, the package tool. It builds from source and keeps track of what it installed:
 
@@ -36,18 +41,20 @@ system already provides are not rebuilt, and the build system (configure, autoto
 
 The ISO ships the build tools a source-based system needs: gcc/g++, make, binutils, cmake, meson, ninja, autotools, pkg-config, perl and python. The ports tree is in `/usr/ports`; `get sync` updates it from the latest release.
 
-Website: `website/` (plain HTML; the Handbook is `website/handbook.html`) · Download: [GitHub release `v0.2.2`](https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.2)
+Website: `website/` (plain HTML; the Handbook is `website/handbook.html`) · Download: [GitHub release `v0.2.3`](https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.3)
 
-The `v0.2.2` release currently publishes this file:
+The `v0.2.3` release publishes the ISO, its checksum and the ports tree:
 
-| File | Size |
-|---|---:|
-| [`systemLinux-0.2.2-x86_64.iso`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.2/systemLinux-0.2.2-x86_64.iso) | about 645 MiB |
+| File | |
+|---|---|
+| [`systemLinux-0.2.3-x86_64.iso`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.3/systemLinux-0.2.3-x86_64.iso) | the live and installer ISO |
+| [`systemLinux-0.2.3-x86_64.iso.sha256`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.3/systemLinux-0.2.3-x86_64.iso.sha256) | its checksum |
+| [`ports.tar.xz`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.3/ports.tar.xz) | the ports tree (`get sync`) |
 
 The release includes a separate checksum file. After downloading both files, verify the ISO with:
 
 ```sh
-sha256sum -c systemLinux-0.2.2-x86_64.iso.sha256
+sha256sum -c systemLinux-0.2.3-x86_64.iso.sha256
 ```
 
 See `ROADMAP.md` for what's still deliberately not done (NVIDIA proprietary, Secure Boot, etc.).
@@ -207,7 +214,7 @@ see the message `build_iso.sh` prints if something is missing). The installer's 
 copied from the host into the image.
 
 ```sh
-./build_iso.sh    # systemLinux-0.2.2-x86_64.iso and systemLinux-0.2.2-x86_64.iso.sha256   (or: make iso)
+./build_iso.sh    # systemLinux-0.2.3-x86_64.iso and systemLinux-0.2.3-x86_64.iso.sha256   (or: make iso)
 ```
 
 It also writes `profiles-out/profile-*.tar.xz` for the release (upload them next to the ISO; `get profile`
@@ -223,11 +230,11 @@ as artifacts.
 ### Cutting a release
 
 1. Make sure `VERSION` and `CHANGELOG.md` are right on `main`.
-2. Tag and push: `git tag v0.2.2 && git push origin v0.2.2` (`v0.2` also triggers it; `get profile` maps
-   `VERSION` 0.2.2 to the `v0.2.2` release, so prefer `v0.2.2`).
+2. Tag and push: `git tag v0.2.3 && git push origin v0.2.3` (`v0.2` also triggers it; `get profile` maps
+   `VERSION` 0.2.3 to the `v0.2.3` release, so prefer `v0.2.3`).
 3. `.github/workflows/release.yml` builds the ISO and creates the GitHub Release with the ISO, profiles,
    `SHA256SUMS` and the changelog entry as notes (it verifies the checksums first). The website links point at
-   `releases/download/v0.2.2/`.
+   `releases/download/v0.2.3/`.
 
 The full ISO build needs a real Linux host with sudo, ~30 GB of disk and the tools listed above
 (xorriso, mtools, pahole, ...); it is not verified in the restricted agent sandbox, so run `./build_iso.sh`
@@ -235,7 +242,7 @@ locally or via the `Build ISO` workflow (`workflow_dispatch`) before pushing the
 
 ## Installing to disk
 
-1. Write the ISO to a USB stick (`dd if=systemLinux-0.2.2-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync`,
+1. Write the ISO to a USB stick (`dd if=systemLinux-0.2.3-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync`,
    or copy it onto a Ventoy stick) and boot it in UEFI or legacy BIOS mode.
 2. At the live console, run `sudo systemlinux-install` and answer its prompts (disk or
    existing partition, computer name, your account, timezone, keymap, optional LUKS
