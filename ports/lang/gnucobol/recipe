@@ -1,0 +1,7 @@
+version=3.2
+description=COBOL compiler
+url=https://ftpmirror.gnu.org/gnu/gnucobol/gnucobol-3.2.tar.xz
+sha256=3bb48af46ced4779facf41fdc2ee60e4ccb86eaa99d010b36685315df39c2ee2
+build=configure
+requires=dev-libs/gmp dev-libs/libxml2 dev-libs/json-c
+check=cmd:cobc

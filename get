@@ -75,7 +75,7 @@ atom() {
 dbdir() { echo "$DB/pkgs/${1//\//__}"; }
 installed() { [ -f "$(dbdir "$1")/files" ]; }
 # provided_by_base ATOM: the system already has this package. A recipe's `check` (pkgconfig:NAME, cmd:NAME,
-# file:/PATH or python:MODULE) decides when present, so a base package built without a needed feature is not mistaken for enough;
+# file:/PATH, python:MODULE or perl:Module::Name) decides when present, so a base package built without a needed feature is not mistaken for enough;
 # otherwise the base image's package list does.
 provided_by_base() {
     local c; c=$(recipe_get "$PORTS/$1/recipe" check 2>/dev/null)
@@ -84,6 +84,7 @@ provided_by_base() {
         cmd:*)       command -v "${c#cmd:}" >/dev/null 2>&1; return ;;
         file:/*)     [ -e "${c#file:}" ]; return ;;
         python:*)    case "${c#python:}" in *[!A-Za-z0-9_.]*) return 1 ;; esac; python3 -c "import ${c#python:}" 2>/dev/null; return ;;
+        perl:*)      case "${c#perl:}" in *[!A-Za-z0-9_:]*) return 1 ;; esac; perl -M"${c#perl:}" -e 1 2>/dev/null; return ;;
     esac
     [ -f "$DB/pkgs/base__${1##*/}/files" ] || { [ -r "$BASE_LIST" ] && grep -qxF "${1##*/}" "$BASE_LIST"; }
 }
@@ -215,15 +216,26 @@ build_and_stage() {
             make -j"$JOBS" PREFIX="$PREFIX" prefix="$PREFIX" "${args[@]}" "${margs[@]}" || die "build failed"
             make install DESTDIR="$dest" PREFIX="$PREFIX" prefix="$PREFIX" "${args[@]}" "${margs[@]}" || die "install failed" ;;
         python)
-            # pip if installed, else the copy bundled with Python's ensurepip (pip runs straight from its wheel)
-            local pip=(python3 -m pip) whl
-            if ! python3 -m pip --version >/dev/null 2>&1; then
-                whl=$(python3 -c 'import ensurepip, glob, os; print(sorted(glob.glob(os.path.join(os.path.dirname(ensurepip.__file__), "_bundled", "pip-*.whl")))[-1])' 2>/dev/null) \
-                    || die "python builds need pip, and this Python has no bundled copy"
-                pip=(python3 "$whl/pip")
-            fi
-            "${pip[@]}" install --no-deps --no-build-isolation --no-warn-script-location --disable-pip-version-check \
-                --prefix="$PREFIX" --root="$dest" "${args[@]}" . || die "python build failed" ;;
+            # the base system's gpep517 + installer (as Gentoo builds Python packages): build a wheel with the project's
+            # own build backend, then install it; pip (installed, or the copy bundled with Python) when gpep517 is missing
+            local pip=(python3 -m pip) whl backend
+            if python3 -c 'import gpep517, installer' 2>/dev/null; then
+                backend=$(python3 -m gpep517 get-backend) || die "cannot read the build backend from pyproject.toml"
+                [ -n "$backend" ] || backend=setuptools.build_meta:__legacy__   # a plain setup.py project
+                mkdir -p "$WORK/wheel"
+                python3 -m gpep517 build-wheel --backend "$backend" --wheel-dir "$WORK/wheel" --output-fd 3 "${args[@]}" \
+                    3> "$WORK/wheel.name" || die "python build failed"
+                python3 -m gpep517 install-wheel --destdir "$dest" --prefix "$PREFIX" "$WORK/wheel/$(cat "$WORK/wheel.name")" \
+                    || die "installing the wheel failed"
+            else
+                if ! python3 -m pip --version >/dev/null 2>&1; then
+                    whl=$(python3 -c 'import ensurepip, glob, os; print(sorted(glob.glob(os.path.join(os.path.dirname(ensurepip.__file__), "_bundled", "pip-*.whl")))[-1])' 2>/dev/null) \
+                        || die "python builds need gpep517 or pip"
+                    pip=(python3 "$whl/pip")
+                fi
+                "${pip[@]}" install --no-deps --no-build-isolation --no-warn-script-location --disable-pip-version-check \
+                    --prefix="$PREFIX" --root="$dest" "${args[@]}" . || die "python build failed"
+            fi ;;
         cargo)
             command -v cargo >/dev/null || die "cargo builds need Rust (get install rust)"
             # a workspace without a package of its own: build the member crate named like the port
@@ -417,11 +429,12 @@ record() { # ATOM URL REQUIRES EXPLICIT(0/1) [VERSION]
 }
 
 install_atom() { # ATOM EXPLICIT
-    local a=$1 url sha bs ca req ver sd ma pg svc
+    local a=$1 url sha bs ca req ver sd ma pg cf svc
     ver=$(recipe_get "$PORTS/$a/recipe" version)
     sd=$(recipe_get "$PORTS/$a/recipe" srcdir)
     ma=$(recipe_get "$PORTS/$a/recipe" make_args)
     pg=$(recipe_get "$PORTS/$a/recipe" programs)
+    cf=$(recipe_get "$PORTS/$a/recipe" cflags)
     url=$(recipe_get "$PORTS/$a/recipe" url)
     sha=$(recipe_get "$PORTS/$a/recipe" sha256)
     bs=$(recipe_get "$PORTS/$a/recipe" build)
@@ -432,7 +445,12 @@ install_atom() { # ATOM EXPLICIT
         mkdir -p "$(dbdir "$a")"; : > "$(dbdir "$a")/files"; record "$a" "" "$req" "$2" "$ver"; return 0
     fi
     newwork
-    build_and_stage "$a" "$url" "$sha" "$bs" "$ca" "$PORTS/$a" "$sd" "$ma" "$pg"
+    # cflags: extra C compiler flags for this port only (old C code: -std=gnu17, -Wno-error=...)
+    if [ -n "$cf" ]; then
+        CFLAGS="${CFLAGS:--O2 -g} $cf" build_and_stage "$a" "$url" "$sha" "$bs" "$ca" "$PORTS/$a" "$sd" "$ma" "$pg"
+    else
+        build_and_stage "$a" "$url" "$sha" "$bs" "$ca" "$PORTS/$a" "$sd" "$ma" "$pg"
+    fi
     merge "$a"
     record "$a" "$url" "$req" "$2" "$ver"
     rm -rf "$WORK"; WORK=''

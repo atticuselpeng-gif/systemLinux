@@ -1,0 +1,7 @@
+version=3.55
+description=XML, The Perl Way
+url=https://cpan.metacpan.org/authors/id/M/MI/MIROD/XML-Twig-3.55.tar.gz
+sha256=69326e5edc05c759ccc78fbe05ca63759a035fe7a5337b8ddba6c3dd42f64f6c
+build=perl
+requires=dev-perl/XML-Parser
+check=perl:XML::Twig

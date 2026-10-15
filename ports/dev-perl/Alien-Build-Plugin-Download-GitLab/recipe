@@ -1,0 +1,7 @@
+version=0.01
+description=Alien::Build plugin to download from GitLab
+url=https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Alien-Build-Plugin-Download-GitLab-0.01.tar.gz
+sha256=c1f089c8ea152a789909d48a83dbfcf2626f773daf30431c8622582b26aba902
+build=perl
+requires=dev-perl/Alien-Build dev-perl/Path-Tiny dev-perl/URI
+check=perl:Alien::Build::Plugin::Download::GitLab

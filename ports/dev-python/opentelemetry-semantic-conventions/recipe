@@ -1,0 +1,7 @@
+version=0.66b1
+description=OpenTelemetry Semantic Conventions
+url=https://files.pythonhosted.org/packages/46/e4/dbbfb2a010c4db2224a5114638acede6fe563d33cc20fb1752cebcbe6298/opentelemetry_semantic_conventions-0.66b1.tar.gz
+sha256=497ca63bf383723411e8eaf60c8779e9877633c936bb641080adab59d0eb6ec8
+build=python
+requires=dev-python/opentelemetry-api dev-python/typing-extensions
+check=python:opentelemetry_semantic_conventions

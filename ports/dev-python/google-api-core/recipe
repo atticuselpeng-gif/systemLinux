@@ -1,0 +1,7 @@
+version=2.42.0
+description=Google API client core library
+url=https://files.pythonhosted.org/packages/ac/aa/2aa84799e6920216f8aa2866d3b43daa20f7060dcb6efc8f0449e8be0ab0/google_api_core-2.42.0.tar.gz
+sha256=82cf5daa2ef1b456d4e29ff1de1a5c2995c7be3ccf4fc608184326e03390c1ee
+build=python
+requires=dev-python/googleapis-common-protos dev-python/proto-plus dev-python/google-auth dev-python/requests dev-python/opentelemetry-api
+check=python:google_api_core

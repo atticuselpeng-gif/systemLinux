@@ -1,0 +1,7 @@
+version=7.2.0
+description=A Python library for the Docker Engine API.
+url=https://files.pythonhosted.org/packages/88/7f/731ff914b0255d3d065f45fd4e626d4b8c95dbcbaada049f337a6ac16410/docker-7.2.0.tar.gz
+sha256=cebb93773d334f778e023a7ee352a8d6e13ab1bd3b863a4d4a59dec897df43ac
+build=python
+requires=dev-python/hatch-vcs dev-python/requests dev-python/urllib3
+check=python:docker

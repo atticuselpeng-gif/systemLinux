@@ -1,0 +1,6 @@
+version=0.12.1
+description=Composable style cycles
+url=https://files.pythonhosted.org/packages/a9/95/a3dbbb5028f35eafb79008e7522a75244477d2838f38cbb722248dabc2a8/cycler-0.12.1.tar.gz
+sha256=88bb128f02ba341da8ef447245a9e138fae777f6a23943da4540077d3601eb1c
+build=python
+check=python:cycler

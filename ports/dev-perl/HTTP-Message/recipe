@@ -1,0 +1,7 @@
+version=7.04
+description=HTTP style message (base class)
+url=https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Message-7.04.tar.gz
+sha256=699f3350dbb7bd8fdc9f3b013b0c91b7c059783708443e39bc395fa33352f006
+build=perl
+requires=dev-perl/Clone dev-perl/Encode-Locale dev-perl/HTTP-Date dev-perl/IO-HTML dev-perl/LWP-MediaTypes dev-perl/URI
+check=perl:HTTP::Message

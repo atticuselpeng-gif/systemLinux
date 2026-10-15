@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=PhpStorm
+Exec=phpstorm %f
+Icon=/usr/lib/phpstorm/bin/phpstorm.svg
+Terminal=false
+Type=Application
+Categories=Development;IDE;

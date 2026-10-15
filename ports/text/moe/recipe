@@ -1,0 +1,8 @@
+version=1.5
+description=Small, powerful text editor
+url=https://ftpmirror.gnu.org/gnu/moe/moe-1.5.tar.gz
+sha256=fa40d611fb36dd2145bbec5d35258be94247963cd6ec106395c87421007a0a43
+build=configure
+cflags=-std=gnu17
+requires=dev-libs/ncurses
+check=cmd:moe

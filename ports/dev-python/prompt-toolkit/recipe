@@ -1,0 +1,7 @@
+version=3.0.53
+description=Library for building powerful interactive command lines in Python
+url=https://files.pythonhosted.org/packages/7d/ea/39b988c938f75cb75d7045b5c69f8bfed47ee2152c8837fb403de29d6fb8/prompt_toolkit-3.0.53.tar.gz
+sha256=9ec8a0ad96d5c56148b3f914aa79c1564c3fde5d2e6b876e7bc327e353cf8fa6
+build=python
+requires=dev-python/wcwidth
+check=python:prompt_toolkit

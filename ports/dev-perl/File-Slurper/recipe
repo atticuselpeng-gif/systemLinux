@@ -1,0 +1,6 @@
+version=0.014
+description=A simple, sane and efficient module to slurp a file
+url=https://cpan.metacpan.org/authors/id/L/LE/LEONT/File-Slurper-0.014.tar.gz
+sha256=d5a36487339888c3cd758e648160ee1d70eb4153cacbaff57846dbcefb344b0c
+build=perl
+check=perl:File::Slurper

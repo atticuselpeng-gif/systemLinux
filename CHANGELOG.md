@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.2.4
+
+### Added
+- **253 Python modules** (`dev-python`): the most downloaded projects on PyPI and everything they need at run time
+  (requests, httpx, rich, click, pydantic, numpy, pandas, cryptography, pillow, lxml, jinja2, ...), plus the build
+  backends that projects use (poetry-core, pdm-backend, maturin, meson-python, scikit-build-core, hatch-vcs).
+  Generated from PyPI: each port has the sdist's sha256 and the build backend and system libraries it needs.
+- **226 Perl modules** (`dev-perl`): popular CPAN distributions (Moose, Mojolicious, DBI, DateTime, LWP,
+  XML-LibXML, Template-Toolkit, Perl-Tidy, Image-ExifTool, ...) with their dependencies; modules that ship with Perl
+  itself are left to the base system.
+- **47 GNU packages** that were missing: a2ps, autogen, cflow, dejagnu, enscript, gnucobol, gnuchess, gnugo, inetutils,
+  mailutils, mtools, recutils, xorriso, zile, GNU Hello and more.
+- **11 more `-bin` ports**: the JetBrains IDEs (IntelliJ IDEA, PyCharm, WebStorm, GoLand, CLion, RustRover, Rider,
+  DataGrip, PhpStorm, RubyMine) and Kdenlive.
+- librsvg.
+
+### Fixed
+- **Python ports build again.** The image has no pip, and the ISO strip removes the copy bundled with Python, so no
+  `dev-python` port could build on 0.2.3. `get` now builds Python packages the way Gentoo does, with the base
+  system's `gpep517` and `installer` (pip is still used where gpep517 is missing).
+- **Perl modules are checked by loading them.** `check=perl:Module::Name`: the base lists some Perl modules whose files
+  are not usable (they sit in the previous Perl version's folder), so ports that needed them failed at run time.
+- **New `cflags=` recipe key** for extra C compiler flags, e.g. `-std=gnu17` for old C code that GCC 15's C23 default
+  rejects (applies to C only, not C++).
+
+The ports tree has 1619 recipes.
+
 ## 0.2.3
 
 ### Added

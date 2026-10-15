@@ -1,0 +1,7 @@
+version=4.4.1
+description=Pure-Python HTTP/2 protocol implementation
+url=https://files.pythonhosted.org/packages/e7/85/7c366e69d84c17bb778fe41419e1fbcce3033d5b7ce29bbffff0a98b859f/h2-4.4.1.tar.gz
+sha256=4e866ffb1a869ae14dd9b5e6beb5c24a13da0495ad72b65925ded182521c1516
+build=python
+requires=dev-python/hyperframe dev-python/hpack
+check=python:h2

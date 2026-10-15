@@ -1,0 +1,6 @@
+version=0.03
+description=temporary buffer to save bytes
+url=https://cpan.metacpan.org/authors/id/D/DO/DOY/Stream-Buffered-0.03.tar.gz
+sha256=9b2d4390b5de6b0cf4558e4ad04317a73c5e13dd19af29149c4e47c37fb2423b
+build=perl
+check=perl:Stream::Buffered

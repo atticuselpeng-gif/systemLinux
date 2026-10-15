@@ -1,0 +1,6 @@
+version=20260813
+description=Mozilla's CA cert bundle in PEM format
+url=https://cpan.metacpan.org/authors/id/L/LW/LWP/Mozilla-CA-20260813.tar.gz
+sha256=81f0bd9665eacbb6feef13b0fa16fbb30162c09292542b1206434e569196dd9b
+build=perl
+check=perl:Mozilla::CA

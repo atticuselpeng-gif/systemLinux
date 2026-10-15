@@ -1,0 +1,7 @@
+version=7.6.0
+description=Universal character encoding detector
+url=https://files.pythonhosted.org/packages/b1/51/cd61c567092a6cec796144510a68aff158ebfc1df82950a45bae65f28413/chardet-7.6.0.tar.gz
+sha256=93d9df6089ded42ed1fe9f57e272c0b74bd0464d45c0c7d50f09f26f31105c3c
+build=python
+requires=dev-python/hatch-vcs
+check=python:chardet

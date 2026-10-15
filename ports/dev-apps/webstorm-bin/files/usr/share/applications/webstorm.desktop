@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=WebStorm
+Exec=webstorm %f
+Icon=/usr/lib/webstorm/bin/webstorm.svg
+Terminal=false
+Type=Application
+Categories=Development;IDE;

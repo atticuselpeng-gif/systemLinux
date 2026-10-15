@@ -1,0 +1,7 @@
+version=0.14.8
+description=Client library to connect to the LangSmith Observability and Evaluation Platform.
+url=https://files.pythonhosted.org/packages/35/3a/d34ed0164451df7c2effd79ef119c90db7ec7a315731b391d3a57874829d/langsmith-0.14.8.tar.gz
+sha256=667d0e69efb64b3ed3a9e1686e5246e4f9f46aacfba8c644d41e7e74bcd4eb37
+build=python
+requires=dev-python/anyio dev-python/distro dev-python/httpx2 dev-python/orjson dev-python/pydantic dev-python/requests-toolbelt dev-python/requests dev-python/sniffio dev-python/typing-extensions dev-python/uuid-utils dev-python/websockets dev-python/zstandard
+check=python:langsmith

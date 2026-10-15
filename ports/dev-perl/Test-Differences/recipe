@@ -1,0 +1,7 @@
+version=0.73
+description=Test strings and data structures and show differences if not ok
+url=https://cpan.metacpan.org/authors/id/D/DC/DCANTRELL/Test-Differences-0.73.tar.gz
+sha256=3c113f4e25c38323a3fe5992d30c337264d00ef872aecfd2d9431ca8ea0083e2
+build=perl
+requires=dev-perl/Capture-Tiny dev-perl/Text-Diff
+check=perl:Test::Differences

@@ -1,0 +1,7 @@
+version=2.2100
+description=SASL Authentication framework
+url=https://cpan.metacpan.org/authors/id/E/EH/EHUELS/Authen-SASL-2.2100.tar.gz
+sha256=4f0f100aeed34b52977a94b7df973e7f0b8f92d167b09f2b249bab81e8590e57
+build=perl
+requires=dev-perl/Crypt-URandom dev-perl/Digest-HMAC
+check=perl:Authen::SASL

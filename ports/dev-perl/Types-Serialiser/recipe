@@ -1,0 +1,7 @@
+version=1.01
+description=simple data types for common serialisation formats
+url=https://cpan.metacpan.org/authors/id/M/ML/MLEHMANN/Types-Serialiser-1.01.tar.gz
+sha256=f8c7173b0914d0e3d957282077b366f0c8c70256715eaef3298ff32b92388a80
+build=perl
+requires=dev-perl/common-sense
+check=perl:Types::Serialiser

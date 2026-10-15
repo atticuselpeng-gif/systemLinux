@@ -1,0 +1,7 @@
+version=2.6
+description=Plot data and draw vector graphics
+url=https://ftpmirror.gnu.org/gnu/plotutils/plotutils-2.6.tar.gz
+sha256=4f4222820f97ca08c7ea707e4c53e5a3556af4d8f1ab51e0da6ff1627ff433ab
+build=configure
+requires=dev-libs/libpng
+check=cmd:graph

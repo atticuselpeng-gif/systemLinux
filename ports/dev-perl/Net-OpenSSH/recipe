@@ -1,0 +1,6 @@
+version=0.84
+description=Perl SSH client package implemented on top of OpenSSH
+url=https://cpan.metacpan.org/authors/id/S/SA/SALVA/Net-OpenSSH-0.84.tar.gz
+sha256=8780e62f01b1cf0db43c9cb705c94ff4949b032233be4be91fc91abc791539f8
+build=perl
+check=perl:Net::OpenSSH

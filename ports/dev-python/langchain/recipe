@@ -1,0 +1,7 @@
+version=1.4.6
+description=Building applications with LLMs through composability
+url=https://files.pythonhosted.org/packages/d1/19/f4fd7d8ea845558bdc75c249bf9392250c67f38b7a242a9a3854c4f8e32e/langchain-1.4.6.tar.gz
+sha256=ad3ccfdc50005eb06bf1fcbae61aa69ad98fe8bc7d7c1b4ad88323b5bda4cbac
+build=python
+requires=dev-python/langchain-core dev-python/langgraph dev-python/pydantic
+check=python:langchain

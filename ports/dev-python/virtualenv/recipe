@@ -1,0 +1,7 @@
+version=21.14.7
+description=Virtual Python Environment builder
+url=https://files.pythonhosted.org/packages/dc/3f/935cf1757643381fb7f7cc98197b4bc119223d9c2cf37dc3b03ad2a4455f/virtualenv-21.14.7.tar.gz
+sha256=5f427d56f39eb7e7447d641dd4b7ab1e9c92793f498f35f26da2e4972c5546ae
+build=python
+requires=dev-python/hatch-vcs dev-python/distlib dev-python/filelock dev-python/platformdirs dev-python/python-discovery
+check=python:virtualenv

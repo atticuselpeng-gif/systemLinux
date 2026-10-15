@@ -1,0 +1,6 @@
+version=0.32
+description=Faster and more correct implementation of the Package::Stash API
+url=https://cpan.metacpan.org/authors/id/E/ET/ETHER/Package-Stash-XS-0.32.tar.gz
+sha256=9f961e798c01370f3834eda5f010c9d60c68a96d15c48598d8a5a25ca32f5f11
+build=perl
+check=perl:Package::Stash::XS

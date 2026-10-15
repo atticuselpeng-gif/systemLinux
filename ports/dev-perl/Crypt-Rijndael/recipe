@@ -1,0 +1,6 @@
+version=1.16
+description=Crypt::CBC compliant Rijndael encryption module
+url=https://cpan.metacpan.org/authors/id/L/LE/LEONT/Crypt-Rijndael-1.16.tar.gz
+sha256=6540085e3804b82a6f0752c1122cf78cadd221990136dd6fd4c097d056c84d40
+build=perl
+check=perl:Crypt::Rijndael

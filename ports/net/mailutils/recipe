@@ -1,0 +1,7 @@
+version=3.21
+description=Mail utilities, servers and libraries
+url=https://ftpmirror.gnu.org/gnu/mailutils/mailutils-3.21.tar.xz
+sha256=e47c1edc699b8d6675fdbc77db3a84ae837f18e1f2094fe29d48bb58a97ef5e9
+build=configure
+requires=dev-libs/gnutls dev-libs/gdbm
+check=cmd:mail

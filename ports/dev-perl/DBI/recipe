@@ -1,0 +1,5 @@
+version=1.655
+description=Database independent interface for Perl
+url=https://cpan.metacpan.org/authors/id/H/HM/HMBRAND/DBI-1.655.tgz
+sha256=735a42a82e5a866b57869f8b92bf218f58c7fb62f75d6707a6345142d152762f
+build=perl

@@ -1,0 +1,6 @@
+version=7.16.2
+description=Code coverage measurement for Python
+url=https://files.pythonhosted.org/packages/2f/55/d1eaf3e73781174340a00dc1ba2aee8a65f82fadb18e2797b192b6b3925b/coverage-7.16.2.tar.gz
+sha256=ca64d9f1f384f151b9511bec01126072acd2f313439f8ed015a22d8790aab6fa
+build=python
+check=python:coverage

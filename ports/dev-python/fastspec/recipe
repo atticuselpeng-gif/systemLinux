@@ -1,0 +1,7 @@
+version=0.2.5
+description=Dynamic OpenAPI, Discovery, and GraphQL spec client for Python — turn any API spec into a fully-typed async client with attribute chaining, streaming,
+url=https://files.pythonhosted.org/packages/44/07/5174ddc253295afa771ff9eb05508adf22fda97775e37c3193229ee93d4a/fastspec-0.2.5.tar.gz
+sha256=a5d32aff8a2c9dfd7db333b94b1126f3ff7d0fe0c61ae54da3f2197392af3ffa
+build=python
+requires=dev-python/fastcore dev-python/fasttransport
+check=python:fastspec

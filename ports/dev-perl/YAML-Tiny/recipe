@@ -1,0 +1,6 @@
+version=1.76
+description=Read/Write YAML files with as little code as possible
+url=https://cpan.metacpan.org/authors/id/E/ET/ETHER/YAML-Tiny-1.76.tar.gz
+sha256=a8d584394cf069bf8f17cba3dd5099003b097fce316c31fb094f1b1c171c08a3
+build=perl
+check=perl:YAML::Tiny

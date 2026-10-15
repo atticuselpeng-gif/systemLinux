@@ -1,0 +1,6 @@
+version=1.06
+description=TTF font support for Perl
+url=https://cpan.metacpan.org/authors/id/B/BH/BHALLISSY/Font-TTF-1.06.tar.gz
+sha256=4b697d444259759ea02d2c442c9bffe5ffe14c9214084a01f743693a944cc293
+build=perl
+check=perl:Font::TTF

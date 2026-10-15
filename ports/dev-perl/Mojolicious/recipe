@@ -1,0 +1,6 @@
+version=9.49
+description=Real-time web framework
+url=https://cpan.metacpan.org/authors/id/S/SR/SRI/Mojolicious-9.49.tar.gz
+sha256=281933d4f9b821f669a3e93a466daaad5596443ea2cb167fa7c019752bce6d66
+build=perl
+check=perl:Mojolicious

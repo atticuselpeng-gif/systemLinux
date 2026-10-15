@@ -1,0 +1,7 @@
+version=1.43.114
+description=The AWS SDK for Python (Boto3)
+url=https://files.pythonhosted.org/packages/e2/8c/f6f884dc947789317e73ed6fce85e18580d22e9f90e48d67c2367b02667e/boto3-1.43.114.tar.gz
+sha256=be704857751564a5cf69c5bbaadbfa01c22806409815c73563db42fbffe583a2
+build=python
+requires=dev-python/botocore dev-python/jmespath dev-python/s3transfer
+check=python:boto3

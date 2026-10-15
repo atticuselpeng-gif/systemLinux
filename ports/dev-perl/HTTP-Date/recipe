@@ -1,0 +1,7 @@
+version=6.08
+description=HTTP::Date - date conversion routines
+url=https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Date-6.08.tar.gz
+sha256=b57d80ca6d821c6949ca48b27467d45aba7a9c77346562306facca781a003e44
+build=perl
+requires=dev-perl/TimeDate
+check=perl:HTTP::Date

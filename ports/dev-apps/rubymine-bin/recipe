@@ -1,0 +1,8 @@
+version=2026.2.3
+description=JetBrains RubyMine IDE (official build)
+url=https://download.jetbrains.com/ruby/RubyMine-2026.2.3.tar.gz
+sha256=c0e7eb6f6b1a53e91ba26ca5be01f663104dfa2f436d4cc2abec46bea24431cc
+build=bin
+programs=bin/rubymine.sh:rubymine
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxtst x11/libxi dev-libs/freetype dev-libs/fontconfig dev-libs/alsa-lib dev-libs/glib
+check=cmd:rubymine

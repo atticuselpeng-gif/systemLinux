@@ -1,0 +1,7 @@
+version=0.43
+description=Test exception-based code
+url=https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Exception-0.43.tar.gz
+sha256=156b13f07764f766d8b45a43728f2439af81a3512625438deab783b7883eb533
+build=perl
+requires=dev-perl/Sub-Uplevel
+check=perl:Test::Exception

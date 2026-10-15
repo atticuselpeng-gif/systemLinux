@@ -1,0 +1,7 @@
+version=1.20.0
+description=A database migration tool for SQLAlchemy.
+url=https://files.pythonhosted.org/packages/ed/aa/02910bdb8e2f1444f6654d5b296cd827d126f82209050ee7b1000f92ac4b/alembic-1.20.0.tar.gz
+sha256=db505480647bc60386c5369402f4a57a506b7539c9e9ef5e270d45cbbe4939bf
+build=python
+requires=dev-python/sqlalchemy dev-python/typing-extensions
+check=python:alembic

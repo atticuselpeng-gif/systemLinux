@@ -106,6 +106,7 @@ an error in `tools/ports-check.sh`.
 | `requires` | no | space-separated `category/name` atoms built first |
 | `check` | no | how to tell whether the system already has it (see below) |
 | `srcdir` | no | build in this subfolder of the source (for example one crate of a Rust workspace) |
+| `cflags` | no | extra C compiler flags for this port, e.g. `-std=gnu17` for old C code that GCC 15's C23 default rejects |
 
 A **meta-package** has no `url`, only `requires` (for example `x11/xfce4` pulls in the whole desktop).
 
@@ -172,6 +173,7 @@ Use full atoms (`dev-libs/cairo`, not `cairo`). Build tools count too: meson por
 | `cmd:NAME` | `NAME` is in `PATH` (use for programs) |
 | `file:/PATH` | that file exists |
 | `python:MODULE` | `python3 -c "import MODULE"` works |
+| `perl:Module::Name` | `perl -MModule::Name -e 1` works |
 
 **One set of files.** get records the base system's files too, so it knows who owns every file in `/usr` and
 `/etc`. A port never overwrites a file another package owns (the install stops and names the owner), with one

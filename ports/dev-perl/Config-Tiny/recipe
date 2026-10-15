@@ -1,0 +1,5 @@
+version=2.30
+description=Read/Write .ini style files with as little code as possible
+url=https://cpan.metacpan.org/authors/id/R/RS/RSAVAGE/Config-Tiny-2.30.tgz
+sha256=b2f7345619b3b8e636dd39ea010731c9dc2bfb8f022bcbd86ae6ad17866e110d
+build=perl

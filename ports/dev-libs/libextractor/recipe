@@ -1,0 +1,7 @@
+version=1.19
+description=Extract metadata from files
+url=https://ftpmirror.gnu.org/gnu/libextractor/libextractor-1.19.tar.gz
+sha256=2d5b33cbdb21c88ae9360994d4e216627413ee9cb11b31b033c2d0cf42ef2700
+build=configure
+requires=dev-apps/libtool
+check=cmd:extract

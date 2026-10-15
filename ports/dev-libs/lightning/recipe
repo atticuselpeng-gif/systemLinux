@@ -1,0 +1,5 @@
+version=2.2.3
+description=Library for generating machine code at run time
+url=https://ftpmirror.gnu.org/gnu/lightning/lightning-2.2.3.tar.gz
+sha256=c045c7a33a00affbfeb11066fa502c03992e474a62ba95977aad06dbc14c6829
+build=configure

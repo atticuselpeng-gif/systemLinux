@@ -1,0 +1,7 @@
+version=0.13.0
+description=Python bindings for mypy AST serialization
+url=https://files.pythonhosted.org/packages/d2/7c/dcde7ac261e0bfbb0360c207a1e3f9fd467f9bfaeaff7b62d01625bc86d2/ast_serialize-0.13.0.tar.gz
+sha256=a0bdcef01e643e0810d2dedfb64d924bcfe079a15dc20d1c067870cc01d5c5e6
+build=python
+requires=dev-python/maturin lang/rust
+check=python:ast_serialize

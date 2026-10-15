@@ -1,6 +1,6 @@
-version=3.0.2
-description=Safe string escaping for Python
-url=https://files.pythonhosted.org/packages/source/m/markupsafe/markupsafe-3.0.2.tar.gz
-sha256=ee55d3edf80167e48ea11a923c7386f4669df67d7994554387f84e7d8b0a2bf0
+version=3.0.4
+description=Safely add untrusted strings to HTML/XML markup.
+url=https://files.pythonhosted.org/packages/38/9b/e422a865e1d5d57d0e509b4e0bf1c1a70a7f6382c29a5aa428df994c8bc8/markupsafe-3.0.4.tar.gz
+sha256=2e9ad7dd851bf45fab9f75cbff4cb493fee9979e8d8c7c9c3ee119022518edd6
 build=python
 check=python:markupsafe

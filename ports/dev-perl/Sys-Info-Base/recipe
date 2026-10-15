@@ -1,0 +1,7 @@
+version=0.7810
+description=Base class for Sys::Info
+url=https://cpan.metacpan.org/authors/id/B/BU/BURAK/Sys-Info-Base-0.7810.tar.gz
+sha256=21bc494695d19282645b03c4819f31df25da4a510a364b0be08c6eb15d49c070
+build=perl
+requires=dev-perl/Sys-HostIP dev-perl/Text-Template-Simple
+check=perl:Sys::Info::Base

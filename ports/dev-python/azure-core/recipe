@@ -1,0 +1,7 @@
+version=1.41.0
+description=Microsoft Azure Core Library for Python
+url=https://files.pythonhosted.org/packages/a6/f3/b416179e408990df5db0d516283022dde0f5d0111d98c1a848e41853e81c/azure_core-1.41.0.tar.gz
+sha256=f46ff5dfcd230f25cf1c19e8a34b8dc08a337b2503e268bb600a16c00db8ad5a
+build=python
+requires=dev-python/requests dev-python/typing-extensions
+check=python:azure_core

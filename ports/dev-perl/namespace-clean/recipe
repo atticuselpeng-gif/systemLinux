@@ -1,0 +1,7 @@
+version=0.27
+description=Keep imports and functions out of your namespace
+url=https://cpan.metacpan.org/authors/id/R/RI/RIBASUSHI/namespace-clean-0.27.tar.gz
+sha256=8a10a83c3e183dc78f9e7b7aa4d09b47c11fb4e7d3a33b9a12912fd22e31af9d
+build=perl
+requires=dev-perl/B-Hooks-EndOfScope dev-perl/Package-Stash
+check=perl:namespace::clean

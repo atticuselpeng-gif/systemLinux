@@ -1,0 +1,7 @@
+version=1.14.0
+description=The official Python library for the anthropic API
+url=https://files.pythonhosted.org/packages/0f/c2/be99fac19b24c22b00d2a63ac1756b203bd3058ff54a14028c43b9f33116/anthropic-1.14.0.tar.gz
+sha256=d9284895864a8457ed87f0accc51fd488ad9743952e597c814e7dc9d78ac8e38
+build=python
+requires=dev-python/hatch-fancy-pypi-readme dev-python/anyio dev-python/docstring-parser dev-python/httpx2 dev-python/jiter dev-python/opentelemetry-api dev-python/pydantic dev-python/sniffio dev-python/typing-extensions
+check=python:anthropic

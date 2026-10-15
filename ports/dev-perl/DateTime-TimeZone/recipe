@@ -1,0 +1,7 @@
+version=2.71
+description=Time zone object base class and factory
+url=https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-TimeZone-2.71.tar.gz
+sha256=c617009adefecbe14cf1c757bd6a964acb23943431fb3a047bdbd87c07c67174
+build=perl
+requires=dev-perl/Class-Singleton dev-perl/Module-Runtime dev-perl/Params-ValidationCompiler dev-perl/Specio dev-perl/Try-Tiny dev-perl/namespace-autoclean
+check=perl:DateTime::TimeZone

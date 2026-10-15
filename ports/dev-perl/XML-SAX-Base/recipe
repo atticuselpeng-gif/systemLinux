@@ -1,0 +1,6 @@
+version=1.09
+description=Base class for SAX Drivers and Filters
+url=https://cpan.metacpan.org/authors/id/G/GR/GRANTM/XML-SAX-Base-1.09.tar.gz
+sha256=66cb355ba4ef47c10ca738bd35999723644386ac853abbeb5132841f5e8a2ad0
+build=perl
+check=perl:XML::SAX::Base

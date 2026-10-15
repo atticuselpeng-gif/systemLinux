@@ -1,0 +1,6 @@
+version=1.05
+description=Keyed-Hashing for Message Authentication
+url=https://cpan.metacpan.org/authors/id/A/AR/ARODLAND/Digest-HMAC-1.05.tar.gz
+sha256=215cb59cba610745cfb2d4b3f8ef756d590e57e3ad7986a992e87c4969fcdc7a
+build=perl
+check=perl:Digest::HMAC

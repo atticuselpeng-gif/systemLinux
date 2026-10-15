@@ -1,0 +1,7 @@
+version=0.25
+description=A working (require "Class::Name") and more
+url=https://cpan.metacpan.org/authors/id/E/ET/ETHER/Class-Load-0.25.tar.gz
+sha256=2a48fa779b5297e56156380e8b32637c6c58decb4f4a7f3c7350523e11275f8f
+build=perl
+requires=dev-perl/Data-OptList dev-perl/Module-Implementation dev-perl/Module-Runtime dev-perl/Package-Stash dev-perl/Try-Tiny
+check=perl:Class::Load

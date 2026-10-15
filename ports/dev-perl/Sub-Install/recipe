@@ -1,0 +1,6 @@
+version=0.929
+description=install subroutines into packages easily
+url=https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Sub-Install-0.929.tar.gz
+sha256=80b1e281d8cd3b2b31dac711f5c8a1657a87cd80bbe69af3924bcbeb4e5db077
+build=perl
+check=perl:Sub::Install

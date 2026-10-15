@@ -1,0 +1,7 @@
+version=4.9.1
+description=Graphical chess board for X
+url=https://ftpmirror.gnu.org/gnu/xboard/xboard-4.9.1.tar.gz
+sha256=2b2e53e8428ad9b6e8dc8a55b3a5183381911a4dae2c0072fa96296bbb1970d6
+build=configure
+requires=dev-libs/gtk3 dev-libs/cairo dev-libs/librsvg
+check=cmd:xboard

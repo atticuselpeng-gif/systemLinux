@@ -1,0 +1,7 @@
+version=1.80
+description=Parse and format strp and strf time patterns
+url=https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-Format-Strptime-1.80.tar.gz
+sha256=efe5e2be70425efc123a4e57f4b96b2d23beb03200c8326495b5b433b6b77158
+build=perl
+requires=dev-perl/DateTime dev-perl/DateTime-Locale dev-perl/DateTime-TimeZone dev-perl/Params-ValidationCompiler dev-perl/Specio dev-perl/Try-Tiny
+check=perl:DateTime::Format::Strptime

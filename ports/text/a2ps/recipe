@@ -1,0 +1,7 @@
+version=4.15.8
+description=Convert files to PostScript for printing
+url=https://ftpmirror.gnu.org/gnu/a2ps/a2ps-4.15.8.tar.gz
+sha256=8d13915a36ebbfa8e7b236b350cc81adc714acb217a18e8d8c60747c0ad353f9
+build=configure
+requires=dev-apps/gperf
+check=cmd:a2ps

@@ -1,0 +1,6 @@
+version=6.1.2
+description=Useful decorators and context managers
+url=https://files.pythonhosted.org/packages/af/50/4763cd07e722bb6285316d390a164bc7e479db9d90daa769f22578f698b4/jaraco_context-6.1.2.tar.gz
+sha256=f1a6c9d391e661cc5b8d39861ff077a7dc24dc23833ccee564b234b81c82dfe3
+build=python
+check=python:jaraco_context

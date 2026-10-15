@@ -1,0 +1,6 @@
+version=2.38
+description=Change terminal modes, and perform non-blocking reads.
+url=https://cpan.metacpan.org/authors/id/J/JS/JSTOWE/TermReadKey-2.38.tar.gz
+sha256=5a645878dc570ac33661581fbb090ff24ebce17d43ea53fd22e105a856a47290
+build=perl
+check=perl:Term::ReadKey

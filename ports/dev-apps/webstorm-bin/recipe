@@ -1,0 +1,8 @@
+version=2026.2.3
+description=JetBrains WebStorm IDE (official build)
+url=https://download.jetbrains.com/webstorm/WebStorm-2026.2.3.tar.gz
+sha256=3e29741c06799d6609c6d1ff7df720cad73cdb47825879091a577ed496cd00b0
+build=bin
+programs=bin/webstorm.sh:webstorm
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxtst x11/libxi dev-libs/freetype dev-libs/fontconfig dev-libs/alsa-lib dev-libs/glib
+check=cmd:webstorm

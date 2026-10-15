@@ -1,0 +1,6 @@
+version=1.102
+description=Simple, compact and correct param-checking functions
+url=https://cpan.metacpan.org/authors/id/R/RE/REHSACK/Params-Util-1.102.tar.gz
+sha256=499bb1b482db24fda277a51525596ad092c2bd51dd508fa8fec2e9f849097402
+build=perl
+check=perl:Params::Util

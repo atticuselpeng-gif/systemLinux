@@ -1,0 +1,7 @@
+version=1.45.1
+description=OpenTelemetry Python SDK
+url=https://files.pythonhosted.org/packages/a1/79/7392e21a1c8f0c61d90b223e31c7e48cb9d452e91a6b820ad24cca5f23c4/opentelemetry_sdk-1.45.1.tar.gz
+sha256=63d24a6ca645019a631e6a51999c73e93adcac1196ca640b8ae78a7cc4762bf3
+build=python
+requires=dev-python/opentelemetry-api dev-python/opentelemetry-semantic-conventions dev-python/typing-extensions
+check=python:opentelemetry_sdk

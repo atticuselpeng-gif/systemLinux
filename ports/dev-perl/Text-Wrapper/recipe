@@ -1,0 +1,6 @@
+version=1.05
+description=Word wrap text by breaking long lines
+url=https://cpan.metacpan.org/authors/id/C/CJ/CJM/Text-Wrapper-1.05.tar.gz
+sha256=64268e15983a9df47e1d9199a491f394e89f542e54afb33f4b78f3f318e09ab9
+build=perl
+check=perl:Text::Wrapper

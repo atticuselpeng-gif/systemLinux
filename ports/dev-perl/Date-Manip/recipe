@@ -1,0 +1,6 @@
+version=7.00
+description=Date manipulation routines
+url=https://cpan.metacpan.org/authors/id/S/SB/SBECK/Date-Manip-7.00.tar.gz
+sha256=37133eeb09d36da6d461546cc216b8f6a2297a43331c680a6848f3fff925975c
+build=perl
+check=perl:Date::Manip

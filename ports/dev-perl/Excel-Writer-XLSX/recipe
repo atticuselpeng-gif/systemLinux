@@ -1,0 +1,7 @@
+version=1.15
+description=Create a new file in the Excel 2007+ XLSX format.
+url=https://cpan.metacpan.org/authors/id/J/JM/JMCNAMARA/Excel-Writer-XLSX-1.15.tar.gz
+sha256=7931b4d8e2fa8b4f806db4bf523be396483f55f53e4f4738fdff5e9a0d875331
+build=perl
+requires=dev-perl/Archive-Zip
+check=perl:Excel::Writer::XLSX

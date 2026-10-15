@@ -1,0 +1,7 @@
+version=0.7811
+description=Fetch information from the host system
+url=https://cpan.metacpan.org/authors/id/B/BU/BURAK/Sys-Info-0.7811.tar.gz
+sha256=566482bff3427c198d7955468ed945a8e736c4a2925151fdef96801ef8a401e1
+build=perl
+requires=dev-perl/Sys-Info-Base
+check=perl:Sys::Info

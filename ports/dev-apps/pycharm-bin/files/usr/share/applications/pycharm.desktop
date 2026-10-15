@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=PyCharm
+Exec=pycharm %f
+Icon=/usr/lib/pycharm/bin/pycharm.svg
+Terminal=false
+Type=Application
+Categories=Development;IDE;

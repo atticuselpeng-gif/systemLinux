@@ -1,0 +1,7 @@
+version=1.9
+description=Program invocation and execution supervisor
+url=https://ftpmirror.gnu.org/gnu/pies/pies-1.9.tar.bz2
+sha256=3bd993752fa479faaf19a2e03f613a67e989c9b2a40980eced61a25bb31d0cf3
+build=configure
+cflags=-std=gnu17
+check=cmd:pies

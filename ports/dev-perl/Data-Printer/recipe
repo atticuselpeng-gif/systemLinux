@@ -1,0 +1,6 @@
+version=1.002001
+description=colored & full-featured pretty print of Perl data structures and objects
+url=https://cpan.metacpan.org/authors/id/G/GA/GARU/Data-Printer-1.002001.tar.gz
+sha256=96292d29edf85eca10724a00e0af509c40b17b9b5638c00332d703599b6f3b74
+build=perl
+check=perl:Data::Printer

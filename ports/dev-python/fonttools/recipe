@@ -1,0 +1,6 @@
+version=4.67.0
+description=Tools to manipulate font files
+url=https://files.pythonhosted.org/packages/94/36/102e180f8f5dbaee88b26595b01ca8aa80bf4e62128d9aa94265b3996c96/fonttools-4.67.0.tar.gz
+sha256=3cb57e6600ca77c0b1729cf8adc23bc0652633a37f18cfa934d9c7bc3de25519
+build=python
+check=python:fonttools

@@ -1,0 +1,6 @@
+version=3.12.1
+description=ASGI specs, helper code, and adapters
+url=https://files.pythonhosted.org/packages/e6/26/3b59f2bdae5f640389becb1f673cded775287f5fc4f816309d9ca9a3f93d/asgiref-3.12.1.tar.gz
+sha256=59dcb51c272ad209d59bed5708a64a333083e86017d7fcdd67498eeab7784340
+build=python
+check=python:asgiref

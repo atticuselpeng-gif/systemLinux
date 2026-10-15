@@ -1,0 +1,7 @@
+version=0.70.19
+description=better multiprocessing and multithreading in Python
+url=https://files.pythonhosted.org/packages/a2/f2/e783ac7f2aeeed14e9e12801f22529cc7e6b7ab80928d6dcce4e9f00922d/multiprocess-0.70.19.tar.gz
+sha256=952021e0e6c55a4a9fe4cd787895b86e239a40e76802a789d6305398d3975897
+build=python
+requires=dev-python/dill
+check=python:multiprocess

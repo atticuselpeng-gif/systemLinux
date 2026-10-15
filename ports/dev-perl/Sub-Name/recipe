@@ -1,0 +1,6 @@
+version=0.28
+description=(Re)name a sub
+url=https://cpan.metacpan.org/authors/id/E/ET/ETHER/Sub-Name-0.28.tar.gz
+sha256=39c53f6b3b02cbc73176564413b51d3c0f375f9760983fd579c27f558b169cfc
+build=perl
+check=perl:Sub::Name

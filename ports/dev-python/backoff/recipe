@@ -1,0 +1,7 @@
+version=2.2.1
+description=Function decoration for backoff and retry
+url=https://files.pythonhosted.org/packages/47/d7/5bbeb12c44d7c4f2fb5b56abce497eb5ed9f34d85701de869acedd602619/backoff-2.2.1.tar.gz
+sha256=03f829f5bb1923180821643f8753b0502c3b682293992485b0eef2807afa5cba
+build=python
+requires=dev-python/poetry-core
+check=python:backoff

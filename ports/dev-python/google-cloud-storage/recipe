@@ -1,0 +1,7 @@
+version=3.17.0
+description=Google Cloud Storage API client library
+url=https://files.pythonhosted.org/packages/55/e1/7460613a818ed8d38ee888e672ddb89966f8f92f751ba127c1bf57f4bec2/google_cloud_storage-3.17.0.tar.gz
+sha256=4373aa6328e070c31c97aa236f1600a239dfd3c85e5870cdf3dc2a928dfe0bca
+build=python
+requires=dev-python/google-auth dev-python/google-api-core dev-python/google-cloud-core dev-python/google-resumable-media dev-python/requests
+check=python:google_cloud_storage

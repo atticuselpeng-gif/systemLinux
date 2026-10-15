@@ -1,0 +1,7 @@
+version=1.6.2
+description=Python binding to the Networking and Cryptography (NaCl) library
+url=https://files.pythonhosted.org/packages/d9/9a/4019b524b03a13438637b11538c82781a5eda427394380381af8f04f467a/pynacl-1.6.2.tar.gz
+sha256=018494d6d696ae03c7e656e5e74cdfd8ea1326962cc401bcf018f1ed8436811c
+build=python
+requires=dev-python/cffi
+check=python:nacl

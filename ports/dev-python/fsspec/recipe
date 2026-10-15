@@ -1,0 +1,7 @@
+version=2026.9.0
+description=File-system specification
+url=https://files.pythonhosted.org/packages/77/cd/9be253869fc42e764de7f3dedd6969af7d44ff9c3375214a3442a6f3fc08/fsspec-2026.9.0.tar.gz
+sha256=0f08147951c8cb31d844c3547d631053b127863b60be04cf06e121333ee0e2fe
+build=python
+requires=dev-python/hatch-vcs
+check=python:fsspec

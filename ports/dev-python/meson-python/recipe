@@ -1,0 +1,7 @@
+version=0.22.1
+description=The Python build backend for Meson projects
+url=https://files.pythonhosted.org/packages/b4/40/343ae23722d5d66a7b94b752d1b194202640995296379333b274b1860871/meson_python-0.22.1.tar.gz
+sha256=52c88628b0e5671592dc2306613fb5f6f3615fd24def059b9894f143b7f9a139
+build=python
+requires=dev-python/pyproject-metadata
+check=python:mesonpy

@@ -1,0 +1,6 @@
+version=2.35
+description=Date and time formatting subroutines
+url=https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/TimeDate-2.35.tar.gz
+sha256=baddd0306ae2e86e9ec28d3de5439e514643e80b3735e43bd0fbb426d73304de
+build=perl
+check=perl:TimeDate

@@ -1,0 +1,6 @@
+version=2.120
+description=Try extra hard to get IP address related info
+url=https://cpan.metacpan.org/authors/id/X/XS/XSAWYERX/Sys-HostIP-2.120.tar.gz
+sha256=dff394faa704e6f5e834df0a92e8b22645c1d027108c57dbd4a8bb1d3ab9894d
+build=perl
+check=perl:Sys::HostIP

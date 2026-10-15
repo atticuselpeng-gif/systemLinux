@@ -1,0 +1,7 @@
+version=0.143.1
+description=FastAPI framework, high performance, easy to learn, fast to code, ready for production
+url=https://files.pythonhosted.org/packages/96/16/52ca959230f9820660fd822f488f883d7dc42310716b4cc6d2a944835dcd/fastapi-0.143.1.tar.gz
+sha256=4cafaab64df8534758bf0fce61947f5e27e6cd512798ccbbaad5425086c3b664
+build=python
+requires=dev-python/pdm-backend dev-python/starlette dev-python/pydantic dev-python/typing-extensions dev-python/typing-inspection dev-python/annotated-doc dev-python/opentelemetry-api
+check=python:fastapi

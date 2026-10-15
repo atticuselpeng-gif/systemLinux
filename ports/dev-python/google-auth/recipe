@@ -1,0 +1,7 @@
+version=2.62.0
+description=Google Authentication Library
+url=https://files.pythonhosted.org/packages/f5/b9/4b2528f30114b106e3c3a7298ba38d85e682fd1f83fe7c4a5b77c7677082/google_auth-2.62.0.tar.gz
+sha256=0bef0ce54bdf9ce226c5d66e4264413bd918141c31bbe49fb52eac882f513d69
+build=python
+requires=dev-python/pyasn1-modules dev-python/cryptography
+check=python:google.auth

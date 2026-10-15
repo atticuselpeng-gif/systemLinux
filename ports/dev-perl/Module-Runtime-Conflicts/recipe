@@ -1,0 +1,7 @@
+version=0.003
+description=Provide information on conflicts for Module::Runtime
+url=https://cpan.metacpan.org/authors/id/E/ET/ETHER/Module-Runtime-Conflicts-0.003.tar.gz
+sha256=707cdc75038c70fe91779b888ac050f128565d3967ba96680e1b1c7cc9733875
+build=perl
+requires=dev-perl/Dist-CheckConflicts dev-perl/Module-Runtime
+check=perl:Module::Runtime::Conflicts

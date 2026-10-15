@@ -1,0 +1,6 @@
+version=0.91
+description=Simple text template engine
+url=https://cpan.metacpan.org/authors/id/B/BU/BURAK/Text-Template-Simple-0.91.tar.gz
+sha256=f5f6678e5487de9ae88c87296269d8a7d43eff72b289de00a0ebd64495e119ac
+build=perl
+check=perl:Text::Template::Simple

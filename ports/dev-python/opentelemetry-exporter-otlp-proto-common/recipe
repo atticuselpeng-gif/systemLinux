@@ -1,0 +1,7 @@
+version=1.45.1
+description=OpenTelemetry Protobuf encoding
+url=https://files.pythonhosted.org/packages/c1/8e/65e85e5137991a3c493b11682151d198638a5bc1dd4b4c5f67e013c57d7c/opentelemetry_exporter_otlp_proto_common-1.45.1.tar.gz
+sha256=2e4adcc3a67bcf57804fc49514f0ef64974ca7590aa3491da389852b4a0628f6
+build=python
+requires=dev-python/opentelemetry-proto
+check=python:opentelemetry_exporter_otlp_proto_common

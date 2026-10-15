@@ -1,0 +1,7 @@
+version=1.8.0
+description=A list-like structure which implements collections.abc.MutableSequence
+url=https://files.pythonhosted.org/packages/2d/f5/c831fac6cc817d26fd54c7eaccd04ef7e0288806943f7cc5bbf69f3ac1f0/frozenlist-1.8.0.tar.gz
+sha256=3ede829ed8d842f6cd48fc7081d7a41001a56f1f38603f9d49bf3020d59a31ad
+build=python
+requires=dev-python/expandvars
+check=python:frozenlist

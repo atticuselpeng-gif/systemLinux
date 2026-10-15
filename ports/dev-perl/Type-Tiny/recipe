@@ -1,0 +1,7 @@
+version=2.010001
+description=tiny, yet Moo(se)-compatible type constraint
+url=https://cpan.metacpan.org/authors/id/T/TO/TOBYINK/Type-Tiny-2.010001.tar.gz
+sha256=cd583e4983039f35052d490f0c4439124ba667d4f09c4e3aec47de5200f9921a
+build=perl
+requires=dev-perl/Exporter-Tiny
+check=perl:Type::Tiny

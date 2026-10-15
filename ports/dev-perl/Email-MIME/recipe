@@ -1,0 +1,7 @@
+version=1.954
+description=easy MIME message handling
+url=https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Email-MIME-1.954.tar.gz
+sha256=6dd69b01435b645aecc5354d9854a70cb87641eb446a525e7ab241cefa3cc4d3
+build=perl
+requires=dev-perl/Email-Address-XS dev-perl/Email-MIME-ContentType dev-perl/Email-MIME-Encodings dev-perl/Email-MessageID dev-perl/Email-Simple dev-perl/MIME-Types dev-perl/Module-Runtime
+check=perl:Email::MIME

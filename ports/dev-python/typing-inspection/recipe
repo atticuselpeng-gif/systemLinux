@@ -1,0 +1,7 @@
+version=0.4.4
+description=Runtime typing introspection tools
+url=https://files.pythonhosted.org/packages/a3/26/b09b8010994eccc3c09092e6b34058f36a460eea2d4c3e8b910c695975a0/typing_inspection-0.4.4.tar.gz
+sha256=547274fa6b0a561ccf549cc9524b999a578e737d015d8709d021f9d0d13bea47
+build=python
+requires=dev-python/typing-extensions
+check=python:typing_inspection

@@ -1,0 +1,7 @@
+version=2.25
+description=An API for simple XML files
+url=https://cpan.metacpan.org/authors/id/G/GR/GRANTM/XML-Simple-2.25.tar.gz
+sha256=531fddaebea2416743eb5c4fdfab028f502123d9a220405a4100e68fc480dbf8
+build=perl
+requires=dev-perl/XML-NamespaceSupport dev-perl/XML-SAX dev-perl/XML-SAX-Expat
+check=perl:XML::Simple

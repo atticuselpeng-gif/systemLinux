@@ -1,0 +1,7 @@
+version=1.0055
+description=Perl Superglue for Web frameworks and Web Servers (PSGI toolkit)
+url=https://cpan.metacpan.org/authors/id/M/MI/MIYAGAWA/Plack-1.0055.tar.gz
+sha256=f44918483e58af6aac547b51fce3eaa7fb089cdbef03a7968163df5a6414e5b0
+build=perl
+requires=dev-perl/Devel-StackTrace dev-perl/Devel-StackTrace-AsHTML dev-perl/File-ShareDir dev-perl/File-ShareDir-Install dev-perl/Filesys-Notify-Simple dev-perl/HTTP-Message dev-perl/Hash-MultiValue dev-perl/Stream-Buffered dev-perl/Test-TCP dev-perl/Try-Tiny dev-perl/URI
+check=perl:Plack

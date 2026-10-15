@@ -1,0 +1,6 @@
+version=3.3.3
+description=pyparsing - Classes and methods to define and execute parsing grammars
+url=https://files.pythonhosted.org/packages/e4/11/b213bebff182584360cb8d17c72c1677fec5c5c228de439e63bcf8ab1c8f/pyparsing-3.3.3.tar.gz
+sha256=928ae7e20211f3b6f3915a72f06a0cfd29ab9d24279dd6346b6b1a7146397d36
+build=python
+check=python:pyparsing

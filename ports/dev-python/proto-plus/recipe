@@ -1,0 +1,6 @@
+version=1.29.0
+description=Beautiful, Pythonic protocol buffers
+url=https://files.pythonhosted.org/packages/46/70/783e33ffbb4466cc154a94f79b869b92a451e2bd45605054e68ff68b7af6/proto_plus-1.29.0.tar.gz
+sha256=cfb4e62ad7e13dd18f346cabbda00cab39930d36a05791fd81ddb074d6ee884f
+build=python
+check=python:proto_plus

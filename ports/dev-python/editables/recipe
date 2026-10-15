@@ -1,0 +1,6 @@
+version=0.6
+description=Editable installations
+url=https://files.pythonhosted.org/packages/82/f8/02a4e9a0cb961b0feeb431ac96b231c157ecdcbbeacafe9e2fdb4b1dde39/editables-0.6.tar.gz
+sha256=1163834902381c4613787951c5914800fdf155ae08848a373b8ea5006780977c
+build=python
+check=python:editables

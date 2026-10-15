@@ -1,0 +1,7 @@
+version=0.20
+description=Install the C libxml2 library on your system
+url=https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Alien-Libxml2-0.20.tar.gz
+sha256=56aae7b339bbeb02f77c5801f57a821be5791b51f43bf7f9062bb3bfa444c328
+build=perl
+requires=dev-perl/Alien-Build dev-perl/Alien-Build-Plugin-Download-GitLab
+check=perl:Alien::Libxml2

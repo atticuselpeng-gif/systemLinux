@@ -1,0 +1,7 @@
+version=1.13.0
+description=Setuptools Rust extension plugin
+url=https://files.pythonhosted.org/packages/68/ba/b31781d61bf9ee3c232a1d1160db11c11cdeae1d44e06c90723b25a8279f/setuptools_rust-1.13.0.tar.gz
+sha256=f2afcf4baeee689910ce49cfa8aad4e08cce72f417449bcc32891b8664fdc726
+build=python
+requires=dev-python/semantic-version
+check=python:setuptools_rust

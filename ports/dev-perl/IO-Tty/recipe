@@ -1,0 +1,6 @@
+version=1.31
+description=Pseudo ttys and constants
+url=https://cpan.metacpan.org/authors/id/T/TO/TODDR/IO-Tty-1.31.tar.gz
+sha256=d597af221628571cbecf35b44520148c44798dfc8a9867774e60453f79d25ff7
+build=perl
+check=perl:IO::Tty

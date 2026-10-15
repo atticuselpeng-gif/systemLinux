@@ -1,0 +1,7 @@
+version=0.10
+description=Simplified interface to Log::Message
+url=https://cpan.metacpan.org/authors/id/B/BI/BINGOS/Log-Message-Simple-0.10.tar.gz
+sha256=aa12d1a4c0ac260b94d448fa01feba242a8a85cb6cbfdc66432e3b5b468add96
+build=perl
+requires=dev-perl/Log-Message
+check=perl:Log::Message::Simple

@@ -1,0 +1,6 @@
+version=1.12
+description=Simple, compact and correct param-checking functions
+url=https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Params-SomeUtil-1.12.tar.gz
+sha256=ca61027a5c7f9ce2e31285c67a0bdc4f052c62051adfb7406d79ea0f23e5c1f0
+build=perl
+check=perl:Params::SomeUtil

@@ -1,0 +1,7 @@
+version=0.11
+description=declare version conflicts for your dist
+url=https://cpan.metacpan.org/authors/id/D/DO/DOY/Dist-CheckConflicts-0.11.tar.gz
+sha256=ea844b9686c94d666d9d444321d764490b2cde2f985c4165b4c2c77665caedc4
+build=perl
+requires=dev-perl/Module-Runtime
+check=perl:Dist::CheckConflicts

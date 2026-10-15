@@ -1,0 +1,7 @@
+version=2.1.4
+description=Database Abstraction Library
+url=https://files.pythonhosted.org/packages/1f/44/311bac6b6ef81e4dfd0287d04900108b1f5c00c9761dd3c0a2b7b9d0f86b/sqlalchemy-2.1.4.tar.gz
+sha256=7bd7ad604487daa7eab8716471c29a7185f17b5287ce73bb7bc79fea050d8cfd
+build=python
+requires=dev-python/typing-extensions
+check=python:sqlalchemy

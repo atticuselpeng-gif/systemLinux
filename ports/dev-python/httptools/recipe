@@ -1,0 +1,6 @@
+version=0.9.0
+description=A collection of framework independent HTTP protocol utils.
+url=https://files.pythonhosted.org/packages/3a/ec/deed52912ab7ca6c0b12859330c571c60c61d7267b341b28951fcbf13694/httptools-0.9.0.tar.gz
+sha256=d484ebb7e3a3f3597b0f645fbd1b85633674ca808c1f5ba11c2caf7c66f5c8b6
+build=python
+check=python:httptools

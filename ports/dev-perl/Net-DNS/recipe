@@ -1,0 +1,7 @@
+version=1.57
+description=Perl Interface to the Domain Name System
+url=https://cpan.metacpan.org/authors/id/N/NL/NLNETLABS/Net-DNS-1.57.tar.gz
+sha256=7c98de329cb5d6a99abbb03aaad2866cb041092ed9936a7246908e170005b058
+build=perl
+requires=dev-perl/Digest-HMAC
+check=perl:Net::DNS

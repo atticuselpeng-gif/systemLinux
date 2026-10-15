@@ -1,0 +1,7 @@
+version=0.019
+description=incredibly simple helpers for testing code with exceptions
+url=https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Test-Fatal-0.019.tar.gz
+sha256=d8f6b6c87bb399a7d60c295a94a4b741a85b23889cfd6b72f1ff62f0c55cf70b
+build=perl
+requires=dev-perl/Try-Tiny
+check=perl:Test::Fatal

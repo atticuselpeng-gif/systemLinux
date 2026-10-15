@@ -1,0 +1,6 @@
+version=0.74
+description=Support for the SSH 2 protocol via libssh2.
+url=https://cpan.metacpan.org/authors/id/R/RK/RKITOVER/Net-SSH2-0.74.tar.gz
+sha256=1c124699745eeb40ed636097fdcc3e722c94cfd7704ebc0acfb0f05541d2809c
+build=perl
+check=perl:Net::SSH2

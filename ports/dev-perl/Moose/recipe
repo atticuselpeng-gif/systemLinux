@@ -1,0 +1,7 @@
+version=2.4001
+description=A postmodern object system for Perl 5
+url=https://cpan.metacpan.org/authors/id/E/ET/ETHER/Moose-2.4001.tar.gz
+sha256=1dbb6157b0c655ae5ee6b5e4225651fc3ea505e6fd8c972d2f1d2612913a513e
+build=perl
+requires=dev-perl/Class-Load dev-perl/Class-Load-XS dev-perl/Data-OptList dev-perl/Devel-GlobalDestruction dev-perl/Devel-OverloadInfo dev-perl/Devel-StackTrace dev-perl/Dist-CheckConflicts dev-perl/Eval-Closure dev-perl/MRO-Compat dev-perl/Module-Runtime dev-perl/Module-Runtime-Conflicts dev-perl/Package-DeprecationManager dev-perl/Package-Stash dev-perl/Package-Stash-XS dev-perl/Params-Util dev-perl/Sub-Exporter dev-perl/Try-Tiny
+check=perl:Moose

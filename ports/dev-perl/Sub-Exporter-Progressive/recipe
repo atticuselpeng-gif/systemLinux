@@ -1,0 +1,6 @@
+version=0.001013
+description=Only use Sub::Exporter if you need it
+url=https://cpan.metacpan.org/authors/id/F/FR/FREW/Sub-Exporter-Progressive-0.001013.tar.gz
+sha256=d535b7954d64da1ac1305b1fadf98202769e3599376854b2ced90c382beac056
+build=perl
+check=perl:Sub::Exporter::Progressive

@@ -1,0 +1,6 @@
+version=5.0.3
+description=A pure Python implementation of a sliding window memory map manager
+url=https://files.pythonhosted.org/packages/1f/ea/49c993d6dfdd7338c9b1000a0f36817ed7ec84577ae2e52f890d1a4ff909/smmap-5.0.3.tar.gz
+sha256=4d9debb8b99007ae47165abc08670bd74cb74b5227dda7f643eccc4e9eb5642c
+build=python
+check=python:smmap

@@ -1,0 +1,7 @@
+version=3.0801
+description=Module of basic descriptive statistical functions.
+url=https://cpan.metacpan.org/authors/id/S/SH/SHLOMIF/Statistics-Descriptive-3.0801.tar.gz
+sha256=047b70a63fdcaa916168e0ff2d58e155e0ebbc68ed4ccbd73a7213dca3028f65
+build=perl
+requires=dev-perl/List-MoreUtils dev-perl/Module-Build
+check=perl:Statistics::Descriptive

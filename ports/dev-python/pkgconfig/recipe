@@ -1,0 +1,7 @@
+version=1.6.0
+description=Interface Python with pkg-config
+url=https://files.pythonhosted.org/packages/52/fd/0adde075cd3bfecd557bc7d757e00e231d34d8a6edb4c8d1642759254c21/pkgconfig-1.6.0.tar.gz
+sha256=4a5a6631ce937fafac457104a40d558785a658bbdca5c49b6295bc3fd651907f
+build=python
+requires=dev-python/poetry-core
+check=python:pkgconfig

@@ -1,0 +1,7 @@
+version=0.4.4
+description=Google Authentication Library: httplib2 transport
+url=https://files.pythonhosted.org/packages/bb/6d/a511ca64d5412850e351bdec6bb224e5090749bd85c186135e8fdb4fd85a/google_auth_httplib2-0.4.4.tar.gz
+sha256=b931de392c20cfaa351cd789274922bd8cdc001e0e9e96de31b39d71347f8e16
+build=python
+requires=dev-python/google-auth dev-python/httplib2
+check=python:google_auth_httplib2

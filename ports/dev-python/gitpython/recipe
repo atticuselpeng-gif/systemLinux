@@ -1,0 +1,7 @@
+version=3.2.1
+description=GitPython is a Python library used to interact with Git repositories
+url=https://files.pythonhosted.org/packages/c0/ff/fee293f1ec3e1b64db6eb270e00964f29c086d769201474cedb8d1608930/gitpython-3.2.1.tar.gz
+sha256=0f1229ec5c057bdabdeeda8bda4f17bda679ab33dbccc00f24e6a480553c8613
+build=python
+requires=dev-python/gitdb
+check=python:git

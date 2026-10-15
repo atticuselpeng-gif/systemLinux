@@ -1,0 +1,6 @@
+version=1.05
+description=Parse and format RFC 5322 email addresses and groups
+url=https://cpan.metacpan.org/authors/id/P/PA/PALI/Email-Address-XS-1.05.tar.gz
+sha256=1510b7f10d67201037cd50d22c9d6b26eeca55ededa4cdb46bbca27e59a4ea16
+build=perl
+check=perl:Email::Address::XS

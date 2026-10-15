@@ -1,0 +1,7 @@
+version=1.1
+description=Spell checker (clone of Unix spell)
+url=https://ftpmirror.gnu.org/gnu/spell/spell-1.1.tar.gz
+sha256=7cc243547eb31360ff769835dc88b5ba4f2f47385daa230523beecf9e1c29744
+build=configure
+cflags=-std=gnu17
+check=cmd:spell

@@ -1,0 +1,6 @@
+version=0.4.1
+description=serialize all of Python
+url=https://files.pythonhosted.org/packages/81/e1/56027a71e31b02ddc53c7d65b01e68edf64dea2932122fe7746a516f75d5/dill-0.4.1.tar.gz
+sha256=423092df4182177d4d8ba8290c8a5b640c66ab35ec7da59ccfa00f6fa3eea5fa
+build=python
+check=python:dill

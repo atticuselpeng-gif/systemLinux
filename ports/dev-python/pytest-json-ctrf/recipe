@@ -1,0 +1,7 @@
+version=0.6.1
+description=Pytest plugin to generate json report in CTRF (Common Test Report Format)
+url=https://files.pythonhosted.org/packages/12/16/74030c98c0f3001c24c356b5fdb40191065b78556a4750fc8ff571373f41/pytest_json_ctrf-0.6.1.tar.gz
+sha256=c968bbee43ea7f885434ec105aa9ecad3d0576f70fbf15c329ed8362ae114eb8
+build=python
+requires=dev-python/pytest
+check=python:pytest_json_ctrf

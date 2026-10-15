@@ -1,0 +1,6 @@
+version=2.7.4
+description=Password generator from simple hints
+url=https://ftpmirror.gnu.org/gnu/gnu-pw-mgr/gnu-pw-mgr-2.7.4.tar.xz
+sha256=e8cb8b8d6c81ac2b01a226f2d2ce7698bf8be830cf65b5a3dd805facabde1c3a
+build=configure
+check=cmd:gnu-pw-mgr

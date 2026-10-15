@@ -1,0 +1,7 @@
+version=1.7.0
+description=Fast transfer of large files with the Hugging Face Hub.
+url=https://files.pythonhosted.org/packages/9e/27/06d899ea7bd721d272f84aac98bdb238de98af4cc767a69056d967d68c71/hf_xet-1.7.0.tar.gz
+sha256=d406ec79053c0871817f700c2ac8c36ba0d87f9c34b7458b0f0063bb218b0466
+build=python
+requires=dev-python/maturin lang/rust
+check=python:hf_xet

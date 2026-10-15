@@ -1,0 +1,7 @@
+version=0.5.4
+description=Accelerated property cache
+url=https://files.pythonhosted.org/packages/b3/9a/9fbf4e4ec0c2d7f1c32519fff782ef467859b8faa9fbc5331a96f6395d43/propcache-0.5.4.tar.gz
+sha256=ff6b113f50bc066a698db5d944d2c6dc7507168dd3341e255a8892fd0715a558
+build=python
+requires=dev-python/expandvars
+check=python:propcache

@@ -1,0 +1,7 @@
+version=2.0213
+description=Interface to Gnome libxml2 xml parsing and DOM library
+url=https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-LibXML-2.0213.tar.gz
+sha256=2af21c5d61ac34ea26a5fabf15ba5a5841e648f7189db3e33b6f28b5489802ab
+build=perl
+requires=dev-perl/Alien-Build dev-perl/Alien-Libxml2 dev-perl/XML-NamespaceSupport dev-perl/XML-SAX dev-perl/XML-SAX-Base
+check=perl:XML::LibXML

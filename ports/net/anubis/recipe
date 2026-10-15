@@ -1,0 +1,8 @@
+version=4.3
+description=Outgoing mail processor
+url=https://ftpmirror.gnu.org/gnu/anubis/anubis-4.3.tar.bz2
+sha256=098abec96097527be1857e4b8b5b5b4b7e58a8458f58ce2cb732f024df6e9ef5
+build=configure
+cflags=-std=gnu17
+requires=dev-libs/gnutls
+check=cmd:anubis

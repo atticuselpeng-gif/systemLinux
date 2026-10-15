@@ -1,0 +1,7 @@
+version=3.31.0
+description=The official Python library for the openai API
+url=https://files.pythonhosted.org/packages/73/99/d0c5b9e60eb131bfe5f6f818e9b25650b64004ff84512c0f7e00a246b826/openai-3.31.0.tar.gz
+sha256=58110edba9acaf29cb2a675a1cbcccdd9f2fdb4932baed474dc847a7639e5d02
+build=python
+requires=dev-python/anyio dev-python/httpx2 dev-python/jiter dev-python/pydantic dev-python/sniffio dev-python/typing-extensions
+check=python:openai

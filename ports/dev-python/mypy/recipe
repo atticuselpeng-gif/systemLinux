@@ -1,0 +1,7 @@
+version=2.4.0
+description=Optional static typing for Python
+url=https://files.pythonhosted.org/packages/34/4e/64300736cf0a0373a27b94a91b664ee7382e36f77b0621bae6381da3e180/mypy-2.4.0.tar.gz
+sha256=77bdaebd452f43fcfc4cc3ba94352a3ea537cd01e3f2d0879f48673d2ec00d6e
+build=python
+requires=dev-python/typing-extensions dev-python/mypy-extensions dev-python/librt dev-python/ast-serialize
+check=python:mypy

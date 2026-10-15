@@ -1,0 +1,7 @@
+version=5.4
+description=Pretty printer for source code
+url=https://ftpmirror.gnu.org/gnu/trueprint/trueprint-5.4.tar.gz
+sha256=104be483905f4f4dc4b5d475389b72b6d95f12b62d796f8af31d04f51c60338f
+build=configure
+cflags=-std=gnu17
+check=cmd:trueprint

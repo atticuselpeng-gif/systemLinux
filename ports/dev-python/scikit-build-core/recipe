@@ -1,0 +1,7 @@
+version=1.1.1
+description=Build backend for CMake based projects
+url=https://files.pythonhosted.org/packages/b2/1a/8c00b19c0a1e7acf890676af2efa430339d38e59fa9437f2aab8517af3f4/scikit_build_core-1.1.1.tar.gz
+sha256=e347a59193c878ac56a363e57506938652a6dd8c965790cb1cbc6bc7e8d5abad
+build=python
+requires=dev-python/hatch-vcs
+check=python:scikit_build_core

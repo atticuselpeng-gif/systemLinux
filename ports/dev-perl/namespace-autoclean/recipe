@@ -1,0 +1,7 @@
+version=0.31
+description=Keep imports out of your namespace
+url=https://cpan.metacpan.org/authors/id/E/ET/ETHER/namespace-autoclean-0.31.tar.gz
+sha256=d3b32c82e1d2caa9d58b8c8075965240e6cab66ab9350bd6f6bea4ca07e938d6
+build=perl
+requires=dev-perl/B-Hooks-EndOfScope dev-perl/namespace-clean
+check=perl:namespace::autoclean

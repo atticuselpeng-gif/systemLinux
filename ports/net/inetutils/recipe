@@ -1,0 +1,7 @@
+version=2.8
+description=Network utilities (ftp, telnet, ping, traceroute, whois...)
+url=https://ftpmirror.gnu.org/gnu/inetutils/inetutils-2.8.tar.gz
+sha256=57b3cf4f77555992881e5ba2a09a63b05aa2c56342a60ed4305b5f45938390b5
+build=configure
+requires=dev-libs/ncurses dev-libs/readline
+check=cmd:telnet

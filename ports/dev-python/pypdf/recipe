@@ -1,0 +1,6 @@
+version=6.20.1
+description=A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files
+url=https://files.pythonhosted.org/packages/e2/c1/da25a099164cf4b210d63b957c902ad687139f4b8c12c20aec7953a4a266/pypdf-6.20.1.tar.gz
+sha256=28f5a9d2fdc2749264612d94e6a58de54c11d730d9f0cabf8ad34117c4942b45
+build=python
+check=python:pypdf

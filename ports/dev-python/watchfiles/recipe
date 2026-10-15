@@ -1,0 +1,7 @@
+version=1.3.0
+description=Simple, modern and high performance file watching and code reload in python.
+url=https://files.pythonhosted.org/packages/b3/68/e6aa0b77d217b31f8f486ec0cdfe5e00e6e38dc0be657e7d85819b9faf0a/watchfiles-1.3.0.tar.gz
+sha256=99aee4a07847c06820765fd7b1b49ceac4f3f711ccb7d104655a33231de1c207
+build=python
+requires=dev-python/maturin lang/rust dev-python/anyio
+check=python:watchfiles

@@ -1,0 +1,6 @@
+version=3.11
+description=C parser in Python
+url=https://files.pythonhosted.org/packages/da/a8/c5fdbeee588bb8ada9458774f43adf1bdd30bd59157055142183e769a024/pycparser-3.11.tar.gz
+sha256=d875f09c3507d00e1aba0eecc6dcadc1352f30fff09dc6bff2f1c2935e97c2bc
+build=python
+check=python:pycparser

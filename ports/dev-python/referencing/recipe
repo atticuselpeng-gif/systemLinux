@@ -1,0 +1,7 @@
+version=0.37.0
+description=JSON Referencing + Python
+url=https://files.pythonhosted.org/packages/22/f5/df4e9027acead3ecc63e50fe1e36aca1523e1719559c499951bb4b53188f/referencing-0.37.0.tar.gz
+sha256=44aefc3142c5b842538163acb373e24cce6632bd54bdb01b21ad5863489f50d8
+build=python
+requires=dev-python/hatch-vcs dev-python/attrs dev-python/rpds-py
+check=python:referencing

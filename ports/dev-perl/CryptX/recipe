@@ -1,0 +1,6 @@
+version=0.091
+description=Cryptographic toolkit
+url=https://cpan.metacpan.org/authors/id/M/MI/MIK/CryptX-0.091.tar.gz
+sha256=3a82d5cf786985e5de5339d1236ce4b27306db5e6b1ed5fa15038ded6d44859a
+build=perl
+check=perl:CryptX

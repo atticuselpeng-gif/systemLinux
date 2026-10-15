@@ -1,0 +1,7 @@
+version=0.51
+description=SAX Driver for Expat
+url=https://cpan.metacpan.org/authors/id/B/BJ/BJOERN/XML-SAX-Expat-0.51.tar.gz
+sha256=4c016213d0ce7db2c494e30086b59917b302db8c292dcd21f39deebd9780c83f
+build=perl
+requires=dev-perl/XML-NamespaceSupport dev-perl/XML-Parser dev-perl/XML-SAX dev-perl/XML-SAX-Base
+check=perl:XML::SAX::Expat

@@ -1,0 +1,7 @@
+version=3.86
+description=HTML parser class
+url=https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTML-Parser-3.86.tar.gz
+sha256=5305e1d5faa70ee0aa282d85a5c9aa93911e8c7afa590ad1ced5703a544e20f6
+build=perl
+requires=dev-perl/HTML-Tagset dev-perl/HTTP-Message dev-perl/URI
+check=perl:HTML::Parser

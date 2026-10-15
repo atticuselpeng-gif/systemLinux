@@ -1,0 +1,6 @@
+version=0.4.3
+description=Distribution utilities
+url=https://files.pythonhosted.org/packages/c9/02/bd72be9134d25ed783ecbbc38a539ffaefbf90c78418c7fb7229600dbac7/distlib-0.4.3.tar.gz
+sha256=f152097224a0ae24be5a0f6bae1b9359af82133bce63f98a95f86cae1aede9ed
+build=python
+check=python:distlib

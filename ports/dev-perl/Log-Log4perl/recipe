@@ -1,0 +1,6 @@
+version=1.58
+description=Log4j implementation for Perl
+url=https://cpan.metacpan.org/authors/id/M/MS/MSCHILLI/Log-Log4perl-1.58.tar.gz
+sha256=48765ea8efb096fec1418e6b1ef8379845c607506fe7e63561cd1b41dd3efef6
+build=perl
+check=perl:Log::Log4perl

@@ -1,0 +1,7 @@
+version=0.99
+description=Create printed barcodes
+url=https://ftpmirror.gnu.org/gnu/barcode/barcode-0.99.tar.xz
+sha256=e87ecf6421573e17ce35879db8328617795258650831affd025fba42f155cdc6
+build=configure
+cflags=-std=gnu17
+check=cmd:barcode

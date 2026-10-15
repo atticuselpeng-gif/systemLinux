@@ -1,0 +1,7 @@
+version=3.21.2
+description=DBI PostgreSQL interface
+url=https://cpan.metacpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.21.2.tar.gz
+sha256=d79179255ccb0c87b029db2eecaea56828e581255c48445d5fc0e79fa4e9245b
+build=perl
+requires=dev-perl/DBI
+check=perl:DBD::Pg

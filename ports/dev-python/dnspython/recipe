@@ -1,0 +1,7 @@
+version=2.9.0
+description=DNS toolkit
+url=https://files.pythonhosted.org/packages/ef/4a/50822184bd67cc6493f0fb6a880749158fcd31ab3fa07409acfd91f9fc85/dnspython-2.9.0.tar.gz
+sha256=b44dc6b18f07a8b1c56676a19fbfdb5209415b046a9cece286baafa87ff3f7f1
+build=python
+requires=dev-python/uv-build
+check=python:dns

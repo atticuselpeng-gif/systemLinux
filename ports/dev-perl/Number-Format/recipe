@@ -1,0 +1,6 @@
+version=1.79
+description=Perl extension for formatting numbers
+url=https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Number-Format-1.79.tar.gz
+sha256=404b231709b28a41024ae76bedd349145da7e535f94c6013b6bb55eea383e1ad
+build=perl
+check=perl:Number::Format

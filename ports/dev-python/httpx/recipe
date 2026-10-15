@@ -1,0 +1,7 @@
+version=0.28.1
+description=The next generation HTTP client.
+url=https://files.pythonhosted.org/packages/b1/df/48c586a5fe32a0f01324ee087459e112ebb7224f646c0b5023f5e79e9956/httpx-0.28.1.tar.gz
+sha256=75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc
+build=python
+requires=dev-python/hatch-fancy-pypi-readme dev-python/anyio dev-python/certifi dev-python/httpcore dev-python/idna
+check=python:httpx

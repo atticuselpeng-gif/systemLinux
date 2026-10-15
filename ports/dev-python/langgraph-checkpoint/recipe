@@ -1,0 +1,7 @@
+version=4.3.0
+description=Library with base interfaces for LangGraph checkpoint savers.
+url=https://files.pythonhosted.org/packages/0f/69/31fdbdc65a85bbd6178afa193c772bb926620f47b4869638bc2bc80afaaa/langgraph_checkpoint-4.3.0.tar.gz
+sha256=c75965d84cc2c1d549163e910a15bcb577758001b141619d05297c463280b018
+build=python
+requires=dev-python/langchain-core dev-python/ormsgpack
+check=python:langgraph_checkpoint
