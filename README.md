@@ -22,6 +22,16 @@ source with `get` and the ports tree of over a thousand recipes.
 * **More desktop ports:** the greetd login manager, PipeWire and WirePlumber, swaylock, mako, dunst, bspwm and more.
 * **A packaging guide** (`docs/PACKAGING.md`) and a new website with a searchable package list.
 
+## Mascot
+
+<img src="assets/tux/tux.svg" alt="Tux, the Linux penguin" width="110" align="right">
+
+systemLinux's mascot is **Tux**, the Linux penguin; `fastfetch` greets you with him. Tux was drawn by
+[Larry Ewing](https://isc.tamu.edu/~lewing/linux/) (lewing@isc.tamu.edu) with [The GIMP](https://www.gimp.org/); the
+vector version is by Simon Budig and the SVG used here was cleaned up by Garrett LeSage. Full credits and the
+copyright notice that comes with the drawing: [`assets/tux/COPYRIGHT`](assets/tux/COPYRIGHT). (The wheat ear above is
+the systemLinux logo.)
+
 Software is added with `get`, the package tool. It builds from source and keeps track of what it installed:
 
 ```sh

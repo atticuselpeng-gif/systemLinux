@@ -1,0 +1,70 @@
+Tux, the systemLinux mascot
+===========================
+
+Tux is the Linux penguin. systemLinux uses him as its mascot (fastfetch shows him too).
+The image in this folder (tux.svg, also website/tux.svg) is the standard Tux drawing:
+
+  * Original drawing: Larry Ewing <lewing@isc.tamu.edu>, made with The GIMP.
+    https://isc.tamu.edu/~lewing/linux/
+    "Permission to use and/or modify this image is granted provided you acknowledge me
+    lewing@isc.tamu.edu and The GIMP if someone asks."
+
+  * Vector version: Simon Budig (and Anja Gerwinski), http://www.home.unix-ag.org/simon/penguin/
+    Redistribution is free but has to include his README/copyright notice, reproduced in full below.
+
+  * Modern SVG clean-up: Garrett LeSage, https://github.com/garrett/Tux
+    Released into the public domain (CC0 1.0).
+
+  * File as published on Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Tux.svg
+
+Tux is not the systemLinux logo (that is the wheat ear in assets/logo.png) and does not mean the
+Linux Foundation or Linus Torvalds endorse systemLinux. "Linux" is a registered trademark of
+Linus Torvalds.
+
+--------------------------------------------------------------------------------------------------
+Simon Budig's README (verbatim):
+--------------------------------------------------------------------------------------------------
+
+This is the Linux-penguin again...
+
+Originally drewn by Larry Ewing (http://www.isc.tamu.edu/~lewing/)
+(with the GIMP) the Linux Logo has been vectorized by me (Simon Budig,
+http://www.home.unix-ag.org/simon/).
+
+This happened quite some time ago with Corel Draw 4. But luckily 
+meanwhile there are tools available to handle vector graphics with
+Linux. Bernhard Herzog (bernhard@users.sourceforge.net) deserves kudos
+for creating Sketch (http://sketch.sourceforge.net), a powerful free
+tool for creating vector graphics. He converted the Corel Draw file to
+the Sketch native format. Since I am unable to maintain the Corel Draw
+file any longer, the Sketch version now is the "official" one.
+
+Anja Gerwinski (anja@gerwinski.de) has created an alternate version of
+the penguin (penguin-variant.sk) with a thinner mouth line and slightly
+altered gradients. It also features a nifty drop shadow.
+
+The third bird (penguin-flat.sk) is a version reduced to three colors
+(black/white/yellow) for e.g. silk screen printing. I made this version
+for a mug, available at the friendly folks at
+http://www.kernelconcepts.de/ - they do good stuff, mail Petra
+(pinguin@kernelconcepts.de) if you need something special or don't
+understand the german  :-)
+
+These drawings are copyrighted by Larry Ewing and Simon Budig
+(penguin-variant.sk also by Anja Gerwinski), redistribution is free but
+has to include this README/Copyright notice.
+
+The use of these drawings is free. However I am happy about a sample of
+your mug/t-shirt/whatever with this penguin on it...
+
+Have fun 
+    Simon Budig
+
+
+Simon.Budig@unix-ag.org
+http://www.home.unix-ag.org/simon/
+
+Simon Budig
+Am Hardtkoeppel 2
+D-61279 Graevenwiesbach
+
