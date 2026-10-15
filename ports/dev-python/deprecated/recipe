@@ -1,0 +1,7 @@
+version=3.0.0
+description=Python @deprecated decorator to deprecate old python classes, functions or methods.
+url=https://files.pythonhosted.org/packages/f7/9c/16649913bf14c73e0a9453782e148362ff2657067deff6aa9c7ebcddcc31/deprecated-3.0.0.tar.gz
+sha256=16850204d3a1e6bb0acd06bff48d96e8b0a0d25d1c52f71705405a0f4894192d
+build=python
+requires=dev-python/wrapt
+check=python:deprecated

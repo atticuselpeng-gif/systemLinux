@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=GoLand
+Exec=goland %f
+Icon=/usr/lib/goland/bin/goland.svg
+Terminal=false
+Type=Application
+Categories=Development;IDE;

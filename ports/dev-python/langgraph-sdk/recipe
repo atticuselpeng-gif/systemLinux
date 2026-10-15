@@ -1,0 +1,7 @@
+version=0.4.7
+description=SDK for interacting with LangGraph API
+url=https://files.pythonhosted.org/packages/0e/5d/cbeacb114f4a6269fc476f7d2feba088f6ada0c00f81bf5decc587f81511/langgraph_sdk-0.4.7.tar.gz
+sha256=6827560be31e38daae1514234e9aa12c345dd40d4d4b94aa1b443729bfccda69
+build=python
+requires=dev-python/httpx dev-python/langchain-core dev-python/langchain-protocol dev-python/orjson dev-python/websockets
+check=python:langgraph_sdk

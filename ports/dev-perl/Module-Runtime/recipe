@@ -1,0 +1,6 @@
+version=0.018
+description=runtime module handling
+url=https://cpan.metacpan.org/authors/id/H/HA/HAARG/Module-Runtime-0.018.tar.gz
+sha256=0bf77ef68e53721914ff554eada20973596310b4e2cf1401fc958601807de577
+build=perl
+check=perl:Module::Runtime

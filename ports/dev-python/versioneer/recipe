@@ -1,0 +1,6 @@
+version=0.29
+description=Easy VCS-based management of project version strings
+url=https://files.pythonhosted.org/packages/32/d7/854e45d2b03e1a8ee2aa6429dd396d002ce71e5d88b77551b2fb249cb382/versioneer-0.29.tar.gz
+sha256=5ab283b9857211d61b53318b7c792cf68e798e765ee17c27ade9f6c924235731
+build=python
+check=python:versioneer

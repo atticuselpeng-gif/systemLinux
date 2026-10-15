@@ -1,0 +1,8 @@
+version=2.62.4
+description=SVG rendering library
+url=https://download.gnome.org/sources/librsvg/2.62/librsvg-2.62.4.tar.xz
+sha256=c982b8157a054b803493bf994d31e50105eb948dd8da6b4ab9734e8d392712a3
+build=meson
+configure_args=-Dintrospection=disabled -Dvala=disabled -Ddocs=disabled -Dtests=false
+requires=dev-apps/meson dev-apps/ninja lang/rust dev-libs/cairo dev-libs/pango dev-libs/gdk-pixbuf dev-libs/glib dev-libs/libxml2 dev-libs/freetype dev-libs/harfbuzz
+check=pkgconfig:librsvg-2.0

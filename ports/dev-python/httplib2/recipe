@@ -1,0 +1,7 @@
+version=0.32.0
+description=A comprehensive HTTP client library.
+url=https://files.pythonhosted.org/packages/84/f5/ccf58de92d61e3ad921119668f54ed36ca1d0cf5dcc5c1657dfb164fd78b/httplib2-0.32.0.tar.gz
+sha256=48a0ef30a42db65d8f3399045e1d09ab0ba66e3b9efc360d07f80ea55d286025
+build=python
+requires=dev-python/pyparsing
+check=python:httplib2

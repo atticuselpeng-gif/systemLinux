@@ -1,0 +1,6 @@
+version=0.24
+description=Read and write OLE storage files.
+url=https://cpan.metacpan.org/authors/id/J/JM/JMCNAMARA/OLE-Storage_Lite-0.24.tar.gz
+sha256=71c3b6ef082176c9585e620dd48f0f4782c282be73f2a653ea4b618f757bb3fd
+build=perl
+check=perl:OLE::Storage_Lite::PPS

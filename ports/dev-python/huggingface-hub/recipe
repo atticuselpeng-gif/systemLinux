@@ -1,0 +1,7 @@
+version=2.2.0
+description=Client library to download and publish models, datasets and other repos on the huggingface.co hub
+url=https://files.pythonhosted.org/packages/12/47/6858d63643e66fb4f6585c3cfd4029c0b2bc1ae21688cee9b3335f20a10d/huggingface_hub-2.2.0.tar.gz
+sha256=5d1b47537394e4215cb858aa12fd493d0f7ef7f58990f5dcd24bc173107b2871
+build=python
+requires=dev-python/click dev-python/filelock dev-python/fsspec dev-python/hf-xet dev-python/httpx2 dev-python/pyyaml dev-python/tqdm dev-python/typing-extensions
+check=python:huggingface_hub

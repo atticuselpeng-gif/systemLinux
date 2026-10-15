@@ -1,0 +1,6 @@
+version=2.5.1
+description=Module for decorators, wrappers and monkey patching.
+url=https://files.pythonhosted.org/packages/04/22/89e2f3bdae5cb34e0cab0cd86d7172dbf418de4b46c9b17b9c7a560dfa44/wrapt-2.5.1.tar.gz
+sha256=f595bb0185aab3e9dc31950c95d914f56ea8278810c3b928f3426e12ed6d27bc
+build=python
+check=python:wrapt

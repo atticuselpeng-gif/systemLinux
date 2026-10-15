@@ -1,0 +1,6 @@
+version=0.16.0
+description=Mypyc runtime library
+url=https://files.pythonhosted.org/packages/04/f5/9dc696772d241814bacac7880bac32f2930b5a6ebc1f85317b83161a011c/librt-0.16.0.tar.gz
+sha256=ac38d6d8d66bf3d744148dbbc0b8e193e195a51e364ed55e224631f5721891fc
+build=python
+check=python:librt

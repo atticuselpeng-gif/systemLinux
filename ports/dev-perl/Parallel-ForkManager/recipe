@@ -1,0 +1,7 @@
+version=2.04
+description=A simple parallel processing fork manager
+url=https://cpan.metacpan.org/authors/id/Y/YA/YANICK/Parallel-ForkManager-2.04.tar.gz
+sha256=606894fc2e9f7cd13d9ec099aaac103a8f0943d1d80c2c486bae14730a39b7fc
+build=perl
+requires=dev-perl/Moo
+check=perl:Parallel::ForkManager

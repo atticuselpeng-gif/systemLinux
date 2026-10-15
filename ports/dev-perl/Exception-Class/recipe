@@ -1,0 +1,7 @@
+version=1.46
+description=A module that allows you to declare real exception classes in Perl
+url=https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/Exception-Class-1.46.tar.gz
+sha256=e2f8c0708ff8de8b1bb7be1faa3cdb240fdd9774bc741627350577ea7e0e76a1
+build=perl
+requires=dev-perl/Class-Data-Inheritable dev-perl/Devel-StackTrace
+check=perl:Exception::Class

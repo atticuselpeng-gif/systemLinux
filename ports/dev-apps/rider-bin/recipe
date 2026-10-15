@@ -1,0 +1,8 @@
+version=2026.2.3.1
+description=JetBrains Rider IDE (official build)
+url=https://download.jetbrains.com/rider/JetBrains.Rider-2026.2.3.1.tar.gz
+sha256=fa4b09a5f7cf4b6635b093adc7313991778a8dc74f25614a2b8976b04dee5d4e
+build=bin
+programs=bin/rider.sh:rider
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxtst x11/libxi dev-libs/freetype dev-libs/fontconfig dev-libs/alsa-lib dev-libs/glib
+check=cmd:rider

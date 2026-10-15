@@ -1,0 +1,6 @@
+version=1.04
+description=Pure Perl UUID Support With Functional Interface
+url=https://cpan.metacpan.org/authors/id/C/CA/CAUGUSTIN/UUID-Tiny-1.04.tar.gz
+sha256=6dcd92604d64e96cc6c188194ae16a9d3a46556224f77b6f3d1d1312b68f9a3d
+build=perl
+check=perl:UUID::Tiny

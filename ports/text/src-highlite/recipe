@@ -1,0 +1,7 @@
+version=3.1.9
+description=Syntax highlighting for source code (source-highlight)
+url=https://ftpmirror.gnu.org/gnu/src-highlite/source-highlight-3.1.9.tar.gz
+sha256=3a7fd28378cb5416f8de2c9e77196ec915145d44e30ff4e0ee8beb3fe6211c91
+build=configure
+requires=dev-libs/boost
+check=cmd:source-highlight

@@ -1,0 +1,7 @@
+version=0.28
+description=Execute code after a scope finished compilation
+url=https://cpan.metacpan.org/authors/id/E/ET/ETHER/B-Hooks-EndOfScope-0.28.tar.gz
+sha256=edac77a17fc36620c8324cc194ce1fad2f02e9fcbe72d08ad0b2c47f0c7fd8ef
+build=perl
+requires=dev-perl/Module-Implementation dev-perl/Sub-Exporter-Progressive
+check=perl:B::Hooks::EndOfScope

@@ -1,0 +1,6 @@
+version=1.5.8
+description=Create, load and modify ISO 9660 images
+url=https://ftpmirror.gnu.org/gnu/xorriso/xorriso-1.5.8.tar.gz
+sha256=319e3675cd7d986bf71d36596ca7b03dac172a758462bedcbbd298a7f86f36cc
+build=configure
+check=cmd:xorriso

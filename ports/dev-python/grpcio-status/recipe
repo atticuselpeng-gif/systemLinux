@@ -1,0 +1,7 @@
+version=1.84.0
+description=Status proto mapping for gRPC
+url=https://files.pythonhosted.org/packages/52/45/f80309cdb6a7dbf8f65e2082dd2ddc9797ba7180516a73c54d966ba632c4/grpcio_status-1.84.0.tar.gz
+sha256=5caf28ba7184b81f618b5f7f094859fd2541bf429d2189bbbcd715c9c2cdcee2
+build=python
+requires=dev-python/googleapis-common-protos
+check=python:grpcio_status

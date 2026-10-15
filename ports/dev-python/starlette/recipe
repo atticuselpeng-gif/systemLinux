@@ -1,0 +1,7 @@
+version=1.8.0
+description=The little ASGI library that shines.
+url=https://files.pythonhosted.org/packages/e9/0c/6efb252d091ecccd7d62048ae11f0ea35cd75a4fbaeea5e30f9c3bf91d10/starlette-1.8.0.tar.gz
+sha256=1565dc0b35d5737a271ed1e0e04e949f4e81198799f216d2667b0a0fb9cf9522
+build=python
+requires=dev-python/anyio
+check=python:starlette

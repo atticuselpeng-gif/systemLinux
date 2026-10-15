@@ -1,0 +1,7 @@
+version=0.37
+description=Cross-platform path specification manipulation
+url=https://cpan.metacpan.org/authors/id/K/KW/KWILLIAMS/Path-Class-0.37.tar.gz
+sha256=654781948602386f2cb2e4473a739f17dc6953d92aabc2498a4ca2561bc248ce
+build=perl
+requires=dev-perl/Module-Build
+check=perl:Path::Class

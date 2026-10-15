@@ -1,0 +1,7 @@
+version=1.6.20
+description=IPMI tools for monitoring and managing servers
+url=https://ftpmirror.gnu.org/gnu/freeipmi/freeipmi-1.6.20.tar.gz
+sha256=9cc644530ee629ffb94d6fd209e7cb4a8b8ae6677f89d2dc461efed9b2e709f2
+build=configure
+requires=dev-libs/libgcrypt
+check=cmd:ipmi-sensors

@@ -1,0 +1,6 @@
+version=2.6.20
+description=File identification library for Python
+url=https://files.pythonhosted.org/packages/53/35/d70c0006c7cee65999ea94a6273e60b2094f600a3d8b71b04318253fc643/identify-2.6.20.tar.gz
+sha256=ad729860a923858d26917c2f4fb0a1d83d27a75b1e090c06440c573f048f3285
+build=python
+check=python:identify

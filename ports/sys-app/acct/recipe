@@ -1,0 +1,7 @@
+version=6.6.4
+description=Process accounting utilities (ac, lastcomm, sa)
+url=https://ftpmirror.gnu.org/gnu/acct/acct-6.6.4.tar.bz2
+sha256=13c2d18bdfa11ca0200d8c0f9df2e4572113d3fa5f44db219e5c71e04ae3fa03
+build=configure
+cflags=-std=gnu17
+check=cmd:ac

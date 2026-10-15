@@ -1,0 +1,6 @@
+version=0.1.2
+description=Markdown URL utilities
+url=https://files.pythonhosted.org/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz
+sha256=bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba
+build=python
+check=python:mdurl

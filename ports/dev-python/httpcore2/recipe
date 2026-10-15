@@ -1,0 +1,7 @@
+version=2.13.1
+description=A minimal low-level HTTP client.
+url=https://files.pythonhosted.org/packages/cb/f3/1db7aa2bc2524062192bb0e0323969492d1883152a232fe36eea65f4e35c/httpcore2-2.13.1.tar.gz
+sha256=e0aa977abe17e69a3b820a24542a6fa88702676d83880b8d194dcd18408e5103
+build=python
+requires=dev-python/hatch-fancy-pypi-readme dev-python/h11 dev-python/truststore
+check=python:httpcore2

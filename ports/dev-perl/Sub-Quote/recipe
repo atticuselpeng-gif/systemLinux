@@ -1,0 +1,6 @@
+version=2.006009
+description=Efficient generation of subroutines via string eval
+url=https://cpan.metacpan.org/authors/id/H/HA/HAARG/Sub-Quote-2.006009.tar.gz
+sha256=967282d54d2d51b198c67935594f93e4dea3e54d1e5bced158c94e29be868a4b
+build=perl
+check=perl:Sub::Quote

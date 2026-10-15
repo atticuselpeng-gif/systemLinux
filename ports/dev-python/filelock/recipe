@@ -1,0 +1,7 @@
+version=4.2.0
+description=A platform independent file lock.
+url=https://files.pythonhosted.org/packages/f4/a9/1af41b37c3279712b22cdc63aac78a52432202b6fe1f9666a2a3d2831fb4/filelock-4.2.0.tar.gz
+sha256=7a60906c75227cf04d0c273afadc8219400f11aeb13cc69591d4f6cdc6c8036e
+build=python
+requires=dev-python/hatch-vcs
+check=python:filelock

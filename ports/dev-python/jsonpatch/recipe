@@ -1,0 +1,7 @@
+version=1.35
+description=Apply JSON-Patches (RFC 6902)
+url=https://files.pythonhosted.org/packages/df/f8/48a6033ebdd5013a58b5a79402eacb15ffb6e208f244c1c17f6f1e3b29c2/jsonpatch-1.35.tar.gz
+sha256=679ad08672b4663c7ef1e5f3331d940f5e7786661b9acc1530104be1638e7a4f
+build=python
+requires=dev-python/jsonpointer
+check=python:jsonpatch

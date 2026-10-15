@@ -1,0 +1,6 @@
+version=3.2.1
+description=Identify specific nodes in a JSON document (RFC 6901)
+url=https://files.pythonhosted.org/packages/33/a2/c92f0a7ed439c490d2c8ad712fdb074c311afa4f77870987826a3b1483ba/jsonpointer-3.2.1.tar.gz
+sha256=47c846513b3a4ec46eecef1105207fba075e2a3659048e362bd7daff0fc33342
+build=python
+check=python:jsonpointer

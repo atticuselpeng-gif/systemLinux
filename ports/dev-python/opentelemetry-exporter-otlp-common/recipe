@@ -1,0 +1,7 @@
+version=0.66b1
+description=OpenTelemetry OTLP HTTP export utilities
+url=https://files.pythonhosted.org/packages/cb/19/41de712173f43057e4532d42ece7d0c6d4210d353e5752433cb14987643f/opentelemetry_exporter_otlp_common-0.66b1.tar.gz
+sha256=6b1403487a2185ac1feb45fd5546fdf8630ce71c36bcefaadf51e2130e9e23f9
+build=python
+requires=dev-python/opentelemetry-sdk
+check=python:opentelemetry_exporter_otlp_common

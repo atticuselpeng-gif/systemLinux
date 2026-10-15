@@ -1,0 +1,7 @@
+version=1.46
+description=Perform diffs on files and record sets
+url=https://cpan.metacpan.org/authors/id/N/NE/NEILB/Text-Diff-1.46.tar.gz
+sha256=3fc983e3140fa2580250bbcf2b52e2acbdbc5abda4374c3be78235905d8ca8eb
+build=perl
+requires=dev-perl/Algorithm-Diff
+check=perl:Text::Diff

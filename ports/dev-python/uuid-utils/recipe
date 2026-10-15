@@ -1,0 +1,7 @@
+version=1.0.0
+description=Fast, drop-in replacement for Python's uuid module, powered by Rust.
+url=https://files.pythonhosted.org/packages/5e/35/2e9666504bcb3ab50656b86cd468880cedb86d3c97b88d3805dcc124b95d/uuid_utils-1.0.0.tar.gz
+sha256=8ed2e0156d29c4cfa0f931b4b71b35d2705d84054f63ba07a78f7acc2eb09a5c
+build=python
+requires=dev-python/maturin lang/rust
+check=python:uuid_utils

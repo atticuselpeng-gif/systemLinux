@@ -1,0 +1,7 @@
+version=1.4.0
+description=Pytest support for asyncio
+url=https://files.pythonhosted.org/packages/43/7c/d36d04db312ecf4298932ef77e6e4a9e8ad017906e24e34f0b0c361a2473/pytest_asyncio-1.4.0.tar.gz
+sha256=c6c0d2259945122819f171a32ecea2c349ead889ee28176caaf492143424be42
+build=python
+requires=dev-python/pytest
+check=python:pytest_asyncio

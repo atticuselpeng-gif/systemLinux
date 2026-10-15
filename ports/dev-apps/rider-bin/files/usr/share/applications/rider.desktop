@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Rider
+Exec=rider %f
+Icon=/usr/lib/rider/bin/rider.svg
+Terminal=false
+Type=Application
+Categories=Development;IDE;

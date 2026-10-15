@@ -1,0 +1,7 @@
+version=2.1.2
+description=execnet: rapid multi-Python deployment
+url=https://files.pythonhosted.org/packages/bf/89/780e11f9588d9e7128a3f87788354c7946a9cbb1401ad38a48c4db9a4f07/execnet-2.1.2.tar.gz
+sha256=63d83bfdd9a23e35b9c6a3261412324f964c2ec8dcd8d3c6916ee9373e0befcd
+build=python
+requires=dev-python/hatch-vcs
+check=python:execnet

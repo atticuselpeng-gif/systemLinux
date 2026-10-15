@@ -1,0 +1,7 @@
+version=2.201.0
+description=Google API Client Library for Python
+url=https://files.pythonhosted.org/packages/b6/47/077e889d3c618d971d3bce4ab198c645a607276b8d4bb151cfe78d2c92bb/google_api_python_client-2.201.0.tar.gz
+sha256=d5691982abd7287f53cb0b0e0c6a9984d4103cf864ea0a88cb6e4347bbaf70de
+build=python
+requires=dev-python/httplib2 dev-python/google-auth dev-python/google-auth-httplib2 dev-python/google-api-core dev-python/uritemplate
+check=python:google_api_python_client

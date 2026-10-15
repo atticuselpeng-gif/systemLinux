@@ -1,0 +1,6 @@
+version=2.15
+description=Provides Moose-like method modifiers
+url=https://cpan.metacpan.org/authors/id/E/ET/ETHER/Class-Method-Modifiers-2.15.tar.gz
+sha256=65cd85bfe475d066e9186f7a8cc636070985b30b0ebb1cde8681cf062c2e15fc
+build=perl
+check=perl:Class::Method::Modifiers

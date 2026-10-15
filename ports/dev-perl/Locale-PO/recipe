@@ -1,0 +1,7 @@
+version=0.27
+description=Perl module for manipulating .po entries from GNU gettext
+url=https://cpan.metacpan.org/authors/id/C/CO/COSIMO/Locale-PO-0.27.tar.gz
+sha256=3c994a4b63e6e4e836c6f79a93f51921cab77c90c9753fe0f8b5429220d516b9
+build=perl
+requires=dev-perl/File-Slurp
+check=perl:Locale::PO

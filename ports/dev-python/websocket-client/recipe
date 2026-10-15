@@ -1,0 +1,6 @@
+version=1.9.2
+description=WebSocket client for Python with low level API options
+url=https://files.pythonhosted.org/packages/d8/cb/a5abcc2891249f393827c650c6296660ce40374ac22d99ab9aea41f9d2a2/websocket_client-1.9.2.tar.gz
+sha256=0fcb57545848be86992e128218fd96dd87a6769ffdb1a968dff79632b85604d0
+build=python
+check=python:websocket

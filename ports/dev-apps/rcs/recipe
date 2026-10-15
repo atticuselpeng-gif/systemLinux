@@ -1,0 +1,7 @@
+version=5.10.0
+description=Revision Control System
+url=https://ftpmirror.gnu.org/gnu/rcs/rcs-5.10.0.tar.xz
+sha256=3a0d9f958c7ad303e475e8634654974edbe6deb3a454491f3857dc1889bac5c5
+build=configure
+cflags=-std=gnu17
+check=cmd:rcs

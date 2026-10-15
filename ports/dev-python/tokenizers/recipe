@@ -1,0 +1,7 @@
+version=0.23.3
+description=Python package tokenizers
+url=https://files.pythonhosted.org/packages/e0/7c/2cabb2174e772636683008f2c5621949b645da7d303c596589e84516a184/tokenizers-0.23.3.tar.gz
+sha256=cded33237c77caeef62944d32aa9a7ef42bdce2b3497e18d137e072a8c4be438
+build=python
+requires=dev-python/maturin lang/rust dev-python/huggingface-hub
+check=python:tokenizers

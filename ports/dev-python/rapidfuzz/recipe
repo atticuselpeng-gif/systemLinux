@@ -1,0 +1,7 @@
+version=3.14.6
+description=rapid fuzzy string matching
+url=https://files.pythonhosted.org/packages/18/97/226c43b7b5d957bc3840ed52ea99eed261f99834c4619be7a4742cbaeafa/rapidfuzz-3.14.6.tar.gz
+sha256=e13a8160d017b499ec7a2fa9d0ce1ae2e7377080815785819f966fb235d4eb60
+build=python
+requires=dev-python/scikit-build-core
+check=python:rapidfuzz

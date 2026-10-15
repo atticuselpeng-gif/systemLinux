@@ -1,0 +1,6 @@
+version=1.7003
+description=check that a library is available
+url=https://cpan.metacpan.org/authors/id/P/PJ/PJACKLAM/Math-BigInt-GMP-1.7003.tar.gz
+sha256=a165628b277d1e833f5b657ca836db81bc44e04c107cfe9f5b8bd94755642ed5
+build=perl
+check=perl:Math::BigInt::GMP

@@ -1,0 +1,6 @@
+version=v0.910.0
+description=Perl YAML Serialization using XS and libyaml
+url=https://cpan.metacpan.org/authors/id/T/TI/TINITA/YAML-LibYAML-v0.910.0.tar.gz
+sha256=04310e9840b918383a5b9ae9ca4b3bde1b2771ec786c758bd2fffd79d409332b
+build=perl
+check=perl:YAML::LibYAML

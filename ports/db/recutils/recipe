@@ -1,0 +1,7 @@
+version=1.9
+description=Plain text databases (recsel, recins, ...)
+url=https://ftpmirror.gnu.org/gnu/recutils/recutils-1.9.tar.gz
+sha256=6301592b0020c14b456757ef5d434d49f6027b8e5f3a499d13362f205c486e0e
+build=configure
+cflags=-std=gnu17 -Wno-error=implicit-function-declaration
+check=cmd:recsel

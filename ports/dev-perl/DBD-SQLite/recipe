@@ -1,0 +1,7 @@
+version=1.78
+description=Self Contained SQLite RDBMS in a DBI Driver
+url=https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/DBD-SQLite-1.78.tar.gz
+sha256=efbad7794bafaa4e7476c07445a33bbfe1040e380baa3395a02635eebe3859d5
+build=perl
+requires=dev-perl/DBI
+check=perl:DBD::SQLite

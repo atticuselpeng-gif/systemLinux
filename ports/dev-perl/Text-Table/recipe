@@ -1,0 +1,7 @@
+version=1.135
+description=Organize Data in Tables
+url=https://cpan.metacpan.org/authors/id/S/SH/SHLOMIF/Text-Table-1.135.tar.gz
+sha256=fca3c16e83127f7c44dde3d3f7e3c73ea50d109a1054445de8082fea794ca5d2
+build=perl
+requires=dev-perl/Module-Build dev-perl/Text-Aligner
+check=perl:Text::Table

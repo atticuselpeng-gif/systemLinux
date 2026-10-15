@@ -1,0 +1,7 @@
+version=0.19.2
+description=An Amazon S3 Transfer Manager
+url=https://files.pythonhosted.org/packages/76/43/35e4d8aa320bffe8287fe8f65f578fa2d2db0a64212f0e710dce58267854/s3transfer-0.19.2.tar.gz
+sha256=ba0309fd86be3c27dbf78cdd813c13c5e1df16e5874b99d2535ebbdfb9892993
+build=python
+requires=dev-python/botocore
+check=python:s3transfer

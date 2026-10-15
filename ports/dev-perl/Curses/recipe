@@ -1,0 +1,6 @@
+version=1.46
+description=terminal screen handling and optimization
+url=https://cpan.metacpan.org/authors/id/G/GI/GIRAFFED/Curses-1.46.tar.gz
+sha256=9631d6e3e2859c85913d8b8724f61fbebb9e932e9e50aa0493a4e0276660a3f9
+build=perl
+check=perl:Curses::Window

@@ -1,0 +1,7 @@
+version=5.18.7
+description=Generate program files from templates
+url=https://ftpmirror.gnu.org/gnu/autogen/autogen-5.18.7.tar.xz
+sha256=a7a580a5e18931cb341b255cec2fee2dfd81bea5ddbf0d8ad722703e19aaa405
+build=configure
+requires=lang/guile dev-libs/libxml2
+check=cmd:autogen

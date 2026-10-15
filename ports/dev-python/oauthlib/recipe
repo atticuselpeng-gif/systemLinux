@@ -1,0 +1,6 @@
+version=4.0.0
+description=A generic, spec-compliant, thorough implementation of the OAuth request-signing logic
+url=https://files.pythonhosted.org/packages/7a/d8/a1bcc8ba112a627f8ffbdc212a78ce18d3ac07e91a5ca65d27918eee25a1/oauthlib-4.0.0.tar.gz
+sha256=efb274799819440f95b4ab3b818869f1ce9ae26c5beacba0201d1a1b76b54f86
+build=python
+check=python:oauthlib

@@ -1,0 +1,7 @@
+version=1.1.1
+description=Library with high-level APIs for creating and executing LangGraph agents and tools.
+url=https://files.pythonhosted.org/packages/ab/d9/e50d6e6b8d241b90564892afed8fac98d17da023c82810577cdb4530f87c/langgraph_prebuilt-1.1.1.tar.gz
+sha256=f1b1a4772e7f9f15ba736411aad3877183ad40cd9349748df76bd2b9f58a83c7
+build=python
+requires=dev-python/langchain-core dev-python/langgraph-checkpoint
+check=python:langgraph_prebuilt

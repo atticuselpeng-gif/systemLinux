@@ -1,0 +1,7 @@
+version=4.15.1
+description=High-level concurrency and networking framework on top of asyncio or Trio
+url=https://files.pythonhosted.org/packages/a9/d2/f4d173e22df740bc37b1db102b386ba719b66e95b0f0d751f556b387e6d2/anyio-4.15.1.tar.gz
+sha256=9f28306018cbd6d329e64a36d58256edff76dd996fe423bc957326e578b82a94
+build=python
+requires=dev-python/idna dev-python/typing-extensions
+check=python:anyio

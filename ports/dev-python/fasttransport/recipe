@@ -1,0 +1,7 @@
+version=0.0.4
+description=Sync and async HTTP transports over httpx2, plus base classes for small REST clients
+url=https://files.pythonhosted.org/packages/a2/c0/62b63e2857c4da9121f4cd257ceb2cbb0257471528338191f62e2c8cd2f3/fasttransport-0.0.4.tar.gz
+sha256=4bfe0567c926f95f9449b14d58634d34dca5139d75671ade08ebb8bbdf2ec942
+build=python
+requires=dev-python/fastcore dev-python/httpx2
+check=python:fasttransport

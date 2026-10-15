@@ -1,0 +1,7 @@
+version=0.17.0
+description=Fast iterable JSON parser.
+url=https://files.pythonhosted.org/packages/9c/1f/8176d92e001f86505424b41664032ae26a882bc9ca41a32c803f373f9195/jiter-0.17.0.tar.gz
+sha256=03e432f226a453851079fb84cd17c6da9991eab723e28d716f14ae3d906e0c12
+build=python
+requires=dev-python/maturin lang/rust
+check=python:jiter

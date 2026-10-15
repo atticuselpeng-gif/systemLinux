@@ -1,0 +1,7 @@
+version=2.14.1
+description=Data validation using Python type hints
+url=https://files.pythonhosted.org/packages/7c/0b/8e10b2e693af8ec54346a14caf36221334775975a747c9ceaa3f8371d96d/pydantic-2.14.1.tar.gz
+sha256=94f478203dd03404682a1ada216965651dd74b1d2d5ffd62e00e0837caab5c26
+build=python
+requires=dev-python/hatch-fancy-pypi-readme dev-python/annotated-types dev-python/pydantic-core dev-python/typing-extensions dev-python/typing-inspection
+check=python:pydantic

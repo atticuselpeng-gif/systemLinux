@@ -1,0 +1,7 @@
+version=4.9.1
+description=Pure-Python RSA implementation
+url=https://files.pythonhosted.org/packages/da/8a/22b7beea3ee0d44b1916c0c1cb0ee3af23b700b6da9f04991899d0c555d4/rsa-4.9.1.tar.gz
+sha256=e7bdbfdb5497da4c07dfd35530e1a902659db6ff241e39d9953cad06ebd0ae75
+build=python
+requires=dev-python/poetry-core dev-python/pyasn1
+check=python:rsa

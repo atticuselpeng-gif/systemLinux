@@ -1,0 +1,6 @@
+version=1.4.1
+description=Clone of the SCCS version control system
+url=https://ftpmirror.gnu.org/gnu/cssc/CSSC-1.4.1.tar.gz
+sha256=d1bed0c80246ee4cd49d0aa45307c075d0876fe531057bb1c8b28f5330d651ef
+build=configure
+check=cmd:sccs

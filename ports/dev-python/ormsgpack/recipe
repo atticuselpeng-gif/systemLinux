@@ -1,0 +1,7 @@
+version=1.12.2
+description=Fast, correct Python msgpack library supporting dataclasses, datetimes, and numpy
+url=https://files.pythonhosted.org/packages/12/0c/f1761e21486942ab9bb6feaebc610fa074f7c5e496e6962dea5873348077/ormsgpack-1.12.2.tar.gz
+sha256=944a2233640273bee67521795a73cf1e959538e0dfb7ac635505010455e53b33
+build=python
+requires=dev-python/maturin lang/rust
+check=python:ormsgpack

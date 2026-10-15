@@ -1,0 +1,6 @@
+version=2.30
+description=Definition of MIME types
+url=https://cpan.metacpan.org/authors/id/M/MA/MARKOV/MIME-Types-2.30.tar.gz
+sha256=f31b1666bdf420b4b65c373ce0129ee349dd24bab4cd16c7f01b698fe450be6f
+build=perl
+check=perl:MIME::Types

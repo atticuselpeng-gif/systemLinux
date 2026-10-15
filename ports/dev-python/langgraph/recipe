@@ -1,0 +1,7 @@
+version=1.2.15
+description=Building stateful, multi-actor applications with LLMs
+url=https://files.pythonhosted.org/packages/ab/69/d43defeb393d5e222574b80411ee3c214dc4de4012b4ce363f6faf115aff/langgraph-1.2.15.tar.gz
+sha256=bebcfe5369b7307de1369ac00775f6e7b5a64ec94c050896b67de69d98aac612
+build=python
+requires=dev-python/langchain-core dev-python/langgraph-checkpoint dev-python/langgraph-prebuilt dev-python/langgraph-sdk dev-python/pydantic
+check=python:langgraph

@@ -1,0 +1,7 @@
+version=0.0.19
+description=Python bindings for the LangChain agent streaming protocol
+url=https://files.pythonhosted.org/packages/14/56/913599f2f9cec8524868929f12d72b2ede377a6056ca8a40a32bdadfa535/langchain_protocol-0.0.19.tar.gz
+sha256=79d90a1425122ac87e8052e2ec054fbd09c3edbf341bdfb6397112a495c7bf8c
+build=python
+requires=dev-python/typing-extensions
+check=python:langchain_protocol

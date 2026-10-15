@@ -1,0 +1,6 @@
+version=4.80
+description=cPanel fork of JSON::XS, fast and correct serializing
+url=https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Cpanel-JSON-XS-4.80.tar.gz
+sha256=080c125377a92a60844aec9d4532836ca144703986e3198cca3823ad7909aa25
+build=perl
+check=perl:Cpanel::JSON::XS

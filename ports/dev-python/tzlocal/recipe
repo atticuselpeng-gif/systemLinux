@@ -1,0 +1,6 @@
+version=5.4.4
+description=tzinfo object for the local timezone
+url=https://files.pythonhosted.org/packages/81/5b/879b2f932adfa7a053c360d50bc896c977fa6426109185f7c12ebdd0cb9d/tzlocal-5.4.4.tar.gz
+sha256=8dbb8660838688a7b6ba4fed31d18dedf842afb4d47ca050d6d891c2c15f3be4
+build=python
+check=python:tzlocal

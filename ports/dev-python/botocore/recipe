@@ -1,0 +1,7 @@
+version=1.43.114
+description=Low-level, data-driven core of boto 3.
+url=https://files.pythonhosted.org/packages/ce/c8/b508359d1f3846a918c06807a9ae27eee063f904559269e42ccde9de09ea/botocore-1.43.114.tar.gz
+sha256=f366fa4db518775632ad1eb128cd8203ca46396cecf37209d904f0bbc049ce90
+build=python
+requires=dev-python/jmespath dev-python/python-dateutil dev-python/urllib3
+check=python:botocore

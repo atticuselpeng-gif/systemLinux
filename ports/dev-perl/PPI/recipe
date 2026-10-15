@@ -1,0 +1,7 @@
+version=1.291
+description=Parse, Analyze and Manipulate Perl (without perl)
+url=https://cpan.metacpan.org/authors/id/M/MI/MITHALDU/PPI-1.291.tar.gz
+sha256=74ac10bf66443ea813fb37d2ff5219c4d8e685379272d6699c812a39d91f3c1d
+build=perl
+requires=dev-perl/Clone dev-perl/Params-Util dev-perl/Safe-Isa dev-perl/Task-Weaken dev-perl/YAML-PP
+check=perl:PPI

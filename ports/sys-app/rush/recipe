@@ -1,0 +1,7 @@
+version=2.4
+description=Restricted user shell
+url=https://ftpmirror.gnu.org/gnu/rush/rush-2.4.tar.xz
+sha256=fa95af9d2c7b635581841cc27a1d27af611f60dd962113a93d23a8874aa060f4
+build=configure
+cflags=-std=gnu17
+check=cmd:rush

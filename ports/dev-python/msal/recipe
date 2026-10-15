@@ -1,0 +1,7 @@
+version=1.39.0
+description=The Microsoft Authentication Library (MSAL) for Python library enables your app to access the Microsoft Cloud by supporting authentication of users wi
+url=https://files.pythonhosted.org/packages/bb/85/747d28986a44b715cc51cf57aa021c8fd94e9614064261ceec77320e8b0b/msal-1.39.0.tar.gz
+sha256=6ab7de335e6d7f5717e2c7e1dbf86e4dda2f6acf3c56773b78dc53ebc6395b5f
+build=python
+requires=dev-python/requests dev-python/pyjwt dev-python/cryptography
+check=python:msal

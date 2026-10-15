@@ -1,0 +1,6 @@
+version=17.2
+description=An implementation of the WebSocket Protocol (RFC 6455 & 7692)
+url=https://files.pythonhosted.org/packages/01/89/3f825ab71c242fffb62ea8fe638741c290f62f8d7aadf8125ff897747af3/websockets-17.2.tar.gz
+sha256=36c2fb94c990cc2545143b12690e2de6c16300f9dbe5b4f33fa300cf57dc8792
+build=python
+check=python:websockets

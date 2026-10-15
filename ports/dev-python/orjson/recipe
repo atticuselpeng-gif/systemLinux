@@ -1,0 +1,7 @@
+version=3.13.0
+description=Fast, correct Python JSON library supporting dataclasses, datetimes, and numpy
+url=https://files.pythonhosted.org/packages/f2/72/380b97dc45bd162d23afe5194721ef678d9eac7cfaa549fe2873f7f0a518/orjson-3.13.0.tar.gz
+sha256=d1de5eb04485110c5da4c657e49168995d55e076b1ce60f1a042e254f4186c4f
+build=python
+requires=dev-python/maturin lang/rust
+check=python:orjson

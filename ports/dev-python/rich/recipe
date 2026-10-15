@@ -1,0 +1,7 @@
+version=15.0.0
+description=Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal
+url=https://files.pythonhosted.org/packages/c0/8f/0722ca900cc807c13a6a0c696dacf35430f72e0ec571c4275d2371fca3e9/rich-15.0.0.tar.gz
+sha256=edd07a4824c6b40189fb7ac9bc4c52536e9780fbbfbddf6f1e2502c31b068c36
+build=python
+requires=dev-python/poetry-core dev-python/markdown-it-py dev-python/pygments
+check=python:rich

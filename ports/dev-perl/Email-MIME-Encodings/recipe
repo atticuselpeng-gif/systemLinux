@@ -1,0 +1,6 @@
+version=1.317
+description=A unified interface to MIME encoding and decoding
+url=https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Email-MIME-Encodings-1.317.tar.gz
+sha256=4a9a41671a9d1504c4da241be419a9503fa3486262526edb81eca9e2ebea0baf
+build=perl
+check=perl:Email::MIME::Encodings

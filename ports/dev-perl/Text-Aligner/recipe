@@ -1,0 +1,7 @@
+version=0.16
+description=module to align text.
+url=https://cpan.metacpan.org/authors/id/S/SH/SHLOMIF/Text-Aligner-0.16.tar.gz
+sha256=5c857dbce586f57fa3d7c4ebd320023ab3b2963b2049428ae01bd3bc4f215725
+build=perl
+requires=dev-perl/Module-Build
+check=perl:Text::Aligner

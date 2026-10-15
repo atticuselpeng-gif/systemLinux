@@ -1,0 +1,7 @@
+version=6.17
+description=Provide https support for LWP::UserAgent
+url=https://cpan.metacpan.org/authors/id/O/OA/OALDERS/LWP-Protocol-https-6.17.tar.gz
+sha256=361c7c1eee8cf66812958f975f26ef2e2272a0c6221d2043477cb9c22b8d1c23
+build=perl
+requires=dev-perl/IO-Socket-SSL dev-perl/Net-HTTP dev-perl/libwww-perl
+check=perl:LWP::Protocol::https

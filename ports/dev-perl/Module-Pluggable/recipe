@@ -1,0 +1,6 @@
+version=6.4
+description=automatically give your module the ability to have plugins
+url=https://cpan.metacpan.org/authors/id/S/SI/SIMONW/Module-Pluggable-6.4.tar.gz
+sha256=970fd13accd3d538e637db080ebbd9898020c8b5591837c8493a39edd737922d
+build=perl
+check=perl:Module::Pluggable

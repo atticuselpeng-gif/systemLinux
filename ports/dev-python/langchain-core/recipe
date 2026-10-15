@@ -1,0 +1,7 @@
+version=1.6.10
+description=Building applications with LLMs through composability
+url=https://files.pythonhosted.org/packages/f7/00/0a95f74a79908e7bc844a82fca35c1afc55689f55aaed086e95745946db8/langchain_core-1.6.10.tar.gz
+sha256=3ad7a64eab150c1fea9f8a748b1c076aa1a960c5cf7c28d81a841a2f2dbffad1
+build=python
+requires=dev-python/httpx dev-python/jsonpatch dev-python/langchain-protocol dev-python/langsmith dev-python/pydantic dev-python/pyyaml dev-python/tenacity dev-python/typing-extensions dev-python/uuid-utils
+check=python:langchain_core

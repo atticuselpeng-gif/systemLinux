@@ -1,0 +1,6 @@
+version=7.1.0
+description=multidict implementation
+url=https://files.pythonhosted.org/packages/f9/79/84ddb5ba16c4eb2c69c71db76ae3c579fe546e511f7170c7e27eedbab7c1/multidict-7.1.0.tar.gz
+sha256=61a4e5d81b8d4e4ad61964b230129e7a2b914793d96289029078fc9009f074ec
+build=python
+check=python:multidict

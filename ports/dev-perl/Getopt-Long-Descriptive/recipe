@@ -1,0 +1,7 @@
+version=0.117
+description=Getopt::Long, but simpler and more powerful
+url=https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Getopt-Long-Descriptive-0.117.tar.gz
+sha256=18cba2392a0b7550bbc3d7c98c6fc5d81f6699d308e4a17e1a143ba4521005a3
+build=perl
+requires=dev-perl/Sub-Exporter
+check=perl:Getopt::Long::Descriptive

@@ -1,0 +1,7 @@
+version=0.66b1
+description=Instrumentation Tools & Auto Instrumentation for OpenTelemetry Python
+url=https://files.pythonhosted.org/packages/a5/03/89e47ff8d52a4f83b343e6eb9ef1698ff45357216e5b6b2b21e0da5c5c7d/opentelemetry_instrumentation-0.66b1.tar.gz
+sha256=e79a510f7d87c72d95e964ddb42193a0d9a75668c027d980eab032ea1322a5ce
+build=python
+requires=dev-python/opentelemetry-api dev-python/opentelemetry-semantic-conventions dev-python/wrapt
+check=python:opentelemetry_instrumentation

@@ -1,0 +1,6 @@
+version=3.7.0
+description=threadpoolctl
+url=https://files.pythonhosted.org/packages/00/dc/6c58154c1c65f758ea979e7139cb76993a9cfc662d14e9be3c4a667cfb77/threadpoolctl-3.7.0.tar.gz
+sha256=61348cfb77d53b9242e0017029244b559b810c142ced65b4e21eeca1843959a7
+build=python
+check=python:threadpoolctl

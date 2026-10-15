@@ -1,0 +1,7 @@
+version=2.3.0
+description=Model Context Protocol SDK
+url=https://files.pythonhosted.org/packages/9d/8d/e0d339616f4810e9051d4aba6887afab289ab1f81875fe908b606cdfd0e3/mcp-2.3.0.tar.gz
+sha256=8b147a50441cf059dc88c684e0aeed3687f0aa0f39c6cde7b90330effd2b34d8
+build=python
+requires=dev-python/anyio dev-python/httpx2 dev-python/jsonschema dev-python/mcp-types dev-python/opentelemetry-api dev-python/pydantic dev-python/pyjwt dev-python/python-multipart dev-python/sse-starlette dev-python/starlette dev-python/typing-extensions dev-python/typing-inspection dev-python/uvicorn
+check=python:mcp

@@ -1,0 +1,7 @@
+version=2.88
+description=Build external dependencies for use in CPAN
+url=https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Alien-Build-2.88.tar.gz
+sha256=c14346bace2b50cae62f1ee70a907f4c7383fabf90b034272ee52a5b1345fbba
+build=perl
+requires=dev-perl/Capture-Tiny dev-perl/FFI-CheckLib dev-perl/File-Which dev-perl/File-chdir dev-perl/Path-Tiny
+check=perl:Alien::Build

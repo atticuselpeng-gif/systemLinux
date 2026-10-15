@@ -1,0 +1,7 @@
+version=1.67
+description=A date and time object for Perl
+url=https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-1.67.tar.gz
+sha256=ba237fe792c93e8c13879c58fead45de2d1185e53793b792db1a3c9e77dd7b55
+build=perl
+requires=dev-perl/DateTime-Locale dev-perl/DateTime-TimeZone dev-perl/Dist-CheckConflicts dev-perl/Params-ValidationCompiler dev-perl/Specio dev-perl/Try-Tiny dev-perl/namespace-autoclean
+check=perl:DateTime

@@ -1,0 +1,7 @@
+version=3.106
+description=comprehensive template processing system
+url=https://cpan.metacpan.org/authors/id/T/TO/TODDR/Template-Toolkit-3.106.tar.gz
+sha256=c7474050be80201f1fb55f0a569b9c0ab6c1c3f0cebbd7e601bda9b4046eec85
+build=perl
+requires=dev-perl/AppConfig
+check=perl:Template::Toolkit

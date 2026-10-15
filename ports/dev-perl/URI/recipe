@@ -1,0 +1,7 @@
+version=5.37
+description=Uniform Resource Identifiers (absolute and relative)
+url=https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-5.37.tar.gz
+sha256=5a8750ddd8ee743d7cc89bebdd542a9b78a34023164ebe19dea0c248e121c21e
+build=perl
+requires=dev-perl/MIME-Base32
+check=perl:URI

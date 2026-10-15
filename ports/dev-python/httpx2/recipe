@@ -1,0 +1,7 @@
+version=2.13.1
+description=The next generation HTTP client.
+url=https://files.pythonhosted.org/packages/d5/44/474bef2a0e9d90f1715d32cb98b0738695ca17ba324095fb2497ed7fbd59/httpx2-2.13.1.tar.gz
+sha256=e48744a19e3af5ee48313d0ce5fe941d5422fae5705ea922a4aabf94d7800dfa
+build=python
+requires=dev-python/hatch-fancy-pypi-readme dev-python/anyio dev-python/httpcore2 dev-python/idna dev-python/truststore
+check=python:httpx2

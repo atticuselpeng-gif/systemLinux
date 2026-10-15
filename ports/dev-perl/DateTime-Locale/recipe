@@ -1,0 +1,7 @@
+version=1.46
+description=Localization support for DateTime.pm
+url=https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-Locale-1.46.tar.gz
+sha256=fda10fd3ee85f9ce73f46e4ccfe764243978c3ac377e3097597058101b935d9f
+build=perl
+requires=dev-perl/Dist-CheckConflicts dev-perl/File-ShareDir dev-perl/File-ShareDir-Install dev-perl/Params-ValidationCompiler dev-perl/Specio dev-perl/namespace-autoclean
+check=perl:DateTime::Locale

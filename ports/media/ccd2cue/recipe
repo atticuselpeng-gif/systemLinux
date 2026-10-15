@@ -1,0 +1,7 @@
+version=0.5
+description=Convert CloneCD CCD sheets to CUE sheets
+url=https://ftpmirror.gnu.org/gnu/ccd2cue/ccd2cue-0.5.tar.gz
+sha256=8725cfdbcb963259ff094a878aa0e49ea8284e1071ea36ac7ea47358c49b99c5
+build=configure
+cflags=-std=gnu17
+check=cmd:ccd2cue

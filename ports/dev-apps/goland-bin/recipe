@@ -1,0 +1,8 @@
+version=2026.2.3
+description=JetBrains GoLand IDE (official build)
+url=https://download.jetbrains.com/go/goland-2026.2.3.tar.gz
+sha256=0af3e82e63f906824c49c41fdbf6c6e679a02ab94ab11fc04f27050a6970d76f
+build=bin
+programs=bin/goland.sh:goland
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxtst x11/libxi dev-libs/freetype dev-libs/fontconfig dev-libs/alsa-lib dev-libs/glib
+check=cmd:goland

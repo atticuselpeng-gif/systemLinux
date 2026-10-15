@@ -1,0 +1,7 @@
+version=2.23
+description=provide a progress meter on a standard terminal
+url=https://cpan.metacpan.org/authors/id/M/MA/MANWAR/Term-ProgressBar-2.23.tar.gz
+sha256=defc03fb9f4ac1c9df1359d312bff3c0865ddefbf3aba64cd42a69a86215d49d
+build=perl
+requires=dev-perl/Class-MethodMaker dev-perl/TermReadKey
+check=perl:Term::ProgressBar

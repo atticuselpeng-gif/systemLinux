@@ -1,0 +1,6 @@
+version=1.91
+description=Perl Implementation of Rivest's MD5 algorithm
+url=https://cpan.metacpan.org/authors/id/D/DE/DELTA/Digest-Perl-MD5-1.91.tar.gz
+sha256=718e41717fb82a9ab3f0809d211fddcdbdef91dc198887d82b88723aa54afcd5
+build=perl
+check=perl:Digest::Perl::MD5

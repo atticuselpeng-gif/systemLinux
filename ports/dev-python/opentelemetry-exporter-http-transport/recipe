@@ -1,0 +1,7 @@
+version=0.66b1
+description=OpenTelemetry Exporters HTTP transport
+url=https://files.pythonhosted.org/packages/62/0c/e3ebdb4b507f66afcc905e6885a4946969bd75b45988492643356fbbdc63/opentelemetry_exporter_http_transport-0.66b1.tar.gz
+sha256=443080203bf52586ce0b2ad901e8951c61833eab1aa539ae6f1f16fe9e8e7952
+build=python
+requires=dev-python/opentelemetry-api
+check=python:opentelemetry_exporter_http_transport

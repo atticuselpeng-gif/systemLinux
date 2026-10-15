@@ -1,0 +1,6 @@
+version=0.13.0
+description=itertools and builtins for AsyncIO and mixed iterables
+url=https://files.pythonhosted.org/packages/fd/3c/53c4a17a05fb9ea2313ee1777ff53f5e001aefd5cc85aa2f4c2d982e1e38/aioitertools-0.13.0.tar.gz
+sha256=620bd241acc0bbb9ec819f1ab215866871b4bbd1f73836a55f799200ee86950c
+build=python
+check=python:aioitertools

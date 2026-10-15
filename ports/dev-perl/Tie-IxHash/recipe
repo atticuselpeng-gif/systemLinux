@@ -1,0 +1,6 @@
+version=1.23
+description=ordered associative arrays for Perl
+url=https://cpan.metacpan.org/authors/id/C/CH/CHORNY/Tie-IxHash-1.23.tar.gz
+sha256=fabb0b8c97e67c9b34b6cc18ed66f6c5e01c55b257dcf007555e0b027d4caf56
+build=perl
+check=perl:Tie::IxHash

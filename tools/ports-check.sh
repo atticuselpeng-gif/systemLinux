@@ -3,7 +3,7 @@
 #
 # Checks, for every recipe:
 #   * the directory layout is ports/<category>/<name>/recipe, names use [A-Za-z0-9._+-]
-#   * only known keys (url sha256 requires build configure_args version description srcdir make_args check programs),
+#   * only known keys (url sha256 requires build configure_args version description srcdir make_args check programs cflags),
 #     each at most once
 #   * optional: build.sh (for build=script), patches/*.patch, dinit/<service> (must be a dinit service), files/<path>
 #   * url (https/http/ftp, no whitespace) or requires (meta-package) is present
@@ -44,7 +44,7 @@ for recipe in "$PORTS"/*/*/recipe; do
         key=${line%%=*}; key=${key%%[[:space:]]}
         case "$line" in *=*) ;; *) err "$atom: line is not key=value: $line"; continue ;; esac
         case "$key" in
-            url|sha256|requires|build|configure_args|version|description|srcdir|make_args|check|programs) ;;
+            url|sha256|requires|build|configure_args|version|description|srcdir|make_args|check|programs|cflags) ;;
             *) err "$atom: unknown key '$key'"; continue ;;
         esac
         [ -z "${seen[$key]:-}" ] || err "$atom: duplicate key '$key'"
@@ -71,7 +71,7 @@ for recipe in "$PORTS"/*/*/recipe; do
     if [ "$build" = script ] && [ ! -f "$dir/build.sh" ]; then err "$atom: build=script needs build.sh"; fi
     if [ -n "$(val "$recipe" programs)" ] && [ "$build" != bin ]; then err "$atom: programs is only for build=bin"; fi
     chk=$(val "$recipe" check)
-    case "$chk" in ''|pkgconfig:?*|cmd:?*|file:/?*|python:[A-Za-z_]*) ;; *) err "$atom: check must be pkgconfig:NAME, cmd:NAME, file:/PATH or python:MODULE" ;; esac
+    case "$chk" in ''|pkgconfig:?*|cmd:?*|file:/?*|python:[A-Za-z_]*|perl:[A-Za-z_]*) ;; *) err "$atom: check must be pkgconfig:NAME, cmd:NAME, file:/PATH, python:MODULE or perl:Module::Name" ;; esac
     srcdir=$(val "$recipe" srcdir)
     case "$srcdir" in /*|..|../*|*/../*|*/..) err "$atom: srcdir must stay inside the source tree" ;; esac
     # optional folders: patches/*.patch, dinit/<service>, files/<path>

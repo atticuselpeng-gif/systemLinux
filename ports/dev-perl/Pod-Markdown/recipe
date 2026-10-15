@@ -1,0 +1,7 @@
+version=3.400
+description=Convert POD to Markdown
+url=https://cpan.metacpan.org/authors/id/R/RW/RWSTAUNER/Pod-Markdown-3.400.tar.gz
+sha256=a626e99bcd4e7d214e43d4722a54e3aafac3713862f7479cfb94a0e2879f8442
+build=perl
+requires=dev-perl/URI
+check=perl:Pod::Markdown

@@ -1,0 +1,7 @@
+version=2026.9.0
+description=Convenient Filesystem interface over S3
+url=https://files.pythonhosted.org/packages/f7/fe/ab89ab94cc1293849bc1a60876b589007bdd43f59a06ca309e717bd45dc7/s3fs-2026.9.0.tar.gz
+sha256=ec078ff0122d28fd21d36ea4987794e4f42ecd6e8785eeaa083208771c1464e5
+build=python
+requires=dev-python/aiobotocore dev-python/fsspec dev-python/aiohttp
+check=python:s3fs

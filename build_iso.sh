@@ -102,11 +102,6 @@ DINIT_CHECK="$ROOTFS/usr/bin/dinit-check" "$BUILD_DIR/tools/dinit/check-services
 sudo install -Dm644 "$KERNEL" "$ROOTFS/boot/vmlinuz"
 
 echo "=== [3/7] ROOTFS FIXES AND BRANDING ==="
-# D-Bus activation needs the launch helper setuid root (it was owned by the build user with no setuid bit)
-# (the image's own messagebus gid: the host may not have that group, e.g. Fedora calls it dbus)
-MB=$(sed -n 's/^messagebus:[^:]*:\([0-9]*\):.*/\1/p' "$ROOTFS/etc/group")
-sudo chown "0:${MB:?no messagebus group in $ROOTFS/etc/group}" "$ROOTFS/usr/libexec/dbus-daemon-launch-helper"
-sudo chmod 4750 "$ROOTFS/usr/libexec/dbus-daemon-launch-helper"
 # GNU bash is the system shell (/bin/bash and /bin/sh); the bbash fork stays installed as its own command.
 # Built static, so it does not depend on the base's libtinfo. The libarchive tools (BSD tar and friends)
 # are removed: GNU tar is the tar.
@@ -129,6 +124,8 @@ STAGE=$WORKSPACE/stage
 sudo mkdir -p "$STAGE"
 sudo cp -a "$ROOTFS/." "$STAGE/"
 sudo "$BUILD_DIR/tools/overlay-common/strip-gentoo.sh" "$STAGE"
+# the real sudo (rootfs/ only has a stub), built in the image with its own compiler, PAM and glibc
+sudo "$BUILD_DIR/tools/sudo/build.sh" "$STAGE"
 # the installer's boot/disk tools come from the build host; they run on the host's libraries, kept apart in
 # /usr/lib/systemlinux-host so they never replace the image's own glibc and libraries (they used to land in
 # /usr/lib: the host's 64-bit glibc over the 32-bit one, which broke every program with a ../lib RUNPATH, e.g. cargo)
@@ -185,6 +182,8 @@ if [ -d "$MODULES_ROOT/lib/modules/$KVER" ]; then
     sudo cp -a "$MODULES_ROOT/lib/modules/$KVER" "$STAGE/usr/lib/modules/"
     sudo depmod -b "$STAGE" "$KVER"   # $STAGE/lib -> usr/lib
 fi
+# owners, setuid bits and private files (git keeps none of them): su, passwd and sudo need this
+sudo "$BUILD_DIR/tools/overlay-common/fix-perms.sh" "$STAGE"
 sudo mksquashfs "$STAGE" "$WORKSPACE/live/rootfs.squashfs" -comp zstd -Xcompression-level 6 -b 1M -noappend -no-xattrs
 sudo rm -rf "$STAGE"
 sudo chown "$USER" "$WORKSPACE/live/rootfs.squashfs"

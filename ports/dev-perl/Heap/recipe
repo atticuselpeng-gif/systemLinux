@@ -1,0 +1,6 @@
+version=0.80
+description=Perl extensions for keeping data partially sorted
+url=https://cpan.metacpan.org/authors/id/J/JM/JMM/Heap-0.80.tar.gz
+sha256=ccda29f3c93176ad0fdfff4dd6f5e4ac90b370cba4b028386b7343bf64139bde
+build=perl
+check=perl:Heap

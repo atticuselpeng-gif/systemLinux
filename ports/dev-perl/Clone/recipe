@@ -1,0 +1,6 @@
+version=0.51
+description=recursively copy Perl datatypes
+url=https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/Clone-0.51.tar.gz
+sha256=f17f66fec97dacca67ac9585701d2d079cfc80539fe6e8160c201c4e55f67507
+build=perl
+check=perl:Clone

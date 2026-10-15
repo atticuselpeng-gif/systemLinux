@@ -1,0 +1,6 @@
+version=2.11.0
+description=Utilities for Google Media Downloads and Resumable Uploads
+url=https://files.pythonhosted.org/packages/cf/64/df6a482d5aa39d7f7be186d892377d605cae6c88525fd851d456e8bbe9c9/google_resumable_media-2.11.0.tar.gz
+sha256=febd83686752799661b4de575f0b993c5c25c349a5362556fc4d7be164056a37
+build=python
+check=python:google_resumable_media

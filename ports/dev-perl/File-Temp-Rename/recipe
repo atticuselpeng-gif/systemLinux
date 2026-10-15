@@ -1,0 +1,6 @@
+version=0.02
+description=Create a temporary file object for output, and rename it when done.
+url=https://cpan.metacpan.org/authors/id/T/TN/TNISH/File-Temp-Rename-0.02.tar.gz
+sha256=1d24eb4c4d0b9ac153a6dbba4073deded88e9b45257c1c6534ba551a151972d5
+build=perl
+check=perl:File::Temp::Rename

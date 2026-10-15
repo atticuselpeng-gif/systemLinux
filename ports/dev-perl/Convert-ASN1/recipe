@@ -1,0 +1,6 @@
+version=0.34
+description=Convert between perl data structures and ASN.1 encoded packets
+url=https://cpan.metacpan.org/authors/id/T/TI/TIMLEGGE/Convert-ASN1-0.34.tar.gz
+sha256=a628d7c9d390568fb76359975fa03f626ce57f10dc17980e8e3587d7713e4ee7
+build=perl
+check=perl:Convert::ASN1

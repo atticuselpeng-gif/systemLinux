@@ -1,0 +1,7 @@
+version=0.992
+description=a sophisticated exporter for custom-built routines
+url=https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Sub-Exporter-0.992.tar.gz
+sha256=31d1b7016390528f3ed2cda379f4026a4e7fbad2aa40c8c9a1808961bf642c67
+build=perl
+requires=dev-perl/Data-OptList dev-perl/Params-SomeUtil dev-perl/Sub-Install
+check=perl:Sub::Exporter

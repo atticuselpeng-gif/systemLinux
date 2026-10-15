@@ -1,0 +1,6 @@
+version=0.14
+description=Simple and dumb file system watcher
+url=https://cpan.metacpan.org/authors/id/M/MI/MIYAGAWA/Filesys-Notify-Simple-0.14.tar.gz
+sha256=1fda712d4ba5e1868159ed35f6f8efbfae9d435d6376f5606d533bcb080555a4
+build=perl
+check=perl:Filesys::Notify::Simple

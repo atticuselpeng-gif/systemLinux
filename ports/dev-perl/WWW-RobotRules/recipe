@@ -1,0 +1,7 @@
+version=6.03
+description=database of robots.txt-derived permissions
+url=https://cpan.metacpan.org/authors/id/O/OA/OALDERS/WWW-RobotRules-6.03.tar.gz
+sha256=8522b532935a11bfa688c2e113bac66729df4851be50c2c26d4b06f45fade472
+build=perl
+requires=dev-perl/URI
+check=perl:WWW::RobotRules

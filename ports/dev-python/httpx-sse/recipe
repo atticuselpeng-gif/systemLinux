@@ -1,0 +1,6 @@
+version=0.4.3
+description=Consume Server-Sent Event (SSE) messages with HTTPX.
+url=https://files.pythonhosted.org/packages/0f/4c/751061ffa58615a32c31b2d82e8482be8dd4a89154f003147acee90f2be9/httpx_sse-0.4.3.tar.gz
+sha256=9b1ed0127459a66014aec3c56bebd93da3c1bc8bb6618c8082039a44889a755d
+build=python
+check=python:httpx_sse

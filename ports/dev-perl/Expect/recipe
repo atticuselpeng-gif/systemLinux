@@ -1,0 +1,7 @@
+version=1.38
+description=automate interactions with command line programs that expose a text terminal interface.
+url=https://cpan.metacpan.org/authors/id/J/JA/JACOBY/Expect-1.38.tar.gz
+sha256=7b1048335f327958903867cea079dc072ea07f4eafae1b40c2e6f25db21686c0
+build=perl
+requires=dev-perl/IO-Tty
+check=perl:Expect

@@ -1,0 +1,7 @@
+version=1.8
+description=Chart the control flow of C programs
+url=https://ftpmirror.gnu.org/gnu/cflow/cflow-1.8.tar.xz
+sha256=a5830a708a587ebbf3b475b585935f89c33fc8fbd057af7d817d517aceaa7afa
+build=configure
+cflags=-std=gnu17
+check=cmd:cflow

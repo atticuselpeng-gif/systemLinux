@@ -1,0 +1,6 @@
+version=4.11
+description=JSON (JavaScript Object Notation) encoder/decoder
+url=https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/JSON-4.11.tar.gz
+sha256=713bdbe724dbb915ed50265ffe47e079a511980cb2427aa19076788bb64c3182
+build=perl
+check=perl:JSON

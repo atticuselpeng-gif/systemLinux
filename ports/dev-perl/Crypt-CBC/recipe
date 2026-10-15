@@ -1,0 +1,7 @@
+version=3.07
+description=Encrypt Data with Cipher Block Chaining Mode
+url=https://cpan.metacpan.org/authors/id/T/TI/TIMLEGGE/Crypt-CBC-3.07.tar.gz
+sha256=f4ddfb4dd6ac5013df8341bfa734d9c9ee0f10e2e71215ec8fe5bf780b7c9127
+build=perl
+requires=dev-perl/Crypt-URandom dev-perl/CryptX
+check=perl:Crypt::CBC

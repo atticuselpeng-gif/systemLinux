@@ -1,0 +1,6 @@
+version=v0.43.0
+description=YAML 1.2 Processor
+url=https://cpan.metacpan.org/authors/id/T/TI/TINITA/YAML-PP-v0.43.0.tar.gz
+sha256=f4a2a6d22b32a31e418debcbd04b843ba0997f9dea0fcc1f96b08b2f2ebcb2e7
+build=perl
+check=perl:YAML::PP

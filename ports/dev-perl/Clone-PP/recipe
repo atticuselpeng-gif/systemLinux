@@ -1,0 +1,6 @@
+version=1.09
+description=Recursively copy Perl datatypes
+url=https://cpan.metacpan.org/authors/id/N/NE/NEILB/Clone-PP-1.09.tar.gz
+sha256=4bb44697ef82105bd8d6204e550796a1eea89ce7108a98e0b7bf3ae4700d1c34
+build=perl
+check=perl:Clone::PP

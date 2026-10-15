@@ -1,0 +1,5 @@
+version=1.65
+description=Comma-Separated Values manipulation routines
+url=https://cpan.metacpan.org/authors/id/H/HM/HMBRAND/Text-CSV_XS-1.65.tgz
+sha256=4f0c16457c87def295a994e9c4ba397a8baafad96cefaf2d61483125f90ff974
+build=perl

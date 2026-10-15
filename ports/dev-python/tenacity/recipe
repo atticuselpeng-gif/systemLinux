@@ -1,0 +1,7 @@
+version=9.2.1
+description=Retry code until it succeeds
+url=https://files.pythonhosted.org/packages/82/9e/497c1c8ebe5a5b5d1d4a7511aea22c0bb1a97e3170d98abdef0e1b34265a/tenacity-9.2.1.tar.gz
+sha256=a606b5c808d0cded4a359d5b9932d867ff2a6a6b64d37350260fd01bbdf83839
+build=python
+requires=dev-python/hatch-vcs
+check=python:tenacity

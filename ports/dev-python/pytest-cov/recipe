@@ -1,0 +1,7 @@
+version=7.1.0
+description=Pytest plugin for measuring coverage.
+url=https://files.pythonhosted.org/packages/b1/51/a849f96e117386044471c8ec2bd6cfebacda285da9525c9106aeb28da671/pytest_cov-7.1.0.tar.gz
+sha256=30674f2b5f6351aa09702a9c8c364f6a01c27aae0c1366ae8016160d1efc56b2
+build=python
+requires=dev-python/hatch-fancy-pypi-readme dev-python/coverage dev-python/pytest
+check=python:pytest_cov

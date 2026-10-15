@@ -1,0 +1,7 @@
+version=1.45.1
+description=OpenTelemetry Collector Protobuf over HTTP Exporter
+url=https://files.pythonhosted.org/packages/1b/17/26487707ea4caa97b17e6e4b5fa72133a53512ffa2f5cf7a49ef284b29cb/opentelemetry_exporter_otlp_proto_http-1.45.1.tar.gz
+sha256=45c218405ce3fd879596924b1874bf9a8f6880206d61065c5a912c8e5c297fb7
+build=python
+requires=dev-python/googleapis-common-protos dev-python/opentelemetry-api dev-python/opentelemetry-exporter-http-transport dev-python/opentelemetry-exporter-otlp-common dev-python/opentelemetry-exporter-otlp-proto-common dev-python/opentelemetry-proto dev-python/opentelemetry-sdk dev-python/requests dev-python/typing-extensions
+check=python:opentelemetry_exporter_otlp_proto_http

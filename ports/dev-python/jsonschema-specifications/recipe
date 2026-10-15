@@ -1,0 +1,7 @@
+version=2025.9.1
+description=The JSON Schema meta-schemas and vocabularies, exposed as a Registry
+url=https://files.pythonhosted.org/packages/19/74/a633ee74eb36c44aa6d1095e7cc5569bebf04342ee146178e2d36600708b/jsonschema_specifications-2025.9.1.tar.gz
+sha256=b540987f239e745613c7a9176f3edb72b832a4ac465cf02712288397832b5e8d
+build=python
+requires=dev-python/hatch-vcs dev-python/referencing
+check=python:jsonschema_specifications

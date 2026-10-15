@@ -1,0 +1,7 @@
+version=0.59
+description=Provide the stuff missing in List::Util
+url=https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/List-SomeUtils-0.59.tar.gz
+sha256=fab30372e4c67bf5a46062da38d1d0c8756279feada866eb439fa29571a2dc7b
+build=perl
+requires=dev-perl/Module-Implementation
+check=perl:List::SomeUtils

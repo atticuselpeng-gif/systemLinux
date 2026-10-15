@@ -1,0 +1,7 @@
+version=3.9.2
+description=Async client for aws services using botocore and aiohttp
+url=https://files.pythonhosted.org/packages/a5/95/4f7e0453d5e81bdb1b40ecf09f135bb88e12ce27fdb3efa125022dcca5d7/aiobotocore-3.9.2.tar.gz
+sha256=8e32238c5bd77717ab1ac90077ff51ab141d025528115ccc7cc9b50b2d176e5f
+build=python
+requires=dev-python/hatch-fancy-pypi-readme dev-python/aiohttp dev-python/aioitertools dev-python/botocore dev-python/jmespath dev-python/multidict dev-python/python-dateutil dev-python/wrapt
+check=python:aiobotocore

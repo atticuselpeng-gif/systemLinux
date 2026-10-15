@@ -1,0 +1,7 @@
+version=2.6.4
+description=Lightweight Emacs-like editor
+url=https://ftpmirror.gnu.org/gnu/zile/zile-2.6.4.tar.gz
+sha256=d5d44b85cb490643d0707e1a2186f3a32998c2f6eabaa9481479b65caeee57c0
+build=configure
+requires=dev-libs/gc
+check=cmd:zile

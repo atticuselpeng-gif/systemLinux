@@ -1,0 +1,8 @@
+version=2026.2.6
+description=JetBrains DataGrip IDE (official build)
+url=https://download.jetbrains.com/datagrip/datagrip-2026.2.6.tar.gz
+sha256=7326e0ee44e495b9c92c09ae36f53d0a69347decc23331888cec85a6486cd12d
+build=bin
+programs=bin/datagrip.sh:datagrip
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxtst x11/libxi dev-libs/freetype dev-libs/fontconfig dev-libs/alsa-lib dev-libs/glib
+check=cmd:datagrip

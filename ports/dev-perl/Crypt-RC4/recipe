@@ -1,0 +1,6 @@
+version=2.02
+description=Perl implementation of the RC4 encryption algorithm
+url=https://cpan.metacpan.org/authors/id/S/SI/SIFUKURT/Crypt-RC4-2.02.tar.gz
+sha256=5ec4425c6bc22207889630be7350d99686e62a44c6136960110203cd594ae0ea
+build=perl
+check=perl:Crypt::RC4

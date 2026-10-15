@@ -1,0 +1,7 @@
+version=0.35
+description=command line wrapper to File::Find::Rule
+url=https://cpan.metacpan.org/authors/id/R/RC/RCLAMP/File-Find-Rule-0.35.tar.gz
+sha256=2bd556289a6d44ad2ee74803258bb0b0050d246f1e81caab0b263c303acf0c82
+build=perl
+requires=dev-perl/Number-Compare dev-perl/Text-Glob
+check=perl:File::Find::Rule

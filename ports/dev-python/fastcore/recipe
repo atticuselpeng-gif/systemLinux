@@ -1,0 +1,6 @@
+version=2.2.33
+description=Python supercharged for fastai development
+url=https://files.pythonhosted.org/packages/10/f4/a03f290cb0d1aedcf837c51b2be193a28dcc437697f5a57441f16d2c6a27/fastcore-2.2.33.tar.gz
+sha256=919cc6d182e633a206238bfaacb39f37b7da985974568121347eedf0bec602c0
+build=python
+check=python:fastcore

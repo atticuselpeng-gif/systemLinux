@@ -1,0 +1,7 @@
+version=1.6.2
+description=Python interpreter discovery
+url=https://files.pythonhosted.org/packages/b0/73/54993df8fc57e906dc9b7e01d1d9b0b2d3eb0ce3190639e33dccb12853f7/python_discovery-1.6.2.tar.gz
+sha256=cd1738ca1d37c86ef9d0b654dd46fcee1e41c97c6add12575e8501ced39afdb4
+build=python
+requires=dev-python/hatch-vcs dev-python/filelock
+check=python:python_discovery

@@ -1,0 +1,7 @@
+version=1.0.3
+description=Kerberos 5 implementation
+url=https://ftpmirror.gnu.org/gnu/shishi/shishi-1.0.3.tar.gz
+sha256=95798ffd12dd01a4f88e0311ee03ca4a26e5cb4e5e9059a40e4fc4d9f2917e92
+build=configure
+requires=dev-libs/libgcrypt dev-libs/gnutls
+check=cmd:shishi

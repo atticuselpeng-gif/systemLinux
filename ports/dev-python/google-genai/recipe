@@ -1,0 +1,7 @@
+version=2.31.0
+description=GenAI Python SDK
+url=https://files.pythonhosted.org/packages/34/69/6a3d3839ab56ec17d7923c8679b38955e286e0a9793df10ce6d13bc5f122/google_genai-2.31.0.tar.gz
+sha256=71518537de2ba967a61960cba844691dca3dd4ff07726c01a6917d132213541e
+build=python
+requires=dev-python/anyio dev-python/google-auth dev-python/httpx dev-python/pydantic dev-python/requests dev-python/tenacity dev-python/websockets dev-python/typing-extensions dev-python/distro dev-python/sniffio
+check=python:google_genai

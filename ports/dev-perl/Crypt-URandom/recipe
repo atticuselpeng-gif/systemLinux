@@ -1,0 +1,6 @@
+version=0.55
+description=Provide non blocking randomness
+url=https://cpan.metacpan.org/authors/id/D/DD/DDICK/Crypt-URandom-0.55.tar.gz
+sha256=ef9f44141073c13573e85b148ff9a9089c45825b7d6608d832e4263899d3a2d4
+build=perl
+check=perl:Crypt::URandom

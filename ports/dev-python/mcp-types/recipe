@@ -1,0 +1,7 @@
+version=2.3.0
+description=Model Context Protocol wire types
+url=https://files.pythonhosted.org/packages/9e/2d/7c251e34207f6c51000312fc8839111ac45cfe02023f90b44e7f1051dd8e/mcp_types-2.3.0.tar.gz
+sha256=d1e46549edb35ee19a94940fcee6d1addd7e589ab7ea92dda83f5d84781fc362
+build=python
+requires=dev-python/pydantic dev-python/typing-extensions
+check=python:mcp_types

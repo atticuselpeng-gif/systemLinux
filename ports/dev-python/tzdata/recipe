@@ -1,0 +1,6 @@
+version=2026.5
+description=Provider of IANA time zone data
+url=https://files.pythonhosted.org/packages/d9/68/f1b440335057bfce71b6e50a9d09445aa2ecbd08359a337976627b8409e7/tzdata-2026.5.tar.gz
+sha256=8cc73c0a0bfca7dbfa59235d60b2eff82231dee33f53d206db1acd9173cfc0a7
+build=python
+check=python:tzdata
