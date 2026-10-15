@@ -1,1 +1,8 @@
-url=https://invisible-mirror.net/archives/xterm/xterm-390.tgz
+version=397
+description=The standard X terminal emulator
+url=https://invisible-island.net/archives/xterm/xterm-397.tgz
+sha256=2e9b742b9cba44ecec58074e513237f6cd6d5923f1737cb36a4e5625f4ae8662
+build=configure
+configure_args=--enable-wide-chars --with-utempter=no
+requires=x11/libxaw x11/libxft x11/libxinerama dev-libs/ncurses
+check=cmd:xterm

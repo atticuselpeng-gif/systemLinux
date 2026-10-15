@@ -1,4 +1,8 @@
-url=https://github.com/JuliaStrings/utf8proc/archive/refs/tags/v2.9.0.tar.gz
-sha256=18c1626e9fc5a2e192311e36b3010bfc698078f692888940f1fa150547abb0c1
-requires=dev-apps/cmake
+version=2.9.0
+description=Unicode processing library
+url=https://github.com/JuliaStrings/utf8proc/releases/download/v2.9.0/utf8proc-2.9.0.tar.gz
+sha256=bd215d04313b5bc42c1abedbcb0a6574667e31acee1085543a232204e36384c4
 build=cmake
+configure_args=-DBUILD_SHARED_LIBS=ON
+requires=dev-apps/cmake
+check=pkgconfig:libutf8proc

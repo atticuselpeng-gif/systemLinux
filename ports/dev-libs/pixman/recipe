@@ -1,3 +1,8 @@
-url=https://cairographics.org/releases/pixman-0.43.4.tar.gz
+version=0.44.2
+description=Low-level pixel manipulation library
+url=https://www.cairographics.org/releases/pixman-0.44.2.tar.gz
+sha256=6349061ce1a338ab6952b92194d1b0377472244208d47ff25bef86fc71973466
 build=meson
-requires=dev-apps/meson
+configure_args=-Dtests=disabled -Dgtk=disabled
+requires=dev-apps/meson dev-apps/ninja
+check=pkgconfig:pixman-1

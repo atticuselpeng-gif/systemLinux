@@ -1,3 +1,8 @@
-url=https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.36/downloads/wayland-protocols-1.36.tar.xz
+version=1.41
+description=Extra Wayland protocols
+url=https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.41/downloads/wayland-protocols-1.41.tar.xz
+sha256=2786b6b1b79965e313f2c289c12075b9ed700d41844810c51afda10ee329576b
 build=meson
-requires=dev-apps/meson dev-libs/wayland
+configure_args=-Dtests=false
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland
+check=pkgconfig:wayland-protocols

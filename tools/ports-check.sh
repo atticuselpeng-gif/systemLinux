@@ -42,7 +42,7 @@ for recipe in "$PORTS"/*/*/recipe; do
         key=${line%%=*}; key=${key%%[[:space:]]}
         case "$line" in *=*) ;; *) err "$atom: line is not key=value: $line"; continue ;; esac
         case "$key" in
-            url|sha256|requires|build|configure_args|version|description|srcdir|make_args) ;;
+            url|sha256|requires|build|configure_args|version|description|srcdir|make_args|check) ;;
             *) err "$atom: unknown key '$key'"; continue ;;
         esac
         [ -z "${seen[$key]:-}" ] || err "$atom: duplicate key '$key'"
@@ -65,7 +65,9 @@ for recipe in "$PORTS"/*/*/recipe; do
     elif [ -n "$url" ]; then
         if [ "$STRICT" = 1 ]; then err "$atom: missing sha256"; else warn "$atom: missing sha256"; fi
     fi
-    case "$build" in ''|configure|autotools|cmake|meson|make|python|cargo|go|perl) ;; *) err "$atom: unsupported build type '$build'" ;; esac
+    case "$build" in ''|configure|autotools|cmake|meson|make|python|cargo|go|perl|fonts) ;; *) err "$atom: unsupported build type '$build'" ;; esac
+    chk=$(val "$recipe" check)
+    case "$chk" in ''|pkgconfig:?*|cmd:?*|file:/?*) ;; *) err "$atom: check must be pkgconfig:NAME, cmd:NAME or file:/PATH" ;; esac
     srcdir=$(val "$recipe" srcdir)
     case "$srcdir" in /*|..|../*|*/../*|*/..) err "$atom: srcdir must stay inside the source tree" ;; esac
     # optional folders: patches/*.patch, dinit/<service>, files/<path>

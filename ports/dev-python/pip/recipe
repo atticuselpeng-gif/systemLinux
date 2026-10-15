@@ -1,0 +1,6 @@
+version=24.3.1
+description=The Python package installer
+url=https://files.pythonhosted.org/packages/source/p/pip/pip-24.3.1.tar.gz
+sha256=ebcb60557f2aefabc2e0f918751cd24ea0d56d8ec5445fe1807f1d2109660b99
+build=python
+check=cmd:pip3

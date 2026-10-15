@@ -1,1 +1,2 @@
 url=https://pyyaml.org/download/libyaml/yaml-0.2.5.tar.gz
+check=pkgconfig:yaml-0.1

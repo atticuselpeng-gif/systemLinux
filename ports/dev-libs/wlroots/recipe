@@ -1,0 +1,8 @@
+version=0.18.2
+description=Modular Wayland compositor library
+url=https://gitlab.freedesktop.org/wlroots/wlroots/-/releases/0.18.2/downloads/wlroots-0.18.2.tar.gz
+sha256=cf776c169169f279808d9eabc6583f484338dcd454c966a285ff178c88c105d4
+build=meson
+configure_args=-Dexamples=false -Dxwayland=enabled -Dbackends=drm,libinput
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/wayland-protocols dev-libs/libdrm dev-libs/libinput dev-libs/libxkbcommon dev-libs/pixman dev-libs/mesa sys-app/seatd dev-libs/libdisplay-info dev-libs/libliftoff x11/xcb-util-wm x11/xcb-util-renderutil x11/xwayland dev-libs/hwdata
+check=pkgconfig:wlroots-0.18

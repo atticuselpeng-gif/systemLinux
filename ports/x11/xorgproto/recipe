@@ -1,3 +1,8 @@
+version=2024.1
+description=X11 protocol headers
 url=https://www.x.org/releases/individual/proto/xorgproto-2024.1.tar.xz
+sha256=372225fd40815b8423547f5d890c5debc72e88b91088fbfb13158c20495ccb59
 build=meson
-requires=dev-apps/meson
+configure_args=-Dlegacy=false
+requires=dev-apps/meson dev-apps/ninja x11/util-macros
+check=pkgconfig:xproto

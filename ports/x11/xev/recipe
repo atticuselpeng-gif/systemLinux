@@ -1,3 +1,7 @@
+version=1.2.6
+description=Print X events
 url=https://www.x.org/releases/individual/app/xev-1.2.6.tar.xz
 sha256=61e1c5e008ac9973aca7cdddf36e9df7410e77083b030eb04f4dc737c51807d7
+build=configure
 requires=x11/libx11 x11/libxrandr
+check=cmd:xev

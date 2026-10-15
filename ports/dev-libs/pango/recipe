@@ -1,3 +1,8 @@
+version=1.54.0
+description=Text layout and rendering library
 url=https://download.gnome.org/sources/pango/1.54/pango-1.54.0.tar.xz
+sha256=8a9eed75021ee734d7fc0fdf3a65c3bba51dfefe4ae51a9b414a60c70b2d1ed8
 build=meson
-requires=dev-apps/meson dev-libs/cairo dev-libs/harfbuzz
+configure_args=-Dintrospection=disabled -Dbuild-testsuite=false -Dbuild-examples=false
+requires=dev-apps/meson dev-apps/ninja dev-libs/glib dev-libs/harfbuzz dev-libs/fribidi dev-libs/cairo dev-libs/fontconfig x11/libxft
+check=pkgconfig:pangocairo

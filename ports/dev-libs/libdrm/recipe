@@ -1,3 +1,8 @@
-url=https://dri.freedesktop.org/libdrm/libdrm-2.4.121.tar.xz
+version=2.4.124
+description=Direct Rendering Manager userspace library
+url=https://dri.freedesktop.org/libdrm/libdrm-2.4.124.tar.xz
+sha256=ac36293f61ca4aafaf4b16a2a7afff312aa4f5c37c9fbd797de9e3c0863ca379
 build=meson
-requires=dev-apps/meson
+configure_args=-Dintel=enabled -Damdgpu=enabled -Dradeon=enabled -Dnouveau=enabled -Dvalgrind=disabled -Dtests=false -Dman-pages=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/libpciaccess
+check=pkgconfig:libdrm_intel

@@ -1,3 +1,8 @@
-url=https://gitlab.freedesktop.org/wayland/wayland/-/releases/1.23.0/downloads/wayland-1.23.0.tar.xz
+version=1.23.1
+description=Wayland display protocol library
+url=https://gitlab.freedesktop.org/wayland/wayland/-/releases/1.23.1/downloads/wayland-1.23.1.tar.xz
+sha256=864fb2a8399e2d0ec39d56e9d9b753c093775beadc6022ce81f441929a81e5ed
 build=meson
-requires=dev-apps/meson dev-libs/libffi dev-libs/expat
+configure_args=-Ddocumentation=false -Dtests=false
+requires=dev-apps/meson dev-apps/ninja dev-libs/expat dev-libs/libffi dev-libs/libxml2
+check=pkgconfig:wayland-client

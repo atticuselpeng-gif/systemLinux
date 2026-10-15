@@ -1,3 +1,8 @@
-url=https://www.x.org/releases/individual/xserver/xorg-server-21.1.13.tar.xz
+version=21.1.15
+description=The X.Org X server
+url=https://www.x.org/releases/individual/xserver/xorg-server-21.1.15.tar.xz
+sha256=841c82901282902725762df03adbbcd68153d4cdfb0d61df0cfd73ad677ae089
 build=meson
-requires=dev-apps/meson x11/xorgproto x11/libxkbfile dev-libs/libdrm dev-libs/mesa
+configure_args=-Dxephyr=false -Dxnest=false -Dxvfb=true -Dglamor=true -Dsystemd_logind=false -Dsuid_wrapper=true -Dudev=true -Dhal=false -Dxkb_output_dir=/var/lib/xkb -Ddocs=false -Ddevel-docs=false
+requires=dev-apps/meson dev-apps/ninja x11/xorgproto x11/libxcvt x11/xtrans x11/libxkbfile x11/libxfont2 x11/libfontenc x11/libxshmfence x11/libxau x11/libxdmcp x11/libx11 x11/libxext x11/font-util x11/xkeyboard-config x11/xkbcomp dev-libs/pixman dev-libs/libdrm dev-libs/mesa dev-libs/libepoxy dev-libs/libpciaccess
+check=cmd:Xorg

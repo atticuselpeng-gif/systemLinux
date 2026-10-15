@@ -1,2 +1,7 @@
-url=https://www.x.org/releases/individual/lib/libXcursor-1.2.2.tar.xz
-requires=x11/libxrender
+version=1.2.3
+description=X cursor management library
+url=https://www.x.org/releases/individual/lib/libXcursor-1.2.3.tar.xz
+sha256=fde9402dd4cfe79da71e2d96bb980afc5e6ff4f8a7d74c159e1966afb2b2c2c0
+build=configure
+requires=x11/libxrender x11/libxfixes
+check=pkgconfig:xcursor
