@@ -17,6 +17,11 @@
 - librsvg.
 
 ### Fixed
+- **sudo and su work.** `/usr/bin/sudo` was a stub that ran the command as the calling user, and every system file
+  was owned by uid 1000 with no setuid bits (git does not keep owners or special modes), so `sudo` and `su` failed
+  with "operation not permitted" and `/etc/shadow` was world-readable. The image now has the real sudo 1.9.17p2,
+  built in the image against its own PAM, and `tools/overlay-common/fix-perms.sh` sets root ownership, setuid bits
+  and private modes before the image is packed. Existing installs need a fresh install.
 - **Python ports build again.** The image has no pip, and the ISO strip removes the copy bundled with Python, so no
   `dev-python` port could build on 0.2.3. `get` now builds Python packages the way Gentoo does, with the base
   system's `gpep517` and `installer` (pip is still used where gpep517 is missing).
