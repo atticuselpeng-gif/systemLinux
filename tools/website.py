@@ -65,7 +65,7 @@ def sidebar():
 
 FOOTER = f'''<!-- footer -->
 <footer><div class="wrap">
-<span>systemLinux {RELEASE}</span><span>Owned by everyone who uses it.</span>
+<span>systemLinux {RELEASE}</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="about.html#mascot">credits</a>)</span>
 <a href="{GH}">Source</a><a href="{GH}/issues">Issues</a><a href="{GH}/releases">Releases</a>
 </div></footer>
 <!-- /footer -->'''
@@ -83,6 +83,7 @@ def render(fname, label, title, side, content):
     hero = ''
     if fname == 'index.html':
         hero = f'''<section class="hero"><div class="wrap">
+<img src="tux.svg" alt="Tux, the systemLinux mascot" width="110" style="float:right;margin-left:1em">
 <h1>systemLinux</h1>
 <p class="lead">A small x86_64 GNU/Linux distribution: dinit instead of systemd, the newest kernel, and software
 built from source with <code>get</code>, from a ports tree of over a thousand recipes. Nobody owns it and nobody profits
