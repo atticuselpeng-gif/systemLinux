@@ -21,6 +21,18 @@
 <!-- content -->
 <h1>News</h1>
 <div class="news-item">
+<h3>systemLinux 0.2.3 released</h3>
+<div class="date">2026-10-15</div>
+<ul class="tight">
+<li><strong>One package world.</strong> <code>get</code> installs into <code>/usr</code> and <code>/etc</code> like the base system, and the image records its own packages, so get knows which package owns every file. A port replaces the base package of the same name in place; anything else that would overwrite a system file is refused. Your existing configuration in <code>/etc</code> is kept.</li>
+<li><strong>214 <code>-bin</code> ports.</strong> Official upstream builds of software that takes hours to compile: Firefox, Thunderbird, Brave, VS Code, VSCodium, Zed, Blender, GIMP, Krita, Obsidian, Node, Zig, a JDK, LLVM, Docker, Tailscale, Ollama and many command line tools. Servers come with dinit services.</li>
+<li><strong>More desktop ports.</strong> The greetd login manager with tuigreet, PipeWire and WirePlumber, swaylock, swayidle, grim, mako, dunst, i3lock, bspwm and more, plus Rust 1.99, helix, zellij, yazi, lazygit and gh.</li>
+<li><strong>Packaging guide.</strong> <a href="packaging.html">How to write, test and submit a port</a>.</li>
+<li><strong>New website</strong> with a <a href="packages.html">searchable package list</a>.</li>
+</ul>
+<p>The full list is in the <a href="https://github.com/tortr-rs/systemLinux/blob/main/CHANGELOG.md">changelog</a>.</p>
+</div>
+<div class="news-item">
 <h3>systemLinux 0.2.2 released</h3>
 <div class="date">2026-10-14</div>
 <ul class="tight">
@@ -40,8 +52,8 @@
 </main>
 <!-- side -->
 <aside class="side">
-<div class="box"><h3>Get systemLinux 0.2.2</h3><div class="in">
-<p style="margin:.2em 0 .6em"><a class="btn" href="https://github.com/tortr-rs/systemLinux/releases/download/v0.2.2/systemLinux-0.2.2-x86_64.iso">Download the ISO</a></p>
+<div class="box"><h3>Get systemLinux 0.2.3</h3><div class="in">
+<p style="margin:.2em 0 .6em"><a class="btn" href="https://github.com/tortr-rs/systemLinux/releases/download/v0.2.3/systemLinux-0.2.3-x86_64.iso">Download the ISO</a></p>
 <p class="small muted" style="margin:0">x86_64, UEFI and legacy BIOS. <a href="download.html">Checksums and notes</a></p>
 </div></div>
 <div class="box"><h3>Documentation</h3><div class="in"><ul>
@@ -62,7 +74,7 @@
 </div>
 <!-- footer -->
 <footer><div class="wrap">
-<span>systemLinux 0.2.2</span><span>Owned by everyone who uses it.</span>
+<span>systemLinux 0.2.3</span><span>Owned by everyone who uses it.</span>
 <a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
 </div></footer>
 <!-- /footer -->
