@@ -30,8 +30,8 @@ get sync                   # update the ports tree from the latest release
 get install https://example.org/foo-1.0.tar.gz   # a tarball without a recipe
 ```
 
-No prefixes or flags: packages go to `/usr/local`. Dependencies the base system already provides are not
-rebuilt, and the build system (configure, autotools, CMake, Meson or make) is detected automatically.
+No prefixes or flags: packages go to `/usr` (configuration in `/etc`), like the base system. Dependencies the base
+system already provides are not rebuilt, and the build system (configure, autotools, CMake, Meson or make) is detected automatically.
 `get remove` refuses while another installed package still needs the package (`-f` overrides).
 
 The ISO ships the build tools a source-based system needs: gcc/g++, make, binutils, cmake, meson, ninja, autotools, pkg-config, perl and python. The ports tree is in `/usr/ports`; `get sync` updates it from the latest release.
@@ -121,43 +121,53 @@ get install x11/kde         # meta-package: no url, only requires=
 get sync                    # update the ports tree
 ```
 
-The ports root is `$GET_PORTS`, else `ports/` next to the `get` script (repo checkout), else `/usr/ports`. The tree holds about 790 recipes.
+The ports root is `$GET_PORTS`, else `ports/` next to the `get` script (repo checkout), else `/usr/ports`. The tree holds about 870 recipes.
 
 ### Recipe format
 
-`ports/<category>/<name>/recipe` is plain `key=value`, one per line:
+`ports/<category>/<name>/recipe` is plain `key=value`, one per line. **How to write a port: [docs/PACKAGING.md](docs/PACKAGING.md).**
 
 | key | meaning |
 | --- | --- |
-| `url` | source archive (omit for a meta-package) |
-| `sha256` | checksum of the archive; verified, mismatch is fatal (strongly recommended) |
-| `requires` | space-separated atoms installed first |
-| `build` | `configure`, `autotools` (runs `autoreconf` first), `cmake`, `meson`, `make`, `python`, `cargo`, `go` or `perl`; detected when omitted |
 | `version` | the package version, shown by `get list` and `get info` |
 | `description` | one line, shown and searched by `get search` |
+| `url` | source archive (omit for a meta-package) |
+| `sha256` | checksum of the archive; verified, mismatch is fatal |
+| `build` | `configure`, `autotools` (runs `autoreconf` first), `cmake`, `meson`, `make`, `python`, `cargo`, `go`, `perl`, `fonts` or `script`; detected when omitted |
+| `configure_args` | extra arguments for configure / cmake / meson / pip / cargo / go / build.sh |
+| `make_args` | extra arguments for `make`; for `go`, the packages to build (default `./...`) |
+| `requires` | space-separated atoms installed first |
+| `check` | `pkgconfig:NAME`, `cmd:NAME`, `file:/PATH` or `python:MODULE`: how to tell the system already has it |
 | `srcdir` | build in this subdirectory of the source tree |
-| `make_args` | extra arguments for `make` (configure, make and perl builds) |
 
-Optional folders next to the recipe:
+Optional files next to the recipe:
 
-| folder | meaning |
+| file | meaning |
 | --- | --- |
 | `patches/` | every `*.patch` is applied with `patch -p1`, in name order, before building |
 | `dinit/` | dinit service files, installed to `/etc/dinit.d` (then `dinitctl enable NAME`) |
 | `files/` | extra files copied into place relative to `/`, e.g. `files/etc/foo.conf` |
+| `build.sh` | the build itself, for `build=script` (installs into `$DESTDIR$PREFIX`) |
 
 Service files and extra files are recorded like everything else, so `get remove` deletes them too.
-| `configure_args` | extra arguments for configure / cmake / meson |
 
 Every recipe added in the large ports expansion (see CHANGELOG) has a verified `sha256`; the original starter recipes still lack one (add it as you verify them with `sha256sum file.tar.xz`). `tools/ports-check.sh` validates the whole tree (layout, keys, checksum format, `requires` targets, cycles); `tools/ports-check.sh --verify [ATOM...]` also downloads the sources and compares the checksums, and `--strict` makes a missing `sha256` an error. CI runs it for every change under `ports/`.
 
 ### Dependencies and uninstalling
 
-`requires` entries are built first, in dependency order; cycles abort. A dependency the base system already
-provides (listed in `/usr/share/systemlinux/base-packages`, written at build time) is not rebuilt. Every package
-is staged with `DESTDIR` and each installed file is recorded in `/var/db/get/pkgs/<atom>/files`, so `get remove`
-deletes exactly those files, `get files NAME` lists them, and installing a package never overwrites a file
-another package owns. Packages installed only as dependencies are removed by `get autoremove` once nothing needs them.
+`requires` entries are built first, in dependency order; cycles abort. Packages install into `/usr` like the base
+system: there is one set of files, not a second copy under `/usr/local`. The image records its own packages in get's
+database as `base/NAME` with their files (`tools/live-image/base-packages.sh`), so get knows who owns every file:
+
+* a dependency the base system already provides is not rebuilt (a recipe's `check` can say what to look for);
+* installing never overwrites a file another package owns, the base system's included (`-f` overrides), except that
+  a port **replaces the base package with the same name** in place (when the base copy lacks a feature, e.g. cairo
+  without X11). Such a port is not removed without `-f`;
+* configuration in `/etc` that already exists is kept; the new version is installed as `FILE.get-new`.
+
+Every package is staged with `DESTDIR` and each installed file is recorded in `/var/db/get/pkgs/<atom>/files`, so
+`get remove` deletes exactly those files and `get files NAME` lists them. Packages installed only as dependencies are
+removed by `get autoremove` once nothing needs them.
 
 ### Updating ports
 
@@ -166,7 +176,7 @@ another package owns. Packages installed only as dependencies are removed by `ge
 
 ### Security model
 
-Ports are untrusted input, and `get` often runs as root. Recipes are therefore **parsed** (a fixed set of keys is read with `sed`) and never `source`d, so a recipe cannot run code. Atoms and `requires` are restricted to `[A-Za-z0-9._+/-]` with no `..`, and `build` is limited to a known list. Add `sha256` so a tampered or changed tarball is rejected.
+`get` often runs as root. Recipes are **parsed** (a fixed set of keys is read with `sed`) and never `source`d, so a recipe file itself cannot run code. Building a port does run code: the upstream build system, and a port's `patches/` and `build.sh`, so the ports tree is trusted like the sources it builds (review those files in pull requests). Atoms and `requires` are restricted to `[A-Za-z0-9._+/-]` with no `..`, and `build` is limited to a known list. Add `sha256` so a tampered or changed tarball is rejected.
 ## Services
 
 dinit starts everything (as root):

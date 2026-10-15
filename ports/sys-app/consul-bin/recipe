@@ -1,0 +1,6 @@
+version=2.0.4
+description=HashiCorp Consul: Service networking (official build)
+url=https://releases.hashicorp.com/consul/2.0.4/consul_2.0.4_linux_amd64.zip
+sha256=7a28033850a24fd411722593931625d8b548a27646c3ab70c1379ea7fd2af423
+build=bin
+check=cmd:consul

@@ -1,0 +1,6 @@
+version=2.24.0
+description=Interactive cheatsheets in the terminal
+url=https://github.com/denisidoro/navi/releases/download/v2.24.0/navi-v2.24.0-x86_64-unknown-linux-musl.tar.gz
+sha256=f334047479241f7c8b48d091f4e814dcc798a51a74dfd04ee63cbf67e8c921ba
+build=bin
+check=cmd:navi

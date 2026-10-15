@@ -1,0 +1,6 @@
+version=3.11.2
+description=Query and modify JSON, YAML, TOML and XML
+url=https://github.com/TomWright/dasel/releases/download/v3.11.2/dasel_linux_amd64
+sha256=5006ee3a4239ab6a3edb1bf5c932874d814f7c276117ca677352697a4f547799
+build=bin
+check=cmd:dasel

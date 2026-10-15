@@ -1,0 +1,8 @@
+# ntfy notification server on port 2586.
+# Enable with: dinitctl enable ntfy
+type = process
+command = /usr/bin/ntfy serve --listen-http :2586 --cache-file /var/lib/ntfy/cache.db
+depends-on = early-filesystems
+waits-for = network
+logfile = /var/log/ntfy.log
+smooth-recovery = true

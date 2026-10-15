@@ -1,0 +1,6 @@
+version=1.16.6
+description=HashiCorp Terraform: Infrastructure as code (official build)
+url=https://releases.hashicorp.com/terraform/1.16.6/terraform_1.16.6_linux_amd64.zip
+sha256=38034b38d03096399a7a1264a14561a8029b2b496fd1f169452656e53968f1b7
+build=bin
+check=cmd:terraform

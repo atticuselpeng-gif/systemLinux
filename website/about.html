@@ -3,24 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>systemLinux 0.2.2: about</title>
+<title>About - systemLinux</title>
 <link rel="icon" type="image/svg+xml" href="logo.svg">
-<style>
-body{font-family:monospace;max-width:50em;margin:1em auto;padding:0 1em;line-height:1.4}
-pre{background:#eee;padding:.5em;overflow:auto}
-table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;text-align:left;vertical-align:top}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1><img src="logo.svg" alt="" width="32" height="32"> systemLinux 0.2.2</h1>
-<p><a href="index.html">Home</a> | <b>About</b> | <a href="download.html">Download</a> | <a href="news.html">News</a> | <a href="get.html">get</a> | <a href="handbook.html">Handbook</a> | <a href="system.html">System</a></p>
-<hr>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="index.html"><img src="logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="index.html">Home</a><a href="news.html">News</a><a href="about.html" class="on">About</a><a href="download.html">Download</a><a href="handbook.html">Handbook</a><a href="get.html">get</a><a href="packages.html">Packages</a><a href="packaging.html">Packaging</a><a href="system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+
+<div class="wrap page">
+<main class="main">
+<!-- content -->
 <h2>What you get</h2>
   <p class="sub">A minimal console system. The live ISO is installer media only: kernel plus the bare minimum to install.</p>
   <div class="cards">
     <div class="card"><h3>Minimal live ISO</h3><p>The live image is only the kernel and what the installer needs: dinit, eudev, NetworkManager, disk and boot tools. No desktop, daemons, firmware bundles, docs or locale packs.</p></div>
     <div class="card"><h3>Install it yourself</h3><p>The handbook lists every command. If you'd rather not type them, <code>systemlinux-install</code> runs the same steps. Use a whole disk, or a partition you've already freed up. It boots from a USB stick or Ventoy, in UEFI or legacy BIOS mode.</p></div>
-    <div class="card"><h3>Build what you need</h3><p><code>get URL</code> downloads a source tarball, builds it and installs it where you say. It is a short POSIX shell script you can read in a minute.</p></div>
+    <div class="card"><h3>Build what you need</h3><p><code>get install NAME</code> builds a package from the ports tree with everything it needs, installs it into <code>/usr</code> and records every file, so <code>get remove</code> undoes it exactly.</p></div>
     <div class="card"><h3>Plain dinit</h3><p>Services are small dinit service files in <code>/etc/dinit.d/</code>. <code>dinitctl</code> starts, stops and lists them.</p></div>
     <div class="card"><h3>Up-to-date kernel</h3><p>Ubuntu&rsquo;s newest generic kernel with its full set of driver modules: Intel, AMD and open-source NVIDIA graphics, Wi-Fi, Bluetooth, storage, sound and laptop hardware load automatically.</p></div>
   </div>
@@ -31,12 +35,40 @@ table{border-collapse:collapse} td,th{border:1px solid #999;padding:.2em .5em;te
     <tr><th>Init</th><td><strong>dinit</strong> 0.20.0 as PID 1 and the only init system; systemd is removed completely and <strong>eudev</strong> is the device manager. The base services are service files in <code>/etc/dinit.d/</code></td></tr>
     <tr><th>Services</th><td>dinit and NetworkManager only. No bundled desktop or extra daemons</td></tr>
     <tr><th>Userland</th><td>GNU bash 5.3 as <code>/bin/sh</code>, GNU coreutils, tar, sed and gawk on glibc</td></tr>
-    <tr><th>Software</th><td><code>get</code>: build a source tarball and install it</td></tr>
+    <tr><th>Software</th><td><code>get</code>, the package tool, and the ports tree in <code>/usr/ports</code> (see <a href="packages.html">Packages</a>)</td></tr>
     <tr><th>Installer</th><td>No GUI. The handbook has every command, and <code>systemlinux-install</code> is a terminal script that runs the same steps: whole disk or an existing partition, with optional LUKS encryption</td></tr>
     <tr><th>Boot</th><td>GRUB 2.12, hybrid legacy BIOS and UEFI x86_64. Live entries: normal, copy to RAM, serial console, debug shell</td></tr>
     <tr><th>Memory</th><td>About 3&nbsp;GB; the &ldquo;copy to RAM&rdquo; entry needs the whole 1.9&nbsp;GB image in memory on top</td></tr>
   </table></div>
-<hr>
-<p>systemLinux 0.2.2. Owned by everyone who uses it. <a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></p>
+<!-- /content -->
+</main>
+<!-- side -->
+<aside class="side">
+<div class="box"><h3>Get systemLinux 0.2.2</h3><div class="in">
+<p style="margin:.2em 0 .6em"><a class="btn" href="https://github.com/tortr-rs/systemLinux/releases/download/v0.2.2/systemLinux-0.2.2-x86_64.iso">Download the ISO</a></p>
+<p class="small muted" style="margin:0">x86_64, UEFI and legacy BIOS. <a href="download.html">Checksums and notes</a></p>
+</div></div>
+<div class="box"><h3>Documentation</h3><div class="in"><ul>
+<li><a href="handbook.html">Handbook</a>: installing</li>
+<li><a href="get.html">get</a>: installing software</li>
+<li><a href="packaging.html">Packaging guide</a>: writing ports</li>
+<li><a href="system.html">System</a>: services and limits</li>
+<li><a href="https://github.com/tortr-rs/systemLinux/blob/main/CHANGELOG.md">Changelog</a></li>
+</ul></div></div>
+<div class="box"><h3>Get involved</h3><div class="in"><ul>
+<li><a href="https://github.com/tortr-rs/systemLinux">Source on GitHub</a></li>
+<li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li>
+<li><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports">Ports tree</a></li>
+<li><a href="packaging.html">Add a port</a></li>
+</ul></div></div>
+</aside>
+<!-- /side -->
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.2</span><span>Owned by everyone who uses it.</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
 </body>
 </html>

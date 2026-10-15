@@ -1,0 +1,7 @@
+version=1.12.7
+description=Image loading and rendering library
+url=https://downloads.sourceforge.net/enlightenment/imlib2-1.12.7.tar.xz
+sha256=d71ee5351cc1914fb01968123d0dcf276740e5af5662943ac47ae60cafa4d13b
+build=configure
+requires=dev-libs/freetype dev-libs/libpng dev-libs/libjpeg-turbo x11/libx11 x11/libxext
+check=pkgconfig:imlib2

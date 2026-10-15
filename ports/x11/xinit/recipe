@@ -1,6 +1,6 @@
 version=1.4.3
 description=startx and xinit: start an X session
-url=https://www.x.org/releases/individual/app/xinit-1.4.3.tar.xz
+url=https://xorg.freedesktop.org/archive/individual/app/xinit-1.4.3.tar.xz
 sha256=86409f21a6a31148d2c1c17bf5f2d904eb5ef455f9dc67c49fbd0c10ab18fd5a
 build=configure
 requires=x11/libx11

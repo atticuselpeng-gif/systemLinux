@@ -1,0 +1,6 @@
+version=0.10.10
+description=ripgrep in PDFs, e-books, archives and more (rga)
+url=https://github.com/phiresky/ripgrep-all/releases/download/v0.10.10/ripgrep_all-v0.10.10-x86_64-unknown-linux-musl.tar.gz
+sha256=a969c25b182ac84aa672518313b5f741091decf7d93d03a020bcfe517b9ff4e8
+build=bin
+check=cmd:rga

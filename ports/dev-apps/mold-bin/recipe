@@ -1,0 +1,7 @@
+version=3.0.0
+description=Fast linker
+url=https://github.com/rui314/mold/releases/download/v3.0.0/mold-3.0.0-x86_64-linux.tar.gz
+sha256=6c90d4a474c7c0409dfb575be03a5345878ac14fdba18de8b40fa58c60121189
+build=bin
+programs=bin/mold:mold
+check=cmd:mold

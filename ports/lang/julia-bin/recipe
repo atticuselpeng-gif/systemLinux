@@ -1,0 +1,7 @@
+version=1.13.1
+description=Julia language (official build)
+url=https://julialang-s3.julialang.org/bin/linux/x64/1.13/julia-1.13.1-linux-x86_64.tar.gz
+sha256=0f2e18c8dea60a2c8711d089cd9612f7a8df394b89e5208096fe5867647e0908
+build=bin
+programs=bin/julia:julia
+check=cmd:julia

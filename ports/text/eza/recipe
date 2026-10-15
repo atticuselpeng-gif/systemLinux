@@ -1,0 +1,7 @@
+version=0.23.5
+description=Modern replacement for ls
+url=https://github.com/eza-community/eza/archive/refs/tags/v0.23.5.tar.gz
+sha256=bbf179f2611c904014431740b559e8055276c12fcf978a7e31c271663548337f
+build=cargo
+requires=lang/rust
+check=cmd:eza

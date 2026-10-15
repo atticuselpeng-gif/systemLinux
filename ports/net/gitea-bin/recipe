@@ -1,0 +1,7 @@
+version=28.1.0
+description=Self-hosted git service
+url=https://github.com/go-gitea/gitea/releases/download/v28.1.0/gitea-28.1.0-linux-amd64.xz
+sha256=d998643be28c10bbc94a3ab5a5705230fcb54e92f04b9aef3f694dd6d20cb97d
+build=bin
+programs=gitea
+check=cmd:gitea

@@ -1,0 +1,6 @@
+version=40.0.0
+description=Interactive JSON viewer
+url=https://github.com/antonmedv/fx/releases/download/40.0.0/fx_linux_amd64
+sha256=c5cf146137d3d1819384356366913f1f98bcf5b334e5f100e4705c081f65ed8e
+build=bin
+check=cmd:fx

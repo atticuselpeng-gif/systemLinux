@@ -1,0 +1,6 @@
+version=1.39.0
+description=Local Kubernetes
+url=https://github.com/kubernetes/minikube/releases/download/v1.39.0/minikube-linux-amd64
+sha256=b738496da01be06bbaf80c688f57ce25acd3849fbb518155f3a88e03ef555aa4
+build=bin
+check=cmd:minikube

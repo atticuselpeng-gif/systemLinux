@@ -1,0 +1,6 @@
+version=2.30.0
+description=Push notifications over HTTP
+url=https://github.com/binwiederhier/ntfy/releases/download/v2.30.0/ntfy_2.30.0_linux_amd64.tar.gz
+sha256=5b552c33168d9befb9bfd0cb89f0cdb53fc4bdf24d1f3c5e936164c78cc23d65
+build=bin
+check=cmd:ntfy

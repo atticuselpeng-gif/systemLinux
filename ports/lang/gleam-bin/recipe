@@ -1,0 +1,7 @@
+version=1.19.2
+description=Gleam compiler (needs Erlang)
+url=https://github.com/gleam-lang/gleam/releases/download/v1.19.2/gleam-v1.19.2-x86_64-unknown-linux-musl.tar.gz
+sha256=2ba2afb66ca9f6dcc01a4a6e9169b6942963bad6483bec9571ddc078cfe6f41f
+build=bin
+requires=lang/erlang
+check=cmd:gleam

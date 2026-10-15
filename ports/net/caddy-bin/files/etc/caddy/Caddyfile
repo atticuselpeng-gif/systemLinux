@@ -1,0 +1,5 @@
+# Caddy configuration: https://caddyserver.com/docs/caddyfile
+:80 {
+	root * /srv/www
+	file_server
+}

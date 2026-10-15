@@ -18,15 +18,19 @@
 #
 # NAME is a port name (fastfetch) or category/name (text/fastfetch). Dependencies are resolved from the
 # recipes' `requires`; anything the base system already provides is not rebuilt. The build system is taken
-# from the recipe or detected (configure, autotools, cmake, meson, make). Packages are installed under
-# /usr/local; every installed file is recorded, so `get remove` deletes exactly what was installed.
+# from the recipe or detected (configure, autotools, cmake, meson, make, ...). Packages are installed into /usr
+# (configuration in /etc), like the base system. Every installed file is recorded, and the base system's files are
+# recorded too (as base/NAME), so a package never silently overwrites another one's files; a port replaces the base
+# package of the same name in place. `get remove` deletes exactly what was installed.
+# Writing a recipe: docs/PACKAGING.md
 set -eu
 
 SELF=$(readlink -f "$0" 2>/dev/null || echo "$0")
 if [ -n "${GET_PORTS:-}" ]; then PORTS=$GET_PORTS
 elif [ -d "${SELF%/*}/ports" ]; then PORTS=${SELF%/*}/ports
 else PORTS=/usr/ports; fi
-PREFIX=${GET_PREFIX:-/usr/local}
+PREFIX=${GET_PREFIX:-/usr}
+if [ "$PREFIX" = /usr ]; then SYSCONFDIR=/etc LOCALSTATEDIR=/var; else SYSCONFDIR=$PREFIX/etc LOCALSTATEDIR=$PREFIX/var; fi
 DB=${GET_DB:-/var/db/get}
 BASE_LIST=${GET_BASE_LIST:-/usr/share/systemlinux/base-packages}
 PORTS_URL=${GET_PORTS_URL:-https://github.com/tortr-rs/systemLinux/releases/latest/download/ports.tar.xz}
@@ -70,8 +74,8 @@ atom() {
 }
 dbdir() { echo "$DB/pkgs/${1//\//__}"; }
 installed() { [ -f "$(dbdir "$1")/files" ]; }
-# provided_by_base ATOM: the system already has this package. A recipe's `check` (pkgconfig:NAME, cmd:NAME or
-# file:/PATH) decides when present, so a base package built without a needed feature is not mistaken for enough;
+# provided_by_base ATOM: the system already has this package. A recipe's `check` (pkgconfig:NAME, cmd:NAME,
+# file:/PATH or python:MODULE) decides when present, so a base package built without a needed feature is not mistaken for enough;
 # otherwise the base image's package list does.
 provided_by_base() {
     local c; c=$(recipe_get "$PORTS/$1/recipe" check 2>/dev/null)
@@ -79,11 +83,13 @@ provided_by_base() {
         pkgconfig:*) pkg-config --exists "${c#pkgconfig:}" 2>/dev/null; return ;;
         cmd:*)       command -v "${c#cmd:}" >/dev/null 2>&1; return ;;
         file:/*)     [ -e "${c#file:}" ]; return ;;
+        python:*)    case "${c#python:}" in *[!A-Za-z0-9_.]*) return 1 ;; esac; python3 -c "import ${c#python:}" 2>/dev/null; return ;;
     esac
-    [ -r "$BASE_LIST" ] && grep -qxF "${1##*/}" "$BASE_LIST"
+    [ -f "$DB/pkgs/base__${1##*/}/files" ] || { [ -r "$BASE_LIST" ] && grep -qxF "${1##*/}" "$BASE_LIST"; }
 }
 requires_of() { recipe_get "$PORTS/$1/recipe" requires; }
-installed_atoms() { [ -d "$DB/pkgs" ] && for d in "$DB"/pkgs/*/; do [ -f "$d/files" ] && basename "$d" | sed 's|__|/|'; done; true; }
+# installed packages, not counting the base system's (base/NAME)
+installed_atoms() { [ -d "$DB/pkgs" ] && for d in "$DB"/pkgs/*/; do case "$d" in */base__*/) continue ;; esac; [ -f "$d/files" ] && basename "$d" | sed 's|__|/|'; done; true; }
 
 # ---- dependency resolution: ORDER gets every atom to build, dependencies first ----
 ORDER='' VISITING=''
@@ -103,9 +109,11 @@ visit() {
 }
 
 # ---- building ----
-# build_and_stage NAME URL SHA BUILDSYS CONFARGS [PORTDIR SRCDIR MAKEARGS]: build in WORK, install into $WORK/dest
+# build_and_stage NAME URL SHA BUILDSYS CONFARGS [PORTDIR SRCDIR MAKEARGS PROGRAMS]: build in WORK, install into
+# $WORK/dest
 build_and_stage() {
-    local name=$1 url=$2 sha=$3 buildsys=$4 confargs=$5 portdir=${6:-} srcdir=${7:-} makeargs=${8:-} file flag src p
+    local name=$1 url=$2 sha=$3 buildsys=$4 confargs=$5 portdir=${6:-} srcdir=${7:-} makeargs=${8:-} programs=${9:-}
+    local file flag src p
     case "$url" in
         https://*) ;;
         http://*|ftp://*) printf 'get: warning: %s is not encrypted\n' "$url" >&2 ;;
@@ -113,9 +121,11 @@ build_and_stage() {
     esac
     file=${url%%[?#]*}; file=${file##*/}
     case "$file" in
-        *.tar.gz|*.tgz) flag=z ;; *.tar.bz2|*.tbz2) flag=j ;; *.tar.xz|*.txz) flag=J ;;
+        *.tar.gz|*.tgz) flag=z ;; *.tar.bz2|*.tbz2|*.tbz) flag=j ;; *.tar.xz|*.txz) flag=J ;;
         *.tar.zst) flag=--zstd ;; *.tar) flag='' ;;
-        *) die "unsupported archive: $file" ;;
+        *.zip) flag=zip ;;
+        *) # prebuilt ports may download a single program (kubectl, foo.AppImage, foo.gz)
+           case "$buildsys" in bin|script) flag=file ;; *) die "unsupported archive: $file" ;; esac ;;
     esac
     say "downloading $file"
     fetch "$url" "$WORK/$file" || die "download failed: $url"
@@ -126,6 +136,13 @@ build_and_stage() {
     fi
     mkdir "$WORK/src"
     case "$flag" in
+        zip)    unzip -q "$WORK/$file" -d "$WORK/src" ;;
+        file)   case "$file" in
+                    *.gz)  gzip -dc "$WORK/$file" > "$WORK/src/${file%.gz}" && chmod 755 "$WORK/src/${file%.gz}" ;;
+                    *.bz2) bzip2 -dc "$WORK/$file" > "$WORK/src/${file%.bz2}" && chmod 755 "$WORK/src/${file%.bz2}" ;;
+                    *.xz)  xz -dc "$WORK/$file" > "$WORK/src/${file%.xz}" && chmod 755 "$WORK/src/${file%.xz}" ;;
+                    *)     install -m755 "$WORK/$file" "$WORK/src/$file" ;;
+                esac ;;
         --zstd) tar --no-same-owner --zstd -xf "$WORK/$file" -C "$WORK/src" ;;
         '')     tar --no-same-owner -xf "$WORK/$file" -C "$WORK/src" ;;
         *)      tar --no-same-owner -x"$flag"f "$WORK/$file" -C "$WORK/src" ;;
@@ -159,6 +176,7 @@ build_and_stage() {
         elif [ -f Cargo.toml ]; then buildsys=cargo
         elif [ -f go.mod ]; then buildsys=go
         elif [ -f Makefile.PL ]; then buildsys=perl
+        elif [ -n "$portdir" ] && [ -f "$portdir/build.sh" ]; then buildsys=script
         else die "cannot tell how to build ${name:-$file} (no configure, meson.build, CMakeLists.txt or Makefile)"; fi
     fi
     local args=() margs=()
@@ -170,12 +188,14 @@ build_and_stage() {
     case "$buildsys" in
         cmake)
             cmake -S . -B _build -G "$(command -v ninja >/dev/null && echo Ninja || echo 'Unix Makefiles')" \
-                -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$PREFIX" \
+                -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_INSTALL_LIBDIR=lib64 -DCMAKE_INSTALL_SYSCONFDIR="$SYSCONFDIR" \
+                -DCMAKE_INSTALL_LOCALSTATEDIR="$LOCALSTATEDIR" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$PREFIX" \
                 -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 "${args[@]}" || die "cmake configure failed"
             cmake --build _build -j "$JOBS" || die "build failed"
             DESTDIR=$dest cmake --install _build || die "install failed" ;;
         meson)
-            meson setup _build --prefix="$PREFIX" --buildtype=release "${args[@]}" || die "meson setup failed"
+            meson setup _build --prefix="$PREFIX" --libdir=lib64 --sysconfdir="$SYSCONFDIR" \
+                --localstatedir="$LOCALSTATEDIR" --buildtype=release "${args[@]}" || die "meson setup failed"
             meson compile -C _build -j "$JOBS" || die "build failed"
             DESTDIR=$dest meson install -C _build --no-rebuild || die "install failed" ;;
         autotools|configure)
@@ -183,7 +203,12 @@ build_and_stage() {
                 if [ -x ./autogen.sh ]; then NOCONFIGURE=1 ./autogen.sh || die "autogen.sh failed"
                 else autoreconf -fi || die "autoreconf failed"; fi
             fi
-            ./configure --prefix="$PREFIX" "${args[@]}" || die "configure failed"
+            # the standard directories, for configure scripts that know them (not every one is from autoconf)
+            local dirs=() h; h=$(./configure --help 2>/dev/null || true)
+            case "$h" in *--libdir*) dirs+=(--libdir="$PREFIX/lib64") ;; esac
+            case "$h" in *--sysconfdir*) dirs+=(--sysconfdir="$SYSCONFDIR") ;; esac
+            case "$h" in *--localstatedir*) dirs+=(--localstatedir="$LOCALSTATEDIR") ;; esac
+            ./configure --prefix="$PREFIX" "${dirs[@]}" "${args[@]}" || die "configure failed"
             make -j"$JOBS" "${margs[@]}" || die "build failed"
             make install DESTDIR="$dest" "${margs[@]}" || die "install failed" ;;
         make)
@@ -201,17 +226,34 @@ build_and_stage() {
                 --prefix="$PREFIX" --root="$dest" "${args[@]}" . || die "python build failed" ;;
         cargo)
             command -v cargo >/dev/null || die "cargo builds need Rust (get install rust)"
-            cargo install --locked --no-track --path . --root "$dest$PREFIX" "${args[@]}" || die "cargo build failed" ;;
-        go)
+            # a workspace without a package of its own: build the member crate named like the port
+            local crate=.
+            if grep -q '^\[workspace\]' Cargo.toml && ! grep -q '^\[package\]' Cargo.toml; then
+                # (a crate or a [[bin]] with that name; a library crate is skipped)
+                local c; crate=''
+                for c in $(grep -lE "^name[[:space:]]*=[[:space:]]*\"${name##*/}\"" */Cargo.toml */*/Cargo.toml 2>/dev/null); do
+                    if grep -q '^\[\[bin\]\]' "$c" || [ -f "${c%/Cargo.toml}/src/main.rs" ]; then crate=${c%/Cargo.toml}; break; fi
+                done
+                [ -n "$crate" ] || die "${name##*/}: Cargo workspace with no program named ${name##*/} (set srcdir in the recipe)"
+            fi
+            cargo install --locked --no-track --path "$crate" --root "$dest$PREFIX" "${args[@]}" || die "cargo build failed" ;;
+        go) # make_args names the packages to build (default: every main package, ./...)
             command -v go >/dev/null || die "go builds need Go (get install go)"
             mkdir -p "$dest$PREFIX/bin"
-            go build -trimpath -o "$dest$PREFIX/bin/" "${args[@]}" ./... || die "go build failed" ;;
+            [ ${#margs[@]} -gt 0 ] || margs=(./...)
+            # a project that needs a newer Go than the installed one gets it from Go's checksummed toolchain downloads
+            GOTOOLCHAIN=auto go build -trimpath -o "$dest$PREFIX/bin/" "${args[@]}" "${margs[@]}" || die "go build failed" ;;
+        bin) # an upstream prebuilt release (see install_prebuilt)
+            install_prebuilt "$dest" "${name##*/}" "$programs" ;;
+        script) # the port's build.sh does everything; it installs into $DESTDIR$PREFIX
+            [ -n "$portdir" ] && [ -f "$portdir/build.sh" ] || die "build=script needs a build.sh in the port"
+            DESTDIR=$dest PREFIX=$PREFIX SYSCONFDIR=$SYSCONFDIR LOCALSTATEDIR=$LOCALSTATEDIR JOBS=$JOBS PORTDIR=$portdir bash -e "$portdir/build.sh" "${args[@]}" || die "build.sh failed" ;;
         fonts) # no build system: install every font file found
             mkdir -p "$dest$PREFIX/share/fonts/${name##*/}"
             find . -type f \( -name '*.ttf' -o -name '*.otf' -o -name '*.ttc' -o -name '*.pcf.gz' \) \
                 -exec install -m644 {} "$dest$PREFIX/share/fonts/${name##*/}/" \; ;;
         perl)
-            perl Makefile.PL PREFIX="$PREFIX" INSTALLDIRS=site "${args[@]}" || die "Makefile.PL failed"
+            perl Makefile.PL PREFIX="$PREFIX" INSTALLDIRS=vendor "${args[@]}" || die "Makefile.PL failed"
             make -j"$JOBS" "${margs[@]}" || die "build failed"
             make install DESTDIR="$dest" "${margs[@]}" || die "install failed" ;;
         *) die "unknown build type: $buildsys" ;;
@@ -225,28 +267,147 @@ build_and_stage() {
     cd /
 }
 
-# merge ATOM-or-NAME: copy $WORK/dest into / and record every file
+# usrmerge DIR: move a staged /bin, /sbin, /lib, /lib64 and /usr/sbin into /usr (on systemLinux those are symlinks
+# into /usr, and copying a real directory over them would fail)
+usrmerge() {
+    local d from to
+    for d in bin:usr/bin sbin:usr/bin usr/sbin:usr/bin lib:usr/lib lib64:usr/lib64; do
+        from=$1/${d%%:*} to=$1/${d#*:}
+        [ -d "$from" ] && [ ! -L "$from" ] || continue
+        mkdir -p "$to" && cp -a "$from/." "$to/" && rm -rf "$from" || die "cannot move ${d%%:*} into ${d#*:}"
+    done
+}
+
+# install_prebuilt DEST NAME PROGRAMS: install an upstream prebuilt release from the current directory.
+#  - PROGRAMS given ("path[:name] ..."): the whole tree goes to $PREFIX/lib/NAME (NAME without -bin) and each
+#    program is linked into $PREFIX/bin;
+#  - an AppImage: it is unpacked (no FUSE needed) to $PREFIX/lib/NAME and its AppRun is linked as NAME;
+#  - otherwise every executable goes to $PREFIX/bin, with the man pages and shell completions found next to it.
+install_prebuilt() {
+    local dest=$1 app=${2%-bin} progs=$3 p path link f n
+    local lib=$dest$PREFIX/lib/$app bin=$dest$PREFIX/bin
+    mkdir -p "$bin"
+    f=$(find . -maxdepth 2 -type f -name '*.AppImage' | head -n1)
+    if [ -z "$progs" ] && [ -n "$f" ]; then
+        chmod 755 "$f"
+        (cd "$(dirname "$f")" && "./$(basename "$f")" --appimage-extract >/dev/null) || die "cannot unpack ${f##*/}"
+        mkdir -p "$lib" && cp -a "$(dirname "$f")/squashfs-root/." "$lib/"
+        chmod -R a+rX "$lib"
+        ln -s "../lib/$app/AppRun" "$bin/$app"
+        # its desktop entry and icon, pointed at the installed program
+        for n in "$lib"/*.desktop; do
+            [ -f "$n" ] || continue
+            mkdir -p "$dest$PREFIX/share/applications"
+            sed -e "s|^Exec=[^ ]*|Exec=$app|" -e "s|^TryExec=.*||" "$n" > "$dest$PREFIX/share/applications/$app.desktop"
+            break
+        done
+        for n in "$lib"/.DirIcon "$lib"/*.png "$lib"/*.svg; do
+            [ -f "$n" ] || continue
+            case "$n" in *.svg) mkdir -p "$dest$PREFIX/share/icons/hicolor/scalable/apps"; cp -L "$n" "$dest$PREFIX/share/icons/hicolor/scalable/apps/" ;;
+                         *.png) mkdir -p "$dest$PREFIX/share/pixmaps"; cp -L "$n" "$dest$PREFIX/share/pixmaps/" ;; esac
+        done
+        return 0
+    fi
+    if [ -n "$progs" ]; then
+        mkdir -p "$lib" && cp -a . "$lib/"
+        for p in $progs; do
+            path=${p%%:*}; link=${p#*:}; [ "$link" != "$p" ] || link=${path##*/}
+            case "$path" in /*|*..*) die "programs: $path must be a path inside the archive" ;; esac
+            [ -e "$lib/$path" ] || die "programs: $path is not in the archive"
+            ln -sf "../lib/$app/$path" "$bin/$link"
+        done
+        return 0
+    fi
+    n=0
+    while IFS= read -r f; do
+        case "${f##*/}" in *.so|*.so.*|*.sh|*.ps1|*.bat|*.exe|*.dll|*.txt|*.md|LICENSE*|COPYING*|README*) continue ;; esac
+        # a platform-named download (yq_linux_amd64, restic_0.18.0_linux_amd64) is installed under the port's name
+        p=${f##*/}; case "$p" in *[Ll]inux*|*amd64*|*x86_64*|*x86-64*|*x64*) p=$app ;; esac
+        install -m755 "$f" "$bin/$p"; n=$((n + 1))
+    done < <(find . -type f -perm -u+x ! -path '*/complet*' ! -path '*/autocomplete/*' ! -path '*/doc/*' ! -path '*/man/*')
+    [ "$n" -gt 0 ] || die "$app: no program found in the archive (set programs= in the recipe)"
+    while IFS= read -r f; do
+        p=${f%.gz}; p=${p##*.}
+        install -Dm644 "$f" "$dest$PREFIX/share/man/man$p/${f##*/}"
+    done < <(find . -type f \( -name '*.[1-8]' -o -name '*.[1-8].gz' \))
+    while IFS= read -r f; do
+        case "$f" in
+            *.bash|*/bash/*) install -Dm644 "$f" "$dest$PREFIX/share/bash-completion/completions/$app" ;;
+            *.fish)          install -Dm644 "$f" "$dest$PREFIX/share/fish/vendor_completions.d/$app.fish" ;;
+            */_*)            install -Dm644 "$f" "$dest$PREFIX/share/zsh/site-functions/${f##*/}" ;;
+        esac
+    done < <(find . -type f \( -path '*/complet*' -o -path '*/autocomplete/*' \))
+}
+
+# merge ATOM-or-NAME: copy $WORK/dest into / and record every file.
+# A file another package owns is refused (-f takes it over), except that a port takes over the files of the base
+# package with the same name: it replaces that base package in place. Files of the base package that the port does
+# not install stay with the base package. Configuration in /etc that exists and is not this package's is kept; the
+# new version is installed next to it as FILE.get-new.
 merge() {
-    local key=$1 dir f owner
+    local key=$1 dir f owner p bad='' took=''
     dir=$(dbdir "$key")
+    usrmerge "$WORK/dest"
+    # indexes shared by many packages are not package files: they are regenerated after installing (refresh_caches)
+    find "$WORK/dest" \( -path '*/share/info/dir' -o -name charset.alias -o -name perllocal.pod -o -name icon-theme.cache \
+        -o -name gschemas.compiled -o -name mimeinfo.cache \) -delete
     (cd "$WORK/dest" && find . \( -type f -o -type l \) | sed 's|^\.||' | sort) > "$WORK/files"
     [ -s "$WORK/files" ] || die "$key installed no files"
-    # refuse to overwrite a file another package owns
-    owner=$(awk -v me="$dir/files" 'NR==FNR {want[$0]=1; next} FILENAME != me && ($0 in want) {print FILENAME ": " $0; exit}' \
-        "$WORK/files" "$DB"/pkgs/*/files 2>/dev/null || true)
-    if [ -n "$owner" ] && [ "$FORCE" = 0 ]; then
-        f=${owner#*: }; owner=${owner%%: *}; owner=${owner%/files}
-        die "$f already belongs to $(basename "$owner" | sed 's|__|/|') (use -f to overwrite)"
-    fi
+    # keep existing configuration
+    while IFS= read -r f; do
+        case "$f" in /etc/*) ;; *) continue ;; esac
+        [ -e "$f" ] || [ -L "$f" ] || continue
+        if [ -f "$dir/files" ] && grep -qxF "$f" "$dir/files"; then continue; fi
+        cmp -s "$f" "$WORK/dest$f" && continue
+        mv "$WORK/dest$f" "$WORK/dest$f.get-new"
+        printf 'get: kept your %s; the new version is %s.get-new\n' "$f" "$f" >&2
+    done < "$WORK/files"
+    (cd "$WORK/dest" && find . \( -type f -o -type l \) | sed 's|^\.||' | sort) > "$WORK/files"
+    # who owns the files already: "owner-dir<TAB>path"
+    : > "$WORK/owners"
+    for p in "$DB"/pkgs/*/files; do
+        [ -f "$p" ] && [ "$p" != "$dir/files" ] || continue
+        grep -xF -f "$WORK/files" "$p" 2>/dev/null | sed "s|^|${p%/files}\t|" >> "$WORK/owners" || true
+    done
+    while IFS=$'\t' read -r owner f; do
+        case "${owner##*/}" in "base__${key##*/}") took=base/${key##*/}; continue ;; esac
+        [ "$FORCE" = 1 ] && continue
+        bad="$f already belongs to $(basename "$owner" | sed 's|__|/|') (use -f to overwrite)"; break
+    done < "$WORK/owners"
+    [ -z "$bad" ] || die "$bad"
     # the old version's files that the new one no longer has
     if [ -f "$dir/files" ]; then
         comm -23 <(sort "$dir/files") "$WORK/files" | while IFS= read -r f; do rm -f "$f"; done
     fi
     cp -a "$WORK/dest/." / || die "copying files into place failed"
+    # the files taken over now belong to this package only
+    cut -f1 "$WORK/owners" | sort -u | while IFS= read -r owner; do
+        grep -vxF -f "$WORK/files" "$owner/files" > "$owner/files.new" || true
+        mv "$owner/files.new" "$owner/files"
+    done
     mkdir -p "$dir"
     cp "$WORK/files" "$dir/files"
+    if [ -n "$took" ]; then echo "$took" > "$dir/replaces"; say "replaced the base system's ${took#base/}"; fi
+    refresh_caches "$WORK/files"
+}
+
+# refresh_caches FILELIST: rebuild the system indexes that the listed (installed or removed) files belong to
+refresh_caches() {
+    local f d
     ldconfig 2>/dev/null || true
-    if grep -q '/share/fonts/' "$WORK/files"; then fc-cache -f >/dev/null 2>&1 || true; fi
+    if grep -q '/share/fonts/' "$1"; then fc-cache -f >/dev/null 2>&1 || true; fi
+    if command -v install-info >/dev/null; then
+        grep -E '/share/info/[^/]+\.info(\.gz)?$' "$1" | while IFS= read -r f; do
+            if [ -e "$f" ]; then install-info "$f" "${f%/*}/dir" >/dev/null 2>&1; else install-info --delete "$f" "${f%/*}/dir" >/dev/null 2>&1; fi
+        done || true
+    fi
+    grep -o '^/[^ ]*/share/icons/[^/]*/' "$1" | sort -u | while IFS= read -r d; do
+        [ -f "$d/index.theme" ] && gtk-update-icon-cache -q -t -f "$d" 2>/dev/null; true
+    done
+    grep -q '/share/glib-2.0/schemas/' "$1" && glib-compile-schemas "$PREFIX/share/glib-2.0/schemas" 2>/dev/null
+    grep -q '/share/applications/' "$1" && update-desktop-database -q "$PREFIX/share/applications" 2>/dev/null
+    grep -q '/share/mime/packages/' "$1" && update-mime-database "$PREFIX/share/mime" 2>/dev/null
+    true
 }
 
 record() { # ATOM URL REQUIRES EXPLICIT(0/1) [VERSION]
@@ -256,10 +417,11 @@ record() { # ATOM URL REQUIRES EXPLICIT(0/1) [VERSION]
 }
 
 install_atom() { # ATOM EXPLICIT
-    local a=$1 url sha bs ca req ver sd ma svc
+    local a=$1 url sha bs ca req ver sd ma pg svc
     ver=$(recipe_get "$PORTS/$a/recipe" version)
     sd=$(recipe_get "$PORTS/$a/recipe" srcdir)
     ma=$(recipe_get "$PORTS/$a/recipe" make_args)
+    pg=$(recipe_get "$PORTS/$a/recipe" programs)
     url=$(recipe_get "$PORTS/$a/recipe" url)
     sha=$(recipe_get "$PORTS/$a/recipe" sha256)
     bs=$(recipe_get "$PORTS/$a/recipe" build)
@@ -270,7 +432,7 @@ install_atom() { # ATOM EXPLICIT
         mkdir -p "$(dbdir "$a")"; : > "$(dbdir "$a")/files"; record "$a" "" "$req" "$2" "$ver"; return 0
     fi
     newwork
-    build_and_stage "$a" "$url" "$sha" "$bs" "$ca" "$PORTS/$a" "$sd" "$ma"
+    build_and_stage "$a" "$url" "$sha" "$bs" "$ca" "$PORTS/$a" "$sd" "$ma" "$pg"
     merge "$a"
     record "$a" "$url" "$req" "$2" "$ver"
     rm -rf "$WORK"; WORK=''
@@ -322,13 +484,19 @@ remove_atom() {
     local a=$1 dir f d users
     dir=$(dbdir "$a")
     installed "$a" || die "$a is not installed"
+    case "$a" in base/*) [ "$FORCE" = 1 ] || die "$a is part of the base system (use -f to remove it anyway)" ;; esac
+    if [ -f "$dir/replaces" ] && [ "$FORCE" = 0 ]; then
+        die "$a replaced the base system's ${a##*/}; removing it would leave the system without it (use -f to remove anyway)"
+    fi
     users=$(needed_by "$a" | tr '\n' ' ')
     if [ -n "$users" ] && [ "$FORCE" = 0 ]; then die "$a is needed by: $users(remove those first, or use -f)"; fi
     say "removing $a"
     while IFS= read -r f; do rm -f "$f"; done < "$dir/files"
+    refresh_caches "$dir/files"
     # drop directories the package left empty (never the prefix itself)
     sed 's|/[^/]*$||' "$dir/files" | sort -ur | while IFS= read -r d; do
-        while [ -n "$d" ] && [ "$d" != "$PREFIX" ] && [ "$d" != / ] && rmdir "$d" 2>/dev/null; do d=${d%/*}; done
+        # never the top two levels (/usr/share, /etc/dinit.d, ...)
+        while [ "$(tr -cd / <<< "$d" | wc -c)" -gt 2 ] && rmdir "$d" 2>/dev/null; do d=${d%/*}; done
     done
     rm -rf "$dir"
 }
@@ -338,7 +506,7 @@ cmd_remove() {
     need_root "removing"
     local x a
     for x in "$@"; do
-        case "$x" in url/*) a=$x ;; *) a=$(atom "$x" 2>/dev/null || true); [ -n "$a" ] || a=$(installed_atoms | grep "/$x\$" | head -n1) ;; esac
+        case "$x" in url/*|base/*) a=$x ;; *) a=$(atom "$x" 2>/dev/null || true); [ -n "$a" ] || a=$(installed_atoms | grep "/$x\$" | head -n1) ;; esac
         [ -n "$a" ] || die "$x is not installed"
         remove_atom "$a"
     done

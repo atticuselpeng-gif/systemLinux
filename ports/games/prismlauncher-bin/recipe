@@ -1,0 +1,7 @@
+version=11.1.1
+description=Minecraft launcher (official AppImage)
+url=https://github.com/PrismLauncher/PrismLauncher/releases/download/11.1.1/PrismLauncher-Linux-x86_64.AppImage
+sha256=bb81038c56a09e944659e4b808dbfbc52d52d5e3a3ffe32216689a3ca1508d3d
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:prismlauncher

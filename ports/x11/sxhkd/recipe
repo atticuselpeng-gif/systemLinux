@@ -1,0 +1,7 @@
+version=0.6.3
+description=Simple X hotkey daemon
+url=https://github.com/baskerville/sxhkd/archive/refs/tags/0.6.3.tar.gz
+sha256=9d7a64d73f7114a24ff93a35a2662afd9807e0df9ffbfabd24230b4872503fcb
+build=make
+requires=x11/libxcb x11/xcb-util x11/xcb-util-keysyms
+check=cmd:sxhkd

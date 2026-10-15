@@ -1,0 +1,6 @@
+version=0.82.0
+description=Package manager for conda environments
+url=https://github.com/prefix-dev/pixi/releases/download/v0.82.0/pixi-x86_64-unknown-linux-musl.tar.gz
+sha256=d305406a7630aab6484419833f9204b2fe9ea40632da8bb536496f123ca86e7f
+build=bin
+check=cmd:pixi

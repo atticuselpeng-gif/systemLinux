@@ -1,0 +1,8 @@
+version=2.102.0
+description=GitHub command line tool
+url=https://github.com/cli/cli/archive/refs/tags/v2.102.0.tar.gz
+sha256=08bf0ef8b4409893889175e0f5279d30d6edd96465816042c0d7c72eac598158
+build=go
+make_args=./cmd/gh
+requires=dev-apps/go
+check=cmd:gh

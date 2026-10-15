@@ -3,12 +3,14 @@
 #
 # Checks, for every recipe:
 #   * the directory layout is ports/<category>/<name>/recipe, names use [A-Za-z0-9._+-]
-#   * only known keys (url sha256 requires build configure_args version description srcdir make_args), each at most once
-#   * optional folders: patches/*.patch, dinit/<service> (must be a dinit service), files/<path>
+#   * only known keys (url sha256 requires build configure_args version description srcdir make_args check programs),
+#     each at most once
+#   * optional: build.sh (for build=script), patches/*.patch, dinit/<service> (must be a dinit service), files/<path>
 #   * url (https/http/ftp, no whitespace) or requires (meta-package) is present
 #   * sha256, when present, is 64 lowercase hex digits; recipes WITHOUT sha256 are reported as warnings
 #     (the original starter recipes have none); --strict turns that into an error
-#   * build is one of configure, autotools, cmake, meson, make, python, cargo, go, perl (the types `get` supports)
+#   * build is one of configure, autotools, cmake, meson, make, python, cargo, go, perl, fonts, script, bin (the types
+#     `get` supports); build=script needs the port's build.sh
 #   * every requires atom is category/name and exists; there are no dependency cycles
 # With --verify the sources are downloaded and the sha256 of every recipe that has one is compared.
 #
@@ -42,7 +44,7 @@ for recipe in "$PORTS"/*/*/recipe; do
         key=${line%%=*}; key=${key%%[[:space:]]}
         case "$line" in *=*) ;; *) err "$atom: line is not key=value: $line"; continue ;; esac
         case "$key" in
-            url|sha256|requires|build|configure_args|version|description|srcdir|make_args|check) ;;
+            url|sha256|requires|build|configure_args|version|description|srcdir|make_args|check|programs) ;;
             *) err "$atom: unknown key '$key'"; continue ;;
         esac
         [ -z "${seen[$key]:-}" ] || err "$atom: duplicate key '$key'"
@@ -65,14 +67,16 @@ for recipe in "$PORTS"/*/*/recipe; do
     elif [ -n "$url" ]; then
         if [ "$STRICT" = 1 ]; then err "$atom: missing sha256"; else warn "$atom: missing sha256"; fi
     fi
-    case "$build" in ''|configure|autotools|cmake|meson|make|python|cargo|go|perl|fonts) ;; *) err "$atom: unsupported build type '$build'" ;; esac
+    case "$build" in ''|configure|autotools|cmake|meson|make|python|cargo|go|perl|fonts|script|bin) ;; *) err "$atom: unsupported build type '$build'" ;; esac
+    if [ "$build" = script ] && [ ! -f "$dir/build.sh" ]; then err "$atom: build=script needs build.sh"; fi
+    if [ -n "$(val "$recipe" programs)" ] && [ "$build" != bin ]; then err "$atom: programs is only for build=bin"; fi
     chk=$(val "$recipe" check)
-    case "$chk" in ''|pkgconfig:?*|cmd:?*|file:/?*) ;; *) err "$atom: check must be pkgconfig:NAME, cmd:NAME or file:/PATH" ;; esac
+    case "$chk" in ''|pkgconfig:?*|cmd:?*|file:/?*|python:[A-Za-z_]*) ;; *) err "$atom: check must be pkgconfig:NAME, cmd:NAME, file:/PATH or python:MODULE" ;; esac
     srcdir=$(val "$recipe" srcdir)
     case "$srcdir" in /*|..|../*|*/../*|*/..) err "$atom: srcdir must stay inside the source tree" ;; esac
     # optional folders: patches/*.patch, dinit/<service>, files/<path>
     for f in "$dir"/*; do
-        case "${f##*/}" in recipe|patches|dinit|files) ;; *) err "$atom: unexpected file ${f##*/} (allowed: recipe, patches/, dinit/, files/)" ;; esac
+        case "${f##*/}" in recipe|patches|dinit|files|build.sh) ;; *) err "$atom: unexpected file ${f##*/} (allowed: recipe, build.sh, patches/, dinit/, files/)" ;; esac
     done
     if [ -d "$dir/patches" ]; then
         for f in "$dir"/patches/*; do case "$f" in *.patch) ;; *) err "$atom: patches/ may only hold *.patch files" ;; esac; done

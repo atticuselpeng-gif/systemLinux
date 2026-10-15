@@ -1,0 +1,8 @@
+version=2.4.1
+description=Control media players from the command line (MPRIS)
+url=https://github.com/altdesktop/playerctl/archive/refs/tags/v2.4.1.tar.gz
+sha256=75957ad5071956f563542c7557af16a57e40b4a7f66bc9b6373d022ec5eef548
+build=meson
+configure_args=-Dgtk-doc=false -Dintrospection=false -Dbash-completions=false -Dzsh-completions=false
+requires=dev-apps/meson dev-apps/ninja dev-libs/glib
+check=cmd:playerctl

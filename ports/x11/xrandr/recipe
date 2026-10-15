@@ -1,6 +1,6 @@
 version=1.5.3
 description=Configure screens and resolutions
-url=https://www.x.org/releases/individual/app/xrandr-1.5.3.tar.xz
+url=https://xorg.freedesktop.org/archive/individual/app/xrandr-1.5.3.tar.xz
 sha256=f8dd7566adb74147fab9964680b6bbadee87cf406a7fcff51718a5e6949b841c
 build=configure
 requires=x11/libxrandr

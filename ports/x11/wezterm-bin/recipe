@@ -1,0 +1,7 @@
+version=20240203-110809
+description=GPU-accelerated terminal emulator
+url=https://github.com/wezterm/wezterm/releases/download/20240203-110809-5046fc22/WezTerm-20240203-110809-5046fc22-Ubuntu20.04.AppImage
+sha256=34010a07076d2272c4d4f94b5e0dae608a679599e8d729446323f88f956c60f0
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:wezterm

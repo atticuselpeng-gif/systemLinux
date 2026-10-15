@@ -1,0 +1,6 @@
+version=2.70.0
+description=System information tool
+url=https://github.com/fastfetch-cli/fastfetch/releases/download/2.70.0/fastfetch-linux-amd64.tar.gz
+sha256=945b941b2a85e8de88b4c89714ad18ee6a7a129bb3c544bb448e9e0e027c226a
+build=bin
+check=cmd:fastfetch

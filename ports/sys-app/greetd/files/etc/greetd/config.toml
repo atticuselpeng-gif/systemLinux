@@ -1,0 +1,8 @@
+# greetd configuration. command is the greeter; tuigreet (get install tuigreet) asks for the user and password,
+# then starts the session given with --cmd (sway, or startx for X window managers).
+[terminal]
+vt = 7
+
+[default_session]
+command = "/usr/bin/tuigreet --time --remember --cmd sway"
+user = "greeter"

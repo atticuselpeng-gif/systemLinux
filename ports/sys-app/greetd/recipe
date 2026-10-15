@@ -1,0 +1,8 @@
+version=0.10.3
+description=Minimal login manager daemon (runs a greeter such as tuigreet)
+url=https://git.sr.ht/~kennylevinsen/greetd/archive/0.10.3.tar.gz
+sha256=ee5cb70e0add4ca9c9fe57e47581ab0002d44c07743fb5492469f3b570db640b
+build=cargo
+srcdir=greetd
+requires=lang/rust dev-libs/pam
+check=cmd:greetd

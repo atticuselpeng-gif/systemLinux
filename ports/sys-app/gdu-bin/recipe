@@ -1,0 +1,6 @@
+version=5.38.0
+description=Fast disk usage analyzer
+url=https://github.com/dundee/gdu/releases/download/v5.38.0/gdu_linux_amd64_static.tgz
+sha256=e7b33d9a04597ac2caa2d7ff244023735617bb029a046ca5cf6154ef6bc1d4fe
+build=bin
+check=cmd:gdu

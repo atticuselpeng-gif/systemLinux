@@ -1,7 +1,7 @@
 version=1.5.0
 description=libinput input driver for Xorg
-url=https://www.x.org/releases/individual/driver/xf86-input-libinput-1.5.0.tar.xz
+url=https://xorg.freedesktop.org/archive/individual/driver/xf86-input-libinput-1.5.0.tar.xz
 sha256=2524c35f196554ea11aef3bba1cf324759454e1d49f98ac026ace2f6003580e6
 build=configure
 requires=x11/xorg-server dev-libs/libinput
-check=file:/usr/local/lib64/xorg/modules/input/libinput_drv.so
+check=file:/usr/lib64/xorg/modules/input/libinput_drv.so

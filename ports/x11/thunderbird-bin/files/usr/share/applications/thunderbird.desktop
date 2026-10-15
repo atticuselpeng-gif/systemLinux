@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Thunderbird
+Exec=thunderbird %U
+Icon=/usr/lib/thunderbird/chrome/icons/default/default128.png
+Terminal=false
+Type=Application
+Categories=Network;Email;

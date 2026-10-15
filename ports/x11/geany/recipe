@@ -1,0 +1,8 @@
+version=2.1
+description=Lightweight GTK text editor and IDE
+url=https://github.com/geany/geany/releases/download/2.1.0/geany-2.1.tar.gz
+sha256=8da944e82f78f3c4c6e6b054b7c562ab64ea37d4a3e7dc8576bed8a8160d3c2a
+build=configure
+configure_args=--disable-html-docs --disable-pdf-docs --disable-api-docs --disable-gtkdoc-header
+requires=dev-libs/gtk3
+check=cmd:geany

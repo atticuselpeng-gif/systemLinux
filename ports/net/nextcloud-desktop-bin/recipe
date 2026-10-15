@@ -1,0 +1,7 @@
+version=35.0.0
+description=Nextcloud sync client (official AppImage)
+url=https://github.com/nextcloud-releases/desktop/releases/download/v35.0.0/Nextcloud-35.0.0-x86_64.AppImage
+sha256=8c2ed2965f1c163b56a2cf9cfec23b5f20fd8419fef2810c4889f0829a290c40
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:nextcloud-desktop

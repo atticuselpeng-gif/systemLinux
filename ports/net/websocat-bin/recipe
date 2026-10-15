@@ -1,0 +1,7 @@
+version=1.14.1
+description=Command line client for WebSockets
+url=https://github.com/vi/websocat/releases/download/v1.14.1/websocat.x86_64-unknown-linux-musl
+sha256=66f8dd3a0394761556339117f8bb5123bddefd44e087af2a72ec22b0bd08d514
+build=bin
+programs=websocat.x86_64-unknown-linux-musl:websocat
+check=cmd:websocat

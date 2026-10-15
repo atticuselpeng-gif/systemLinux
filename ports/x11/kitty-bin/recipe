@@ -1,0 +1,8 @@
+version=0.49.2
+description=Fast, GPU-based terminal emulator
+url=https://github.com/kovidgoyal/kitty/releases/download/v0.49.2/kitty-0.49.2-x86_64.txz
+sha256=d573618b911e9c461bd421b96c13c74c7f1cb2f1ac9c327818d4ff84366cf5c6
+build=bin
+programs=bin/kitty:kitty bin/kitten:kitten
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa
+check=cmd:kitty

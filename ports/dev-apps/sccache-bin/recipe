@@ -1,0 +1,6 @@
+version=0.18.0
+description=Compiler cache with cloud storage
+url=https://github.com/mozilla/sccache/releases/download/v0.18.0/sccache-dist-v0.18.0-x86_64-unknown-linux-musl.tar.gz
+sha256=aa74bec97eac77c4bc61c79af8ae45e2d4ef54ae57f05955b41af9b92ca89b9a
+build=bin
+check=cmd:sccache

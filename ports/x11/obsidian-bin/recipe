@@ -1,0 +1,8 @@
+version=1.14.4
+description=Markdown knowledge base and notes
+url=https://github.com/obsidianmd/obsidian-releases/releases/download/v1.14.4/obsidian-1.14.4.tar.gz
+sha256=e70b7cd63787e7f798a84fec453f5c446b91877bd3f612e8fb98e9b76cc81120
+build=bin
+programs=obsidian
+requires=dev-libs/gtk3 sec/nss dev-libs/alsa-lib dev-libs/mesa dev-libs/libxkbcommon x11/libxcomposite x11/libxdamage x11/libxrandr x11/libxkbfile x11/libxtst x11/libxscrnsaver sys-app/cups dev-libs/vulkan-loader sys-app/dbus
+check=cmd:obsidian

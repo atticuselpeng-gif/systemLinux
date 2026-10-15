@@ -1,0 +1,8 @@
+version=0.7.6
+description=Set the X wallpaper
+url=https://github.com/stoeckmann/xwallpaper/releases/download/v0.7.6/xwallpaper-0.7.6.tar.xz
+sha256=bd1bae9d5d3a06b0ae9b7581f37acb18adb72d7a26ed0566c565b3ef2a9fb1d8
+build=configure
+configure_args=--without-seccomp
+requires=x11/libxcb x11/xcb-util-image dev-libs/pixman dev-libs/libpng dev-libs/libjpeg-turbo
+check=cmd:xwallpaper

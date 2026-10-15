@@ -1,0 +1,6 @@
+version=0.7.1
+description=Make JSON greppable
+url=https://github.com/tomnomnom/gron/releases/download/v0.7.1/gron-linux-amd64-0.7.1.tgz
+sha256=ca0335826b02b044fa05d7e951521e45c6ced1c381a73ed5803450088e18bf22
+build=bin
+check=cmd:gron

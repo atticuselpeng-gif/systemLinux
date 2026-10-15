@@ -1,0 +1,7 @@
+version=26.9.27
+description=Video editor (official AppImage)
+url=https://github.com/mltframework/shotcut/releases/download/v26.9.27/shotcut-linux-x86_64-26.10.3.AppImage
+sha256=a876d10ea083d2d61e62045c410d8951936264978bdd39f46b0a5ae380e0bc47
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:shotcut

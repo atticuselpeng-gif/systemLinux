@@ -1,6 +1,6 @@
 version=1.3.4
 description=Set the keyboard layout under X
-url=https://www.x.org/releases/individual/app/setxkbmap-1.3.4.tar.xz
+url=https://xorg.freedesktop.org/archive/individual/app/setxkbmap-1.3.4.tar.xz
 sha256=be8d8554d40e981d1b93b5ff82497c9ad2259f59f675b38f1b5e84624c07fade
 build=configure
 requires=x11/libxkbfile x11/libxrandr

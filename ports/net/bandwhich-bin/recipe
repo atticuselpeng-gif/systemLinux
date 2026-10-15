@@ -1,0 +1,6 @@
+version=0.23.1
+description=Network bandwidth by process
+url=https://github.com/imsnif/bandwhich/releases/download/v0.23.1/bandwhich-v0.23.1-x86_64-unknown-linux-musl.tar.gz
+sha256=fec93e01c393cd3ef8aa168a675dffb8fa4841d5fd93390b5d14f238ae29e59c
+build=bin
+check=cmd:bandwhich

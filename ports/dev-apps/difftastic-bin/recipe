@@ -1,0 +1,6 @@
+version=0.71.0
+description=Structural diff that understands syntax (difft)
+url=https://github.com/Wilfred/difftastic/releases/download/0.71.0/difft-0.71.0-x86_64-unknown-linux-gnu.tar.gz
+sha256=61aea5394a53c56f144637cf39b3a0c0dafa27769731745e5851ff276e6478da
+build=bin
+check=cmd:difft

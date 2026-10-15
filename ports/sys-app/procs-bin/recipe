@@ -1,0 +1,6 @@
+version=0.14.12
+description=Modern replacement for ps
+url=https://github.com/dalance/procs/releases/download/v0.14.12/procs-v0.14.12-x86_64-linux.zip
+sha256=81964faf9d5cd0e9f399d5d0954fb6fe4d4d9f7d3cbec4507633df5a45b11713
+build=bin
+check=cmd:procs

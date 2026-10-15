@@ -1,0 +1,7 @@
+version=2.8.2
+description=PlayStation 2 emulator (official AppImage)
+url=https://github.com/PCSX2/pcsx2/releases/download/v2.8.2/pcsx2-v2.8.2-linux-appimage-x64-Qt.AppImage
+sha256=0c46bb6a88aa2782b10853a7b07cf3387ba99cbef2b966372cd2315b8571abea
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:pcsx2

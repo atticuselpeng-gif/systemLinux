@@ -1,0 +1,7 @@
+version=1.19.3
+description=Encrypt files for cloud storage (official AppImage)
+url=https://github.com/cryptomator/cryptomator/releases/download/1.19.3/cryptomator-1.19.3-x86_64.AppImage
+sha256=895d09255b5f5fe39029dba337ab0950f8609b3b7919313eeeb18d221e7e25ab
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:cryptomator

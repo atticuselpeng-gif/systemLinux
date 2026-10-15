@@ -1,0 +1,6 @@
+version=0.168.0
+description=Static site generator (extended edition)
+url=https://github.com/gohugoio/hugo/releases/download/v0.168.0/hugo_extended_0.168.0_linux-amd64.tar.gz
+sha256=787f100057328824f38c6ad7c87ff10d6451ae0a7bc39cedaad0dd2bcde17e53
+build=bin
+check=cmd:hugo

@@ -1,0 +1,6 @@
+version=2.9.6
+description=GitOps for Kubernetes
+url=https://github.com/fluxcd/flux2/releases/download/v2.9.6/flux_2.9.6_linux_amd64.tar.gz
+sha256=b4d22673e9246cbd628881f1a9ef3b090085dced291e42d804555cee8e8d42c5
+build=bin
+check=cmd:flux

@@ -1,0 +1,6 @@
+version=0.12.0
+description=Generate, analyze and convert colors
+url=https://github.com/sharkdp/pastel/releases/download/v0.12.0/pastel-v0.12.0-x86_64-unknown-linux-musl.tar.gz
+sha256=96ddd6593d08fd3868f2423f18ed5c6117a5f1aab335c1fc9e8347db7f219f2a
+build=bin
+check=cmd:pastel

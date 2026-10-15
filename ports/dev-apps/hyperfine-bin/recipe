@@ -1,0 +1,6 @@
+version=2.0.0
+description=Command line benchmarking
+url=https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine-v2.0.0-x86_64-unknown-linux-musl.tar.gz
+sha256=38e59087bd65520930a13cf513d8a493b7043741e8ad62349a8a9929eb61bc5c
+build=bin
+check=cmd:hyperfine

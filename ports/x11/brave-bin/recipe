@@ -1,0 +1,8 @@
+version=1.97.57
+description=Brave web browser
+url=https://github.com/brave/brave-browser/releases/download/v1.97.57/brave-browser-1.97.57-linux-amd64.zip
+sha256=8a08822ca82528b30c6f553988ec7214e6999ef362f6eff148d386f0053f903c
+build=bin
+programs=brave:brave
+requires=dev-libs/gtk3 sec/nss dev-libs/alsa-lib dev-libs/mesa dev-libs/libxkbcommon x11/libxcomposite x11/libxdamage x11/libxrandr x11/libxkbfile x11/libxtst x11/libxscrnsaver sys-app/cups dev-libs/vulkan-loader sys-app/dbus
+check=cmd:brave

@@ -1,0 +1,6 @@
+version=0.66.1
+description=Terminal UI for git
+url=https://github.com/jesseduffield/lazygit/releases/download/v0.66.1/lazygit_0.66.1_linux_x86_64.tar.gz
+sha256=7b3f30c2c06a42cf575280f907e58d7ea08411408b6b62bc926bc91cbc6c3f46
+build=bin
+check=cmd:lazygit

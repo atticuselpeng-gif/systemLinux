@@ -1,0 +1,6 @@
+version=1.8.2
+description=curl with the interface of httpie
+url=https://github.com/rs/curlie/releases/download/v1.8.2/curlie_1.8.2_linux_amd64.tar.gz
+sha256=033d39a06d7a4320f923c49b488b89ec415c1901413ae85d26b9f7a09b38f1a1
+build=bin
+check=cmd:curlie

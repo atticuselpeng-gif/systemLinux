@@ -1,0 +1,6 @@
+version=2.0.15
+description=Easy terminal text editor
+url=https://github.com/micro-editor/micro/releases/download/v2.0.15/micro-2.0.15-linux64-static.tar.gz
+sha256=267d238eac1e26ed053d13d4d48bd421b87f9eb538b604f0b2f74a85598b6cc2
+build=bin
+check=cmd:micro

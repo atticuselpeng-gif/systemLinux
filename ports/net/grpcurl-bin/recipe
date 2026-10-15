@@ -1,0 +1,6 @@
+version=1.9.4
+description=curl for gRPC servers
+url=https://github.com/fullstorydev/grpcurl/releases/download/v1.9.4/grpcurl_1.9.4_linux_x86_64.tar.gz
+sha256=97e13d58d2733a0e62cd2571d1d5f0c02823f0d25282f08bddedf1ad9c5d1736
+build=bin
+check=cmd:grpcurl

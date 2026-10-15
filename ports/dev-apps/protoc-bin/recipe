@@ -1,0 +1,7 @@
+version=36.2
+description=Protocol Buffers compiler
+url=https://github.com/protocolbuffers/protobuf/releases/download/v36.2/protoc-36.2-linux-x86_64.zip
+sha256=121f6c7afe1d4d0e3ea6aab9432038599250134cbf4474cb1167d2c7decd4278
+build=bin
+programs=bin/protoc:protoc
+check=cmd:protoc

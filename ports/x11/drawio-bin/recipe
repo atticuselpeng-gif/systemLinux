@@ -1,0 +1,7 @@
+version=32.4.1
+description=Diagram editor (official AppImage)
+url=https://github.com/jgraph/drawio-desktop/releases/download/v32.4.1/drawio-x86_64-32.4.1.AppImage
+sha256=c687a9f1ddcaa146b78547452d264c03c2afcf125639cba5deeb65f3e9554c9e
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:drawio

@@ -1,0 +1,8 @@
+version=10.0.6
+description=Zotero research and citation manager (official build)
+url=https://download.zotero.org/client/release/10.0.6/Zotero-10.0.6_linux-x86_64.tar.xz
+sha256=246c2574a9ac526abeaf3027ffd22fc45536a5ab25f227bb1df932fca9cedd63
+build=bin
+programs=zotero:zotero
+requires=dev-libs/gtk3 dev-libs/pulseaudio x11/libx11 x11/libxcb x11/libxext x11/libxrandr x11/libxcomposite x11/libxdamage x11/libxfixes x11/libxtst dev-libs/alsa-lib dev-libs/fontconfig dev-libs/freetype sys-app/dbus
+check=cmd:zotero

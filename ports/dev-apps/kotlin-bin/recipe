@@ -1,0 +1,8 @@
+version=2.4.21
+description=Kotlin compiler (needs a JDK)
+url=https://github.com/JetBrains/kotlin/releases/download/v2.4.21/kotlin-compiler-2.4.21.zip
+sha256=7cc140e76daf416a0424a5557f99afd7ca89ebd463ea1101261e3e01c33e75cd
+build=bin
+programs=bin/kotlinc:kotlinc bin/kotlin:kotlin
+requires=lang/temurin-bin
+check=cmd:kotlinc

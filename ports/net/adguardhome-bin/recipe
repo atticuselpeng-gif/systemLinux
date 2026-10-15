@@ -1,0 +1,6 @@
+version=0.107.79
+description=Network-wide ad and tracker blocking DNS server
+url=https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.79/AdGuardHome_linux_amd64.tar.gz
+sha256=c48f4a43000665484c5ec28177de11a004759b620dae8f77b2aabefc9ef3687f
+build=bin
+check=cmd:AdGuardHome

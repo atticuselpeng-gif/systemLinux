@@ -1,0 +1,8 @@
+version=1.9.0
+description=Idle manager for Wayland
+url=https://github.com/swaywm/swayidle/archive/refs/tags/v1.9.0.tar.gz
+sha256=161f5827b8c79bc486a472d27690e98d75da6615bb2dee9f24393cbbb13af656
+build=meson
+configure_args=-Dman-pages=disabled -Dlogind=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/wayland-protocols
+check=cmd:swayidle

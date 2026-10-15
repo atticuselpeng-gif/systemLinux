@@ -1,0 +1,6 @@
+version=3.5.5
+description=Argo CD command line
+url=https://github.com/argoproj/argo-cd/releases/download/v3.5.5/argocd-linux-amd64
+sha256=c3ddfa606fc3e89ab14f55bda6600b207c355b028f8eaabe69b817a4c4621aba
+build=bin
+check=cmd:argocd

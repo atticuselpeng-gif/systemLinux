@@ -1,5 +1,8 @@
-url=https://github.com/emersion/mako/releases/download/v1.10.0/mako-1.10.0.tar.gz
-sha256=a72543f7b92568a0c3c45a5c0e3487ced65c18003eecd9b7d017a6464e7cef82
+version=1.11.0
+description=Notification daemon for Wayland
+url=https://github.com/emersion/mako/releases/download/v1.11.0/mako-1.11.0.tar.gz
+sha256=e97eb5bd0dc6a9159019949f48b3db4e8781b56bd6377bd65827e1cb440a7def
 build=meson
-configure_args=-Dman-pages=disabled
-requires=dev-apps/meson dev-apps/ninja dev-libs/wayland dev-libs/pango dev-libs/cairo
+configure_args=-Dman-pages=disabled -Dsd-bus-provider=basu
+requires=dev-libs/basu dev-libs/wayland dev-libs/wayland-protocols dev-libs/pango dev-libs/cairo sys-app/dbus dev-apps/meson dev-apps/ninja
+check=cmd:mako

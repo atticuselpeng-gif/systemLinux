@@ -1,0 +1,8 @@
+version=0.11.1
+description=Console greeter for greetd
+url=https://github.com/apognu/tuigreet/archive/refs/tags/0.11.1.tar.gz
+sha256=7d643ba224c40c6a63f9462a826630543071aea08e732ccd2e880bcd80d939e8
+build=cargo
+srcdir=crates/tuigreet
+requires=lang/rust sys-app/greetd
+check=cmd:tuigreet

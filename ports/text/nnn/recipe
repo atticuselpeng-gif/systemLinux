@@ -1,0 +1,7 @@
+version=5.3
+description=Fast terminal file manager
+url=https://github.com/jarun/nnn/archive/refs/tags/v5.3.tar.gz
+sha256=79ee69f3ced7c0778d207df76b4d4d680636975ccda002eeb19d0917fcba3d36
+build=make
+requires=dev-libs/ncurses dev-libs/readline
+check=cmd:nnn

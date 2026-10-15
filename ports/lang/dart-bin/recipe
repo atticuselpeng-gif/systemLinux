@@ -1,0 +1,7 @@
+version=3.13.5
+description=Dart SDK (official build)
+url=https://storage.googleapis.com/dart-archive/channels/stable/release/3.13.5/sdk/dartsdk-linux-x64-release.zip
+sha256=ea864bc64df30a6b8bdf30b2e32550f7717d9a890de8f40293aeabb924fe232b
+build=bin
+programs=bin/dart:dart
+check=cmd:dart

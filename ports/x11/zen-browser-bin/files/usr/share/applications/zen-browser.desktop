@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Zen Browser
+Exec=zen-browser %U
+Icon=/usr/lib/zen-browser/browser/chrome/icons/default/default128.png
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;

@@ -1,0 +1,6 @@
+version=3.0.0
+description=Render Markdown in the terminal
+url=https://github.com/charmbracelet/glow/releases/download/v3.0.0/glow_3.0.0_Linux_x86_64.tar.gz
+sha256=13e05e4b2acc18d2aee44291aefe6325b077ec321b631a0cfa780e8e3bc33f78
+build=bin
+check=cmd:glow

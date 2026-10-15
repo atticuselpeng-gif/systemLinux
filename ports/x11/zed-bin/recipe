@@ -1,0 +1,8 @@
+version=1.24.2
+description=Fast collaborative code editor
+url=https://github.com/zed-industries/zed/releases/download/v1.24.2/zed-linux-x86_64.tar.gz
+sha256=020a3b02a9f4bb5e0015bad7cc644262bf4ea32cd7ef6f7f4691946d43af0f89
+build=bin
+programs=bin/zed:zed
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/vulkan-loader dev-libs/alsa-lib
+check=cmd:zed

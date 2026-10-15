@@ -1,0 +1,7 @@
+version=2.22.4
+description=Game launcher for Epic, GOG and Amazon (official AppImage)
+url=https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.22.4/Heroic-2.22.4-linux-x86_64.AppImage
+sha256=1664fc3c8e746325f049273272a0eae5a7f653bd3eb4534c2e2a26ef90086e99
+build=bin
+requires=x11/libx11 x11/libxext x11/libxrender x11/libxi x11/libxrandr x11/libxcursor x11/libxinerama x11/libxfixes dev-libs/libxkbcommon dev-libs/fontconfig dev-libs/freetype dev-libs/mesa dev-libs/alsa-lib dev-libs/glib sys-app/dbus
+check=cmd:heroic

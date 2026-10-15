@@ -1,6 +1,6 @@
 version=23.0.0
 description=Xorg driver for AMD GPUs
-url=https://www.x.org/releases/individual/driver/xf86-video-amdgpu-23.0.0.tar.xz
+url=https://xorg.freedesktop.org/archive/individual/driver/xf86-video-amdgpu-23.0.0.tar.xz
 sha256=4f04f0ea66f3ced0dcc58f617409860163a19c4e8c285cfb5285f36ba09cc061
 build=configure
 requires=x11/xorg-server dev-libs/libdrm dev-libs/mesa

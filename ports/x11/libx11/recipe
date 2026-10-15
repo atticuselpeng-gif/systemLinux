@@ -1,6 +1,6 @@
 version=1.8.10
 description=Core X11 client library
-url=https://www.x.org/releases/individual/lib/libX11-1.8.10.tar.xz
+url=https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.10.tar.xz
 sha256=2b3b3dad9347db41dca56beb7db5878f283bde1142f04d9f8e478af435dfdc53
 build=configure
 configure_args=--disable-specs

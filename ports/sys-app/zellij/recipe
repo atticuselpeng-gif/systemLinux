@@ -1,0 +1,7 @@
+version=0.45.1
+description=Terminal workspace and multiplexer
+url=https://github.com/zellij-org/zellij/archive/refs/tags/v0.45.1.tar.gz
+sha256=5cbe711437d2a61afd9287165f6aca0bcccb9ab1473633665a5b11ed55467852
+build=cargo
+requires=lang/rust
+check=cmd:zellij

@@ -3,6 +3,6 @@ description=Dynamic menu for X
 url=https://dl.suckless.org/tools/dmenu-5.3.tar.gz
 sha256=1a8f53e6fd2d749839ec870c5e27b3e14da5c3eeacbfcb945d159e1d5433795f
 build=make
-make_args=X11INC=/usr/local/include X11LIB=/usr/local/lib FREETYPEINC=/usr/include/freetype2
+make_args=X11INC=/usr/include X11LIB=/usr/lib64 FREETYPEINC=/usr/include/freetype2
 requires=x11/libx11 x11/libxft x11/libxinerama
 check=cmd:dmenu

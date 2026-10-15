@@ -1,0 +1,7 @@
+version=29.9.1
+description=Docker engine and command line (official static build)
+url=https://download.docker.com/linux/static/stable/x86_64/docker-29.9.1.tgz
+sha256=c158ecc55adb3afb01bbd3539ed3b997d20c26dbdc418080506cc1bf5243ff57
+build=bin
+requires=net/iptables
+check=cmd:docker

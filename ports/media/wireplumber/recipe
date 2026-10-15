@@ -1,0 +1,8 @@
+version=0.5.18
+description=PipeWire session manager
+url=https://gitlab.freedesktop.org/pipewire/wireplumber/-/archive/0.5.18/wireplumber-0.5.18.tar.gz
+sha256=8c8a326a5b2a570681c1503c83f1fce0cc54ba862019815604b2bc92a7d483a1
+build=meson
+configure_args=-Dsystem-lua=false -Dintrospection=disabled -Ddoc=disabled -Dtests=false -Dsystemd=disabled -Delogind=disabled
+requires=dev-apps/meson dev-apps/ninja dev-libs/pipewire dev-libs/glib
+check=cmd:wireplumber

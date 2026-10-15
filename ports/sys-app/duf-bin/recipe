@@ -1,0 +1,6 @@
+version=0.9.1
+description=Disk usage overview
+url=https://github.com/muesli/duf/releases/download/v0.9.1/duf_0.9.1_linux_x86_64.tar.gz
+sha256=5add851e7062c5e56939abb664705e4d14fa2d06289490aff31d51f153832de7
+build=bin
+check=cmd:duf

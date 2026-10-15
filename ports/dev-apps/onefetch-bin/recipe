@@ -1,0 +1,6 @@
+version=3.0.0
+description=Git repository summary in the terminal
+url=https://github.com/o2sh/onefetch/releases/download/3.0.0/onefetch-linux.tar.gz
+sha256=ae5bbdcb44201b17b75ab76f1cfca103972bf168f06897466385c09a05a9e954
+build=bin
+check=cmd:onefetch

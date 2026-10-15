@@ -1,0 +1,6 @@
+version=2026.10.11
+description=Dev tools and runtime version manager
+url=https://github.com/jdx/mise/releases/download/v2026.10.11/mise-v2026.10.11-linux-x64-musl.tar.gz
+sha256=b2d015b101c1b5e3a0a45f706d0a3a16cab57a6070d7bd43140614aeb7c3fed4
+build=bin
+check=cmd:mise
