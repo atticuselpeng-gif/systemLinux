@@ -132,7 +132,21 @@ The ports root is `$GET_PORTS`, else `ports/` next to the `get` script (repo che
 | `url` | source archive (omit for a meta-package) |
 | `sha256` | checksum of the archive; verified, mismatch is fatal (strongly recommended) |
 | `requires` | space-separated atoms installed first |
-| `build` | `configure`, `autotools` (runs `autoreconf` first), `cmake`, `meson` or `make`; detected when omitted |
+| `build` | `configure`, `autotools` (runs `autoreconf` first), `cmake`, `meson`, `make`, `python`, `cargo`, `go` or `perl`; detected when omitted |
+| `version` | the package version, shown by `get list` and `get info` |
+| `description` | one line, shown and searched by `get search` |
+| `srcdir` | build in this subdirectory of the source tree |
+| `make_args` | extra arguments for `make` (configure, make and perl builds) |
+
+Optional folders next to the recipe:
+
+| folder | meaning |
+| --- | --- |
+| `patches/` | every `*.patch` is applied with `patch -p1`, in name order, before building |
+| `dinit/` | dinit service files, installed to `/etc/dinit.d` (then `dinitctl enable NAME`) |
+| `files/` | extra files copied into place relative to `/`, e.g. `files/etc/foo.conf` |
+
+Service files and extra files are recorded like everything else, so `get remove` deletes them too.
 | `configure_args` | extra arguments for configure / cmake / meson |
 
 Every recipe added in the large ports expansion (see CHANGELOG) has a verified `sha256`; the original starter recipes still lack one (add it as you verify them with `sha256sum file.tar.xz`). `tools/ports-check.sh` validates the whole tree (layout, keys, checksum format, `requires` targets, cycles); `tools/ports-check.sh --verify [ATOM...]` also downloads the sources and compares the checksums, and `--strict` makes a missing `sha256` an error. CI runs it for every change under `ports/`.

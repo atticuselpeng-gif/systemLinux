@@ -3,11 +3,12 @@
 #
 # Checks, for every recipe:
 #   * the directory layout is ports/<category>/<name>/recipe, names use [A-Za-z0-9._+-]
-#   * only known keys (url sha256 requires build configure_args), each at most once, plain key=value lines
+#   * only known keys (url sha256 requires build configure_args version description srcdir make_args), each at most once
+#   * optional folders: patches/*.patch, dinit/<service> (must be a dinit service), files/<path>
 #   * url (https/http/ftp, no whitespace) or requires (meta-package) is present
 #   * sha256, when present, is 64 lowercase hex digits; recipes WITHOUT sha256 are reported as warnings
 #     (the original starter recipes have none); --strict turns that into an error
-#   * build is one of configure, autotools, cmake, meson, make (the types `get` supports)
+#   * build is one of configure, autotools, cmake, meson, make, python, cargo, go, perl (the types `get` supports)
 #   * every requires atom is category/name and exists; there are no dependency cycles
 # With --verify the sources are downloaded and the sha256 of every recipe that has one is compared.
 #
@@ -41,7 +42,7 @@ for recipe in "$PORTS"/*/*/recipe; do
         key=${line%%=*}; key=${key%%[[:space:]]}
         case "$line" in *=*) ;; *) err "$atom: line is not key=value: $line"; continue ;; esac
         case "$key" in
-            url|sha256|requires|build|configure_args) ;;
+            url|sha256|requires|build|configure_args|version|description|srcdir|make_args) ;;
             *) err "$atom: unknown key '$key'"; continue ;;
         esac
         [ -z "${seen[$key]:-}" ] || err "$atom: duplicate key '$key'"
@@ -64,7 +65,19 @@ for recipe in "$PORTS"/*/*/recipe; do
     elif [ -n "$url" ]; then
         if [ "$STRICT" = 1 ]; then err "$atom: missing sha256"; else warn "$atom: missing sha256"; fi
     fi
-    case "$build" in ''|configure|autotools|cmake|meson|make) ;; *) err "$atom: unsupported build type '$build'" ;; esac
+    case "$build" in ''|configure|autotools|cmake|meson|make|python|cargo|go|perl) ;; *) err "$atom: unsupported build type '$build'" ;; esac
+    srcdir=$(val "$recipe" srcdir)
+    case "$srcdir" in /*|..|../*|*/../*|*/..) err "$atom: srcdir must stay inside the source tree" ;; esac
+    # optional folders: patches/*.patch, dinit/<service>, files/<path>
+    for f in "$dir"/*; do
+        case "${f##*/}" in recipe|patches|dinit|files) ;; *) err "$atom: unexpected file ${f##*/} (allowed: recipe, patches/, dinit/, files/)" ;; esac
+    done
+    if [ -d "$dir/patches" ]; then
+        for f in "$dir"/patches/*; do case "$f" in *.patch) ;; *) err "$atom: patches/ may only hold *.patch files" ;; esac; done
+    fi
+    if [ -d "$dir/dinit" ]; then
+        for f in "$dir"/dinit/*; do grep -q '^type[[:space:]]*=' "$f" || err "$atom: dinit/${f##*/} is not a dinit service (no type =)"; done
+    fi
     case "$req" in *[!A-Za-z0-9._+/\ -]*) err "$atom: invalid characters in requires" ;; esac
     REQ[$atom]=$req
 done

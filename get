@@ -93,9 +93,9 @@ visit() {
 }
 
 # ---- building ----
-# build_and_stage ATOM|"" URL SHA BUILDSYS CONFARGS: build in WORK, install into $WORK/dest
+# build_and_stage NAME URL SHA BUILDSYS CONFARGS [PORTDIR SRCDIR MAKEARGS]: build in WORK, install into $WORK/dest
 build_and_stage() {
-    local name=$1 url=$2 sha=$3 buildsys=$4 confargs=$5 file flag src
+    local name=$1 url=$2 sha=$3 buildsys=$4 confargs=$5 portdir=${6:-} srcdir=${7:-} makeargs=${8:-} file flag src p
     case "$url" in
         https://*) ;;
         http://*|ftp://*) printf 'get: warning: %s is not encrypted\n' "$url" >&2 ;;
@@ -123,7 +123,20 @@ build_and_stage() {
     src=$WORK/src
     set -- "$WORK"/src/*
     if [ $# -eq 1 ] && [ -d "$1" ]; then src=$1; fi
+    if [ -n "$srcdir" ]; then
+        case "$srcdir" in /*|..|../*|*/../*|*/..) die "srcdir must stay inside the source tree" ;; esac
+        src=$src/$srcdir
+        [ -d "$src" ] || die "srcdir $srcdir not found in $file"
+    fi
     cd "$src"
+    # the port's patches, in name order
+    if [ -n "$portdir" ] && [ -d "$portdir/patches" ]; then
+        for p in "$portdir"/patches/*.patch; do
+            [ -f "$p" ] || continue
+            say "applying ${p##*/}"
+            patch -p1 -N -s < "$p" || die "patch ${p##*/} failed"
+        done
+    fi
 
     # detect the build system when the recipe does not name one
     if [ -z "$buildsys" ]; then
@@ -132,10 +145,15 @@ build_and_stage() {
         elif [ -f CMakeLists.txt ]; then buildsys=cmake
         elif [ -f configure.ac ] || [ -f configure.in ]; then buildsys=autotools
         elif [ -f Makefile ] || [ -f makefile ] || [ -f GNUmakefile ]; then buildsys=make
+        elif [ -f pyproject.toml ] || [ -f setup.py ]; then buildsys=python
+        elif [ -f Cargo.toml ]; then buildsys=cargo
+        elif [ -f go.mod ]; then buildsys=go
+        elif [ -f Makefile.PL ]; then buildsys=perl
         else die "cannot tell how to build ${name:-$file} (no configure, meson.build, CMakeLists.txt or Makefile)"; fi
     fi
-    local args=()
+    local args=() margs=()
     read -r -a args <<< "$confargs"
+    read -r -a margs <<< "$makeargs"
     local dest=$WORK/dest
     mkdir -p "$dest"
     say "building ${name:-$file} ($buildsys, $JOBS jobs)"
@@ -156,13 +174,34 @@ build_and_stage() {
                 else autoreconf -fi || die "autoreconf failed"; fi
             fi
             ./configure --prefix="$PREFIX" "${args[@]}" || die "configure failed"
-            make -j"$JOBS" || die "build failed"
-            make install DESTDIR="$dest" || die "install failed" ;;
+            make -j"$JOBS" "${margs[@]}" || die "build failed"
+            make install DESTDIR="$dest" "${margs[@]}" || die "install failed" ;;
         make)
-            make -j"$JOBS" PREFIX="$PREFIX" prefix="$PREFIX" "${args[@]}" || die "build failed"
-            make install DESTDIR="$dest" PREFIX="$PREFIX" prefix="$PREFIX" "${args[@]}" || die "install failed" ;;
+            make -j"$JOBS" PREFIX="$PREFIX" prefix="$PREFIX" "${args[@]}" "${margs[@]}" || die "build failed"
+            make install DESTDIR="$dest" PREFIX="$PREFIX" prefix="$PREFIX" "${args[@]}" "${margs[@]}" || die "install failed" ;;
+        python)
+            python3 -m pip --version >/dev/null 2>&1 || die "python builds need pip (get install pip)"
+            python3 -m pip install --no-deps --no-build-isolation --no-warn-script-location \
+                --prefix="$PREFIX" --root="$dest" "${args[@]}" . || die "python build failed" ;;
+        cargo)
+            command -v cargo >/dev/null || die "cargo builds need Rust (get install rust)"
+            cargo install --locked --no-track --path . --root "$dest$PREFIX" "${args[@]}" || die "cargo build failed" ;;
+        go)
+            command -v go >/dev/null || die "go builds need Go (get install go)"
+            mkdir -p "$dest$PREFIX/bin"
+            go build -trimpath -o "$dest$PREFIX/bin/" "${args[@]}" ./... || die "go build failed" ;;
+        perl)
+            perl Makefile.PL PREFIX="$PREFIX" INSTALLDIRS=site "${args[@]}" || die "Makefile.PL failed"
+            make -j"$JOBS" "${margs[@]}" || die "build failed"
+            make install DESTDIR="$dest" "${margs[@]}" || die "install failed" ;;
         *) die "unknown build type: $buildsys" ;;
     esac
+    # dinit services and extra files that come with the port
+    if [ -n "$portdir" ] && [ -d "$portdir/dinit" ]; then
+        mkdir -p "$dest/etc/dinit.d"
+        cp -r "$portdir/dinit/." "$dest/etc/dinit.d/"
+    fi
+    if [ -n "$portdir" ] && [ -d "$portdir/files" ]; then cp -r "$portdir/files/." "$dest/"; fi
     cd /
 }
 
@@ -189,28 +228,34 @@ merge() {
     ldconfig 2>/dev/null || true
 }
 
-record() { # ATOM URL REQUIRES EXPLICIT(0/1)
+record() { # ATOM URL REQUIRES EXPLICIT(0/1) [VERSION]
     local dir; dir=$(dbdir "$1")
-    { echo "url=$2"; echo "requires=$3"; echo "date=$(date +%F)"; } > "$dir/info"
+    { echo "url=$2"; echo "requires=$3"; echo "version=${5:-}"; echo "date=$(date +%F)"; } > "$dir/info"
     if [ "$4" = 1 ]; then touch "$dir/explicit"; fi
 }
 
 install_atom() { # ATOM EXPLICIT
-    local a=$1 url sha bs ca req
+    local a=$1 url sha bs ca req ver sd ma svc
+    ver=$(recipe_get "$PORTS/$a/recipe" version)
+    sd=$(recipe_get "$PORTS/$a/recipe" srcdir)
+    ma=$(recipe_get "$PORTS/$a/recipe" make_args)
     url=$(recipe_get "$PORTS/$a/recipe" url)
     sha=$(recipe_get "$PORTS/$a/recipe" sha256)
     bs=$(recipe_get "$PORTS/$a/recipe" build)
     ca=$(recipe_get "$PORTS/$a/recipe" configure_args)
     req=$(requires_of "$a")
-    say "installing $a"
+    say "installing $a${ver:+ $ver}"
     if [ -z "$url" ]; then # meta-package: only dependencies
-        mkdir -p "$(dbdir "$a")"; : > "$(dbdir "$a")/files"; record "$a" "" "$req" "$2"; return 0
+        mkdir -p "$(dbdir "$a")"; : > "$(dbdir "$a")/files"; record "$a" "" "$req" "$2" "$ver"; return 0
     fi
     newwork
-    build_and_stage "$a" "$url" "$sha" "$bs" "$ca"
+    build_and_stage "$a" "$url" "$sha" "$bs" "$ca" "$PORTS/$a" "$sd" "$ma"
     merge "$a"
-    record "$a" "$url" "$req" "$2"
+    record "$a" "$url" "$req" "$2" "$ver"
     rm -rf "$WORK"; WORK=''
+    if [ -d "$PORTS/$a/dinit" ]; then
+        for svc in "$PORTS/$a"/dinit/*; do [ -f "$svc" ] && say "service ${svc##*/} installed: dinitctl enable ${svc##*/}"; done
+    fi
 }
 
 # ---- commands ----
@@ -296,17 +341,23 @@ cmd_autoremove() {
 }
 
 cmd_list() {
-    local p
+    local p v
     for p in $(installed_atoms); do
-        if [ -f "$(dbdir "$p")/explicit" ]; then echo "* $p"; else echo "  $p"; fi
+        v=$(sed -n 's/^version=//p' "$(dbdir "$p")/info" 2>/dev/null)
+        if [ -f "$(dbdir "$p")/explicit" ]; then echo "* $p${v:+ $v}"; else echo "  $p${v:+ $v}"; fi
     done
 }
 
 cmd_search() {
     [ $# -eq 1 ] || die "usage: get search WORD"
     [ -d "$PORTS" ] || die "no ports tree in $PORTS (try: get sync)"
-    (cd "$PORTS" && ls -d */*/ | sed 's|/$||' | grep -i -- "$1") | while IFS= read -r a; do
-        if installed "$a"; then echo "$a [installed]"; elif provided_by_base "$a"; then echo "$a [base system]"; else echo "$a"; fi
+    # matches in the name or the description
+    (cd "$PORTS" && { ls -d */*/ | sed 's|/$||' | grep -i -- "$1" || true; grep -lis -- "^description=.*$1" */*/recipe | sed 's|/recipe$||' || true; } | sort -u) |
+    while IFS= read -r a; do
+        local d tag=''
+        d=$(recipe_get "$PORTS/$a/recipe" description)
+        if installed "$a"; then tag=' [installed]'; elif provided_by_base "$a"; then tag=' [base system]'; fi
+        printf '%s%s%s\n' "$a" "$tag" "${d:+  - $d}"
     done
 }
 
