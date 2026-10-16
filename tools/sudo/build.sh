@@ -15,7 +15,8 @@ curl -fsSL -o "$ROOT$B/sudo.tar.gz" "$URL"
 [ "$(sha256sum "$ROOT$B/sudo.tar.gz" | cut -d' ' -f1)" = "$SUDO_SHA256" ] || { echo "sudo: checksum mismatch" >&2; exit 1; }
 tar --no-same-owner -xzf "$ROOT$B/sudo.tar.gz" -C "$ROOT$B" --strip-components=1
 mkdir -p "$ROOT/dev" "$ROOT/proc" "$ROOT/tmp"; chmod 1777 "$ROOT/tmp"
-mount --rbind /dev "$ROOT/dev"; mount -t proc proc "$ROOT/proc"
+# rslave: the host /dev is a shared mount, so without it unmounting the copy would unmount the host /dev/pts too
+mount --rbind /dev "$ROOT/dev"; mount --make-rslave "$ROOT/dev"; mount -t proc proc "$ROOT/proc"
 rm -f "$ROOT/usr/bin/sudo"
 chroot "$ROOT" /bin/sh -c "cd $B && ./configure -q --prefix=/usr --sysconfdir=/etc --libexecdir=/usr/lib \
     --with-pam --with-env-editor --without-sendmail --with-rundir=/run/sudo --with-vardir=/var/db/sudo \
