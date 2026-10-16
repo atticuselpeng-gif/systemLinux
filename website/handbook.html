@@ -20,136 +20,184 @@
 <main class="main">
 <!-- content -->
 <h1>The systemLinux Handbook</h1>
-  <p class="sub">From the downloaded ISO to an installed system that updates itself. Every command is written out.</p>
-  <div class="note"><strong>Warning:</strong> installing erases whichever disk or partition you point it at. Back up first. Both UEFI and legacy BIOS boot are supported by <code>systemlinux-install</code>; the manual steps below describe the UEFI layout (for BIOS add a 1 MiB BIOS boot partition and run <code>grub-install --target=i386-pc DISK</code>).</div>
+  <p class="sub">From the downloaded ISO to an installed system. Every command is written out.</p>
+  <div class="note"><strong>Warning:</strong> installing erases the disk or partition you choose. Back up first. Both UEFI and legacy BIOS computers are supported.</div>
   <div class="handbook">
     <aside><h2>Chapters</h2><ol>
-      <li><a href="#hb-1">Make a bootable USB stick</a></li>
-      <li><a href="#hb-2">Boot the live system</a></li>
-      <li><a href="#hb-3">Install to disk, by hand</a></li>
-      <li><a href="#hb-4">Optional: encrypt with LUKS</a></li>
-      <li><a href="#hb-5">The fast path: systemlinux-install</a></li>
-      <li><a href="#hb-6">First boot</a></li>
-      <li><a href="#hb-7">Installing software</a></li>
-      <li><a href="#hb-8">Updating the system</a></li>
+      <li><a href="#hb-1">Before you start</a></li>
+      <li><a href="#hb-2">Make a bootable USB stick</a></li>
+      <li><a href="#hb-3">Boot the live system</a></li>
+      <li><a href="#hb-4">Install with systemlinux-install</a></li>
+      <li><a href="#hb-5">Dual-boot next to another system</a></li>
+      <li><a href="#hb-6">Install by hand</a></li>
+      <li><a href="#hb-7">First boot</a></li>
+      <li><a href="#hb-8">Installing software</a></li>
       <li><a href="#hb-9">Managing installed packages</a></li>
-      <li><a href="#hb-10">Recovery</a></li>
-      <li><a href="#hb-11">If something goes wrong</a></li>
+      <li><a href="#hb-10">Moving to a new version</a></li>
+      <li><a href="#hb-11">Recovery</a></li>
+      <li><a href="#hb-12">If something goes wrong</a></li>
     </ol></aside>
     <article>
-      <div class="chapter" id="hb-1"><h2>1. Make a bootable USB stick</h2>
-        <p>Download the ISO and check it against the SHA-256 on the <a href="https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.4">release page</a>. Then copy it onto a <strong>Ventoy</strong> stick, or write it straight to a stick (this erases the stick):</p>
-        <pre class="term">sudo dd if=systemLinux-0.2.4-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync</pre>
-        <p>Replace <code>/dev/sdX</code> with the stick (check with <code>lsblk</code>). On Windows use Rufus in <em>DD image</em> mode or balenaEtcher.</p></div>
+      <div class="chapter" id="hb-1"><h2>1. Before you start</h2>
+        <ul>
+          <li>A 64-bit x86 computer (x86_64), UEFI or legacy BIOS, with at least 2&nbsp;GB of RAM.</li>
+          <li>At least 10&nbsp;GB of disk for the system; more if you will build big packages with <code>get</code>.</li>
+          <li>A USB stick of 1&nbsp;GB or more, or a virtual machine (QEMU, VirtualBox, VMware).</li>
+          <li>A network connection is not needed to install, only to download software afterwards.</li>
+          <li>On UEFI machines, turn <strong>Secure Boot off</strong> in the firmware settings: the bootloader is not signed.</li>
+        </ul></div>
 
-      <div class="chapter" id="hb-2"><h2>2. Boot the live system</h2>
-        <p>Restart, open your firmware&rsquo;s boot menu (usually F12, F10, Esc or F8) and pick the stick&rsquo;s entry (UEFI or legacy BIOS). The boot menu offers:</p>
-        <ul><li><strong>systemLinux</strong>: the normal live session, a root shell on the console.</li><li><strong>copy to RAM</strong>: loads the whole system into memory so you can remove the stick.</li><li><strong>debug shell</strong>: shows every message and stops just before the real system starts. Use it if the normal entry does not work.</li></ul>
-        <p>Nothing is written to your disks until you follow chapter 3 or run <code>systemlinux-install</code>. Bring up networking first if you need it (<code>nmcli device wifi connect &lt;ssid&gt; password &lt;pass&gt;</code>, or plug in Ethernet).</p></div>
+      <div class="chapter" id="hb-2"><h2>2. Make a bootable USB stick</h2>
+        <p>Download the ISO from the <a href="https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.4">release page</a> and check it:</p>
+        <pre class="term"><span class="p">$</span> sha256sum -c systemLinux-0.2.4-x86_64.iso.sha256
+systemLinux-0.2.4-x86_64.iso: OK</pre>
+        <p>Copy it onto a <strong>Ventoy</strong> stick, or write it straight to a stick (this erases the stick):</p>
+        <pre class="term"><span class="p">$</span> lsblk                                  <span class="c"># find the stick, e.g. /dev/sdb</span>
+<span class="p">$</span> sudo dd if=systemLinux-0.2.4-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync</pre>
+        <p>On Windows use Rufus in <em>DD image</em> mode, or balenaEtcher.</p>
+        <p><strong>Virtual machine:</strong> attach the ISO as a CD and give the VM a new empty disk. For example with QEMU:</p>
+        <pre class="term"><span class="p">$</span> qemu-img create -f qcow2 disk.qcow2 20G
+<span class="p">$</span> qemu-system-x86_64 -enable-kvm -cpu host -m 4G -smp 4 \
+    -drive file=disk.qcow2,if=virtio -cdrom systemLinux-0.2.4-x86_64.iso -nic user</pre></div>
 
-      <div class="chapter" id="hb-3"><h2>3. Install to disk, by hand</h2>
-        <p>This is the whole install, one real command at a time. <code>$DISK</code> is a whole disk (e.g. <code>/dev/sda</code>, <code>/dev/nvme0n1</code>); for a dual-boot install into a partition you already freed with GParted or Windows Disk Management, skip straight to the <em>existing partition</em> note under step 2.</p>
+      <div class="chapter" id="hb-3"><h2>3. Boot the live system</h2>
+        <p>Restart, open the firmware&rsquo;s boot menu (usually F12, F10, F8 or Esc) and pick the stick. The systemLinux menu offers:</p>
+        <ul>
+          <li><strong>systemLinux</strong>: the normal live system.</li>
+          <li><strong>copy to RAM</strong>: loads the whole system into memory, so you can pull the stick out.</li>
+          <li><strong>serial console</strong>: also prints to the first serial port (for servers and headless VMs).</li>
+          <li><strong>debug shell</strong>: shows every boot message and stops in a shell just before the system starts.</li>
+        </ul>
+        <p>The live system logs you in as <strong>root</strong> on the console. Nothing is written to your disks until you install.</p>
+        <p>To get online (only needed for <code>get</code>, not for installing): Ethernet works by itself; for Wi-Fi run</p>
+        <pre class="term"><span class="p">#</span> nmcli device wifi list
+<span class="p">#</span> nmcli device wifi connect "NetworkName" password "secret"</pre></div>
 
-        <h3>Step 1: pick the disk and wipe it</h3>
-        <pre class="term"><span class="p">$</span> lsblk                                 <span class="c"># find your disk; be sure before the next line</span>
-<span class="p">$</span> DISK=/dev/sda
-<span class="p">$</span> wipefs -a -f "$DISK"
-<span class="p">$</span> dd if=/dev/zero of="$DISK" bs=1M count=4</pre>
+      <div class="chapter" id="hb-4"><h2>4. Install with systemlinux-install</h2>
+        <p>This is the normal way. In the live system run:</p>
+        <pre class="term"><span class="p">#</span> systemlinux-install</pre>
+        <p>It asks, one question at a time:</p>
+        <ol>
+          <li><strong>[d]isk or [p]artition:</strong> <code>d</code> erases a whole disk; <code>p</code> installs into one partition and leaves the rest of the disk alone (see <a href="#hb-5">chapter 5</a>). It lists your disks first.</li>
+          <li><strong>The disk</strong>, e.g. <code>/dev/sda</code>, <code>/dev/nvme0n1</code> or <code>/dev/vda</code> in a VM.</li>
+          <li><strong>Computer name</strong> (default <code>systemlinux</code>).</li>
+          <li><strong>Your username</strong>: lowercase letters, digits, <code>-</code> and <code>_</code>. This account can use <code>sudo</code>.</li>
+          <li><strong>Full name</strong> (optional).</li>
+          <li><strong>Timezone</strong>, e.g. <code>Europe/Paris</code> or <code>America/New_York</code> (default UTC).</li>
+          <li><strong>Console keymap</strong>, e.g. <code>us</code>, <code>uk</code>, <code>fr</code>, <code>de</code>.</li>
+          <li><strong>Password</strong>, twice, and whether root gets the same one.</li>
+          <li><strong>Encrypt with LUKS?</strong> If yes, a passphrase, twice. You type it at every boot; a lost passphrase cannot be recovered.</li>
+        </ol>
+        <p>It then shows what it is going to erase and waits until you type <code>yes</code>. Nothing is touched before that. The install takes a few minutes and ends with:</p>
+        <pre class="term">Done. Remove the installation media and reboot.</pre>
+        <pre class="term"><span class="p">#</span> reboot</pre>
+        <p>Every question can also be given on the command line, for scripted installs:</p>
+        <pre class="term"><span class="p">#</span> systemlinux-install --disk /dev/sda --host laptop --user alex --tz Europe/Paris --keymap fr [--luks] [--yes]</pre>
+        <p><strong>What a whole-disk install creates:</strong> a GPT disk with a 1&nbsp;MiB BIOS boot partition, a 512&nbsp;MiB EFI System Partition and one ext4 partition for everything else. GRUB is installed for both UEFI and BIOS, so the disk boots on either kind of machine.</p></div>
 
-        <h3>Step 2: partition and format</h3>
-        <p>GPT with a 512&nbsp;MiB EFI System Partition and one ext4 partition for everything else (system images, GRUB and your files):</p>
-        <pre class="term"><span class="p">$</span> printf 'label: gpt\n,512M,U\n,,L\n' | sfdisk --wipe always --wipe-partitions always "$DISK"
-<span class="p">$</span> mkfs.vfat -F32 -n EFI "${DISK}1"        <span class="c"># nvme/mmc disks: ${DISK}p1</span>
-<span class="p">$</span> mkfs.ext4 -F -q -L systemLinux "${DISK}2"</pre>
-        <p><strong>Existing partition instead of a whole disk:</strong> if you pre-shrank another OS and have a free partition already, set <code>DATADEV=/dev/sdXN</code> to that partition, run only the <code>mkfs.ext4</code> line above against it, and reuse your existing EFI System Partition (skip the <code>mkfs.vfat</code> line and the whole-disk <code>wipefs</code>/<code>dd</code> in step 1). Then substitute <code>$DATADEV</code> for <code>${DISK}2</code> and your existing ESP for <code>${DISK}1</code> in every step below.</p>
+      <div class="chapter" id="hb-5"><h2>5. Dual-boot next to another system</h2>
+        <ol>
+          <li>In the other system, make free space: shrink a partition with Windows <em>Disk Management</em> or GParted, and create a new empty partition of at least 10&nbsp;GB.</li>
+          <li>Boot the live system, find that partition with <code>lsblk</code> (check the size), then run <code>systemlinux-install</code> and answer <code>p</code>, then the partition, e.g. <code>/dev/nvme0n1p5</code>.</li>
+        </ol>
+        <p>Only that partition is formatted. On UEFI the existing EFI System Partition is reused (if there is more than one it asks which; or pass <code>--esp /dev/sdXN</code>). On legacy BIOS, GRUB is written to the disk&rsquo;s boot sectors, so it replaces the other system&rsquo;s bootloader there.</p></div>
 
-        <h3>Step 3: copy the system</h3>
-        <pre class="term"><span class="p">$</span> VER=$(cat /usr/share/systemlinux/image-version)
-<span class="p">$</span> mkdir -p /mnt/target-data /mnt/target-sq /mnt/target-root
-<span class="p">$</span> mount "${DISK}2" /mnt/target-data
-<span class="p">$</span> mkdir -p /mnt/target-data/boot/images/$VER /mnt/target-data/persist/upper \
-           /mnt/target-data/persist/work /mnt/target-data/boot/efi
-<span class="p">$</span> mount "${DISK}1" /mnt/target-data/boot/efi
-<span class="p">$</span> cp /live-medium/live/vmlinuz /live-medium/live/initrd.img /live-medium/live/rootfs.squashfs \
-      /mnt/target-data/boot/images/$VER/</pre>
-        <p>Mount the copied image with a persistent overlay, so the next steps write into the real installed root:</p>
-        <pre class="term"><span class="p">$</span> mount -t squashfs -o loop,ro /mnt/target-data/boot/images/$VER/rootfs.squashfs /mnt/target-sq
-<span class="p">$</span> mount -t overlay overlay -o lowerdir=/mnt/target-sq,upperdir=/mnt/target-data/persist/upper,workdir=/mnt/target-data/persist/work /mnt/target-root</pre>
+      <div class="chapter" id="hb-6"><h2>6. Install by hand</h2>
+        <p>Exactly what <code>systemlinux-install</code> does, for a whole disk on a UEFI machine, one command at a time. Use this if you want to see or change every step. <code>$DISK</code> is the whole disk; on NVMe and MMC disks the partitions are <code>${DISK}p1</code>, <code>${DISK}p2</code>, ...</p>
 
-        <h3>Step 4: basic settings and accounts</h3>
-        <pre class="term"><span class="p">$</span> ROOT=/mnt/target-root
-<span class="p">$</span> ESPUUID=$(blkid -s UUID -o value "${DISK}1")
-<span class="p">$</span> printf '/data/boot  /boot  none  bind  0 0\nUUID=%s  /boot/efi  vfat  umask=0077  0  2\n' "$ESPUUID" > "$ROOT/etc/fstab"
-<span class="p">$</span> echo myhostname > "$ROOT/etc/hostname"
-<span class="p">$</span> ln -sf ../usr/share/zoneinfo/Region/City "$ROOT/etc/localtime"   <span class="c"># e.g. Europe/Lisbon</span>
-<span class="p">$</span> echo LANG=C.UTF-8 > "$ROOT/etc/locale.conf"
-<span class="p">$</span> systemlinux-provision --user yourname "$ROOT"    <span class="c"># reads your password from stdin (twice), creates the account, sudoers, branding</span>
-<span class="p">$</span> sed -i 's/ --autologin root//' "$ROOT/etc/dinit.d/getty-tty1"   <span class="c"># ask for a login on tty1 (the live image logs root in)</span>
-<span class="p">$</span> chpasswd -R "$ROOT"                         <span class="c"># set the root password, "root:yourpassword"</span></pre>
+        <h3>Step 1: partition and format</h3>
+        <pre class="term"><span class="p">#</span> lsblk                                 <span class="c"># be sure of the disk before the next lines</span>
+<span class="p">#</span> DISK=/dev/sda
+<span class="p">#</span> wipefs -a -f "$DISK"
+<span class="p">#</span> printf 'label: gpt\n,1M,21686148-6449-6E6F-744E-656564454649\n,512M,U\n,,L\n' | sfdisk --wipe always "$DISK"
+<span class="p">#</span> ESP=${DISK}2 DATA=${DISK}3
+<span class="p">#</span> mkfs.vfat -F32 -n EFI "$ESP"
+<span class="p">#</span> mkfs.ext4 -F -q -L systemLinux "$DATA"</pre>
+        <p><strong>Encryption (optional):</strong> instead of the last line, run <code>cryptsetup luksFormat "$DATA"</code>, <code>cryptsetup open "$DATA" systemlinux-data</code>, <code>mkfs.ext4 -F -q -L systemLinux /dev/mapper/systemlinux-data</code>, and use <code>/dev/mapper/systemlinux-data</code> as <code>$DATA</code> from here on.</p>
 
-        <h3>Step 5: install GRUB</h3>
-        <pre class="term"><span class="p">$</span> grub-install --target=x86_64-efi --efi-directory=/mnt/target-data/boot/efi \
-    --boot-directory=/mnt/target-data/boot --removable
-<span class="p">$</span> PARTNUM=1
-<span class="p">$</span> efibootmgr -c -d "$DISK" -p "$PARTNUM" -L systemLinux -l '\\EFI\\BOOT\\BOOTX64.EFI'   <span class="c"># best-effort; fine to fail without efivars</span>
-<span class="p">$</span> DUUID=$(blkid -s UUID -o value "${DISK}2")
-<span class="p">$</span> systemlinux-grubcfg /mnt/target-data/boot "$DUUID"
-<span class="p">$</span> grub-editenv /mnt/target-data/boot/grub/grubenv create
-<span class="p">$</span> grub-set-default --boot-directory=/mnt/target-data/boot "$VER"</pre>
-        <p>Restart and remove the stick. That&rsquo;s the whole install. Nothing else runs behind your back.</p></div>
+        <h3>Step 2: copy the system image</h3>
+        <p>The installed system runs from the same compressed image as the live one, with your changes kept in <code>/persist</code> on top.</p>
+        <pre class="term"><span class="p">#</span> VER=$(cat /usr/share/systemlinux/image-version)
+<span class="p">#</span> mkdir -p /mnt/data /mnt/sq /mnt/root
+<span class="p">#</span> mount "$DATA" /mnt/data
+<span class="p">#</span> mkdir -p /mnt/data/boot/images/$VER /mnt/data/boot/efi /mnt/data/persist/upper /mnt/data/persist/work
+<span class="p">#</span> mount "$ESP" /mnt/data/boot/efi
+<span class="p">#</span> cp /live-medium/live/vmlinuz /live-medium/live/initrd.img /live-medium/live/rootfs.squashfs /mnt/data/boot/images/$VER/
+<span class="p">#</span> mount -t squashfs -o loop,ro /mnt/data/boot/images/$VER/rootfs.squashfs /mnt/sq
+<span class="p">#</span> mount -t overlay overlay -o lowerdir=/mnt/sq,upperdir=/mnt/data/persist/upper,workdir=/mnt/data/persist/work /mnt/root</pre>
 
-      <div class="chapter" id="hb-4"><h2>4. Optional: encrypt with LUKS</h2>
-        <p>To encrypt the data partition, do this <strong>before</strong> step 2&rsquo;s <code>mkfs.ext4</code> in chapter 3:</p>
-        <pre class="term"><span class="p">$</span> cryptsetup luksFormat "${DISK}2"
-<span class="p">$</span> cryptsetup luksOpen "${DISK}2" systemlinux-data
-<span class="p">$</span> mkfs.ext4 -F -q -L systemLinux /dev/mapper/systemlinux-data</pre>
-        <p>Then use <code>/dev/mapper/systemlinux-data</code> everywhere chapter 3 says <code>${DISK}2</code> (mounting, <code>blkid</code> for the data UUID, and so on). At boot, the live initramfs recognises a LUKS data partition from its UUID and prompts for the passphrase before mounting it. There&rsquo;s nothing extra to configure. Keep the passphrase somewhere safe: there is no recovery without it.</p></div>
+        <h3>Step 3: settings and accounts</h3>
+        <pre class="term"><span class="p">#</span> ROOT=/mnt/root
+<span class="p">#</span> printf '/data/boot  /boot  none  bind  0 0\nUUID=%s  /boot/efi  vfat  umask=0077  0  2\n' "$(blkid -s UUID -o value "$ESP")" &gt; $ROOT/etc/fstab
+<span class="p">#</span> echo mycomputer &gt; $ROOT/etc/hostname
+<span class="p">#</span> ln -sf ../usr/share/zoneinfo/Europe/Paris $ROOT/etc/localtime
+<span class="p">#</span> echo LANG=C.UTF-8 &gt; $ROOT/etc/locale.conf
+<span class="p">#</span> echo KEYMAP=us &gt; $ROOT/etc/vconsole.conf
+<span class="p">#</span> systemlinux-provision --user yourname $ROOT    <span class="c"># type your password twice; creates the account and its sudo rights</span>
+<span class="p">#</span> echo 'root:rootpassword' | chpasswd -R $ROOT
+<span class="p">#</span> sed -i 's/ --autologin root//' $ROOT/etc/dinit.d/getty-tty1   <span class="c"># ask for a login (the live system logs root in)</span></pre>
 
-      <div class="chapter" id="hb-5"><h2>5. The fast path: systemlinux-install</h2>
-        <p>Everything in chapters 3&ndash;4, asked as plain questions instead of typed by hand:</p>
-        <pre class="term"><span class="p">$</span> sudo systemlinux-install</pre>
-        <p>It prompts for a whole disk or an existing partition, hostname, username and password, time zone, keyboard layout, and whether to encrypt with LUKS, then runs exactly the steps above. Nothing happens until you confirm the summary it shows first.</p></div>
+        <h3>Step 4: bootloader</h3>
+        <pre class="term"><span class="p">#</span> grub-install --target=x86_64-efi --efi-directory=/mnt/data/boot/efi --boot-directory=/mnt/data/boot --removable
+<span class="p">#</span> grub-install --target=i386-pc --boot-directory=/mnt/data/boot "$DISK"     <span class="c"># optional: also boot on BIOS</span>
+<span class="p">#</span> efibootmgr -c -d "$DISK" -p 2 -L systemLinux -l '\EFI\BOOT\BOOTX64.EFI'    <span class="c"># fine if this fails</span>
+<span class="p">#</span> systemlinux-grubcfg /mnt/data/boot "$(blkid -s UUID -o value "$DATA")"
+<span class="p">#</span> grub-editenv /mnt/data/boot/grub/grubenv create
+<span class="p">#</span> grub-set-default --boot-directory=/mnt/data/boot "$VER"</pre>
+        <p>With LUKS, pass the UUID of the <em>encrypted</em> partition as a third argument to <code>systemlinux-grubcfg</code> (<code>blkid -s UUID -o value /dev/sda3</code>) and the data UUID from <code>/dev/mapper/systemlinux-data</code> as the second.</p>
+        <pre class="term"><span class="p">#</span> umount -R /mnt/root /mnt/sq /mnt/data
+<span class="p">#</span> reboot</pre></div>
 
-      <div class="chapter" id="hb-6"><h2>6. First boot</h2>
-        <p>GRUB shows for three seconds, then systemLinux starts to a console login. Your user can use <code>sudo</code>.</p></div>
+      <div class="chapter" id="hb-7"><h2>7. First boot</h2>
+        <p>GRUB waits three seconds, then systemLinux starts to a console login. Log in with your username. Check that your account works:</p>
+        <pre class="term"><span class="p">$</span> sudo whoami
+root
+<span class="p">$</span> su -                                    <span class="c"># root's password; only members of the wheel group may use su</span></pre>
+        <p>Services are run by <strong>dinit</strong> (there is no systemd):</p>
+        <pre class="term"><span class="p">$</span> dinitctl list                           <span class="c"># what is running</span>
+<span class="p">$</span> sudo dinitctl start NetworkManager
+<span class="p">$</span> sudo dinitctl enable NAME                <span class="c"># start NAME at every boot</span></pre>
+        <p>Connect to the network the same way as in the live system (<code>nmcli</code>). Show off with <code>fastfetch</code>.</p></div>
 
-      <div class="chapter" id="hb-7"><h2>7. Installing software</h2>
-        <p><code>get</code> builds software from the ports tree in <code>/usr/ports</code>; the build tools (gcc, make, cmake, meson, autotools, perl, python) are already installed. Dependencies are built first.</p>
-<pre class="term"><span class="p">$</span> sudo get install htop                  <span class="c"># build and install a package</span>
-<span class="p">$</span> sudo get install firefox               <span class="c"># Mozilla's official build (a -bin port)</span>
-<span class="p">$</span> get search editor                      <span class="c"># find packages</span>
+      <div class="chapter" id="hb-8"><h2>8. Installing software</h2>
+        <p><code>get</code> builds software from the ports tree in <code>/usr/ports</code>. The compilers and build tools are already installed, and dependencies are built first.</p>
+<pre class="term"><span class="p">$</span> get search editor                      <span class="c"># find packages</span>
+<span class="p">$</span> get info htop                          <span class="c"># what it is and what it needs</span>
+<span class="p">$</span> sudo get install htop                  <span class="c"># build and install</span>
+<span class="p">$</span> sudo get install firefox-bin           <span class="c"># Mozilla's own build: -bin ports are fast</span>
 <span class="p">$</span> sudo get remove htop                   <span class="c"># uninstall exactly what was installed</span>
-<span class="p">$</span> sudo get sync                          <span class="c"># update the ports tree</span></pre>
-        <p>Packages install into <code>/usr</code>, configuration into <code>/etc</code>. Daemons come with a dinit service: <code>sudo dinitctl enable NAME</code>. A source tarball without a recipe works too: <code>sudo get install https://ftp.gnu.org/gnu/hello/hello-2.12.2.tar.gz</code>. Browse everything on the <a href="packages.html">Packages</a> page; to add a program, see the <a href="packaging.html">packaging guide</a>.</p></div>
-
-      <div class="chapter" id="hb-8"><h2>8. Updating the system</h2>
-        <p>There is no in-place updater: to move to a newer systemLinux, write the new ISO to a stick and run <code>systemlinux-install</code> again (onto a new partition, or the same one).</p></div>
+<span class="p">$</span> sudo get sync                          <span class="c"># update the ports tree from the latest release</span></pre>
+        <p>Packages go into <code>/usr</code>, configuration into <code>/etc</code>. A source tarball without a recipe works too: <code>sudo get install https://ftp.gnu.org/gnu/hello/hello-2.12.2.tar.gz</code>. Browse everything on the <a href="packages.html">Packages</a> page; to add a program, see the <a href="packaging.html">packaging guide</a>.</p></div>
 
       <div class="chapter" id="hb-9"><h2>9. Managing installed packages</h2>
-        <p><code>get list</code> shows what you installed (<code>*</code> marks what you asked for, the rest are dependencies), <code>get files NAME</code> lists a package&rsquo;s files, and <code>get autoremove</code> removes dependencies nothing needs any more. A package never overwrites a file that belongs to another package or to the base system; an existing file in <code>/etc</code> is kept and the new one is installed next to it as <code>FILE.get-new</code>.</p></div>
+        <p><code>get list</code> shows what is installed (<code>*</code> marks what you asked for, the rest are dependencies), <code>get files NAME</code> lists a package&rsquo;s files, and <code>get autoremove</code> removes dependencies nothing needs any more. A package never silently overwrites a file that belongs to another package; an existing file in <code>/etc</code> is kept and the new one is put next to it as <code>FILE.get-new</code>.</p></div>
 
-      <div class="chapter" id="hb-10"><h2>10. Recovery</h2>
-        <p><strong>Boot an older image:</strong> at the GRUB menu, pick a previous version. Every image installed on the disk stays listed and bootable.</p>
-        <p><strong>Repair a broken install from the live ISO:</strong> boot the live medium, then mount and chroot into the installed system the same way the installer assembles it:</p>
-        <pre class="term"><span class="p">$</span> mkdir -p /mnt/data /mnt/sq /mnt/root
-<span class="p">$</span> mount /dev/sdXN /mnt/data                          <span class="c"># the data partition</span>
-<span class="p">$</span> VER=$(ls /mnt/data/boot/images | sort | tail -1)   <span class="c"># or the version you want to fix</span>
-<span class="p">$</span> mount -t squashfs -o loop,ro /mnt/data/boot/images/$VER/rootfs.squashfs /mnt/sq
-<span class="p">$</span> mount -t overlay overlay -o lowerdir=/mnt/sq,upperdir=/mnt/data/persist/upper,workdir=/mnt/data/persist/work /mnt/root
-<span class="p">$</span> mount --bind /mnt/data /mnt/root/data
-<span class="p">$</span> mount --bind /proc /mnt/root/proc && mount --bind /sys /mnt/root/sys && mount --bind /dev /mnt/root/dev
-<span class="p">$</span> chroot /mnt/root /bin/bash</pre>
-        <p>Fix what needs fixing (reset a password with <code>passwd</code>, edit <code>/etc/fstab</code>, reinstall GRUB with the same command as chapter 3 step 5), then <code>exit</code> and unmount in reverse order before rebooting.</p>
-        <p><strong>Back up:</strong> everything you can lose lives under <code>/persist/upper</code> on the data partition. That&rsquo;s the entire writable layer (your files, accounts, and any software you built with get). Copy it (or just <code>/home</code> and <code>/etc</code> within it) to external storage regularly; system images themselves are always re-downloadable and never need backing up.</p></div>
+      <div class="chapter" id="hb-10"><h2>10. Moving to a new version</h2>
+        <p>There is no in-place upgrade yet. Back up your files (see <a href="#hb-11">Recovery</a>), write the new ISO to a stick and install again.</p>
+        <div class="note"><strong>Coming from 0.2.3 or older:</strong> those images had wrong file owners, so <code>sudo</code> and <code>su</code> fail with &ldquo;operation not permitted&rdquo;. Install 0.2.4 fresh; updating the old install does not fix it.</div></div>
 
-      <div class="chapter" id="hb-11"><h2>11. If something goes wrong</h2>
+      <div class="chapter" id="hb-11"><h2>11. Recovery</h2>
+        <p><strong>Older image:</strong> the GRUB menu lists every image on the disk, and a <em>debug</em> entry for each that shows all boot messages.</p>
+        <p><strong>Repair from the live ISO:</strong> boot the stick, then open the installed system:</p>
+        <pre class="term"><span class="p">#</span> mkdir -p /mnt/data /mnt/sq /mnt/root
+<span class="p">#</span> mount /dev/sdXN /mnt/data                          <span class="c"># the data partition (LUKS: cryptsetup open it first)</span>
+<span class="p">#</span> VER=$(ls /mnt/data/boot/images | sort | tail -1)
+<span class="p">#</span> mount -t squashfs -o loop,ro /mnt/data/boot/images/$VER/rootfs.squashfs /mnt/sq
+<span class="p">#</span> mount -t overlay overlay -o lowerdir=/mnt/sq,upperdir=/mnt/data/persist/upper,workdir=/mnt/data/persist/work /mnt/root
+<span class="p">#</span> for d in dev proc sys; do mount --rbind /$d /mnt/root/$d; mount --make-rslave /mnt/root/$d; done
+<span class="p">#</span> chroot /mnt/root /bin/bash</pre>
+        <p>Fix what needs fixing (<code>passwd yourname</code> resets a password), then <code>exit</code>, <code>umount -R /mnt/root</code> and reboot.</p>
+        <p><strong>Back up:</strong> everything that is yours lives in <code>/persist/upper</code> on the data partition: your files, accounts, settings and the software you built. The system images can always be downloaded again.</p></div>
+
+      <div class="chapter" id="hb-12"><h2>12. If something goes wrong</h2>
         <ul>
-          <li><strong>The stick does not boot:</strong> try the other firmware entry (UEFI or BIOS), write the ISO with <code>dd</code> instead of Ventoy, and check the checksum.</li>
-          <li><strong>No console after boot:</strong> use the <em>debug shell</em> entry, or remove <code>quiet</code> from the kernel command line to see the boot messages on screen. From a running system, <code>journalctl -b</code> and <code>systemctl --failed</code>.</li>
-          <li><strong>No Wi-Fi:</strong> a device whose firmware is not in the bundled set will not start. A USB tether or Ethernet always works.</li>
-          <li><strong>Wrong partition wiped:</strong> double-check <code>lsblk</code> output before every <code>wipefs</code>/<code>sfdisk</code> command. There&rsquo;s no undo. That&rsquo;s why chapter 3 is written out by hand: read each command before you run it.</li>
-          <li><strong>LUKS passphrase not accepted at boot:</strong> the live/installed initramfs asks again on the next attempt; a truly lost passphrase means the data partition is unrecoverable by design.</li>
-          <li><strong>An installed system fails to boot:</strong> pick the previous image from the GRUB menu, or the <em>debug</em> entry to see messages.</li>
+          <li><strong>The stick does not boot:</strong> check the checksum, try the stick&rsquo;s other entry in the firmware menu (UEFI or legacy), turn Secure Boot off, or write it with <code>dd</code> instead of Ventoy.</li>
+          <li><strong>Boot stops or the screen stays black:</strong> pick the <em>debug</em> entry to see the messages. In the GRUB menu you can press <code>e</code> and remove <code>quiet</code> too.</li>
+          <li><strong>&ldquo;Operation not permitted&rdquo; with sudo or su:</strong> you are on an install from 0.2.3 or older; install 0.2.4 fresh. <code>su</code> also refuses users who are not in the <code>wheel</code> group (<code>id</code> shows your groups).</li>
+          <li><strong>No Wi-Fi:</strong> a card whose firmware is not bundled will not start. Ethernet or a USB phone tether always work.</li>
+          <li><strong>The installer stops with &ldquo;has mounted partitions&rdquo;:</strong> unmount them (<code>umount /dev/sdXN</code>) and run it again.</li>
+          <li><strong>Wrong disk:</strong> there is no undo. Read the <code>lsblk</code> output and the installer&rsquo;s summary before typing <code>yes</code>.</li>
+          <li><strong>A port fails to build:</strong> run it again with <code>sudo get install -k NAME</code> to keep the build directory, and <a href="https://github.com/tortr-rs/systemLinux/issues">open an issue</a> with the error.</li>
         </ul></div>
     </article>
   </div>
