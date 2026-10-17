@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- **Stage tarball**: `build_iso.sh` also writes `systemLinux-stage-VER-x86_64.tar.xz` (+ `.sha256`), the same system
+  as the live image's squashfs packed with numeric owners, and the release publishes it. It is the base for
+  Gentoo-style installs onto a normal writable root.
+
 ## 0.2.5
 
 ### Added

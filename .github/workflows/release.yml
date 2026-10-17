@@ -43,6 +43,7 @@ jobs:
           cd dist
           V=$(cat ../VERSION)
           [ -f "systemLinux-$V-x86_64.iso" ] || { echo "ISO systemLinux-$V-x86_64.iso missing"; exit 1; }
+          [ -f "systemLinux-stage-$V-x86_64.tar.xz" ] || { echo "stage systemLinux-stage-$V-x86_64.tar.xz missing"; exit 1; }
           [ -f SHA256SUMS ] || { echo "SHA256SUMS missing"; exit 1; }
           sha256sum -c SHA256SUMS
           sha256sum -c "systemLinux-$V-x86_64.iso.sha256"

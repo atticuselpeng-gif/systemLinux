@@ -58,6 +58,9 @@ The `v0.2.5` release publishes the ISO, its checksum and the ports tree:
 | [`systemLinux-0.2.5-x86_64.iso.sha256`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.5/systemLinux-0.2.5-x86_64.iso.sha256) | its checksum |
 | [`ports.tar.xz`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.5/ports.tar.xz) | the ports tree (`get sync`) |
 
+From the next release on, it also publishes `systemLinux-stage-VERSION-x86_64.tar.xz` (+ `.sha256`): the installed
+system as a stage tarball, for Gentoo-style installs (partition, extract, chroot, kernel, GRUB).
+
 The release includes a separate checksum file. After downloading both files, verify the ISO with:
 
 ```sh
@@ -222,6 +225,7 @@ copied from the host into the image.
 
 ```sh
 ./build_iso.sh    # systemLinux-0.2.5-x86_64.iso and systemLinux-0.2.5-x86_64.iso.sha256   (or: make iso)
+                  # and systemLinux-stage-0.2.5-x86_64.tar.xz (+ .sha256): the same system as a stage tarball
 ```
 
 It also writes `profiles-out/profile-*.tar.xz` for the release (upload them next to the ISO; `get profile`
