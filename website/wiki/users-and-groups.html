@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Users and groups - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html" class="on">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; System administration</div>
+<h1>Users and groups</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="sudo.html">sudo</a></li><li><a href="handbook-config.html">6. Configuring the system</a></li><li><a href="desktop.html">Graphical session</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#managing-users"><span>1</span> Managing users</a></li><li><a href="#groups-that-matter"><span>2</span> Groups that matter</a></li><li><a href="#su-and-root"><span>3</span> su and root</a></li><li><a href="#files"><span>4</span> Files</a></li></ol></div></div>
+<!-- content -->
+<!-- related: sudo handbook-config desktop -->
+<p>Every process runs as a user, and every file belongs to a user and a group. systemLinux uses the standard shadow
+tools (<code>useradd</code>, <code>usermod</code>, <code>passwd</code>, ...) and the files <code>/etc/passwd</code>,
+<code>/etc/shadow</code> and <code>/etc/group</code>.</p>
+
+<h2 id="managing-users">Managing users</h2>
+<table>
+<tr><th>Task</th><th>Command</th></tr>
+<tr><td>Create a user with a home directory</td><td><code>useradd -m -s /bin/bash alex</code></td></tr>
+<tr><td>... and put them in groups</td><td><code>useradd -m -G wheel,video,audio,input -s /bin/bash alex</code></td></tr>
+<tr><td>Set or change a password</td><td><code>passwd alex</code> (your own: <code>passwd</code>)</td></tr>
+<tr><td>Add a user to a group</td><td><code>usermod -aG video alex</code> (log out and in again)</td></tr>
+<tr><td>Remove a user from a group</td><td><code>gpasswd -d alex video</code></td></tr>
+<tr><td>Change the login shell</td><td><code>chsh -s /usr/bin/zsh alex</code></td></tr>
+<tr><td>Set the full name</td><td><code>usermod -c "Alex Martin" alex</code></td></tr>
+<tr><td>Lock / unlock an account</td><td><code>passwd -l alex</code> / <code>passwd -u alex</code></td></tr>
+<tr><td>Delete a user and their home</td><td><code>userdel -r alex</code></td></tr>
+<tr><td>Show a user's groups</td><td><code>id alex</code></td></tr>
+</table>
+<p>All of these need root, except <code>passwd</code> for your own password and <code>id</code>.</p>
+<div class="warning"><strong>Warning:</strong> Without <code>-a</code>, <code>usermod -G</code> <em>replaces</em> all
+of a user's groups with the ones you list.</div>
+
+<h2 id="groups-that-matter">Groups that matter</h2>
+<table>
+<tr><th>Group</th><th>Gives access to</th></tr>
+<tr><td><code>wheel</code></td><td>administration: <code>su</code>, and <code>sudo</code> when <code>/etc/sudoers.d</code> allows it</td></tr>
+<tr><td><code>video</code></td><td>GPUs and framebuffers; seatd only lets this group start Wayland compositors</td></tr>
+<tr><td><code>audio</code></td><td>sound cards (ALSA)</td></tr>
+<tr><td><code>input</code></td><td><code>/dev/input</code>: keyboards, mice, touchpads, game controllers</td></tr>
+<tr><td><code>kvm</code></td><td><code>/dev/kvm</code>, to run virtual machines with acceleration</td></tr>
+<tr><td><code>lp</code></td><td>printers</td></tr>
+<tr><td><code>plugdev</code></td><td>some removable devices</td></tr>
+<tr><td><code>users</code></td><td>nothing special; a common group for normal users</td></tr>
+</table>
+<p>Group changes take effect at your next login.</p>
+
+<h2 id="su-and-root">su and root</h2>
+<p><code>su -</code> opens a root shell with root's password. Only members of <code>wheel</code> may use it. Prefer
+<a href="sudo.html">sudo</a> for single commands. The root account can be locked entirely (<code>passwd -l root</code>)
+once sudo works.</p>
+
+<h2 id="files">Files</h2>
+<table>
+<tr><th>File</th><th>Contents</th></tr>
+<tr><td><code>/etc/passwd</code></td><td>accounts: name, number, home directory, shell</td></tr>
+<tr><td><code>/etc/shadow</code></td><td>password hashes (only root can read it)</td></tr>
+<tr><td><code>/etc/group</code>, <code>/etc/gshadow</code></td><td>groups and their members</td></tr>
+<tr><td><code>/etc/skel/</code></td><td>files copied into every new home directory</td></tr>
+<tr><td><code>/etc/login.defs</code></td><td>defaults for new accounts (number ranges, password hashing)</td></tr>
+</table>
+<p>Edit them with the tools above, or with <code>vipw</code> and <code>vigr</code>, never with a plain editor while
+users are being changed.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/users-and-groups.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/users-and-groups.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

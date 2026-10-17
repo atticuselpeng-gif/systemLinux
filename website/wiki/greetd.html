@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>greetd (login manager) - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html" class="on">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Desktop</div>
+<h1>greetd (login manager)</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="sway.html">Sway</a></li><li><a href="desktop.html">Graphical session</a></li><li><a href="dinit.html">dinit</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#installing"><span>1</span> Installing</a></li><li><a href="#a-session-script"><span>2</span> A session script</a></li><li><a href="#enabling"><span>3</span> Enabling</a></li></ol></div></div>
+<!-- content -->
+<!-- related: sway desktop dinit -->
+<p><strong>greetd</strong> is a small login manager. With <strong>tuigreet</strong> it shows a login screen in the
+console and starts your session after you log in, so you do not have to type <code>sway</code> yourself.</p>
+
+<h2 id="installing">Installing</h2>
+<pre class="term"><span class="p">$</span> sudo get install greetd tuigreet</pre>
+<p>The port comes with a dinit service and <code>/etc/greetd/config.toml</code>, which runs tuigreet on tty7 and starts
+Sway after a login:</p>
+<pre>[terminal]
+vt = 7
+
+[default_session]
+command = "/usr/bin/tuigreet --time --remember --cmd sway"
+user = "greeter"</pre>
+<p>The <code>greeter</code> user is created the first time the service starts.</p>
+
+<h2 id="a-session-script">A session script</h2>
+<p>greetd starts the session command directly, not through a login shell, so the variables set in
+<code>/etc/profile.d</code> (<code>XDG_RUNTIME_DIR</code>, the D-Bus address, your locale) are missing. Start the
+session through a small script that reads them first:</p>
+<pre class="term"><span class="p">$</span> printf '#!/bin/sh\n. /etc/profile\n[ -f "$HOME/.profile" ] &amp;&amp; . "$HOME/.profile"\nexec sway\n' | sudo tee /usr/local/bin/sway-session
+<span class="p">$</span> sudo chmod 755 /usr/local/bin/sway-session</pre>
+<p>and use it in <code>/etc/greetd/config.toml</code>:</p>
+<pre>command = "/usr/bin/tuigreet --time --remember --cmd /usr/local/bin/sway-session"</pre>
+<p>For an X11 session, make the script end with <code>exec startx</code> instead.</p>
+
+<h2 id="enabling">Enabling</h2>
+<pre class="term"><span class="p">$</span> sudo dinitctl enable greetd</pre>
+<p>The login screen appears on tty7 (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>F7</kbd>); the console login on tty1 stays
+available. If the session does not start, switch to tty1, log in and run <code>sway</code> by hand to see the error;
+<code>sudo dinitctl disable greetd</code> turns the login screen off again.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/greetd.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/greetd.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

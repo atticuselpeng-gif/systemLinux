@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5. Entering the new system - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html" class="on">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Handbook</div>
+<h1>5. Entering the new system</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="recovery.html">Recovery</a></li><li><a href="get.html">get</a></li><li><a href="ports.html">Ports tree</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#preparing"><span>1</span> Preparing</a><ol><li><a href="#dns"><span>1.1</span> DNS</a></li><li><a href="#kernel-file-systems"><span>1.2</span> Kernel file systems</a></li></ol></li><li><a href="#entering"><span>2</span> Entering</a></li><li><a href="#updating-the-ports-tree"><span>3</span> Updating the ports tree</a></li><li><a href="#building-software-now"><span>4</span> Building software now</a></li></ol></div></div>
+<!-- content -->
+<!-- related: recovery get ports -->
+<p><code>chroot</code> runs a shell whose <code>/</code> is the new system on <code>/mnt</code>. Everything you do
+in it happens to the installed system: you run its programs, its <code>get</code>, its <code>passwd</code>. The kernel
+is still the live system's, so the new system needs the kernel's file systems (<code>/dev</code>, <code>/proc</code>,
+<code>/sys</code>) mounted inside it first.</p>
+
+<h2 id="preparing">Preparing</h2>
+<h3 id="dns">DNS</h3>
+<p>Copy the live system's name server settings, so downloads work inside the chroot:</p>
+<pre class="term"><span class="p">#</span> cp --dereference /etc/resolv.conf /mnt/etc/</pre>
+<h3 id="kernel-file-systems">Kernel file systems</h3>
+<pre class="term"><span class="p">#</span> mount --types proc /proc /mnt/proc
+<span class="p">#</span> mount --rbind /sys /mnt/sys &amp;&amp; mount --make-rslave /mnt/sys
+<span class="p">#</span> mount --rbind /dev /mnt/dev &amp;&amp; mount --make-rslave /mnt/dev
+<span class="p">#</span> mount --types tmpfs tmpfs /mnt/run</pre>
+<p><code>--rbind</code> also brings along what is mounted below (<code>/dev/pts</code>, the EFI variables in
+<code>/sys/firmware/efi/efivars</code>), and <code>--make-rslave</code> makes sure that unmounting them later does not
+unmount them in the live system too.</p>
+
+<h2 id="entering">Entering</h2>
+<pre class="term"><span class="p">#</span> chroot /mnt /bin/bash
+<span class="p">#</span> source /etc/profile
+<span class="p">#</span> export PS1="(chroot) $PS1"</pre>
+<p>The prompt now starts with <code>(chroot)</code>, so you can always tell where you are. If you leave the chroot
+(<code>exit</code>, or a reboot of the live system in the middle of the install), mount the file systems again as in
+<a href="handbook-disks.html#mounting">chapter 3</a> and repeat this chapter.</p>
+<div class="note"><strong>Note:</strong> dinit is not running inside the chroot, so <code>dinitctl start</code> and
+<code>dinitctl enable</code> do not work there. Enabling a service is only a link in <code>/etc/dinit.d/boot.d</code>,
+which the Handbook makes by hand (see <a href="dinit.html#enabling-services">dinit</a>).</div>
+
+<h2 id="updating-the-ports-tree">Updating the ports tree</h2>
+<p>The stage carries the ports tree of its release in <code>/usr/ports</code>. Fetch the newest one:</p>
+<pre class="term"><span class="p">(chroot) #</span> get sync</pre>
+<p>This is optional; the tree from the stage works. Without a network, skip it.</p>
+
+<h2 id="building-software-now">Building software now</h2>
+<p>You can already install software with <a href="get.html">get</a> inside the chroot, for example an editor you
+prefer to <code>nano</code>:</p>
+<pre class="term"><span class="p">(chroot) #</span> get install vim</pre>
+<p>Builds run on the live system's kernel but use the new system's compilers and libraries, so the result is the
+same as building after the first boot. Big things such as a desktop are easier after the first boot, when you are no
+longer tied to the live system.</p>
+
+<p>Next: <a href="handbook-config.html">6. Configuring the system</a>.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/handbook-chroot.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/handbook-chroot.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

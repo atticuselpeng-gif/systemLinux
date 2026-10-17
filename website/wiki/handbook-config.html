@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6. Configuring the system - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html" class="on">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Handbook</div>
+<h1>6. Configuring the system</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="fstab.html">fstab</a></li><li><a href="system-time.html">System time</a></li><li><a href="locale.html">Locale</a></li><li><a href="linux-console.html">Linux console</a></li><li><a href="users-and-groups.html">Users and groups</a></li><li><a href="sudo.html">sudo</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#the-efi-system-partition"><span>1</span> The EFI System Partition</a></li><li><a href="#fstab"><span>2</span> fstab</a></li><li><a href="#host-name"><span>3</span> Host name</a></li><li><a href="#time-zone"><span>4</span> Time zone</a></li><li><a href="#locale"><span>5</span> Locale</a></li><li><a href="#console-keyboard-and-font"><span>6</span> Console keyboard and font</a></li><li><a href="#network"><span>7</span> Network</a></li><li><a href="#root-password"><span>8</span> Root password</a></li><li><a href="#your-user-account"><span>9</span> Your user account</a></li><li><a href="#sudo"><span>10</span> sudo</a></li><li><a href="#services"><span>11</span> Services</a></li></ol></div></div>
+<!-- content -->
+<!-- related: fstab system-time locale linux-console users-and-groups sudo -->
+<p>All commands in this chapter run inside the chroot.</p>
+
+<h2 id="the-efi-system-partition">The EFI System Partition</h2>
+<p>On UEFI, mount the EFI System Partition now (it was left out while the stage was extracted):</p>
+<pre class="term"><span class="p">(chroot) #</span> mkdir -p /boot/efi
+<span class="p">(chroot) #</span> mount /dev/sda1 /boot/efi</pre>
+
+<h2 id="fstab">fstab</h2>
+<p><code>/etc/fstab</code> lists the file systems to mount at boot. The initramfs mounts <code>/</code> itself; everything
+else is mounted from here by the <code>mount-fstab</code> service, which also turns on swap partitions. Use UUIDs,
+because device names can change between boots. Show them with <code>blkid</code>:</p>
+<pre class="term"><span class="p">(chroot) #</span> blkid
+/dev/sda1: UUID="A1B2-C3D4" TYPE="vfat" LABEL="EFI" ...
+/dev/sda2: UUID="0f4c...e1" TYPE="ext4" LABEL="systemLinux" ...</pre>
+<p>Then write the file with <code>nano /etc/fstab</code>. For the UEFI layout:</p>
+<pre># &lt;file system&gt;                          &lt;mount point&gt;  &lt;type&gt;  &lt;options&gt;          &lt;dump&gt; &lt;pass&gt;
+UUID=0f4c...e1                             /              ext4    defaults,noatime   0      1
+UUID=A1B2-C3D4                             /boot/efi      vfat    umask=0077         0      2</pre>
+<p>Add a line for each other partition:</p>
+<pre>UUID=...          /boot   ext4   defaults,noatime   0  2     # separate /boot (encrypted root)
+UUID=...          /home   ext4   defaults,noatime   0  2     # separate /home
+UUID=...          none    swap   defaults           0  0     # swap partition
+/dev/mapper/root  /       ext4   defaults,noatime   0  1     # encrypted root: instead of the UUID= line for /</pre>
+<div class="tip"><strong>Tip:</strong> Let <code>blkid</code> fill in a UUID for you:
+<code>echo "UUID=$(blkid -s UUID -o value /dev/sda2) / ext4 defaults,noatime 0 1" &gt;&gt; /etc/fstab</code>.</div>
+<p>Check it before you reboot: <code>findmnt --verify</code> reports mistakes. More in <a href="fstab.html">fstab</a>.</p>
+
+<h2 id="host-name">Host name</h2>
+<pre class="term"><span class="p">(chroot) #</span> echo mycomputer &gt; /etc/hostname
+<span class="p">(chroot) #</span> printf '127.0.0.1\tlocalhost\n::1\t\tlocalhost\n127.0.1.1\tmycomputer\n' &gt; /etc/hosts</pre>
+
+<h2 id="time-zone">Time zone</h2>
+<p>Time zones are named after a region and a city, see <code>ls /usr/share/zoneinfo</code>:</p>
+<pre class="term"><span class="p">(chroot) #</span> ln -sf ../usr/share/zoneinfo/Europe/Paris /etc/localtime
+<span class="p">(chroot) #</span> date</pre>
+<p>The hardware clock is read as UTC. Windows keeps it in local time; if you dual-boot with Windows, see
+<a href="system-time.html#hardware-clock">System time</a>. To keep the clock exact, install chrony after the first
+boot.</p>
+
+<h2 id="locale">Locale</h2>
+<p>The locale sets the language of messages and the format of dates and numbers. <code>C.UTF-8</code> is always
+there. To use another one, uncomment it in <code>/etc/locale.gen</code> and generate it:</p>
+<pre class="term"><span class="p">(chroot) #</span> nano /etc/locale.gen               <span class="c"># uncomment e.g. "fr_FR.UTF-8 UTF-8"</span>
+<span class="p">(chroot) #</span> locale-gen
+<span class="p">(chroot) #</span> echo LANG=fr_FR.UTF-8 &gt; /etc/locale.conf</pre>
+<p>Without a <code>/etc/locale.conf</code> the system uses <code>C</code>. <code>echo LANG=C.UTF-8 &gt; /etc/locale.conf</code>
+is a good choice if you want English with full Unicode support. See <a href="locale.html">Locale</a>.</p>
+
+<h2 id="console-keyboard-and-font">Console keyboard and font</h2>
+<p>Set the layout you loaded in the live system, so it is used at every boot:</p>
+<pre class="term"><span class="p">(chroot) #</span> echo KEYMAP=fr &gt; /etc/vconsole.conf</pre>
+<p>Add <code>FONT=NAME</code> for a console font from <code>/usr/share/consolefonts</code>. The
+<code>console-setup</code> service reads this file at boot. See <a href="linux-console.html">Linux console</a>.</p>
+
+<h2 id="network">Network</h2>
+<p>NetworkManager starts at every boot and connects Ethernet by itself. To take the Wi-Fi network you joined in the
+live system along, copy its saved connection from <strong>outside</strong> the chroot (in another console:
+<kbd>Alt</kbd>+<kbd>F2</kbd>, or after <code>exit</code>):</p>
+<pre class="term"><span class="p">#</span> cp -a /etc/NetworkManager/system-connections/. /mnt/etc/NetworkManager/system-connections/</pre>
+<p>Otherwise connect with <code>nmcli</code> after the first boot. See <a href="network-configuration.html">Network configuration</a>.</p>
+
+<h2 id="root-password">Root password</h2>
+<pre class="term"><span class="p">(chroot) #</span> passwd</pre>
+<div class="warning"><strong>Warning:</strong> Without a root password you cannot log in as root, and if you forget to
+create a user too, you cannot log in at all. Fix that from the live system with <a href="recovery.html">Recovery</a>.</div>
+
+<h2 id="your-user-account">Your user account</h2>
+<p>Use a normal account for daily work. The groups give access to what a desktop needs:</p>
+<pre class="term"><span class="p">(chroot) #</span> useradd -m -G wheel,video,audio,input -s /bin/bash alex
+<span class="p">(chroot) #</span> passwd alex</pre>
+<table>
+<tr><th>Group</th><th>Gives</th></tr>
+<tr><td><code>wheel</code></td><td><code>sudo</code> (with the rule below) and <code>su</code></td></tr>
+<tr><td><code>video</code></td><td>the GPU and seatd (needed for Sway)</td></tr>
+<tr><td><code>audio</code></td><td>sound devices</td></tr>
+<tr><td><code>input</code></td><td>keyboards, mice and touchpads (libinput)</td></tr>
+</table>
+<p>See <a href="users-and-groups.html">Users and groups</a>.</p>
+
+<h2 id="sudo">sudo</h2>
+<p>Let the <code>wheel</code> group run commands as root with <code>sudo</code>:</p>
+<pre class="term"><span class="p">(chroot) #</span> echo '%wheel ALL=(ALL:ALL) ALL' &gt; /etc/sudoers.d/10_wheel
+<span class="p">(chroot) #</span> chmod 440 /etc/sudoers.d/10_wheel
+<span class="p">(chroot) #</span> visudo -c</pre>
+<p>See <a href="sudo.html">sudo</a>.</p>
+
+<h2 id="services">Services</h2>
+<p>A normal boot needs nothing extra: devices, the network, D-Bus, swap in memory and a login on tty1 are all started
+by default. To start more at every boot, link them into <code>/etc/dinit.d/boot.d</code>. For example the SSH server:</p>
+<pre class="term"><span class="p">(chroot) #</span> ln -s ../sshd /etc/dinit.d/boot.d/sshd</pre>
+<p>On the running system <code>dinitctl enable sshd</code> does the same. See <a href="dinit.html">dinit</a>.</p>
+
+<div class="tip"><strong>Tip:</strong> <code>systemlinux-provision --user alex /</code> creates the account, its groups
+and the sudo rule in one go (it asks for the password twice). It is what the quick installer uses.</div>
+
+<p>Next: <a href="handbook-kernel.html">7. Kernel and initramfs</a>.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/handbook-config.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/handbook-config.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

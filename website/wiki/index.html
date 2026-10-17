@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a></div>
+<h1>systemLinux Wiki</h1>
+<div class="wiki-boxes"><div class="toc"><b>Contents</b><ol><ol><li><a href="#installing"><span>0.1</span> Installing</a></li><li><a href="#software"><span>0.2</span> Software</a></li><li><a href="#system-administration"><span>0.3</span> System administration</a></li><li><a href="#boot-process"><span>0.4</span> Boot process</a></li><li><a href="#hardware"><span>0.5</span> Hardware</a></li><li><a href="#networking"><span>0.6</span> Networking</a></li><li><a href="#desktop"><span>0.7</span> Desktop</a></li><li><a href="#help"><span>0.8</span> Help</a></li></ol><li><a href="#about-this-wiki"><span>1</span> About this wiki</a></li></ol></div></div>
+<!-- content -->
+<p>Welcome to the <strong>systemLinux Wiki</strong>: the documentation of systemLinux, a small source-based x86_64
+GNU/Linux distribution with dinit instead of systemd and software built with <a href="get.html">get</a>. Every page
+describes what systemLinux really does; when something is missing or not verified, the page says so.</p>
+
+<div class="portal">
+<div><h3 id="installing">Installing</h3><ul>
+<li><a href="handbook.html"><strong>The Handbook</strong></a>: install by hand, step by step</li>
+<li><a href="quick-install.html">Quick install</a> with <code>systemlinux-install</code></li>
+<li><a href="dual-boot.html">Dual boot</a> next to Windows or Linux</li>
+<li><a href="general-recommendations.html">General recommendations</a> after installing</li>
+</ul></div>
+<div><h3 id="software">Software</h3><ul>
+<li><a href="get.html">get</a>, the package tool</li>
+<li><a href="ports.html">Ports tree</a> and <a href="../packages.html">all packages</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+<li><a href="../packaging.html">Writing a port</a></li>
+</ul></div>
+<div><h3 id="system-administration">System administration</h3><ul>
+<li><a href="dinit.html">dinit</a>: services and boot</li>
+<li><a href="users-and-groups.html">Users and groups</a>, <a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a>, <a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">Time</a>, <a href="locale.html">Locale</a>, <a href="linux-console.html">Console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul></div>
+<div><h3 id="boot-process">Boot process</h3><ul>
+<li><a href="kernel.html">Kernel</a> and <a href="kernel-parameters.html">kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption</a></li>
+</ul></div>
+<div><h3 id="hardware">Hardware</h3><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound</a>, <a href="bluetooth.html">Bluetooth</a>, <a href="printing.html">Printing</a></li>
+<li><a href="laptop.html">Laptops</a></li>
+</ul></div>
+<div><h3 id="networking">Networking</h3><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul></div>
+<div><h3 id="desktop">Desktop</h3><ul>
+<li><a href="desktop.html">Graphical session</a>: how it fits together</li>
+<li><a href="sway.html">Sway</a> (Wayland)</li>
+<li><a href="xorg.html">Xorg</a> and <a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd</a> login manager</li>
+</ul></div>
+<div><h3 id="help">Help</h3><ul>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="recovery.html">Recovery</a> from the live ISO</li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a> and <a href="building-the-iso.html">building the ISO</a></li>
+</ul></div>
+</div>
+
+<h2 id="about-this-wiki">About this wiki</h2>
+<p>The wiki lives in the systemLinux repository (<code>website/wiki/</code>), so it is reviewed and versioned like the
+code. Every page has an "Edit this page on GitHub" link at the bottom: fix a mistake, send a pull request. See
+<a href="contributing.html#the-wiki">Contributing</a>.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/index.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/index.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

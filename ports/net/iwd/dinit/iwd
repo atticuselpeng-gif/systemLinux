@@ -1,0 +1,7 @@
+# iwd Wi-Fi daemon (iwctl). Do not run it next to NetworkManager's own Wi-Fi handling.
+# Enable with: dinitctl enable iwd
+type = process
+command = /usr/libexec/iwd
+depends-on = dbus
+waits-for = udev-trigger
+smooth-recovery = true

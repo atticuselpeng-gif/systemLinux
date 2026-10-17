@@ -13,7 +13,7 @@
 <a class="brand" href="index.html"><img src="logo.svg" alt="" width="40" height="40">systemLinux</a>
 <div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
 </div></header>
-<nav class="tabs"><div class="wrap"><a href="index.html">Home</a><a href="news.html">News</a><a href="about.html">About</a><a href="download.html">Download</a><a href="handbook.html">Handbook</a><a href="get.html">get</a><a href="packages.html">Packages</a><a href="packaging.html">Packaging</a><a href="system.html" class="on">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<nav class="tabs"><div class="wrap"><a href="index.html">Home</a><a href="news.html">News</a><a href="about.html">About</a><a href="download.html">Download</a><a href="wiki/index.html">Wiki</a><a href="get.html">get</a><a href="packages.html">Packages</a><a href="packaging.html">Packaging</a><a href="system.html" class="on">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
 <!-- /header -->
 
 <div class="wrap page">
@@ -38,11 +38,11 @@
   <ul class="tight">
     <li>Both UEFI and legacy BIOS boot are supported (see <code>docs/BIOS.md</code> in the repository).</li>
     <li>No automatic partition resizing: dual-boot means shrinking Windows or another Linux yourself first, then installing into the freed partition.</li>
-    <li>No Secure Boot yet. LUKS full-disk encryption is available (chapter 4 of the handbook).</li>
+    <li>No Secure Boot yet. LUKS encryption of the root partition is available (<a href="wiki/luks.html">Disk encryption</a>).</li>
     <li>There&rsquo;s no graphical login or lock screen. It&rsquo;s a console system: you log in on tty1.</li>
     <li>Only English is included. Suspend and lid handling depend on your hardware.</li>
     <li>The kernel has Intel, AMD and the open NVIDIA (nouveau) graphics drivers, not NVIDIA&rsquo;s proprietary driver.</li>
-    <li>The system image is read-only; changes you make to <code>/etc</code> or <code>/usr</code> yourself are kept in a separate writable layer on top of it.</li>
+    <li>A <a href="wiki/handbook.html">Handbook</a> install is an ordinary writable system. A <a href="wiki/quick-install.html">quick install</a> runs from the read-only release image, with your changes kept in a writable layer on top of it.</li>
       </ul>
 <!-- /content -->
 </main>
@@ -53,7 +53,8 @@
 <p class="small muted" style="margin:0">x86_64, UEFI and legacy BIOS. <a href="download.html">Checksums and notes</a></p>
 </div></div>
 <div class="box"><h3>Documentation</h3><div class="in"><ul>
-<li><a href="handbook.html">Handbook</a>: installing</li>
+<li><a href="wiki/index.html">Wiki</a>: everything</li>
+<li><a href="wiki/handbook.html">Handbook</a>: installing</li>
 <li><a href="get.html">get</a>: installing software</li>
 <li><a href="packaging.html">Packaging guide</a>: writing ports</li>
 <li><a href="system.html">System</a>: services and limits</li>

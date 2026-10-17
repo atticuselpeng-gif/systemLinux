@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7. Kernel and initramfs - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html" class="on">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Handbook</div>
+<h1>7. Kernel and initramfs</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="kernel.html">Kernel</a></li><li><a href="initramfs.html">Initramfs</a></li><li><a href="firmware.html">Firmware</a></li><li><a href="kernel-parameters.html">Kernel parameters</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#the-kernel"><span>1</span> The kernel</a></li><li><a href="#the-initramfs"><span>2</span> The initramfs</a></li><li><a href="#firmware"><span>3</span> Firmware</a></li><li><a href="#updating-the-kernel"><span>4</span> Updating the kernel</a></li></ol></div></div>
+<!-- content -->
+<!-- related: kernel initramfs firmware kernel-parameters -->
+<p>Unlike Gentoo, there is no kernel to configure and compile in this chapter: the stage already contains a
+ready kernel, its modules and an initramfs. This chapter explains what they are and installs the firmware most
+laptops need.</p>
+
+<h2 id="the-kernel">The kernel</h2>
+<p><code>/boot/vmlinuz</code> is the newest Ubuntu <em>generic</em> kernel at the time of the release, the same one the
+live ISO boots. Nearly every driver is built as a module, so it runs on almost any x86_64 computer. The modules are
+in <code>/usr/lib/modules/VERSION</code>:</p>
+<pre class="term"><span class="p">(chroot) #</span> ls /usr/lib/modules           <span class="c"># one directory, named after the kernel version (...-generic)</span></pre>
+<p>Drivers load by themselves when eudev sees the hardware. See <a href="kernel.html">Kernel</a> for loading,
+blacklisting and passing options to modules.</p>
+
+<h2 id="the-initramfs">The initramfs</h2>
+<p><code>/boot/initrd.img</code> is a small archive the kernel unpacks into memory before your root file system is
+reachable. It loads the storage drivers, finds the partition named by <code>root=</code> on the kernel command line,
+asks for the passphrase if that partition is encrypted with LUKS, mounts it and starts dinit. It is generic: it
+contains the drivers for every common disk controller and the ext4, XFS, Btrfs, F2FS and FAT file systems, so you do
+not need to build one for your computer. See <a href="initramfs.html">Initramfs</a>.</p>
+
+<h2 id="firmware">Firmware</h2>
+<p>Many Wi-Fi cards, Bluetooth chips and GPUs (Intel Wi-Fi, AMD graphics, Realtek, MediaTek, ...) need firmware files
+that the kernel loads when the driver starts. They are not in the stage. Install them with:</p>
+<pre class="term"><span class="p">(chroot) #</span> get install linux-firmware</pre>
+<p>It is kernel.org's firmware collection, about 950 MB compressed. Without it a machine that needs it starts, but the
+device stays off: typically no Wi-Fi, or graphics without acceleration. Virtual machines and most desktop computers
+with wired network and Intel graphics work without it; you can install it later. See <a href="firmware.html">Firmware</a>.</p>
+<div class="note"><strong>Note:</strong> Processor microcode updates are part of <code>linux-firmware</code>
+(<code>intel-ucode</code>, <code>amd-ucode</code>), but the kernel only applies them at boot when they are loaded early,
+which the initramfs does not do yet.</div>
+
+<h2 id="updating-the-kernel">Updating the kernel</h2>
+<p>A new release comes with a new kernel, modules and initramfs. Until a <code>linux</code> port exists, update them
+from a newer stage tarball: see <a href="kernel.html#updating-the-kernel">Kernel</a>.</p>
+
+<p>Next: <a href="handbook-bootloader.html">8. Bootloader</a>.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/handbook-kernel.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/handbook-kernel.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

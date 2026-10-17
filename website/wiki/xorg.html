@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xorg - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html" class="on">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Desktop</div>
+<h1>Xorg</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="i3.html">i3</a></li><li><a href="desktop.html">Graphical session</a></li><li><a href="graphics.html">Graphics drivers</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#installing"><span>1</span> Installing</a></li><li><a href="#starting-x"><span>2</span> Starting X</a></li><li><a href="#configuration"><span>3</span> Configuration</a></li><li><a href="#troubleshooting"><span>4</span> Troubleshooting</a></li></ol></div></div>
+<!-- content -->
+<!-- related: i3 desktop graphics -->
+<p><strong>Xorg</strong> is the X Window System server. It runs X11 window managers such as <a href="i3.html">i3</a>,
+dwm and Xfce. On systemLinux it runs without logind: it needs your user in the <code>video</code> and
+<code>input</code> groups.</p>
+
+<h2 id="installing">Installing</h2>
+<pre class="term"><span class="p">$</span> sudo get install xorg-server xinit xf86-input-libinput setxkbmap xrandr</pre>
+<p>The meta port <code>desktop-base</code> installs <code>xorg-server</code>, <code>xinit</code>, <code>xterm</code>,
+DejaVu fonts and <code>xdg-utils</code> in one go. Graphics use the kernel's modesetting driver, which Xorg includes;
+<code>xf86-video-amdgpu</code>, <code>xf86-video-nouveau</code>, <code>xf86-video-vesa</code> and
+<code>xf86-video-fbdev</code> are in the ports tree for the cases where it is not enough.</p>
+
+<h2 id="starting-x">Starting X</h2>
+<p><code>startx</code> runs <code>~/.xinitrc</code>, which starts your programs and, last, the window manager:</p>
+<pre># ~/.xinitrc
+dinit &amp;                       # session services: D-Bus, PipeWire
+setxkbmap fr
+exec i3</pre>
+<pre class="term"><span class="p">$</span> startx</pre>
+<p>Without a <code>~/.xinitrc</code>, <code>startx</code> opens a plain xterm.</p>
+
+<h2 id="configuration">Configuration</h2>
+<p>Xorg configures itself. For settings, add files to <code>/etc/X11/xorg.conf.d/</code>:</p>
+<pre># /etc/X11/xorg.conf.d/30-touchpad.conf
+Section "InputClass"
+    Identifier "touchpad"
+    MatchIsTouchpad "on"
+    Driver "libinput"
+    Option "Tapping" "on"
+    Option "NaturalScrolling" "true"
+EndSection</pre>
+<pre># /etc/X11/xorg.conf.d/00-keyboard.conf
+Section "InputClass"
+    Identifier "keyboard"
+    MatchIsKeyboard "on"
+    Option "XkbLayout" "fr"
+EndSection</pre>
+<p>Screens: <code>xrandr</code> lists outputs and modes; <code>xrandr --output HDMI-1 --auto --right-of eDP-1</code>.</p>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Xorg's log is <code>~/.local/share/xorg/Xorg.0.log</code> (or <code>/var/log/Xorg.0.log</code>). Lines with
+<code>(EE)</code> are errors.</p>
+<ul>
+<li><strong>"no screens found":</strong> the GPU driver did not load; check <code>ls /dev/dri</code> and
+<a href="graphics.html">Graphics drivers</a>.</li>
+<li><strong>Keyboard and mouse do nothing:</strong> install <code>xf86-input-libinput</code>, and check you are in
+<code>input</code>.</li>
+<li><strong>"Only console users are allowed to run the X server":</strong> run <code>startx</code> from a console login,
+not over SSH or with <code>su</code>.</li>
+</ul>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/xorg.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/xorg.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

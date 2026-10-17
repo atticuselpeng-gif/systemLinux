@@ -1,0 +1,5 @@
+# NTP client: keeps the clock right. Enable with: dinitctl enable chronyd
+type = process
+command = /usr/bin/chronyd -n
+depends-on = network
+smooth-recovery = true

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Handbook: overview - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html" class="on">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Handbook</div>
+<h1>Handbook: overview</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="quick-install.html">Quick install (systemlinux-install)</a></li><li><a href="dual-boot.html">Dual boot</a></li><li><a href="general-recommendations.html">General recommendations</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#what-you-get"><span>1</span> What you get</a></li><li><a href="#chapters"><span>2</span> Chapters</a></li><li><a href="#conventions"><span>3</span> Conventions</a></li><li><a href="#versions"><span>4</span> Versions</a></li><li><a href="#getting-help"><span>5</span> Getting help</a></li></ol></div></div>
+<!-- content -->
+<!-- related: quick-install dual-boot general-recommendations -->
+<p>The systemLinux Handbook installs systemLinux by hand, one step at a time, the way the Gentoo Handbook does: you
+partition the disk yourself, extract the <strong>stage tarball</strong> onto it, enter it with <code>chroot</code>,
+configure it and install a bootloader. Nothing is hidden, so when you are done you know how your system is put
+together and how to repair it.</p>
+<p>If you only want a working system quickly, the <a href="quick-install.html">quick installer</a>
+(<code>systemlinux-install</code>) does all of it for you after a few questions.</p>
+
+<h2 id="what-you-get">What you get</h2>
+<ul>
+<li>An ordinary, writable root file system (ext4) on the partition you choose, with everything in
+<code>/usr</code> and configuration in <code>/etc</code>.</li>
+<li>dinit as PID 1 (there is no systemd), eudev for devices, NetworkManager for the network.</li>
+<li>The build toolchain (GCC, make, CMake, Meson, Python, Perl) already installed, so <a href="get.html">get</a> can
+build any of the over 1600 ports from source.</li>
+<li>A console system. A desktop (<a href="sway.html">Sway</a> or <a href="i3.html">i3</a>) is one chapter away.</li>
+</ul>
+
+<h2 id="chapters">Chapters</h2>
+<ol>
+<li><a href="handbook-media.html">Installation media</a>: hardware requirements, downloading and checking the ISO, writing
+it to a USB stick.</li>
+<li><a href="handbook-live.html">Booting the live system</a>: the boot menu, the keyboard, getting online, UEFI or
+BIOS.</li>
+<li><a href="handbook-disks.html">Preparing the disks</a>: partition layouts for UEFI and BIOS, file systems, swap,
+encryption, mounting.</li>
+<li><a href="handbook-stage.html">Installing the stage</a>: downloading, checking and extracting the stage
+tarball (or copying the system from the ISO without a network).</li>
+<li><a href="handbook-chroot.html">Entering the new system</a>: <code>chroot</code>, DNS, the ports tree.</li>
+<li><a href="handbook-config.html">Configuring the system</a>: <code>fstab</code>, host name, time zone, locale,
+keyboard, network, passwords and your user account.</li>
+<li><a href="handbook-kernel.html">Kernel and initramfs</a>: what ships with the stage, firmware, kernel modules.</li>
+<li><a href="handbook-bootloader.html">Bootloader</a>: GRUB for UEFI and for legacy BIOS, its configuration,
+encryption.</li>
+<li><a href="handbook-finalizing.html">Finalizing</a>: leaving the chroot, rebooting, the first login, what to do
+next.</li>
+</ol>
+
+<h2 id="conventions">Conventions</h2>
+<p>Commands start with a prompt that tells you where to run them:</p>
+<table>
+<tr><th>Prompt</th><th>Where</th></tr>
+<tr><td><code>#</code></td><td>as root in the live system (it logs you in as root)</td></tr>
+<tr><td><code>(chroot) #</code></td><td>as root inside the new system, after <a href="handbook-chroot.html">chapter 5</a></td></tr>
+<tr><td><code>$</code></td><td>as your normal user on the installed system</td></tr>
+</table>
+<p>Device names are examples. <code>/dev/sda</code> is the first SATA or USB disk, <code>/dev/nvme0n1</code> the
+first NVMe SSD and <code>/dev/vda</code> a virtual disk in QEMU. NVMe and MMC disks put a <code>p</code> before the
+partition number: <code>/dev/nvme0n1p2</code>, but <code>/dev/sda2</code>. Always check yours with
+<code>lsblk</code> before you type a command that writes to a disk.</p>
+<div class="note"><strong>Note:</strong> Boxes like this one add details. <strong>Tip</strong> boxes are shortcuts,
+and <strong>Warning</strong> boxes mark steps that can destroy data.</div>
+
+<h2 id="versions">Versions</h2>
+<p>The stage install needs systemLinux <strong>0.2.5 or newer</strong>. From that release on, every release publishes
+<code>systemLinux-stage-VERSION-x86_64.tar.xz</code> next to the ISO, and its initramfs can boot an ordinary root
+partition (<code>root=UUID=...</code>). Older releases can only be installed with <code>systemlinux-install</code>.</p>
+
+<h2 id="getting-help">Getting help</h2>
+<p>Read <a href="troubleshooting.html">Troubleshooting</a> first. If you are stuck, or a step in this Handbook is
+wrong, <a href="https://github.com/tortr-rs/systemLinux/issues">open an issue</a> and say which chapter and step,
+what you typed and what it printed.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/handbook.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/handbook.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

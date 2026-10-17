@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>General recommendations - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html" class="on">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Installation</div>
+<h1>General recommendations</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="handbook-finalizing.html">9. Finalizing</a></li><li><a href="system-maintenance.html">System maintenance</a></li><li><a href="desktop.html">Graphical session</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#system"><span>1</span> System</a><ol><li><a href="#a-user-account-and-sudo"><span>1.1</span> A user account and sudo</a></li><li><a href="#firmware"><span>1.2</span> Firmware</a></li><li><a href="#time-synchronization"><span>1.3</span> Time synchronization</a></li><li><a href="#swap-for-big-builds"><span>1.4</span> Swap for big builds</a></li><li><a href="#backups"><span>1.5</span> Backups</a></li></ol></li><li><a href="#software"><span>2</span> Software</a><ol><li><a href="#learn-get"><span>2.1</span> Learn get</a></li><li><a href="#command-line-tools"><span>2.2</span> Command-line tools</a></li><li><a href="#man-pages"><span>2.3</span> Man pages</a></li></ol></li><li><a href="#networking"><span>3</span> Networking</a></li><li><a href="#graphical-session"><span>4</span> Graphical session</a></li><li><a href="#laptops"><span>5</span> Laptops</a></li><li><a href="#console-comfort"><span>6</span> Console comfort</a></li></ol></div></div>
+<!-- content -->
+<!-- related: handbook-finalizing system-maintenance desktop -->
+<p>A list of things most people set up after installing systemLinux, in a sensible order. Pick what you need.</p>
+
+<h2 id="system">System</h2>
+<h3 id="a-user-account-and-sudo">A user account and sudo</h3>
+<p>Work as a normal user and use <a href="sudo.html">sudo</a> for administration. The Handbook and the quick installer
+set this up; check with <code>sudo whoami</code>.</p>
+<h3 id="firmware">Firmware</h3>
+<p><code>sudo get install linux-firmware</code> if anything (Wi-Fi, GPU, Bluetooth) does not work. See
+<a href="firmware.html">Firmware</a>.</p>
+<h3 id="time-synchronization">Time synchronization</h3>
+<p><code>sudo get install chrony &amp;&amp; sudo dinitctl enable chronyd</code>. See <a href="system-time.html">System time</a>.</p>
+<h3 id="swap-for-big-builds">Swap for big builds</h3>
+<p>With less than 8 GB of RAM, add disk swap before building a desktop or a browser: <a href="swap.html">Swap</a>.</p>
+<h3 id="backups">Backups</h3>
+<p>Decide now where your backups go: <a href="system-maintenance.html#backups">System maintenance</a>.</p>
+
+<h2 id="software">Software</h2>
+<h3 id="learn-get">Learn get</h3>
+<p><code>get search</code>, <code>get install</code>, <code>get remove</code>, <code>get sync</code>: <a href="get.html">get</a>.
+Run <code>sudo get sync</code> now and then for a newer ports tree.</p>
+<h3 id="command-line-tools">Command-line tools</h3>
+<table>
+<tr><th>Kind</th><th>Ports</th></tr>
+<tr><td>Editors</td><td><code>nano</code> (in the base system), <code>vim</code>, <code>neovim</code></td></tr>
+<tr><td>Shells</td><td><code>bash</code> (default), <code>zsh</code>, <code>fish</code>; change with <code>chsh -s /usr/bin/zsh</code></td></tr>
+<tr><td>Tools</td><td><code>git</code>, <code>htop</code>, <code>tmux</code>, <code>rsync</code>, <code>fastfetch</code></td></tr>
+<tr><td>Hardware info</td><td><code>pciutils</code> (<code>lspci</code>), <code>usbutils</code> (<code>lsusb</code>)</td></tr>
+</table>
+<h3 id="man-pages">Man pages</h3>
+<p><code>man</code> is installed, but the base system's own manual pages are stripped to keep it small. Ports you
+build with their manual pages install them, and <code>man</code> finds them.</p>
+
+<h2 id="networking">Networking</h2>
+<ul>
+<li>Wi-Fi: <a href="wireless.html">Wireless</a>.</li>
+<li>Remote access: <code>sudo dinitctl enable sshd</code>, then harden it: <a href="ssh.html">OpenSSH</a>.</li>
+<li>A firewall: <a href="network-configuration.html#firewall">Network configuration</a>.</li>
+</ul>
+
+<h2 id="graphical-session">Graphical session</h2>
+<ol>
+<li><code>sudo get profile desktop-runtime</code> and <code>sudo get install fonts-dejavu</code></li>
+<li><a href="sway.html">Sway</a> or <a href="i3.html">i3</a></li>
+<li><a href="pipewire.html">Sound</a></li>
+<li>A browser: <code>sudo get install firefox-bin</code></li>
+<li>Optionally a login screen: <a href="greetd.html">greetd</a></li>
+</ol>
+<p>Details in <a href="desktop.html">Graphical session</a>.</p>
+
+<h2 id="laptops">Laptops</h2>
+<p>Brightness, battery, suspend: <a href="laptop.html">Laptop</a>.</p>
+
+<h2 id="console-comfort">Console comfort</h2>
+<ul>
+<li>Keyboard layout and font at boot: <a href="linux-console.html">Linux console</a>.</li>
+<li>A second login console: <a href="linux-console.html#login-prompt">Linux console</a>.</li>
+<li>Your language: <a href="locale.html">Locale</a>.</li>
+</ul>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/general-recommendations.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/general-recommendations.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quick install (systemlinux-install) - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html" class="on">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Installation</div>
+<h1>Quick install (systemlinux-install)</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="handbook.html">Handbook: overview</a></li><li><a href="dual-boot.html">Dual boot</a></li><li><a href="luks.html">Disk encryption (LUKS)</a></li><li><a href="recovery.html">Recovery</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#running-it"><span>1</span> Running it</a></li><li><a href="#without-questions"><span>2</span> Without questions</a></li><li><a href="#what-it-creates"><span>3</span> What it creates</a></li></ol></div></div>
+<!-- content -->
+<!-- related: handbook dual-boot luks recovery -->
+<p><code>systemlinux-install</code> is the installer on the live ISO. It asks a few questions and installs the system
+in a few minutes. Use it if you do not want to go through the <a href="handbook.html">Handbook</a>.</p>
+<div class="note"><strong>Note:</strong> The quick installer still makes the older <em>image</em> install: the
+system runs from the compressed image of the release, and your changes are kept in a writable layer on top of it
+(<code>/persist</code>). A Handbook install is an ordinary writable root instead. The installer will switch to stage
+installs in a future release.</div>
+
+<h2 id="running-it">Running it</h2>
+<p>Boot the ISO (<a href="handbook-media.html">Installation media</a>, <a href="handbook-live.html">Booting the live
+system</a>) and run:</p>
+<pre class="term"><span class="p">#</span> systemlinux-install</pre>
+<p>It asks, one question at a time:</p>
+<ol>
+<li><strong>[d]isk or [p]artition</strong>: <code>d</code> erases a whole disk, <code>p</code> installs into one
+partition and leaves the rest of the disk alone (<a href="dual-boot.html">Dual boot</a>). It lists the disks first.</li>
+<li><strong>The disk</strong> or partition, e.g. <code>/dev/sda</code>, <code>/dev/nvme0n1</code>, <code>/dev/vda</code>.</li>
+<li><strong>Computer name</strong> (default <code>systemlinux</code>).</li>
+<li><strong>User name</strong>: lowercase letters, digits, <code>-</code> and <code>_</code>. This account may use
+<code>sudo</code>.</li>
+<li><strong>Full name</strong> (optional).</li>
+<li><strong>Time zone</strong>, e.g. <code>Europe/Paris</code> (default UTC).</li>
+<li><strong>Console keymap</strong>, e.g. <code>us</code>, <code>fr</code>, <code>de</code>.</li>
+<li><strong>Password</strong>, twice, and whether root gets the same one.</li>
+<li><strong>Encrypt with LUKS?</strong> and then a passphrase, twice.</li>
+</ol>
+<p>It shows what it will erase and waits until you type <code>yes</code>. Nothing is written before that. It ends
+with "Done. Remove the installation media and reboot."</p>
+
+<h2 id="without-questions">Without questions</h2>
+<p>Every answer can be given on the command line, for scripted installs:</p>
+<pre class="term"><span class="p">#</span> systemlinux-install --disk /dev/sda --host laptop --user alex --tz Europe/Paris --keymap fr --yes
+<span class="p">#</span> systemlinux-install --partition /dev/nvme0n1p5 --esp /dev/nvme0n1p1 --user alex</pre>
+<dl class="opts">
+<dt>--disk DISK</dt><dd>erase DISK: GPT with a 1 MiB BIOS boot partition, a 512 MiB EFI System Partition and one ext4
+partition for the rest. GRUB is installed for both UEFI and BIOS.</dd>
+<dt>--partition PART [--esp ESP]</dt><dd>format only PART. On UEFI an existing EFI System Partition is reused; with
+several, name it with <code>--esp</code>. On BIOS, GRUB goes to the disk's boot code.</dd>
+<dt>--host, --user, --tz, --keymap</dt><dd>the answers to the questions above</dd>
+<dt>--luks</dt><dd>encrypt the system partition. GRUB then has to unlock it itself to read the kernel, and GRUB 2.12
+cannot open LUKS2 volumes that use cryptsetup's default Argon2 key function, so this option is not reliable yet. For
+encryption, use the <a href="handbook-disks.html#encryption">Handbook layout</a> with a separate <code>/boot</code>.</dd>
+<dt>--yes</dt><dd>do not ask for confirmation</dd>
+</dl>
+
+<h2 id="what-it-creates">What it creates</h2>
+<p>The system partition holds <code>/boot/images/VERSION/</code> (kernel, initramfs, <code>rootfs.squashfs</code>),
+<code>/boot/grub</code> and <code>/persist</code>. At boot the initramfs mounts the image read-only and puts
+<code>/persist/upper</code> on top of it as a writable layer; everything you change or install ends up there.
+<a href="recovery.html#image-installs">Recovery</a> explains how to reach it from the live system.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/quick-install.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/quick-install.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

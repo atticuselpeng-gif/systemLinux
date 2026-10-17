@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Network configuration - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html" class="on">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Networking</div>
+<h1>Network configuration</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="wireless.html">Wireless</a></li><li><a href="ssh.html">OpenSSH</a></li><li><a href="handbook-live.html">2. Booting the live system</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#checking-the-connection"><span>1</span> Checking the connection</a></li><li><a href="#connections"><span>2</span> Connections</a></li><li><a href="#static-address"><span>3</span> Static address</a></li><li><a href="#dns"><span>4</span> DNS</a></li><li><a href="#host-name"><span>5</span> Host name</a></li><li><a href="#without-networkmanager"><span>6</span> Without NetworkManager</a></li><li><a href="#vpn"><span>7</span> VPN</a></li><li><a href="#firewall"><span>8</span> Firewall</a></li></ol></div></div>
+<!-- content -->
+<!-- related: wireless ssh handbook-live -->
+<p>systemLinux manages the network with <strong>NetworkManager</strong>, which starts at every boot. Ethernet
+connects by itself with DHCP; everything else is configured with <code>nmcli</code> (commands) or <code>nmtui</code>
+(menus in the terminal).</p>
+
+<h2 id="checking-the-connection">Checking the connection</h2>
+<pre class="term"><span class="p">$</span> nmcli                                  <span class="c"># overview: devices, addresses, DNS</span>
+<span class="p">$</span> nmcli device status
+<span class="p">$</span> ip addr                                <span class="c"># addresses of every interface</span>
+<span class="p">$</span> ip route                               <span class="c"># routes; "default via" is the gateway</span>
+<span class="p">$</span> ping -c 3 1.1.1.1                      <span class="c"># reachability without DNS</span>
+<span class="p">$</span> ping -c 3 kernel.org                   <span class="c"># with DNS</span></pre>
+<p>If the IP ping works and the name ping does not, DNS is the problem (<a href="#dns">below</a>).</p>
+
+<h2 id="connections">Connections</h2>
+<p>NetworkManager keeps <em>connections</em> (settings) separate from <em>devices</em> (hardware). Changing
+connections needs root.</p>
+<pre class="term"><span class="p">$</span> nmcli connection show                    <span class="c"># saved connections</span>
+<span class="p">$</span> sudo nmcli connection up "Wired connection 1"
+<span class="p">$</span> sudo nmcli connection down "Wired connection 1"
+<span class="p">$</span> sudo nmcli connection delete "OldNetwork"
+<span class="p">$</span> sudo nmtui                               <span class="c"># the same with menus</span></pre>
+<p>Saved connections are files in <code>/etc/NetworkManager/system-connections/</code>.</p>
+
+<h2 id="static-address">Static address</h2>
+<pre class="term"><span class="p">$</span> sudo nmcli connection modify "Wired connection 1" \
+    ipv4.method manual ipv4.addresses 192.168.1.20/24 ipv4.gateway 192.168.1.1 ipv4.dns "192.168.1.1 1.1.1.1"
+<span class="p">$</span> sudo nmcli connection up "Wired connection 1"</pre>
+<p>Back to DHCP: <code>ipv4.method auto ipv4.addresses "" ipv4.gateway "" ipv4.dns ""</code>.</p>
+
+<h2 id="dns">DNS</h2>
+<p>NetworkManager writes the name servers it gets from DHCP into <code>/etc/resolv.conf</code>. To use your own on one
+connection:</p>
+<pre class="term"><span class="p">$</span> sudo nmcli connection modify "Wired connection 1" ipv4.ignore-auto-dns yes ipv4.dns "9.9.9.9 1.1.1.1"
+<span class="p">$</span> sudo nmcli connection up "Wired connection 1"
+<span class="p">$</span> cat /etc/resolv.conf</pre>
+<p>Look up names with <code>getent hosts kernel.org</code>; for <code>dig</code> install <code>bind</code> or
+<code>ldns</code> (<code>drill</code>).</p>
+
+<h2 id="host-name">Host name</h2>
+<p>The host name is read from <code>/etc/hostname</code> at boot. Change it there and in <code>/etc/hosts</code>, then
+<code>sudo hostname NEWNAME</code> for the running system.</p>
+
+<h2 id="without-networkmanager">Without NetworkManager</h2>
+<p>For a quick test, or on a server, the <code>ip</code> command configures an interface by hand (lost at reboot):</p>
+<pre class="term"><span class="p">$</span> sudo ip link set enp1s0 up
+<span class="p">$</span> sudo ip addr add 192.168.1.20/24 dev enp1s0
+<span class="p">$</span> sudo ip route add default via 192.168.1.1
+<span class="p">$</span> echo 'nameserver 1.1.1.1' | sudo tee /etc/resolv.conf</pre>
+<p>To stop NetworkManager for good, remove <code>depends-on = NetworkManager</code> from
+<code>/etc/dinit.d/network</code>.</p>
+
+<h2 id="vpn">VPN</h2>
+<p><code>wireguard-tools</code> and <code>openvpn</code> are in the ports tree. A WireGuard configuration file can be
+imported into NetworkManager:</p>
+<pre class="term"><span class="p">$</span> sudo get install wireguard-tools
+<span class="p">$</span> sudo nmcli connection import type wireguard file /etc/wireguard/wg0.conf</pre>
+
+<h2 id="firewall">Firewall</h2>
+<p>No firewall is active by default, and no network service listens unless you enable one (for example
+<code>sshd</code>). For a firewall, install <code>nftables</code> (<code>sudo get install nftables</code>), write the rules in a file and load them with <code>sudo nft -f FILE</code>; to load them at every boot, add a scripted <a href="dinit.html">dinit</a> service that runs that command.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/network-configuration.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/network-configuration.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

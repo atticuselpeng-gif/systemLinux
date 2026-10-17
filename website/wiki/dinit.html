@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dinit - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html" class="on">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; System administration</div>
+<h1>dinit</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="desktop.html">Graphical session</a></li><li><a href="system-maintenance.html">System maintenance</a></li><li><a href="kernel-parameters.html">Kernel parameters</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#controlling-services"><span>1</span> Controlling services</a></li><li><a href="#power"><span>2</span> Power</a></li><li><a href="#enabling-services"><span>3</span> Enabling services</a></li><li><a href="#services-of-the-base-system"><span>4</span> Services of the base system</a></li><li><a href="#writing-a-service"><span>5</span> Writing a service</a></li><li><a href="#user-services"><span>6</span> User services</a></li><li><a href="#logs"><span>7</span> Logs</a></li><li><a href="#troubleshooting"><span>8</span> Troubleshooting</a></li></ol></div></div>
+<!-- content -->
+<!-- related: desktop system-maintenance kernel-parameters -->
+<p><a href="https://github.com/davmac314/dinit">dinit</a> is the init system and service manager of systemLinux. It is
+the first program the kernel starts (PID 1), it starts and supervises every service, and it shuts the system down.
+There is no systemd: no <code>systemctl</code>, no journal, no logind.</p>
+
+<h2 id="controlling-services">Controlling services</h2>
+<p><code>dinitctl</code> talks to the running dinit. Changing services needs root.</p>
+<table>
+<tr><th>Command</th><th>What it does</th></tr>
+<tr><td><code>dinitctl list</code></td><td>every loaded service and its state</td></tr>
+<tr><td><code>dinitctl status NAME</code></td><td>state, process id and last exit status of NAME</td></tr>
+<tr><td><code>dinitctl start NAME</code></td><td>start NAME and what it depends on</td></tr>
+<tr><td><code>dinitctl stop NAME</code></td><td>stop NAME and what depends on it</td></tr>
+<tr><td><code>dinitctl restart NAME</code></td><td>stop and start again</td></tr>
+<tr><td><code>dinitctl enable NAME</code></td><td>start NAME now and at every boot</td></tr>
+<tr><td><code>dinitctl disable NAME</code></td><td>no longer start NAME at boot (and stop it)</td></tr>
+<tr><td><code>dinitctl reload NAME</code></td><td>re-read NAME's service file</td></tr>
+<tr><td><code>dinitctl setenv VAR=VALUE</code></td><td>set an environment variable for services started from now on</td></tr>
+</table>
+<p>In <code>dinitctl list</code>, <code>[{+}     ]</code> means started, <code>[     {-}]</code> stopped, and
+<code>[{ }&lt;&lt;   ]</code> starting.</p>
+
+<h2 id="power">Power</h2>
+<pre class="term"><span class="p">$</span> sudo poweroff
+<span class="p">$</span> sudo reboot
+<span class="p">$</span> sudo shutdown -h                       <span class="c"># same as poweroff</span></pre>
+<p>dinit stops every service in reverse dependency order, kills the remaining processes, turns off swap, unmounts the
+file systems and powers off.</p>
+
+<h2 id="enabling-services">Enabling services</h2>
+<p>The <code>boot</code> service is what dinit starts at boot. It <em>waits for</em> every service linked into
+<code>/etc/dinit.d/boot.d/</code>, so enabling a service is only a link there:</p>
+<pre class="term"><span class="p">$</span> sudo dinitctl enable sshd               <span class="c"># on a running system</span>
+<span class="p">#</span> ln -s ../sshd /etc/dinit.d/boot.d/sshd   <span class="c"># the same by hand (in a chroot, where dinit is not running)</span></pre>
+
+<h2 id="services-of-the-base-system">Services of the base system</h2>
+<table>
+<tr><th>Service</th><th>Type</th><th>What it does</th></tr>
+<tr><td><code>boot</code></td><td>internal</td><td>the boot target: depends on the core services and waits for <code>boot.d</code></td></tr>
+<tr><td><code>early-filesystems</code></td><td>scripted</td><td>mounts <code>/proc</code>, <code>/sys</code>, <code>/dev</code>, <code>/run</code>, <code>/dev/pts</code>, <code>/dev/shm</code>, <code>/tmp</code> and the EFI variables</td></tr>
+<tr><td><code>udevd</code>, <code>udev-trigger</code></td><td>process, scripted</td><td>eudev, the device manager: loads drivers and creates device nodes</td></tr>
+<tr><td><code>system-identity</code></td><td>scripted</td><td>host name from <code>/etc/hostname</code>, loopback, <code>/etc/machine-id</code></td></tr>
+<tr><td><code>mount-fstab</code></td><td>scripted</td><td>mounts <code>/etc/fstab</code> and turns on its swap</td></tr>
+<tr><td><code>console-setup</code></td><td>scripted</td><td>keymap and font from <code>/etc/vconsole.conf</code></td></tr>
+<tr><td><code>zram</code></td><td>scripted</td><td>4 GB of compressed swap in memory</td></tr>
+<tr><td><code>dbus-prepare</code>, <code>dbus</code></td><td>scripted, process</td><td>the system D-Bus</td></tr>
+<tr><td><code>NetworkManager</code>, <code>network</code></td><td>process, internal</td><td>the network</td></tr>
+<tr><td><code>getty-tty1</code></td><td>process</td><td>the login prompt on the first console</td></tr>
+<tr><td><code>ssh-keygen</code></td><td>scripted</td><td>creates missing SSH host keys</td></tr>
+<tr><td><code>sshd</code></td><td>process</td><td>the OpenSSH server; not enabled by default</td></tr>
+</table>
+<p>Ports add their own, for example <code>seatd</code>, <code>greetd</code>, <code>chronyd</code>,
+<code>bluetoothd</code>, <code>cupsd</code> and <code>iwd</code>. <code>get install</code> tells you when a port
+comes with a service.</p>
+
+<h2 id="writing-a-service">Writing a service</h2>
+<p>A service is a small text file in <code>/etc/dinit.d/</code>, named after the service. A program that stays in the
+foreground:</p>
+<pre># /etc/dinit.d/myapp
+type = process
+command = /usr/bin/myapp --no-daemon
+depends-on = network
+smooth-recovery = true</pre>
+<p>Then <code>sudo dinitctl enable myapp</code>. The most used settings:</p>
+<dl class="opts">
+<dt>type = process | bgprocess | scripted | internal</dt><dd><code>process</code>: dinit runs and supervises the
+program, which must not fork into the background. <code>scripted</code>: a command that runs to completion (and an
+optional <code>stop-command</code>). <code>internal</code>: no program, only dependencies.
+<code>bgprocess</code>: a daemon that forks, with <code>pid-file =</code>.</dd>
+<dt>command = ...</dt><dd>the program and its arguments, with an absolute path</dd>
+<dt>depends-on = NAME</dt><dd>NAME must start first; if NAME stops, this service stops too</dd>
+<dt>waits-for = NAME</dt><dd>start NAME first, but carry on even if it fails</dd>
+<dt>depends-ms = NAME</dt><dd>like depends-on, but this service keeps running if NAME stops later</dd>
+<dt>waits-for.d = DIR</dt><dd>waits for every service linked in DIR (how <code>boot.d</code> works)</dd>
+<dt>restart = true | false</dt><dd>restart the process when it exits (default for <code>process</code>: true)</dd>
+<dt>smooth-recovery = true</dt><dd>restart it without stopping the services that depend on it</dd>
+<dt>logfile = /var/log/myapp.log</dt><dd>where the program's output goes (otherwise it is discarded)</dd>
+<dt>run-as = USER</dt><dd>run the program as USER</dd>
+<dt>env-file = /etc/myapp.env</dt><dd>environment variables, one <code>VAR=VALUE</code> per line</dd>
+</dl>
+<p>The full reference is <code>man dinit-service</code> on a system with man pages, or the
+<a href="https://davmac.org/projects/dinit/man-pages-html/dinit-service.5.html">online manual</a>. Check a service file
+with <code>dinit-check NAME</code>.</p>
+
+<h2 id="user-services">User services</h2>
+<p>Every user can run their own dinit, which starts the services of their graphical session: the session D-Bus,
+<a href="pipewire.html">PipeWire</a> and WirePlumber. Start it from your window manager's configuration
+(<code>exec dinit</code>), see <a href="desktop.html#session-services">Graphical session</a>.</p>
+<table>
+<tr><th>Path</th><th>Contents</th></tr>
+<tr><td><code>/etc/dinit.d/user/</code></td><td>user services every user gets (installed by ports)</td></tr>
+<tr><td><code>/etc/dinit.d/user/boot.d/</code></td><td>those started with the session</td></tr>
+<tr><td><code>~/.config/dinit.d/</code></td><td>your own services; a <code>boot</code> there replaces the system's</td></tr>
+</table>
+<p>Control them with <code>dinitctl</code> without <code>sudo</code>, from inside the session:
+<code>dinitctl list</code>, <code>dinitctl restart pipewire</code>.</p>
+
+<h2 id="logs">Logs</h2>
+<p>There is no journal. Services print to the console during boot, or to the file named by <code>logfile</code>. The
+kernel's messages are in <code>dmesg</code>. For a full system log, install a syslog daemon from the ports tree and
+write a service for it.</p>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong>A service failed at boot:</strong> <code>dinitctl status NAME</code> shows why; start it by hand with
+<code>sudo dinitctl start NAME</code> to see its messages.</li>
+<li><strong>"service description not found":</strong> the file is not in <code>/etc/dinit.d</code>, or its name is
+different from the name you typed.</li>
+<li><strong>The boot hangs on a service:</strong> boot with <code>systemlinux.debug=1</code>, or add
+<code>init=/bin/bash</code> to the kernel command line and remove the link from <code>/etc/dinit.d/boot.d/</code>
+(see <a href="recovery.html">Recovery</a>).</li>
+</ul>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/dinit.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/dinit.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>
