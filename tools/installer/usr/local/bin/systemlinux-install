@@ -229,8 +229,6 @@ groups=
 for g in users audio video input plugdev wheel networkmanager; do grep -q "^$g:" "$ROOT/etc/group" && groups="$groups,$g"; done
 [ -z "$groups" ] || usermod -R "$ROOT" -aG "${groups#,}" "$USERN"
 /usr/local/bin/systemlinux-post "$ROOT"
-# the live image logs root in on tty1 by itself; an installed system asks for a login instead
-sed -i 's/ --autologin root//' "$ROOT/etc/dinit.d/getty-tty1"
 umount "$ROOT"; umount "$SQ"
 
 echo "== installing the bootloader"

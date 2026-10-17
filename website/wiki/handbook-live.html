@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2. Booting the live system - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html" class="on">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Handbook</div>
+<h1>2. Booting the live system</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="network-configuration.html">Network configuration</a></li><li><a href="wireless.html">Wireless</a></li><li><a href="kernel-parameters.html">Kernel parameters</a></li><li><a href="linux-console.html">Linux console</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#starting-the-iso"><span>1</span> Starting the ISO</a></li><li><a href="#keyboard-layout"><span>2</span> Keyboard layout</a></li><li><a href="#uefi-or-bios"><span>3</span> UEFI or BIOS?</a></li><li><a href="#getting-online"><span>4</span> Getting online</a><ol><li><a href="#wired"><span>4.1</span> Wired</a></li><li><a href="#wi-fi"><span>4.2</span> Wi-Fi</a></li><li><a href="#hidden-networks-proxies-and-static-addresses"><span>4.3</span> Hidden networks, proxies and static addresses</a></li></ol></li><li><a href="#installing-over-ssh"><span>5</span> Installing over SSH</a></li><li><a href="#the-clock"><span>6</span> The clock</a></li></ol></div></div>
+<!-- content -->
+<!-- related: network-configuration wireless kernel-parameters linux-console -->
+<h2 id="starting-the-iso">Starting the ISO</h2>
+<p>Plug in the stick and turn the computer on. Open the firmware's boot menu (usually <kbd>F12</kbd>,
+<kbd>F11</kbd>, <kbd>F10</kbd>, <kbd>F8</kbd> or <kbd>Esc</kbd>, shown on the first screen) and pick the stick. If it
+appears twice, once with "UEFI" in its name, the UEFI entry boots in UEFI mode and the other one in legacy BIOS mode:
+install in the same mode you will boot the installed system in.</p>
+<p>The systemLinux boot menu offers:</p>
+<table>
+<tr><th>Entry</th><th>What it does</th></tr>
+<tr><td>systemLinux VERSION</td><td>The normal live system. Starts after 3 seconds.</td></tr>
+<tr><td>copy to RAM</td><td>Loads the whole system into memory first, so you can pull the stick out (needs about 2 GB of RAM more).</td></tr>
+<tr><td>serial console</td><td>Also uses the first serial port (115200 baud), for servers and headless virtual machines.</td></tr>
+<tr><td>debug shell</td><td>Shows every boot message and stops in a shell right before the system starts.</td></tr>
+</table>
+<p>Press <kbd>e</kbd> on an entry to change its kernel command line for one boot, see
+<a href="kernel-parameters.html">Kernel parameters</a>.</p>
+<p>The live system logs you in as <strong>root</strong> on the first console. Nothing is written to any disk until you
+do it yourself. Everything you change in the live system is kept in memory and gone after a reboot.</p>
+
+<h2 id="keyboard-layout">Keyboard layout</h2>
+<p>The console starts with the US layout. Load yours with <code>loadkeys</code>; the available layouts are under
+<code>/usr/share/keymaps</code>:</p>
+<pre class="term"><span class="p">#</span> find /usr/share/keymaps -name '*.map.gz' | sed 's|.*/||; s|\.map\.gz||' | sort | less
+<span class="p">#</span> loadkeys fr                          <span class="c"># French AZERTY; de, uk, es, it, dvorak, ...</span></pre>
+<p>A bigger console font helps on high-resolution screens: <code>setfont</code> with a font from
+<code>/usr/share/consolefonts</code>.</p>
+
+<h2 id="uefi-or-bios">UEFI or BIOS?</h2>
+<p>Check which mode the live system was started in, because the partition layout and the bootloader depend on it:</p>
+<pre class="term"><span class="p">#</span> ls /sys/firmware/efi</pre>
+<p>If the directory exists you booted in <strong>UEFI</strong> mode. If <code>ls</code> says "No such file or
+directory", you booted in <strong>legacy BIOS</strong> mode.</p>
+
+<h2 id="getting-online">Getting online</h2>
+<p>You need a network to download the stage tarball in <a href="handbook-stage.html">chapter 4</a>. Without one,
+you can still install the copy of the system that is on the ISO.</p>
+<h3 id="wired">Wired</h3>
+<p>Ethernet connects by itself. Check that you have an address and can reach the internet:</p>
+<pre class="term"><span class="p">#</span> ip addr
+<span class="p">#</span> ping -c 3 kernel.org</pre>
+<h3 id="wi-fi">Wi-Fi</h3>
+<p>NetworkManager manages the network. Connect to Wi-Fi with <code>nmcli</code>, or use the menus of <code>nmtui</code>:</p>
+<pre class="term"><span class="p">#</span> nmcli device wifi list
+<span class="p">#</span> nmcli device wifi connect "MyNetwork" password "secret"
+<span class="p">#</span> nmcli device status</pre>
+<p>If no Wi-Fi device shows up, the card probably needs firmware that is not on the ISO. Use Ethernet, or share the
+connection of a phone over USB ("USB tethering"), which shows up as an Ethernet device. See
+<a href="wireless.html">Wireless</a> for more.</p>
+<h3 id="hidden-networks-proxies-and-static-addresses">Hidden networks, proxies and static addresses</h3>
+<p>See <a href="network-configuration.html">Network configuration</a>. For a proxy, export <code>https_proxy</code> and
+<code>http_proxy</code>: <code>curl</code> and <code>get</code> use them.</p>
+
+<h2 id="installing-over-ssh">Installing over SSH</h2>
+<div class="tip"><strong>Tip:</strong> To install from another computer (copy and paste the commands), give root a
+password in the live system and start the SSH server:
+<pre class="term"><span class="p">#</span> passwd
+<span class="p">#</span> dinitctl start sshd
+<span class="p">#</span> ip addr                              <span class="c"># the live system's address</span></pre>
+Then <code>ssh root@ADDRESS</code> from the other computer.</div>
+
+<h2 id="the-clock">The clock</h2>
+<p>Downloads over HTTPS fail if the clock is far off. Check it with <code>date</code>; if it is wrong, set it (in UTC):</p>
+<pre class="term"><span class="p">#</span> date -u -s '2026-10-17 14:30'</pre>
+
+<p>Next: <a href="handbook-disks.html">3. Preparing the disks</a>.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/handbook-live.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/handbook-live.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

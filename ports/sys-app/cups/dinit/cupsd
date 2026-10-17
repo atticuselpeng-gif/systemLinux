@@ -1,0 +1,6 @@
+# CUPS printing system (web interface on http://localhost:631). Enable with: dinitctl enable cupsd
+type = process
+command = /usr/bin/cupsd -f
+depends-on = dbus
+depends-on = network
+smooth-recovery = true

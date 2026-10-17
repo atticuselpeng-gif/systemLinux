@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8. Bootloader - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html" class="on">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Handbook</div>
+<h1>8. Bootloader</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="grub.html">GRUB</a></li><li><a href="dual-boot.html">Dual boot</a></li><li><a href="luks.html">Disk encryption (LUKS)</a></li><li><a href="kernel-parameters.html">Kernel parameters</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#installing-grub"><span>1</span> Installing GRUB</a><ol><li><a href="#uefi"><span>1.1</span> UEFI</a></li><li><a href="#legacy-bios"><span>1.2</span> Legacy BIOS</a></li><li><a href="#both"><span>1.3</span> Both</a></li></ol></li><li><a href="#writing-grub-cfg"><span>2</span> Writing grub.cfg</a><ol><li><a href="#with-a-separate-boot-and-an-encrypted-root"><span>2.1</span> With a separate /boot and an encrypted root</a></li><li><a href="#kernel-options"><span>2.2</span> Kernel options</a></li><li><a href="#other-systems"><span>2.3</span> Other systems</a></li></ol></li></ol></div></div>
+<!-- content -->
+<!-- related: grub dual-boot luks kernel-parameters -->
+<p>systemLinux uses <a href="grub.html">GRUB</a>. It is in the stage, for both UEFI and legacy BIOS. All commands run
+inside the chroot.</p>
+
+<h2 id="installing-grub">Installing GRUB</h2>
+<h3 id="uefi">UEFI</h3>
+<p>The EFI System Partition must be mounted on <code>/boot/efi</code> (<a href="handbook-config.html#the-efi-system-partition">chapter 6</a>).</p>
+<pre class="term"><span class="p">(chroot) #</span> grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=systemLinux
+Installing for x86_64-efi platform.
+Installation finished. No error reported.</pre>
+<p>This puts GRUB in <code>/boot/efi/EFI/systemLinux/</code>, its modules in <code>/boot/grub/</code>, and adds a
+"systemLinux" entry to the firmware's boot menu. Some firmware ignores entries it did not create itself and only
+starts the fallback path <code>\EFI\BOOT\BOOTX64.EFI</code>. Install there as well, so the disk boots anyway:</p>
+<pre class="term"><span class="p">(chroot) #</span> grub-install --target=x86_64-efi --efi-directory=/boot/efi --removable</pre>
+<div class="warning"><strong>Warning:</strong> On a disk shared with Windows, <code>--removable</code> replaces
+whatever was in <code>\EFI\BOOT\</code>. That is usually a copy of the Windows boot manager and harmless to replace,
+but leave it out if you are not sure; the first command is enough on most computers.</div>
+<p>If <code>grub-install</code> says "EFI variables are not supported on this system", you booted the live ISO in BIOS
+mode: reboot it in UEFI mode, or use the BIOS instructions below.</p>
+
+<h3 id="legacy-bios">Legacy BIOS</h3>
+<p>GRUB goes to the start of the <strong>disk</strong> (not a partition) and into the BIOS boot partition:</p>
+<pre class="term"><span class="p">(chroot) #</span> grub-install --target=i386-pc /dev/sda
+Installing for i386-pc platform.
+Installation finished. No error reported.</pre>
+<h3 id="both">Both</h3>
+<p>With the layout that has both a BIOS boot partition and an ESP, run the UEFI commands and the BIOS command. The
+same <code>grub.cfg</code> serves both.</p>
+
+<h2 id="writing-grub-cfg">Writing grub.cfg</h2>
+<p>GRUB's menu is <code>/boot/grub/grub.cfg</code>. systemLinux has no <code>grub-mkconfig</code>; the menu is a short
+file you write once. It needs the UUID of the root file system:</p>
+<pre class="term"><span class="p">(chroot) #</span> ROOTUUID=$(blkid -s UUID -o value /dev/sda2)
+<span class="p">(chroot) #</span> echo $ROOTUUID
+<span class="p">(chroot) #</span> cat &gt; /boot/grub/grub.cfg &lt;&lt;EOF
+set timeout=3
+set default=0
+insmod part_gpt
+insmod ext2
+
+menuentry "systemLinux" {
+    search --no-floppy --fs-uuid --set=root $ROOTUUID
+    linux /boot/vmlinuz root=UUID=$ROOTUUID quiet loglevel=3
+    initrd /boot/initrd.img
+}
+
+menuentry "systemLinux (show all boot messages)" {
+    search --no-floppy --fs-uuid --set=root $ROOTUUID
+    linux /boot/vmlinuz root=UUID=$ROOTUUID
+    initrd /boot/initrd.img
+}
+EOF
+<span class="p">(chroot) #</span> cat /boot/grub/grub.cfg</pre>
+<p><code>search</code> tells GRUB which partition to read the kernel from; <code>root=</code> tells the initramfs which
+partition to mount as <code>/</code>. Here they are the same partition. <code>ext2</code> is GRUB's module for ext2,
+ext3 and ext4.</p>
+<p>Check that the UUID was filled in: an empty <code>root=UUID=</code> means <code>ROOTUUID</code> was not set.</p>
+
+<h3 id="with-a-separate-boot-and-an-encrypted-root">With a separate /boot and an encrypted root</h3>
+<p>GRUB reads the kernel from the <code>/boot</code> partition, where it sits at the top (<code>/vmlinuz</code>), and
+<code>root=</code> names the <em>encrypted</em> partition. The initramfs sees that it is LUKS, asks for the passphrase
+and mounts what is inside:</p>
+<pre class="term"><span class="p">(chroot) #</span> BOOTUUID=$(blkid -s UUID -o value /dev/sda2)
+<span class="p">(chroot) #</span> LUKSUUID=$(blkid -s UUID -o value /dev/sda3)
+<span class="p">(chroot) #</span> cat &gt; /boot/grub/grub.cfg &lt;&lt;EOF
+set timeout=3
+insmod part_gpt
+insmod ext2
+
+menuentry "systemLinux" {
+    search --no-floppy --fs-uuid --set=root $BOOTUUID
+    linux /vmlinuz root=UUID=$LUKSUUID quiet loglevel=3
+    initrd /initrd.img
+}
+EOF</pre>
+
+<h3 id="kernel-options">Kernel options</h3>
+<p>Add options to the <code>linux</code> line. Common ones: <code>console=ttyS0,115200</code> for a serial console,
+<code>rootflags=...</code> for root mount options, <code>rootfstype=xfs</code> to skip file system detection. The full
+list is in <a href="kernel-parameters.html">Kernel parameters</a>.</p>
+
+<h3 id="other-systems">Other systems</h3>
+<p>To start Windows or another Linux from GRUB's menu, add an entry for it: see <a href="dual-boot.html#grub-entries">Dual boot</a>.</p>
+
+<p>Next: <a href="handbook-finalizing.html">9. Finalizing</a>.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/handbook-bootloader.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/handbook-bootloader.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

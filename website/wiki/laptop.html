@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laptop - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html" class="on">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Hardware</div>
+<h1>Laptop</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="firmware.html">Firmware</a></li><li><a href="wireless.html">Wireless</a></li><li><a href="graphics.html">Graphics drivers</a></li><li><a href="pipewire.html">Sound (PipeWire)</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#first-steps"><span>1</span> First steps</a></li><li><a href="#battery"><span>2</span> Battery</a></li><li><a href="#screen-brightness"><span>3</span> Screen brightness</a></li><li><a href="#suspend"><span>4</span> Suspend</a></li><li><a href="#power-saving"><span>5</span> Power saving</a></li></ol></div></div>
+<!-- content -->
+<!-- related: firmware wireless graphics pipewire -->
+<p>systemLinux runs on laptops, but there is no elogind or power daemon yet, so a few things a desktop distribution
+does by itself (suspend on lid close, power profiles) are set up by hand or not available.</p>
+
+<h2 id="first-steps">First steps</h2>
+<ul>
+<li>Install <a href="firmware.html">firmware</a>: <code>sudo get install linux-firmware</code>. Wi-Fi, Bluetooth and
+GPU power saving depend on it.</li>
+<li>Connect to <a href="wireless.html">Wi-Fi</a>.</li>
+<li>Touchpads work in Sway and X11 through libinput. Tap-to-click in Sway:
+<code>input type:touchpad { tap enabled; natural_scroll enabled }</code>.</li>
+</ul>
+
+<h2 id="battery">Battery</h2>
+<pre class="term"><span class="p">$</span> cat /sys/class/power_supply/BAT0/capacity    <span class="c"># charge in percent</span>
+<span class="p">$</span> cat /sys/class/power_supply/BAT0/status      <span class="c"># Charging, Discharging, Full</span></pre>
+<p>i3status and waybar can show it in the bar. Many ThinkPads, ASUS and other laptops can stop charging at a
+threshold, which makes the battery last longer:</p>
+<pre class="term"><span class="p">$</span> echo 80 | sudo tee /sys/class/power_supply/BAT0/charge_control_end_threshold</pre>
+<p>That lasts until the next boot; to keep it, put the command in a small scripted <a href="dinit.html">dinit</a>
+service.</p>
+
+<h2 id="screen-brightness">Screen brightness</h2>
+<pre class="term"><span class="p">$</span> sudo get install brightnessctl
+<span class="p">$</span> brightnessctl set 50%
+<span class="p">$</span> brightnessctl set 10%+</pre>
+<p>If it says "Permission denied", the port's udev rule that lets the <code>video</code> group change the brightness
+is not installed; use <code>sudo brightnessctl</code>. Sway bindings:</p>
+<pre>bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-</pre>
+<p>If nothing changes, try the kernel parameter <code>acpi_backlight=native</code> or <code>acpi_backlight=vendor</code>.</p>
+
+<h2 id="suspend">Suspend</h2>
+<p>Without elogind there is no <code>loginctl suspend</code>. Suspend to RAM directly through the kernel:</p>
+<pre class="term"><span class="p">$</span> sudo sh -c 'echo mem &gt; /sys/power/state'</pre>
+<p><code>cat /sys/power/mem_sleep</code> shows which kind of suspend is used (<code>s2idle</code> or <code>deep</code>).
+Closing the lid does nothing by default. Suspend on lid close needs an ACPI event handler such as <code>acpid</code>
+(<code>sudo get install acpid</code>), which has no service or handler script in its port yet. Hibernation is not
+supported.</p>
+<p>With Sway, lock the screen first with <a href="sway.html">swaylock</a>.</p>
+
+<h2 id="power-saving">Power saving</h2>
+<ul>
+<li>Check what draws power: <code>cat /sys/class/power_supply/BAT0/power_now</code> (microwatts).</li>
+<li>Intel CPUs: <code>cat /sys/devices/system/cpu/cpu0/cpufreq/energy_performance_preference</code>; set
+<code>power</code> or <code>balance_power</code> on battery (as root, for every CPU).</li>
+<li>TLP is in the ports tree (<code>sys-app/tlp</code>) but has no service yet.</li>
+</ul>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/laptop.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/laptop.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

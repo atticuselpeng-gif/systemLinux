@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>get - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html" class="on">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Software</div>
+<h1>get</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="ports.html">Ports tree</a></li><li><a href="profiles.html">Package profiles</a></li><li><a href="system-maintenance.html">System maintenance</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#usage"><span>1</span> Usage</a></li><li><a href="#installing-software"><span>2</span> Installing software</a><ol><li><a href="#prebuilt-programs-bin-ports"><span>2.1</span> Prebuilt programs (-bin ports)</a></li><li><a href="#tarballs-without-a-recipe"><span>2.2</span> Tarballs without a recipe</a></li></ol></li><li><a href="#removing-software"><span>3</span> Removing software</a></li><li><a href="#updating"><span>4</span> Updating</a></li><li><a href="#how-files-are-handled"><span>5</span> How files are handled</a></li><li><a href="#files-and-directories"><span>6</span> Files and directories</a></li><li><a href="#tips-and-tricks"><span>7</span> Tips and tricks</a><ol><li><a href="#big-builds-and-tmp"><span>7.1</span> Big builds and /tmp</a></li><li><a href="#fewer-build-jobs"><span>7.2</span> Fewer build jobs</a></li><li><a href="#installing-into-your-home-directory"><span>7.3</span> Installing into your home directory</a></li></ol></li><li><a href="#troubleshooting"><span>8</span> Troubleshooting</a><ol><li><a href="#a-build-fails"><span>8.1</span> A build fails</a></li><li><a href="#unknown-package"><span>8.2</span> unknown package</a></li><li><a href="#name-is-ambiguous"><span>8.3</span> 'NAME' is ambiguous</a></li></ol></li></ol></div></div>
+<!-- content -->
+<!-- related: ports profiles system-maintenance -->
+<p><strong>get</strong> is the systemLinux package tool. It builds software from source using the recipes in the
+<a href="ports.html">ports tree</a>, installs it into <code>/usr</code>, and records every file it installs so it can
+remove exactly those files again. It is one POSIX shell script, <code>/usr/local/bin/get</code>.</p>
+
+<h2 id="usage">Usage</h2>
+<table>
+<tr><th>Command</th><th>What it does</th></tr>
+<tr><td><code>get install NAME...</code></td><td>build and install NAME and everything it needs (aliases: <code>i</code>, <code>add</code>)</td></tr>
+<tr><td><code>get remove NAME...</code></td><td>uninstall NAME; refused while another package needs it (<code>rm</code>, <code>uninstall</code>)</td></tr>
+<tr><td><code>get autoremove</code></td><td>remove dependencies that nothing needs any more</td></tr>
+<tr><td><code>get list</code></td><td>installed packages; <code>*</code> marks those you asked for, the rest are dependencies (<code>ls</code>)</td></tr>
+<tr><td><code>get search WORD</code></td><td>find ports by name or description (<code>s</code>)</td></tr>
+<tr><td><code>get info NAME</code></td><td>the recipe, dependencies and whether it is installed (<code>show</code>)</td></tr>
+<tr><td><code>get files NAME</code></td><td>the files an installed package owns</td></tr>
+<tr><td><code>get sync</code></td><td>replace the ports tree with the one of the latest release (<code>update</code>)</td></tr>
+<tr><td><code>get install URL</code></td><td>build a source tarball that has no recipe</td></tr>
+<tr><td><code>get profile NAME</code></td><td>unpack a prebuilt <a href="profiles.html">package profile</a></td></tr>
+</table>
+<p>Options, before or after the command:</p>
+<dl class="opts">
+<dt>-f, --force</dt><dd>install even if already installed or provided by the base system (rebuilds it); remove even if needed</dd>
+<dt>-j N</dt><dd>number of parallel build jobs (default: the number of CPUs)</dd>
+<dt>-k, --keep</dt><dd>keep the build directory, to look at a failed build</dd>
+</dl>
+<p>Installing, removing, syncing and profiles need root: run them with <code>sudo</code>. Searching and listing do not.</p>
+
+<h2 id="installing-software">Installing software</h2>
+<pre class="term"><span class="p">$</span> get search editor
+<span class="p">$</span> get info neovim
+<span class="p">$</span> sudo get install neovim
+==&gt; 3 package(s) to build: dev-libs/libuv dev-libs/luajit dev-apps/neovim
+...
+==&gt; done</pre>
+<p>A NAME is a port name (<code>neovim</code>) or, when two categories have a port of the same name, the full
+<code>category/name</code> (<code>dev-apps/neovim</code>). get works out the dependencies from the recipes'
+<code>requires</code> lines and builds them first, in order. Anything the base system already provides is not
+rebuilt.</p>
+<h3 id="prebuilt-programs-bin-ports">Prebuilt programs (-bin ports)</h3>
+<p>Ports whose name ends in <code>-bin</code> install the project's own official build instead of compiling it. They
+are the fast way to get very big programs: <code>sudo get install firefox-bin</code> takes a minute, building
+<code>firefox</code> takes hours.</p>
+<h3 id="tarballs-without-a-recipe">Tarballs without a recipe</h3>
+<p>get builds most source tarballs directly, detecting the build system (configure, CMake, Meson, plain make, ...):</p>
+<pre class="term"><span class="p">$</span> sudo get install https://ftp.gnu.org/gnu/hello/hello-2.12.2.tar.gz
+<span class="p">$</span> get list
+* url/hello-2.12.2</pre>
+<p>Such packages are tracked as <code>url/NAME</code> and removed the same way:
+<code>sudo get remove url/hello-2.12.2</code>. Their dependencies are not resolved; install those first.</p>
+
+<h2 id="removing-software">Removing software</h2>
+<pre class="term"><span class="p">$</span> sudo get remove neovim
+<span class="p">$</span> sudo get autoremove                    <span class="c"># libuv and luajit, if nothing else needs them</span></pre>
+<p><code>get remove</code> deletes exactly the files that were installed (see <code>get files NAME</code>), its files in
+<code>/etc</code> included, and the directories it leaves empty. Back up a configuration file you edited before you
+remove its package. Packages that replaced a base package, or that others need, are only removed with <code>-f</code>.</p>
+
+<h2 id="updating">Updating</h2>
+<p>There is no "upgrade everything" command yet. To update a package, update the ports tree and rebuild it:</p>
+<pre class="term"><span class="p">$</span> sudo get sync
+<span class="p">$</span> get info neovim                        <span class="c"># the version in the new tree</span>
+<span class="p">$</span> sudo get install -f neovim</pre>
+
+<h2 id="how-files-are-handled">How files are handled</h2>
+<ul>
+<li>Packages install into <code>/usr</code>, configuration into <code>/etc</code>, state into <code>/var</code>,
+like the base system.</li>
+<li>A package never silently overwrites a file that belongs to another package. The base system's files are
+recorded too, as <code>base/NAME</code>; a port with the same name as a base package replaces it in place.</li>
+<li>If a configuration file in <code>/etc</code> already exists, yours is kept and the new one is installed next to
+it as <code>FILE.get-new</code>. Compare them and merge by hand.</li>
+<li>Ports that come with a <a href="dinit.html">dinit</a> service install it into <code>/etc/dinit.d</code> and tell
+you how to enable it.</li>
+</ul>
+
+<h2 id="files-and-directories">Files and directories</h2>
+<table>
+<tr><th>Path</th><th>Contents</th></tr>
+<tr><td><code>/usr/ports</code></td><td>the ports tree (<code>GET_PORTS</code> overrides it)</td></tr>
+<tr><td><code>/var/db/get/pkgs/</code></td><td>one directory per installed package: its file list, version and whether you asked for it</td></tr>
+<tr><td><code>/usr/share/systemlinux/base-packages</code></td><td>the packages the base system provides</td></tr>
+<tr><td><code>$TMPDIR</code> (default <code>/tmp</code>)</td><td>build directories, deleted after each build</td></tr>
+</table>
+
+<h2 id="tips-and-tricks">Tips and tricks</h2>
+<h3 id="big-builds-and-tmp">Big builds and /tmp</h3>
+<p><code>/tmp</code> is in memory and only half the size of your RAM. Build big packages on disk instead:</p>
+<pre class="term"><span class="p">$</span> sudo TMPDIR=/var/tmp get install firefox</pre>
+<h3 id="fewer-build-jobs">Fewer build jobs</h3>
+<p>Large C++ projects use about 2 GB of memory per job. If a build is killed (look for "Killed" or
+"out of memory" in the output), use fewer jobs: <code>sudo get install -j 2 NAME</code>.</p>
+<h3 id="installing-into-your-home-directory">Installing into your home directory</h3>
+<p>With <code>GET_PREFIX</code> get installs somewhere else and does not need root:</p>
+<pre class="term"><span class="p">$</span> GET_PREFIX=$HOME/.local GET_DB=$HOME/.local/var/db/get get install htop</pre>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="a-build-fails">A build fails</h3>
+<p>Run it again with <code>-k</code> to keep the build directory, read the first error in the output, and
+<a href="https://github.com/tortr-rs/systemLinux/issues">open an issue</a> with the port name and that error. Many
+ports are not verified yet; reports are how they get fixed.</p>
+<h3 id="unknown-package">unknown package</h3>
+<p>The port does not exist in your tree. Run <code>sudo get sync</code> and search again, or
+<a href="../packaging.html">write a port</a>.</p>
+<h3 id="name-is-ambiguous">'NAME' is ambiguous</h3>
+<p>Two categories have a port with that name; use the <code>category/name</code> form that get prints.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/get.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/get.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

@@ -46,7 +46,7 @@ MODDIR=$MODULES_ROOT/lib/modules/$KVER
 INITRD_MODULES=${INITRD_MODULES:-"isofs udf squashfs overlay loop sr_mod cdrom sd_mod usb_storage uas
     xhci_pci xhci_hcd ehci_pci ehci_hcd ohci_pci ohci_hcd uhci_hcd ahci libahci nvme nvme_core mmc_block
     virtio_blk virtio_scsi virtio_pci virtio virtio_ring scsi_mod scsi_common libata ata_piix ata_generic pata_acpi
-    vmw_pvscsi mptspi mptsas BusLogic hv_storvsc hv_vmbus vfat fat exfat ext4 nls_cp437 nls_ascii nls_utf8 dm_mod dm_crypt"}
+    vmw_pvscsi mptspi mptsas BusLogic hv_storvsc hv_vmbus vfat fat exfat ext4 xfs btrfs f2fs nls_cp437 nls_ascii nls_utf8 dm_mod dm_crypt"}
 # Whole driver directories (every ATA/SATA/PATA, SCSI, USB storage/host, NVMe, MMC and virtio-block driver): the medium may
 # sit behind any controller (QEMU's default IDE CD-ROM needs ata_piix, VMware pvscsi, Hyper-V storvsc, ...).
 # The init loads the ones matching the hardware by modalias. Test/dummy devices are excluded.

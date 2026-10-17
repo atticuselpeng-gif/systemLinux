@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wireless - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html" class="on">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Networking</div>
+<h1>Wireless</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="network-configuration.html">Network configuration</a></li><li><a href="firmware.html">Firmware</a></li><li><a href="laptop.html">Laptop</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#is-the-card-there"><span>1</span> Is the card there?</a></li><li><a href="#connecting"><span>2</span> Connecting</a><ol><li><a href="#wpa2-wpa3-enterprise-eduroam-company-networks"><span>2.1</span> WPA2/WPA3 Enterprise (eduroam, company networks)</a></li></ol></li><li><a href="#iwd"><span>3</span> iwd</a></li><li><a href="#troubleshooting"><span>4</span> Troubleshooting</a></li></ol></div></div>
+<!-- content -->
+<!-- related: network-configuration firmware laptop -->
+<p>Wi-Fi is handled by NetworkManager, like wired networks. Most Wi-Fi cards need <a href="firmware.html">firmware</a>.</p>
+
+<h2 id="is-the-card-there">Is the card there?</h2>
+<pre class="term"><span class="p">$</span> nmcli device                           <span class="c"># a "wifi" device, e.g. wlan0 or wlp3s0</span>
+<span class="p">$</span> rfkill                                 <span class="c"># is it blocked?</span>
+<span class="p">$</span> sudo dmesg | grep -iE 'wlan|wifi|firmware'</pre>
+<ul>
+<li>No wifi device and a firmware error in <code>dmesg</code>: <code>sudo get install linux-firmware</code>, reboot.</li>
+<li>Blocked (<code>soft blocked: yes</code>): <code>rfkill unblock wifi</code>. <code>hard blocked: yes</code> means a
+switch or key on the laptop.</li>
+</ul>
+
+<h2 id="connecting">Connecting</h2>
+<pre class="term"><span class="p">$</span> nmcli device wifi list
+<span class="p">$</span> sudo nmcli device wifi connect "MyNetwork" password "secret"
+<span class="p">$</span> sudo nmcli device wifi connect "Hidden" password "secret" hidden yes</pre>
+<p>The connection is saved and joined again automatically. <code>sudo nmtui</code> offers the same with a list to pick
+from.</p>
+<h3 id="wpa2-wpa3-enterprise-eduroam-company-networks">WPA2/WPA3 Enterprise (eduroam, company networks)</h3>
+<pre class="term"><span class="p">$</span> sudo nmcli connection add type wifi con-name eduroam ssid eduroam \
+    wifi-sec.key-mgmt wpa-eap 802-1x.eap peap 802-1x.phase2-auth mschapv2 \
+    802-1x.identity "you@university.edu" 802-1x.password "secret"
+<span class="p">$</span> sudo nmcli connection up eduroam</pre>
+<p>Ask your network's administrators for the EAP method and the CA certificate
+(<code>802-1x.ca-cert /path/to/ca.pem</code>).</p>
+
+<h2 id="iwd">iwd</h2>
+<p><code>iwd</code> is Intel's Wi-Fi daemon, an alternative to <code>wpa_supplicant</code> with its own tool,
+<code>iwctl</code>. Use it instead of NetworkManager's Wi-Fi, not next to it:</p>
+<pre class="term"><span class="p">$</span> sudo get install iwd
+<span class="p">$</span> sudo dinitctl enable iwd
+<span class="p">$</span> iwctl station wlan0 scan
+<span class="p">$</span> iwctl station wlan0 connect "MyNetwork"</pre>
+<p>To let NetworkManager use iwd as its Wi-Fi backend instead, put</p>
+<pre>[device]
+wifi.backend=iwd</pre>
+<p>in <code>/etc/NetworkManager/conf.d/iwd.conf</code> and restart NetworkManager (only if NetworkManager was built with iwd
+support).</p>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong>Connects, then drops every few minutes:</strong> turn off power saving for the card:
+<code>sudo iw dev wlan0 set power_save off</code> (<code>sudo get install iw</code>).</li>
+<li><strong>"Secrets were required, but not provided":</strong> wrong password, or the network uses WPA3 only and the
+card does not support it.</li>
+<li><strong>Slow on 5 GHz or not seeing 5 GHz networks:</strong> set your country:
+<code>sudo iw reg set FR</code>.</li>
+</ul>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/wireless.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/wireless.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

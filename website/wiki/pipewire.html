@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sound (PipeWire) - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html" class="on">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Hardware</div>
+<h1>Sound (PipeWire)</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="desktop.html">Graphical session</a></li><li><a href="dinit.html">dinit</a></li><li><a href="bluetooth.html">Bluetooth</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#installing"><span>1</span> Installing</a></li><li><a href="#starting"><span>2</span> Starting</a></li><li><a href="#volume-and-devices"><span>3</span> Volume and devices</a></li><li><a href="#configuration"><span>4</span> Configuration</a></li><li><a href="#troubleshooting"><span>5</span> Troubleshooting</a></li></ol></div></div>
+<!-- content -->
+<!-- related: desktop dinit bluetooth -->
+<p><strong>PipeWire</strong> is the sound server of systemLinux. It replaces PulseAudio (programs that speak
+PulseAudio work unchanged, through <code>pipewire-pulse</code>) and JACK, and it handles screen sharing on Wayland.
+<strong>WirePlumber</strong> is its session manager: it picks the output device and remembers volumes.</p>
+
+<h2 id="installing">Installing</h2>
+<pre class="term"><span class="p">$</span> sudo get install pipewire wireplumber
+==&gt; user services installed: they start with your session's dinit (exec dinit in your sway/i3 config)</pre>
+<p>Your user must be in the <code>audio</code> group (<code>id</code> shows it; the Handbook adds it).</p>
+
+<h2 id="starting">Starting</h2>
+<p>PipeWire runs as your user, not as a system service. The ports install three
+<a href="dinit.html#user-services">user services</a>: <code>pipewire</code>, <code>pipewire-pulse</code> and
+<code>wireplumber</code>, all started with your session's dinit. Start that dinit from your window manager's
+configuration (see <a href="desktop.html#session-services">Graphical session</a>):</p>
+<pre># ~/.config/sway/config
+exec dinit</pre>
+<p>Check that they run, from a terminal in the session:</p>
+<pre class="term"><span class="p">$</span> dinitctl list
+[{+}     ] boot
+[{+}     ] dbus
+[{+}     ] pipewire
+[{+}     ] pipewire-pulse
+[{+}     ] wireplumber</pre>
+<p>Without a graphical session (on the console), start it by hand: <code>dinit &amp;</code> after logging in.</p>
+
+<h2 id="volume-and-devices">Volume and devices</h2>
+<p><code>wpctl</code> comes with WirePlumber:</p>
+<pre class="term"><span class="p">$</span> wpctl status                           <span class="c"># devices, sinks (outputs), sources (inputs); * marks the default</span>
+<span class="p">$</span> wpctl set-default 46                   <span class="c"># make sink 46 the default output</span>
+<span class="p">$</span> wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+<span class="p">$</span> wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+<span class="p">$</span> wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle</pre>
+<p>Sway key bindings for the volume keys:</p>
+<pre>bindsym XF86AudioRaiseVolume exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle</pre>
+<p><code>alsamixer</code> (<code>sudo get install alsa-utils</code>) shows the sound card's own controls, for when a
+channel is muted at the hardware level.</p>
+
+<h2 id="configuration">Configuration</h2>
+<p>PipeWire reads <code>/usr/share/pipewire/*.conf</code>; override parts of it with files in
+<code>~/.config/pipewire/pipewire.conf.d/</code> (for everyone: <code>/etc/pipewire/pipewire.conf.d/</code>). For
+example a fixed sample rate:</p>
+<pre># ~/.config/pipewire/pipewire.conf.d/10-rate.conf
+context.properties = {
+    default.clock.rate = 48000
+    default.clock.allowed-rates = [ 44100 48000 ]
+}</pre>
+<p>Then <code>dinitctl restart pipewire</code>.</p>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong>No sound, <code>wpctl status</code> fails:</strong> the user services are not running. Is
+<code>exec dinit</code> in your configuration, and is <code>XDG_RUNTIME_DIR</code> set (<code>echo $XDG_RUNTIME_DIR</code>
+should print <code>/run/user/1000</code>)?</li>
+<li><strong>Only "Dummy Output":</strong> no sound card was found, or you are not in the <code>audio</code> group.
+Check <code>cat /proc/asound/cards</code>.</li>
+<li><strong>Sound on HDMI instead of the speakers:</strong> choose the sink with <code>wpctl set-default</code>.</li>
+<li><strong>Newer laptops (Intel SOF): no sound card at all:</strong> the DSP needs firmware;
+install <a href="firmware.html">linux-firmware</a> and reboot.</li>
+</ul>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/pipewire.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/pipewire.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

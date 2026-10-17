@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. Installing the stage - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html" class="on">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Handbook</div>
+<h1>4. Installing the stage</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="handbook-disks.html">3. Preparing the disks</a></li><li><a href="handbook-chroot.html">5. Entering the new system</a></li><li><a href="profiles.html">Package profiles</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#option-a-downloading-the-stage-tarball"><span>1</span> Option A: downloading the stage tarball</a><ol><li><a href="#checking-it"><span>1.1</span> Checking it</a></li><li><a href="#extracting-it"><span>1.2</span> Extracting it</a></li></ol></li><li><a href="#option-b-copying-the-system-from-the-iso-offline"><span>2</span> Option B: copying the system from the ISO (offline)</a></li><li><a href="#what-is-in-it"><span>3</span> What is in it</a></li></ol></div></div>
+<!-- content -->
+<!-- related: handbook-disks handbook-chroot profiles -->
+<p>A <strong>stage tarball</strong> is the complete systemLinux base system packed into one archive: dinit, the
+kernel and its modules, the initramfs, the GNU tools, NetworkManager, the compilers and build tools, <code>get</code>
+and the ports tree. You extract it onto the root partition and the system is there; the next chapters configure it.</p>
+<p>It is the same system the live ISO runs, so there are two ways to get it: download the tarball (the normal way), or
+copy it from the ISO when you have no network.</p>
+
+<h2 id="option-a-downloading-the-stage-tarball">Option A: downloading the stage tarball</h2>
+<p>Download it straight onto the new root file system. The live system keeps its files in memory, which is too
+small for the tarball.</p>
+<pre class="term"><span class="p">#</span> cd /mnt
+<span class="p">#</span> VER=$(cat /usr/share/systemlinux/image-version)    <span class="c"># the live system's version, e.g. 0.2.5</span>
+<span class="p">#</span> URL=https://github.com/tortr-rs/systemLinux/releases/download/v$VER
+<span class="p">#</span> curl -LO $URL/systemLinux-stage-$VER-x86_64.tar.xz
+<span class="p">#</span> curl -LO $URL/systemLinux-stage-$VER-x86_64.tar.xz.sha256</pre>
+<p>Use the version of the ISO you booted, so that the stage matches what you tested in the live system. A newer stage
+from a newer release works too; look at the <a href="https://github.com/tortr-rs/systemLinux/releases">release page</a>
+for its name.</p>
+
+<h3 id="checking-it">Checking it</h3>
+<pre class="term"><span class="p">#</span> sha256sum -c systemLinux-stage-$VER-x86_64.tar.xz.sha256
+systemLinux-stage-0.2.5-x86_64.tar.xz: OK</pre>
+<p>Do not go on unless it says <code>OK</code>.</p>
+
+<h3 id="extracting-it">Extracting it</h3>
+<pre class="term"><span class="p">#</span> tar -xpf systemLinux-stage-$VER-x86_64.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt
+<span class="p">#</span> rm systemLinux-stage-$VER-x86_64.tar.xz*</pre>
+<dl class="opts">
+<dt>-x -p -f FILE</dt><dd>extract, keeping file modes exactly (setuid programs like <code>su</code> and <code>sudo</code> need this)</dd>
+<dt>--xattrs-include='*.*'</dt><dd>restore extended attributes as well</dd>
+<dt>--numeric-owner</dt><dd>use the owner numbers stored in the archive, not the live system's user names</dd>
+</dl>
+<p>Extracting takes a few minutes and writes a few gigabytes.</p>
+
+<h2 id="option-b-copying-the-system-from-the-iso-offline">Option B: copying the system from the ISO (offline)</h2>
+<p>The ISO carries the same system as a compressed image, <code>/live-medium/live/rootfs.squashfs</code>. Mount it
+and copy it over:</p>
+<pre class="term"><span class="p">#</span> mkdir -p /tmp/image
+<span class="p">#</span> mount -o loop,ro /live-medium/live/rootfs.squashfs /tmp/image
+<span class="p">#</span> cp -a /tmp/image/. /mnt/
+<span class="p">#</span> umount /tmp/image</pre>
+<p>Copy the image, not the running live system (<code>/</code>): the running system has the live system's changes in
+it, such as the automatic root login.</p>
+<div class="note"><strong>Note:</strong> If you started the ISO with <em>copy to RAM</em> and pulled the stick out,
+<code>/live-medium</code> is gone. Plug the stick back in, or use option A.</div>
+
+<h2 id="what-is-in-it">What is in it</h2>
+<pre class="term"><span class="p">#</span> ls /mnt
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+<span class="p">#</span> ls /mnt/boot
+initrd.img  vmlinuz</pre>
+<ul>
+<li><code>/boot/vmlinuz</code> and <code>/boot/initrd.img</code>: the kernel and the initramfs (<a href="handbook-kernel.html">chapter 7</a>).</li>
+<li><code>/usr/lib/modules/</code>: every kernel module.</li>
+<li><code>/usr/ports</code>: the ports tree of this release.</li>
+<li><code>/etc/dinit.d</code>: the service descriptions (<a href="dinit.html">dinit</a>).</li>
+<li><code>/bin</code>, <code>/sbin</code> and <code>/lib</code> are links into <code>/usr</code>.</li>
+</ul>
+
+<p>Next: <a href="handbook-chroot.html">5. Entering the new system</a>.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/handbook-stage.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/handbook-stage.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

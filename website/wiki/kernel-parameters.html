@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kernel parameters - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html" class="on">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Boot process</div>
+<h1>Kernel parameters</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="grub.html">GRUB</a></li><li><a href="initramfs.html">Initramfs</a></li><li><a href="kernel.html">Kernel</a></li><li><a href="troubleshooting.html">Troubleshooting</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#setting-them"><span>1</span> Setting them</a><ol><li><a href="#for-one-boot"><span>1.1</span> For one boot</a></li><li><a href="#permanently"><span>1.2</span> Permanently</a></li></ol></li><li><a href="#systemlinux-parameters"><span>2</span> systemLinux parameters</a><ol><li><a href="#installed-systems"><span>2.1</span> Installed systems</a></li><li><a href="#live-iso"><span>2.2</span> Live ISO</a></li></ol></li><li><a href="#common-kernel-parameters"><span>3</span> Common kernel parameters</a></li></ol></div></div>
+<!-- content -->
+<!-- related: grub initramfs kernel troubleshooting -->
+<p>Kernel parameters are options given to the kernel when it starts. The kernel uses some of them; the systemLinux
+<a href="initramfs.html">initramfs</a> reads others.</p>
+
+<h2 id="setting-them">Setting them</h2>
+<h3 id="for-one-boot">For one boot</h3>
+<p>In the GRUB menu, select an entry and press <kbd>e</kbd>. Go to the line that starts with <code>linux</code>, add or
+remove options at its end, and press <kbd>Ctrl</kbd>+<kbd>X</kbd> (or <kbd>F10</kbd>) to boot. Nothing is saved.</p>
+<h3 id="permanently">Permanently</h3>
+<p>Edit the <code>linux</code> lines in <code>/boot/grub/grub.cfg</code>:</p>
+<pre>linux /boot/vmlinuz root=UUID=0f4c...e1 quiet loglevel=3 mitigations=auto</pre>
+<p>Check what the running kernel was started with: <code>cat /proc/cmdline</code>.</p>
+
+<h2 id="systemlinux-parameters">systemLinux parameters</h2>
+<p>Read by the initramfs (<code>/init</code> in <code>/boot/initrd.img</code>).</p>
+<h3 id="installed-systems">Installed systems</h3>
+<dl class="opts">
+<dt>root=UUID=... | root=LABEL=... | root=/dev/...</dt><dd>the root partition of a Handbook install. If it is LUKS
+encrypted, the initramfs asks for the passphrase, opens it as <code>/dev/mapper/root</code> and mounts that. Always
+mounted read-write.</dd>
+<dt>rootfstype=TYPE</dt><dd>the root file system type (default: detected)</dd>
+<dt>rootflags=OPTIONS</dt><dd>mount options for root, e.g. <code>rootflags=noatime</code> or
+<code>rootflags=subvol=@</code> for Btrfs</dd>
+<dt>init=PATH</dt><dd>the program to run as PID 1 instead of <code>/usr/bin/dinit</code>; <code>init=/bin/bash</code>
+gives a root shell without passwords (<a href="recovery.html">Recovery</a>)</dd>
+<dt>systemlinux.image=PATH systemlinux.data=UUID=...</dt><dd>an <a href="quick-install.html">image install</a>: the
+squashfs image to run and the partition that holds it (written by <code>systemlinux-install</code>)</dd>
+<dt>systemlinux.wait=SECONDS</dt><dd>how long to wait for the root partition or live medium (default 60)</dd>
+<dt>systemlinux.debug=1</dt><dd>open a shell right before switching to the real system</dd>
+<dt>systemlinux.shell=1</dt><dd>open a shell before looking for any disk</dd>
+</dl>
+<h3 id="live-iso">Live ISO</h3>
+<dl class="opts">
+<dt>systemlinux.toram=1</dt><dd>copy the system into memory, so the stick can be removed</dd>
+<dt>systemlinux.label=NAME</dt><dd>the volume label of the medium (default <code>SYSTEMLINUX</code>)</dd>
+<dt>systemlinux.iso=PATH</dt><dd>the ISO file to use on a stick with several (Ventoy)</dd>
+</dl>
+
+<h2 id="common-kernel-parameters">Common kernel parameters</h2>
+<dl class="opts">
+<dt>quiet / loglevel=3</dt><dd>fewer messages at boot; remove them to see everything</dd>
+<dt>console=tty0 console=ttyS0,115200</dt><dd>boot messages on the screen and on the first serial port</dd>
+<dt>nomodeset</dt><dd>no graphics driver until the system is up: for a black screen at boot</dd>
+<dt>module_blacklist=nouveau,pcspkr</dt><dd>never load these modules</dd>
+<dt>i915.enable_psr=0</dt><dd>module options work here too (<code>MODULE.OPTION=VALUE</code>)</dd>
+<dt>mitigations=off</dt><dd>turn off CPU vulnerability mitigations: faster, less safe</dd>
+<dt>consoleblank=0</dt><dd>never blank the console</dd>
+<dt>acpi_backlight=vendor | native</dt><dd>for laptops whose brightness keys do nothing</dd>
+<dt>systemd.*</dt><dd>ignored: there is no systemd</dd>
+</dl>
+<p>The complete list is the kernel's own
+<a href="https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html">kernel-parameters</a> page.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/kernel-parameters.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/kernel-parameters.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

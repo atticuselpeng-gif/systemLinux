@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dual boot - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html" class="on">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Installation</div>
+<h1>Dual boot</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="handbook-disks.html">3. Preparing the disks</a></li><li><a href="grub.html">GRUB</a></li><li><a href="system-time.html">System time</a></li><li><a href="quick-install.html">Quick install (systemlinux-install)</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#before-you-start"><span>1</span> Before you start</a></li><li><a href="#making-room"><span>2</span> Making room</a></li><li><a href="#partitioning-the-free-space"><span>3</span> Partitioning the free space</a></li><li><a href="#grub-entries"><span>4</span> GRUB entries for other systems</a><ol><li><a href="#windows-uefi"><span>4.1</span> Windows (UEFI)</a></li><li><a href="#windows-bios"><span>4.2</span> Windows (BIOS)</a></li><li><a href="#another-linux-uefi"><span>4.3</span> Another Linux (UEFI)</a></li></ol></li><li><a href="#shared-files-and-the-clock"><span>5</span> Shared files and the clock</a></li></ol></div></div>
+<!-- content -->
+<!-- related: handbook-disks grub system-time quick-install -->
+<p>systemLinux can share a disk with Windows or another Linux system. It does not resize partitions for you: you make
+room with the other system's own tools first, then install into the free space.</p>
+<div class="warning"><strong>Warning:</strong> Back up the other system before you change its partitions.</div>
+
+<h2 id="before-you-start">Before you start</h2>
+<ul>
+<li>Find out how the other system boots. On Windows, <em>System Information</em> (<code>msinfo32</code>) shows
+"BIOS Mode: UEFI" or "Legacy". Install systemLinux in the same mode, and boot the ISO in that mode.</li>
+<li><strong>Windows:</strong> turn off <em>Fast Startup</em> (Control Panel, Power Options, "Choose what the power
+buttons do"), so Windows really shuts down and leaves its partitions consistent. If BitLocker is on, have the
+recovery key ready: firmware changes can make Windows ask for it.</li>
+<li>Turn off Secure Boot in the firmware settings.</li>
+</ul>
+
+<h2 id="making-room">Making room</h2>
+<p><strong>Windows:</strong> open <em>Disk Management</em> (<code>diskmgmt.msc</code>), right-click the Windows
+partition (usually <code>C:</code>), choose <em>Shrink Volume</em> and enter how much to free, at least 20 GB. Leave
+the space unallocated.</p>
+<p><strong>Linux:</strong> shrink a partition with GParted from a live system of that distribution. XFS cannot shrink;
+you have to back up, recreate it smaller and restore.</p>
+
+<h2 id="partitioning-the-free-space">Partitioning the free space</h2>
+<p>Boot the systemLinux ISO and create a new partition in the free space with <code>cfdisk /dev/sda</code> (select
+"Free space", <em>New</em>, <em>Write</em>). Do <strong>not</strong> create a new partition table, and do not touch the
+existing partitions. Note the new partition's name, then follow the Handbook from
+<a href="handbook-disks.html#creating-file-systems">Creating file systems</a> on, with these differences:</p>
+<ul>
+<li><strong>UEFI:</strong> reuse the existing EFI System Partition. Find it with
+<code>lsblk -o NAME,SIZE,FSTYPE,PARTTYPENAME</code> (type "EFI System", FAT32, usually 100 to 500 MB). Do
+<strong>not</strong> format it. Mount it on <code>/boot/efi</code> in chapter 6 as usual. In chapter 8, leave out the
+<code>--removable</code> command.</li>
+<li><strong>BIOS:</strong> GRUB is written to the disk's first sector and replaces the other system's bootloader there;
+add a menu entry to start the other system from GRUB (below). A GPT disk needs a 1 MiB BIOS boot partition; an MBR
+disk does not.</li>
+</ul>
+<p>The quick installer does the same with <code>systemlinux-install --partition /dev/sdaN</code> (and
+<code>--esp</code> when there are several EFI System Partitions); see <a href="quick-install.html">Quick install</a>.</p>
+
+<h2 id="grub-entries">GRUB entries for other systems</h2>
+<p>systemLinux has no os-prober; add the entries to <code>/boot/grub/grub.cfg</code> yourself.</p>
+<h3 id="windows-uefi">Windows (UEFI)</h3>
+<pre>menuentry "Windows" {
+    insmod part_gpt
+    insmod fat
+    search --no-floppy --fs-uuid --set=root ESP-UUID
+    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+}</pre>
+<p>ESP-UUID is the EFI System Partition's UUID: <code>blkid -s UUID -o value /dev/sda1</code>.</p>
+<h3 id="windows-bios">Windows (BIOS)</h3>
+<pre>menuentry "Windows" {
+    insmod part_msdos
+    insmod ntfs
+    search --no-floppy --fs-uuid --set=root WINDOWS-UUID
+    chainloader +1
+}</pre>
+<h3 id="another-linux-uefi">Another Linux (UEFI)</h3>
+<p>Start its own bootloader, so its kernel updates keep working:</p>
+<pre>menuentry "Arch Linux" {
+    insmod fat
+    search --no-floppy --fs-uuid --set=root ESP-UUID
+    chainloader /EFI/GRUB/grubx64.efi
+}</pre>
+<p>Look in <code>/boot/efi/EFI/</code> for the right folder name. You can also skip GRUB's menu entirely and choose the
+system in the firmware's boot menu.</p>
+
+<h2 id="shared-files-and-the-clock">Shared files and the clock</h2>
+<ul>
+<li>Windows keeps the hardware clock in local time; see <a href="system-time.html#hardware-clock">System time</a>.</li>
+<li>To read the Windows partition, install NTFS support: <code>sudo get install ntfs-3g</code>, then
+<code>sudo ntfs-3g /dev/sda3 /mnt/windows</code>. Never write to it while Windows is hibernated or Fast Startup is on.</li>
+<li>A shared exFAT partition works for both: <code>sudo get install exfatprogs</code> to create one.</li>
+</ul>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/dual-boot.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/dual-boot.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

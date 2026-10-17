@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sway - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html" class="on">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Desktop</div>
+<h1>Sway</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="desktop.html">Graphical session</a></li><li><a href="greetd.html">greetd (login manager)</a></li><li><a href="pipewire.html">Sound (PipeWire)</a></li><li><a href="graphics.html">Graphics drivers</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#installing"><span>1</span> Installing</a></li><li><a href="#configuration"><span>2</span> Configuration</a></li><li><a href="#starting"><span>3</span> Starting</a></li><li><a href="#first-keys"><span>4</span> First keys</a></li><li><a href="#locking-and-idle"><span>5</span> Locking and idle</a></li><li><a href="#troubleshooting"><span>6</span> Troubleshooting</a></li></ol></div></div>
+<!-- content -->
+<!-- related: desktop greetd pipewire graphics -->
+<p><strong>Sway</strong> is a tiling Wayland compositor, compatible with i3's configuration. It is the recommended
+graphical session on systemLinux.</p>
+
+<h2 id="installing">Installing</h2>
+<p>Do the steps in <a href="desktop.html#what-you-need">Graphical session</a> first (firmware, the
+<code>desktop-runtime</code> profile, a font, groups). Then:</p>
+<pre class="term"><span class="p">$</span> sudo get install sway foot wmenu pipewire wireplumber
+<span class="p">$</span> sudo dinitctl enable seatd</pre>
+<p><code>sway</code> pulls in wlroots, Mesa and libinput. <code>foot</code> is the terminal and <code>wmenu</code> the
+program launcher of Sway's default configuration. seatd gives Sway access to the GPU and input devices.</p>
+
+<h2 id="configuration">Configuration</h2>
+<p>Start from the default configuration and add the session services:</p>
+<pre class="term"><span class="p">$</span> mkdir -p ~/.config/sway
+<span class="p">$</span> cp /etc/sway/config ~/.config/sway/config
+<span class="p">$</span> echo 'exec dinit' &gt;&gt; ~/.config/sway/config</pre>
+<p><code>exec dinit</code> starts your <a href="desktop.html#session-services">session services</a> (D-Bus, PipeWire).
+Useful additions:</p>
+<pre># keyboard layout and touchpad
+input type:keyboard {
+    xkb_layout fr
+    xkb_options caps:escape
+}
+input type:touchpad {
+    tap enabled
+    natural_scroll enabled
+}
+
+# screens: see "swaymsg -t get_outputs"
+output eDP-1 scale 1.5
+output * bg #285577 solid_color          # or: output * bg ~/wallpaper.png fill
+
+# volume and brightness keys
+bindsym XF86AudioRaiseVolume exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+
+# screenshot of a region to the clipboard (grim, slurp, wl-clipboard)
+bindsym Print exec grim -g "$(slurp)" - | wl-copy</pre>
+<p>Reload with <kbd>Mod</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>. <code>man 5 sway</code> documents everything (with man
+pages installed), or see the <a href="https://github.com/swaywm/sway/wiki">Sway wiki</a>.</p>
+
+<h2 id="starting">Starting</h2>
+<p>Log in on the console and run:</p>
+<pre class="term"><span class="p">$</span> sway</pre>
+<p>To start it automatically when you log in on tty1, add to the end of <code>~/.bash_profile</code>:</p>
+<pre>if [ -z "$WAYLAND_DISPLAY" ] &amp;&amp; [ "$(tty)" = /dev/tty1 ]; then
+    exec sway
+fi</pre>
+<p>Or use the <a href="greetd.html">greetd</a> login manager.</p>
+
+<h2 id="first-keys">First keys</h2>
+<table>
+<tr><th>Keys</th><th>Action</th></tr>
+<tr><td><kbd>Mod</kbd>+<kbd>Enter</kbd></td><td>terminal (foot)</td></tr>
+<tr><td><kbd>Mod</kbd>+<kbd>D</kbd></td><td>launcher (wmenu)</td></tr>
+<tr><td><kbd>Mod</kbd>+<kbd>Shift</kbd>+<kbd>Q</kbd></td><td>close the window</td></tr>
+<tr><td><kbd>Mod</kbd>+<kbd>1</kbd> ... <kbd>9</kbd></td><td>workspaces</td></tr>
+<tr><td><kbd>Mod</kbd>+arrows</td><td>move the focus</td></tr>
+<tr><td><kbd>Mod</kbd>+<kbd>Shift</kbd>+<kbd>E</kbd></td><td>exit Sway</td></tr>
+</table>
+<p><kbd>Mod</kbd> is the "Windows" key (<code>Mod4</code>).</p>
+
+<h2 id="locking-and-idle">Locking and idle</h2>
+<pre class="term"><span class="p">$</span> sudo get install swaylock swayidle</pre>
+<pre>exec swayidle -w timeout 300 'swaylock -f' timeout 600 'swaymsg "output * power off"' \
+    resume 'swaymsg "output * power on"' before-sleep 'swaylock -f'
+bindsym $mod+Escape exec swaylock -f</pre>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Run <code>sway -d 2&gt; ~/sway.log</code> and read the first errors.</p>
+<ul>
+<li><strong>"Failed to open any DRM device" / "Could not connect to seatd":</strong> start seatd
+(<code>sudo dinitctl start seatd</code>) and check that you are in <code>video</code> (<code>id</code>; log in again
+after <code>usermod -aG video</code>).</li>
+<li><strong>"XDG_RUNTIME_DIR is not set":</strong> log in on the console, not with <code>su</code>; the directory is
+created at login (<code>ls -ld /run/user/$(id -u)</code>).</li>
+<li><strong>Black screen in a virtual machine:</strong> give it a virtio GPU (QEMU: <code>-vga virtio</code>) or try
+<code>WLR_RENDERER=pixman sway</code>.</li>
+<li><strong>No text in programs, or squares instead of letters:</strong> no font is installed:
+<code>sudo get install fonts-dejavu</code>.</li>
+<li><strong>No sound:</strong> see <a href="pipewire.html#troubleshooting">PipeWire</a>.</li>
+</ul>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/sway.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/sway.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>
