@@ -132,7 +132,7 @@ sudo "$BUILD_DIR/tools/sudo/build.sh" "$STAGE"
 # /usr/lib/systemlinux-host so they never replace the image's own glibc and libraries (they used to land in
 # /usr/lib: the host's 64-bit glibc over the 32-bit one, which broke every program with a ../lib RUNPATH, e.g. cargo)
 sudo "$BUILD_DIR/tools/overlay-common/copy-host-tools.sh" "$STAGE" grub-install "$GRUB_MKIMAGE" grub-probe grub-editenv \
-    grub-set-default grub-reboot efibootmgr mkfs.fat "$GRUB_BIOS_SETUP"
+    grub-set-default grub-reboot efibootmgr mkfs.fat "$GRUB_BIOS_SETUP" cryptsetup
 GRUBDATA=0
 for d in /usr/lib/grub /usr/lib64/grub /usr/share/grub /usr/lib/grub2 /usr/share/grub2; do
     if [ -d "$d" ]; then sudo mkdir -p "$STAGE$d"; sudo cp -a "$d/." "$STAGE$d/"; GRUBDATA=1; fi
@@ -184,6 +184,12 @@ if [ -d "$MODULES_ROOT/lib/modules/$KVER" ]; then
     sudo cp -a "$MODULES_ROOT/lib/modules/$KVER" "$STAGE/usr/lib/modules/"
     sudo depmod -b "$STAGE" "$KVER"   # $STAGE/lib -> usr/lib
 fi
+# the initramfs: the ISO boots with it, and installed systems use the same one (/boot/initrd.img, root=UUID=...)
+BUILD_ID="$IMAGE_VERSION-$(date +%s)"
+KVER=$KVER MODULES_ROOT=$MODULES_ROOT BUILD_ID=$BUILD_ID WORK=$HOME/.cache/systemlinux-initrd "$BUILD_DIR/tools/live-image/build-initrd.sh" "$WORKSPACE/live/initrd.img"
+sudo install -Dm644 "$WORKSPACE/live/initrd.img" "$STAGE/boot/initrd.img"
+# every install makes its own machine id on first boot (system-identity)
+sudo rm -f "$STAGE/etc/machine-id" "$STAGE/var/lib/dbus/machine-id"
 # owners, setuid bits and private files (git keeps none of them): su, passwd and sudo need this
 sudo "$BUILD_DIR/tools/overlay-common/fix-perms.sh" "$STAGE"
 # the same system as a stage tarball, for Gentoo-style installs (partition, extract, chroot, kernel, GRUB) onto a
@@ -197,9 +203,7 @@ sudo mksquashfs "$STAGE" "$WORKSPACE/live/rootfs.squashfs" -comp zstd -Xcompress
 sudo rm -rf "$STAGE"
 sudo chown "$USER" "$WORKSPACE/live/rootfs.squashfs"
 ls -lh "$WORKSPACE/live/rootfs.squashfs"
-BUILD_ID="$IMAGE_VERSION-$(date +%s)"
 echo "$BUILD_ID" > "$WORKSPACE/live/build-id"
-KVER=$KVER MODULES_ROOT=$MODULES_ROOT BUILD_ID=$BUILD_ID WORK=$HOME/.cache/systemlinux-initrd "$BUILD_DIR/tools/live-image/build-initrd.sh" "$WORKSPACE/live/initrd.img"
 
 echo "=== [6/7] COPYING KERNEL AND WRITING grub.cfg ==="
 install -m644 "$KERNEL" "$WORKSPACE/live/vmlinuz"

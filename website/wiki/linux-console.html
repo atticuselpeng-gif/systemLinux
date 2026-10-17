@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linux console - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html" class="on">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; System administration</div>
+<h1>Linux console</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="locale.html">Locale</a></li><li><a href="handbook-config.html">6. Configuring the system</a></li><li><a href="kernel-parameters.html">Kernel parameters</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#keyboard-layout"><span>1</span> Keyboard layout</a></li><li><a href="#font"><span>2</span> Font</a></li><li><a href="#login-prompt"><span>3</span> Login prompt</a><ol><li><a href="#automatic-login"><span>3.1</span> Automatic login</a></li><li><a href="#serial-console"><span>3.2</span> Serial console</a></li></ol></li><li><a href="#scrolling-and-blanking"><span>4</span> Scrolling and blanking</a></li></ol></div></div>
+<!-- content -->
+<!-- related: locale handbook-config kernel-parameters -->
+<p>The Linux console is the text screen you get without a graphical session: six virtual consoles on
+<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>F1</kbd> to <kbd>F6</kbd> (just <kbd>Alt</kbd>+<kbd>F1</kbd> ... from another
+console).</p>
+
+<h2 id="keyboard-layout">Keyboard layout</h2>
+<p>For the current session:</p>
+<pre class="term"><span class="p">$</span> sudo loadkeys de</pre>
+<p>Permanently, in <code>/etc/vconsole.conf</code>, which the <code>console-setup</code> service reads at every boot:</p>
+<pre>KEYMAP=de</pre>
+<p>The layouts are the <code>.map.gz</code> files under <code>/usr/share/keymaps</code>, named by layout (<code>fr</code>,
+<code>de</code>, <code>uk</code>, <code>us</code>, <code>dvorak</code>, <code>colemak</code>, <code>es</code>,
+<code>it</code>, <code>pl</code>, <code>ru</code>, ...):</p>
+<pre class="term"><span class="p">$</span> find /usr/share/keymaps -name '*.map.gz' | sed 's|.*/||; s|\.map\.gz||' | sort | column</pre>
+<div class="note"><strong>Note:</strong> This is only the console. Graphical sessions have their own setting:
+<code>input * xkb_layout fr</code> in Sway, <code>setxkbmap fr</code> under X11.</div>
+
+<h2 id="font">Font</h2>
+<p>Console fonts are in <code>/usr/share/consolefonts</code>. Try one with <code>setfont</code>:</p>
+<pre class="term"><span class="p">$</span> setfont -d                             <span class="c"># the default font at double size (HiDPI screens)</span>
+<span class="p">$</span> setfont lat9w-16
+<span class="p">$</span> setfont                                <span class="c"># back to the default</span></pre>
+<p>and make it permanent with <code>FONT=</code> in <code>/etc/vconsole.conf</code>:</p>
+<pre>KEYMAP=de
+FONT=lat9w-16</pre>
+
+<h2 id="login-prompt">Login prompt</h2>
+<p>Only the first console has a login prompt (<code>getty-tty1</code>). For a login on the second one as well, copy the
+service:</p>
+<pre class="term"><span class="p">$</span> sed 's/tty1/tty2/g' /etc/dinit.d/getty-tty1 | sudo tee /etc/dinit.d/getty-tty2
+<span class="p">$</span> sudo dinitctl enable getty-tty2</pre>
+<h3 id="automatic-login">Automatic login</h3>
+<p>To log a user in on tty1 without a password (only on a computer nobody else can touch), add
+<code>--autologin alex</code> after <code>agetty</code> in <code>/etc/dinit.d/getty-tty1</code>:</p>
+<pre>command = /usr/bin/agetty --autologin alex --noclear tty1 38400 linux</pre>
+<h3 id="serial-console">Serial console</h3>
+<p>Add <code>console=tty0 console=ttyS0,115200</code> to the kernel command line for boot messages on the serial port,
+and a getty for it:</p>
+<pre class="term"><span class="p">$</span> sed 's/tty1 38400 linux/ttyS0 115200 vt100/; s/tty1/ttyS0/g' /etc/dinit.d/getty-tty1 | sudo tee /etc/dinit.d/getty-ttyS0
+<span class="p">$</span> sudo dinitctl enable getty-ttyS0</pre>
+
+<h2 id="scrolling-and-blanking">Scrolling and blanking</h2>
+<p><kbd>Shift</kbd>+<kbd>PageUp</kbd> scrolling is not available in recent kernels. Use <code>less</code> or a terminal
+multiplexer (<code>sudo get install tmux</code>). The screen goes blank after 10 minutes without input; turn that off
+with <code>setterm --blank 0</code>, or <code>consoleblank=0</code> on the kernel command line.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/linux-console.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/linux-console.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

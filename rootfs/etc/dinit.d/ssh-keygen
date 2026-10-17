@@ -1,5 +1,5 @@
-# Generate missing SSH host keys on first boot (installed systems only; see systemlinux-post).
+# Generate any missing SSH host keys (first boot of an install; sshd waits for it).
 type = scripted
-command = /usr/local/bin/systemlinux-ssh-keygen
+command = /usr/bin/ssh-keygen -A
 depends-on = early-filesystems
 restart = false

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>i3 - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html" class="on">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Desktop</div>
+<h1>i3</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="xorg.html">Xorg</a></li><li><a href="desktop.html">Graphical session</a></li><li><a href="sway.html">Sway</a></li><li><a href="pipewire.html">Sound (PipeWire)</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#installing"><span>1</span> Installing</a></li><li><a href="#starting"><span>2</span> Starting</a></li><li><a href="#configuration"><span>3</span> Configuration</a></li><li><a href="#troubleshooting"><span>4</span> Troubleshooting</a></li></ol></div></div>
+<!-- content -->
+<!-- related: xorg desktop sway pipewire -->
+<p><strong>i3</strong> is a tiling window manager for X11. Its Wayland twin is <a href="sway.html">Sway</a>, which
+uses nearly the same configuration.</p>
+
+<h2 id="installing">Installing</h2>
+<p>Do the steps in <a href="desktop.html#what-you-need">Graphical session</a> first. Then:</p>
+<pre class="term"><span class="p">$</span> sudo get install xorg-server xinit xf86-input-libinput i3 i3status dmenu xterm pipewire wireplumber</pre>
+
+<h2 id="starting">Starting</h2>
+<pre class="term"><span class="p">$</span> printf 'exec i3\n' &gt; ~/.xinitrc
+<span class="p">$</span> startx</pre>
+<p>On the first start i3 offers to write a configuration and asks for the modifier key (Win or Alt). Then add the
+session services to <code>~/.config/i3/config</code>:</p>
+<pre>exec --no-startup-id dinit</pre>
+<p>Starting X automatically on tty1, in <code>~/.bash_profile</code>:</p>
+<pre>if [ -z "$DISPLAY" ] &amp;&amp; [ "$(tty)" = /dev/tty1 ]; then
+    exec startx
+fi</pre>
+
+<h2 id="configuration">Configuration</h2>
+<p>Useful additions to <code>~/.config/i3/config</code>:</p>
+<pre>exec --no-startup-id setxkbmap fr
+bindsym $mod+Return exec xterm
+bindsym XF86AudioRaiseVolume exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym $mod+Escape exec --no-startup-id i3lock -c 000000</pre>
+<p>Reload with <kbd>Mod</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>, restart i3 in place with
+<kbd>Mod</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>. The <a href="https://i3wm.org/docs/userguide.html">i3 User's Guide</a>
+documents everything. A compositor for transparency and no tearing: <code>picom</code>.</p>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>See <a href="xorg.html#troubleshooting">Xorg</a> when X itself does not start. i3's own messages go to the terminal
+you ran <code>startx</code> from.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/i3.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/i3.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

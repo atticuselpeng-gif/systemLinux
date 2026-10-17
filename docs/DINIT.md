@@ -15,8 +15,10 @@ journald/logind/networkd/resolved, `systemctl` & co., `systemd-udevd`, systemd's
 * The machine id is made with `dbus-uuidgen`.
 
 ## Boot handoff
-1. GRUB loads `/live/vmlinuz` + `/live/initrd.img` (installed systems: `/boot/images/<ver>/`).
-2. `tools/live-image/init` (busybox) finds the medium, mounts the squashfs with an overlay and moves `/proc`, `/sys`,
+1. GRUB loads `/live/vmlinuz` + `/live/initrd.img` (stage installs: `/boot/vmlinuz` + `/boot/initrd.img`; image installs:
+   `/boot/images/<ver>/`).
+2. `tools/live-image/init` (busybox) mounts the root named by `root=` (unlocking LUKS first), or finds the medium and
+   mounts the squashfs with an overlay, and moves `/proc`, `/sys`,
    `/dev` into it. It mounts a tmpfs on `/newroot/run` (dinit creates `/run/dinitctl` immediately), then
    `exec switch_root /newroot /usr/bin/dinit`. Override with `init=/path` on the kernel command line.
 3. dinit (PID 1) starts its default service `boot`.
@@ -24,18 +26,20 @@ journald/logind/networkd/resolved, `systemctl` & co., `systemd-udevd`, systemd's
 ## Services (`rootfs/etc/dinit.d/`)
 | service | type | depends-on / waits-for | systemd equivalent |
 |---|---|---|---|
-| `boot` | internal | depends-on `early-filesystems`, `udev-trigger`, `system-identity`; waits-for `mount-fstab`, `zram`, `network`, `getty-tty1`, and everything linked in `boot.d/` | `default.target`/`multi-user.target` |
+| `boot` | internal | depends-on `early-filesystems`, `udev-trigger`, `system-identity`; waits-for `mount-fstab`, `zram`, `network`, `console-setup`, `getty-tty1`, and everything linked in `boot.d/` | `default.target`/`multi-user.target` |
 | `early-filesystems` | scripted | – | `local-fs.target`, `tmp.mount`, API mounts |
 | `udevd` | process | `early-filesystems` | `systemd-udevd.service` (eudev here) |
 | `udev-trigger` | scripted | `udevd` | `systemd-udev-trigger.service` |
-| `mount-fstab` | scripted | `early-filesystems`, waits-for `udev-trigger` | `/etc/fstab` mounts (installed systems) |
+| `mount-fstab` | scripted | `early-filesystems`, waits-for `udev-trigger` | `/etc/fstab` mounts and swap (installed systems) |
+| `console-setup` | scripted | `early-filesystems`, waits-for `udev-trigger` | `systemd-vconsole-setup` (`/etc/vconsole.conf`) |
 | `system-identity` | scripted | `early-filesystems` | hostname, machine-id, loopback |
 | `zram` | scripted (`stop-command`) | `early-filesystems` | `zram.service` |
 | `dbus-prepare`, `dbus` | scripted, process | `system-identity` → `dbus-prepare` → `dbus` | `dbus.service` |
 | `NetworkManager` | process | `dbus`, `udev-trigger` | `NetworkManager.service` |
 | `network` | internal | `NetworkManager` | `network-online.target` (loosely) |
-| `getty-tty1` | process | `system-identity` | `getty@tty1` + autologin override |
-| `ssh-keygen` | scripted | `early-filesystems` | `systemlinux-ssh-keygen.service` (enabled by the installer via `boot.d`) |
+| `getty-tty1` | process | `system-identity`, waits-for `console-setup` | `getty@tty1` (the live init adds `--autologin root`) |
+| `ssh-keygen` | scripted | `early-filesystems` | `sshd-keygen.service` (`ssh-keygen -A`) |
+| `sshd` | process | `network`, waits-for `ssh-keygen` | `sshd.service` (not enabled by default) |
 
 `process` services run in the foreground and are supervised/restarted by dinit (`dbus-daemon --nofork`,
 `NetworkManager --no-daemon`); `scripted` services run a helper from `rootfs/usr/lib/dinit/` to completion;

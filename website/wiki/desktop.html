@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graphical session - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html" class="on">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Desktop</div>
+<h1>Graphical session</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="sway.html">Sway</a></li><li><a href="i3.html">i3</a></li><li><a href="greetd.html">greetd (login manager)</a></li><li><a href="pipewire.html">Sound (PipeWire)</a></li><li><a href="graphics.html">Graphics drivers</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#what-you-need"><span>1</span> What you need</a></li><li><a href="#how-a-session-starts-without-logind"><span>2</span> How a session starts without logind</a></li><li><a href="#session-services"><span>3</span> Session services</a></li><li><a href="#applications"><span>4</span> Applications</a></li></ol></div></div>
+<!-- content -->
+<!-- related: sway i3 greetd pipewire graphics -->
+<p>systemLinux installs as a console system. This page explains what a graphical session needs and how the pieces fit
+together; <a href="sway.html">Sway</a> (Wayland) and <a href="i3.html">i3</a> (X11) have step-by-step pages.</p>
+
+<h2 id="what-you-need">What you need</h2>
+<ol>
+<li><strong>Firmware</strong> for your GPU (AMD and NVIDIA always, Intel for power saving):
+<code>sudo get install linux-firmware</code>. See <a href="graphics.html">Graphics drivers</a>.</li>
+<li><strong>Fonts and themes</strong>: the <code>desktop-runtime</code> <a href="profiles.html">profile</a> and a font
+port:
+<pre class="term"><span class="p">$</span> sudo get profile desktop-runtime
+<span class="p">$</span> sudo get install fonts-dejavu</pre></li>
+<li><strong>Groups</strong>: your user in <code>video</code>, <code>audio</code> and <code>input</code> (<code>id</code>
+shows them; see <a href="users-and-groups.html">Users and groups</a>).</li>
+<li><strong>A window manager or compositor</strong>: <a href="sway.html">Sway</a> or <a href="i3.html">i3</a>. Other
+ports exist (<code>dwm</code>, <code>xfce4-session</code>, ...), not all verified.</li>
+<li><strong>Sound</strong>: <a href="pipewire.html">PipeWire</a>.</li>
+</ol>
+<p>Expect the first desktop install to take hours on a laptop: Mesa, LLVM, GTK and their dependencies are built from
+source. Use <code>-bin</code> ports where they exist (<code>firefox-bin</code>).</p>
+
+<h2 id="how-a-session-starts-without-logind">How a session starts without logind</h2>
+<p>There is no systemd-logind or elogind. Their jobs are done by:</p>
+<table>
+<tr><th>Job</th><th>Done by</th></tr>
+<tr><td>Access to the GPU and input devices for Wayland compositors</td><td><strong>seatd</strong> (<code>sudo dinitctl enable seatd</code>; members of <code>video</code> may use it)</td></tr>
+<tr><td>Access for X11</td><td>the <code>video</code> and <code>input</code> groups</td></tr>
+<tr><td><code>/run/user/UID</code> (<code>XDG_RUNTIME_DIR</code>)</td><td><code>pam_exec</code> at login (<code>/usr/libexec/systemlinux-rundir</code>) and <code>/etc/profile.d/xdg-runtime.sh</code></td></tr>
+<tr><td>The session D-Bus</td><td>your own <a href="dinit.html#user-services">user dinit</a></td></tr>
+<tr><td>Login screen</td><td>the console, or <a href="greetd.html">greetd</a></td></tr>
+</table>
+
+<h2 id="session-services">Session services</h2>
+<p>Start a <em>user dinit</em> from your window manager. It runs the services in <code>/etc/dinit.d/user/boot.d</code>:
+the session D-Bus, and PipeWire, pipewire-pulse and WirePlumber when those ports are installed. Add one line to your
+configuration:</p>
+<table>
+<tr><th>Session</th><th>Line</th><th>File</th></tr>
+<tr><td>Sway</td><td><code>exec dinit</code></td><td><code>~/.config/sway/config</code></td></tr>
+<tr><td>i3</td><td><code>exec --no-startup-id dinit</code></td><td><code>~/.config/i3/config</code></td></tr>
+<tr><td>any X11 session</td><td><code>dinit &amp;</code> before the window manager</td><td><code>~/.xinitrc</code></td></tr>
+</table>
+<p>Programs started from the session find the bus through <code>DBUS_SESSION_BUS_ADDRESS</code>, set at login. Your own
+user services go in <code>~/.config/dinit.d/</code>.</p>
+
+<h2 id="applications">Applications</h2>
+<table>
+<tr><th>Kind</th><th>Ports</th></tr>
+<tr><td>Terminals</td><td><code>foot</code> (Wayland), <code>alacritty</code>, <code>kitty</code>, <code>xterm</code>, <code>st</code></td></tr>
+<tr><td>Browsers</td><td><code>firefox-bin</code> (prebuilt), <code>firefox</code> (from source)</td></tr>
+<tr><td>Launchers</td><td><code>wmenu</code>, <code>fuzzel</code> (Wayland), <code>dmenu</code> (X11)</td></tr>
+<tr><td>Bars</td><td><code>waybar</code>, <code>i3status</code></td></tr>
+<tr><td>Notifications</td><td><code>mako</code></td></tr>
+<tr><td>Screenshots</td><td><code>grim</code> + <code>slurp</code> (Wayland)</td></tr>
+<tr><td>Clipboard</td><td><code>wl-clipboard</code> (Wayland), <code>xclip</code> (X11)</td></tr>
+<tr><td>Files</td><td><code>thunar</code></td></tr>
+<tr><td>Media</td><td><code>mpv</code></td></tr>
+<tr><td>Wallpaper</td><td><code>swaybg</code>, <code>feh</code></td></tr>
+</table>
+<p>Search for more with <code>get search</code> or on the <a href="../packages.html">Packages</a> page.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/desktop.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/desktop.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

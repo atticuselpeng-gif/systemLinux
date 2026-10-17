@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. Installation media - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html" class="on">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Handbook</div>
+<h1>1. Installation media</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="handbook.html">Handbook: overview</a></li><li><a href="handbook-live.html">2. Booting the live system</a></li><li><a href="troubleshooting.html">Troubleshooting</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#hardware-requirements"><span>1</span> Hardware requirements</a></li><li><a href="#downloading"><span>2</span> Downloading</a></li><li><a href="#checking-the-download"><span>3</span> Checking the download</a></li><li><a href="#writing-a-usb-stick"><span>4</span> Writing a USB stick</a><ol><li><a href="#linux"><span>4.1</span> Linux</a></li><li><a href="#windows"><span>4.2</span> Windows</a></li><li><a href="#macos"><span>4.3</span> macOS</a></li><li><a href="#ventoy"><span>4.4</span> Ventoy</a></li></ol></li><li><a href="#virtual-machines"><span>5</span> Virtual machines</a></li></ol></div></div>
+<!-- content -->
+<!-- related: handbook handbook-live troubleshooting -->
+<h2 id="hardware-requirements">Hardware requirements</h2>
+<table>
+<tr><th></th><th>Minimum</th><th>Recommended</th></tr>
+<tr><td>CPU</td><td>any 64-bit x86 processor (x86_64)</td><td>4 cores or more: every package is built from source</td></tr>
+<tr><td>Memory</td><td>2 GB</td><td>8 GB or more (big C++ programs need about 2 GB per build job)</td></tr>
+<tr><td>Disk</td><td>10 GB</td><td>40 GB or more if you will build a desktop and a browser from source</td></tr>
+<tr><td>Firmware</td><td colspan="2">UEFI or legacy BIOS. On UEFI, <strong>Secure Boot must be off</strong>: the bootloader is not signed.</td></tr>
+<tr><td>Network</td><td colspan="2">Not needed to install from the ISO. Needed to download the stage tarball, ports and sources.</td></tr>
+</table>
+<p>Intel, AMD and the open NVIDIA driver (nouveau) are supported for graphics; NVIDIA's own driver is not. Most Wi-Fi
+cards need firmware, see <a href="firmware.html">Firmware</a>.</p>
+
+<h2 id="downloading">Downloading</h2>
+<p>Everything is on the <a href="https://github.com/tortr-rs/systemLinux/releases/latest">latest release page</a>:</p>
+<table>
+<tr><th>File</th><th>What it is</th></tr>
+<tr><td><code>systemLinux-VERSION-x86_64.iso</code></td><td>The live and installer ISO. You boot it to install.</td></tr>
+<tr><td><code>systemLinux-stage-VERSION-x86_64.tar.xz</code></td><td>The stage tarball: the whole system as one archive. You can
+download it later from the live system (<a href="handbook-stage.html">chapter 4</a>); you do not need it now.</td></tr>
+<tr><td><code>*.sha256</code>, <code>SHA256SUMS</code></td><td>Checksums of every file.</td></tr>
+<tr><td><code>profile-*.tar.xz</code></td><td><a href="profiles.html">Package profiles</a>, unpacked later with <code>get profile</code>.</td></tr>
+<tr><td><code>ports.tar.xz</code></td><td>The ports tree, downloaded by <code>get sync</code>.</td></tr>
+</table>
+
+<h2 id="checking-the-download">Checking the download</h2>
+<p>Check the ISO against its checksum before you use it. On Linux, in the download folder:</p>
+<pre class="term"><span class="p">$</span> sha256sum -c systemLinux-0.2.5-x86_64.iso.sha256
+systemLinux-0.2.5-x86_64.iso: OK</pre>
+<p>Anything other than <code>OK</code> means the file is damaged or not the one that was published: download it again.
+On Windows run <code>certutil -hashfile systemLinux-0.2.5-x86_64.iso SHA256</code> in a command prompt and compare
+the output with the <code>.sha256</code> file; on macOS use <code>shasum -a 256</code>.</p>
+
+<h2 id="writing-a-usb-stick">Writing a USB stick</h2>
+<div class="warning"><strong>Warning:</strong> Writing the ISO erases everything on the stick.</div>
+<h3 id="linux">Linux</h3>
+<p>Plug the stick in and find its name with <code>lsblk</code>: it is the disk with the stick's size, for example
+<code>/dev/sdb</code>. Use the whole disk, not a partition (<code>/dev/sdb</code>, not <code>/dev/sdb1</code>):</p>
+<pre class="term"><span class="p">$</span> lsblk
+<span class="p">$</span> sudo dd if=systemLinux-0.2.5-x86_64.iso of=/dev/sdb bs=4M status=progress conv=fsync</pre>
+<p>Wait until <code>dd</code> returns to the prompt before you pull the stick out.</p>
+<h3 id="windows">Windows</h3>
+<p>Use <a href="https://rufus.ie">Rufus</a> and choose <em>DD image mode</em> when it asks, or
+<a href="https://etcher.balena.io">balenaEtcher</a>.</p>
+<h3 id="macos">macOS</h3>
+<pre class="term"><span class="p">$</span> diskutil list                                 <span class="c"># find the stick, e.g. /dev/disk4</span>
+<span class="p">$</span> diskutil unmountDisk /dev/disk4
+<span class="p">$</span> sudo dd if=systemLinux-0.2.5-x86_64.iso of=/dev/rdisk4 bs=4m</pre>
+<h3 id="ventoy">Ventoy</h3>
+<p>The ISO also boots from a <a href="https://www.ventoy.net">Ventoy</a> stick: copy the <code>.iso</code> file onto it.
+Several systemLinux ISOs on one Ventoy stick are fine; each one finds its own files.</p>
+
+<h2 id="virtual-machines">Virtual machines</h2>
+<p>Attach the ISO as a CD and give the machine an empty disk of at least 20 GB. With QEMU:</p>
+<pre class="term"><span class="p">$</span> qemu-img create -f qcow2 disk.qcow2 40G
+<span class="p">$</span> qemu-system-x86_64 -enable-kvm -cpu host -m 4G -smp 4 \
+    -drive file=disk.qcow2,if=virtio -cdrom systemLinux-0.2.5-x86_64.iso -nic user</pre>
+<p>That boots in legacy BIOS mode. For UEFI, add the OVMF firmware, for example
+<code>-bios /usr/share/edk2/x64/OVMF.4m.fd</code> (the path depends on your distribution). VirtualBox and VMware work too:
+choose "Other Linux (64-bit)" and turn on EFI in the machine settings if you want UEFI.</p>
+
+<p>Next: <a href="handbook-live.html">2. Booting the live system</a>.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/handbook-media.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/handbook-media.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

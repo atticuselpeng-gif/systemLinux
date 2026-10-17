@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fstab - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html" class="on">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; System administration</div>
+<h1>fstab</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="swap.html">Swap</a></li><li><a href="handbook-config.html">6. Configuring the system</a></li><li><a href="luks.html">Disk encryption (LUKS)</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#format"><span>1</span> Format</a></li><li><a href="#finding-uuids"><span>2</span> Finding UUIDs</a></li><li><a href="#useful-options"><span>3</span> Useful options</a></li><li><a href="#examples"><span>4</span> Examples</a></li></ol></div></div>
+<!-- content -->
+<!-- related: swap handbook-config luks -->
+<p><code>/etc/fstab</code> lists the file systems the system mounts at boot. The initramfs mounts the root file system;
+the <code>mount-fstab</code> service then runs <code>mount -a</code> and <code>swapon -a</code> for everything in
+<code>/etc/fstab</code>.</p>
+
+<h2 id="format">Format</h2>
+<p>One file system per line, six fields separated by spaces or tabs:</p>
+<pre># &lt;file system&gt;   &lt;mount point&gt;  &lt;type&gt;  &lt;options&gt;          &lt;dump&gt;  &lt;pass&gt;
+UUID=0f4c...e1      /              ext4    defaults,noatime   0       1
+UUID=A1B2-C3D4      /boot/efi      vfat    umask=0077         0       2
+UUID=7a9d...44      none           swap    defaults           0       0</pre>
+<dl class="opts">
+<dt>file system</dt><dd>what to mount. <code>UUID=...</code> (recommended), <code>LABEL=...</code>,
+<code>PARTUUID=...</code> or a device such as <code>/dev/mapper/root</code>.</dd>
+<dt>mount point</dt><dd>where; <code>none</code> for swap</dd>
+<dt>type</dt><dd><code>ext4</code>, <code>vfat</code>, <code>xfs</code>, <code>btrfs</code>, <code>swap</code>,
+<code>tmpfs</code>, <code>nfs</code>, ... (<code>auto</code> to detect)</dd>
+<dt>options</dt><dd>comma-separated mount options; <code>defaults</code> if none</dd>
+<dt>dump</dt><dd>for the old <code>dump</code> backup tool; always <code>0</code></dd>
+<dt>pass</dt><dd>order for file system checks: <code>1</code> for root, <code>2</code> for the others, <code>0</code> never</dd>
+</dl>
+<div class="note"><strong>Note:</strong> systemLinux does not check file systems at boot yet; the <em>pass</em> field is
+kept for tools that read it. Check an unmounted ext4 file system by hand with <code>e2fsck -f /dev/sdXN</code>, for
+example from the live ISO.</div>
+
+<h2 id="finding-uuids">Finding UUIDs</h2>
+<pre class="term"><span class="p">$</span> lsblk -f
+<span class="p">$</span> blkid -s UUID -o value /dev/sda2</pre>
+
+<h2 id="useful-options">Useful options</h2>
+<table>
+<tr><th>Option</th><th>Effect</th></tr>
+<tr><td><code>noatime</code></td><td>do not write access times on every read (faster, less wear on SSDs)</td></tr>
+<tr><td><code>nofail</code></td><td>boot even if the device is missing (USB disks, network shares)</td></tr>
+<tr><td><code>noauto</code></td><td>do not mount at boot; <code>mount /mnt/backup</code> mounts it later</td></tr>
+<tr><td><code>ro</code></td><td>read-only</td></tr>
+<tr><td><code>user</code></td><td>normal users may mount it</td></tr>
+<tr><td><code>umask=0077</code></td><td>(FAT) only root can read the files: right for the EFI System Partition</td></tr>
+<tr><td><code>uid=1000,gid=1000</code></td><td>(FAT, exFAT, NTFS) the files belong to that user</td></tr>
+<tr><td><code>discard</code></td><td>trim SSD blocks immediately (a weekly <code>fstrim -a</code> is usually better)</td></tr>
+</table>
+
+<h2 id="examples">Examples</h2>
+<pre># a second disk for data, owned by root, mounted at /data
+UUID=...   /data          ext4   defaults,noatime         0 2
+# a USB disk that may be missing
+UUID=...   /mnt/backup    ext4   defaults,nofail,noatime  0 2
+# a tmpfs of 8 GB for builds (TMPDIR=/var/tmp/build get install ...)
+tmpfs      /var/tmp/build tmpfs  size=8G,mode=1777        0 0</pre>
+<p>After editing, check the file and mount the new entries without rebooting:</p>
+<pre class="term"><span class="p">$</span> sudo findmnt --verify
+<span class="p">$</span> sudo mount -a</pre>
+<div class="warning"><strong>Warning:</strong> A mistake in the line for a file system that must be there (without
+<code>nofail</code>) does not stop the boot, but leaves it unmounted. Always run <code>findmnt --verify</code>.</div>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/fstab.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/fstab.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

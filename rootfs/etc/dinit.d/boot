@@ -6,5 +6,6 @@ depends-on = system-identity
 waits-for = mount-fstab
 waits-for = zram
 waits-for = network
+waits-for = console-setup
 waits-for = getty-tty1
 waits-for.d = boot.d

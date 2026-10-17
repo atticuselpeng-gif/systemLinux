@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Locale - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html" class="on">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; System administration</div>
+<h1>Locale</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="linux-console.html">Linux console</a></li><li><a href="handbook-config.html">6. Configuring the system</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#available-locales"><span>1</span> Available locales</a></li><li><a href="#generating-locales"><span>2</span> Generating locales</a></li><li><a href="#setting-the-locale"><span>3</span> Setting the locale</a></li><li><a href="#troubleshooting"><span>4</span> Troubleshooting</a></li></ol></div></div>
+<!-- content -->
+<!-- related: linux-console handbook-config -->
+<p>A <strong>locale</strong> sets the language of program messages and the way dates, times, numbers and money are
+written, and which characters are letters. It is chosen with environment variables such as <code>LANG</code>.</p>
+
+<h2 id="available-locales">Available locales</h2>
+<p><code>C</code> and <code>C.UTF-8</code> are built into the C library and always work. Others have to be generated
+first:</p>
+<pre class="term"><span class="p">$</span> locale -a                              <span class="c"># the ones that exist</span></pre>
+
+<h2 id="generating-locales">Generating locales</h2>
+<p>List the ones you want in <code>/etc/locale.gen</code>, one per line, as <code>NAME CHARSET</code> (the file has
+examples), then run <code>locale-gen</code>:</p>
+<pre class="term"><span class="p">$</span> echo 'fr_FR.UTF-8 UTF-8' | sudo tee -a /etc/locale.gen
+<span class="p">$</span> echo 'en_US.UTF-8 UTF-8' | sudo tee -a /etc/locale.gen
+<span class="p">$</span> sudo locale-gen</pre>
+<p>All supported names are in <code>/usr/share/i18n/SUPPORTED</code>.</p>
+
+<h2 id="setting-the-locale">Setting the locale</h2>
+<p>The system-wide setting is <code>/etc/locale.conf</code>, read at every login by
+<code>/etc/profile.d/locale.sh</code>:</p>
+<pre>LANG=fr_FR.UTF-8</pre>
+<p>Single categories can differ. English messages with French dates, numbers and paper size:</p>
+<pre>LANG=en_US.UTF-8
+LC_TIME=fr_FR.UTF-8
+LC_NUMERIC=fr_FR.UTF-8
+LC_MONETARY=fr_FR.UTF-8
+LC_PAPER=fr_FR.UTF-8</pre>
+<p>Log out and in again, then check with <code>locale</code>. One user can override it in <code>~/.profile</code>
+(<code>export LANG=de_DE.UTF-8</code>).</p>
+<div class="note"><strong>Note:</strong> Translations of program messages are not part of the base system, so most
+messages stay in English whatever <code>LANG</code> says; formats (dates, decimal separator) do change. Ports built
+with their translations bring their own.</div>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong>"Cannot set LC_ALL to default locale" / "setlocale: LC_CTYPE: cannot change locale":</strong> the locale in
+<code>/etc/locale.conf</code> was not generated. Add it to <code>/etc/locale.gen</code> and run
+<code>locale-gen</code>.</li>
+<li><strong>Accented characters show as <code>?</code> on the console:</strong> use a UTF-8 locale and a console font
+that has the characters (<a href="linux-console.html">Linux console</a>).</li>
+</ul>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/locale.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/locale.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

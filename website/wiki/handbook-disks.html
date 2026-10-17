@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3. Preparing the disks - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html" class="on">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Handbook</div>
+<h1>3. Preparing the disks</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="luks.html">Disk encryption (LUKS)</a></li><li><a href="swap.html">Swap</a></li><li><a href="dual-boot.html">Dual boot</a></li><li><a href="fstab.html">fstab</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#finding-the-disk"><span>1</span> Finding the disk</a></li><li><a href="#choosing-a-layout"><span>2</span> Choosing a layout</a><ol><li><a href="#uefi"><span>2.1</span> UEFI</a></li><li><a href="#legacy-bios"><span>2.2</span> Legacy BIOS</a></li><li><a href="#both-a-disk-that-boots-either-way"><span>2.3</span> Both (a disk that boots either way)</a></li><li><a href="#optional-partitions"><span>2.4</span> Optional partitions</a></li></ol></li><li><a href="#partitioning"><span>3</span> Partitioning</a><ol><li><a href="#with-sfdisk-scripted"><span>3.1</span> With sfdisk (scripted)</a></li><li><a href="#with-cfdisk-menus"><span>3.2</span> With cfdisk (menus)</a></li></ol></li><li><a href="#creating-file-systems"><span>4</span> Creating file systems</a></li><li><a href="#encryption"><span>5</span> Encryption (optional)</a></li><li><a href="#mounting"><span>6</span> Mounting</a></li></ol></div></div>
+<!-- content -->
+<!-- related: luks swap dual-boot fstab -->
+<div class="warning"><strong>Warning:</strong> Partitioning and formatting destroy the data on the partitions you
+touch. Back up first. Read the <code>lsblk</code> output twice before every command that names a disk.</div>
+
+<h2 id="finding-the-disk">Finding the disk</h2>
+<pre class="term"><span class="p">#</span> lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS
+NAME        SIZE TYPE FSTYPE   LABEL       MOUNTPOINTS
+sda       476.9G disk
+nvme0n1   238.5G disk
+sdb        14.9G disk iso9660  SYSTEMLINUX</pre>
+<p>The stick you booted from has the label <code>SYSTEMLINUX</code>. In the examples below the target disk is
+<code>/dev/sda</code>; set a variable so the commands are easy to adapt:</p>
+<pre class="term"><span class="p">#</span> DISK=/dev/sda</pre>
+<p>To install next to Windows or another Linux without erasing the disk, read <a href="dual-boot.html">Dual boot</a>
+first and skip the "new partition table" steps.</p>
+
+<h2 id="choosing-a-layout">Choosing a layout</h2>
+<p>All layouts use a <strong>GPT</strong> partition table. Pick the one that matches how you booted
+(<a href="handbook-live.html#uefi-or-bios">UEFI or BIOS</a>):</p>
+<h3 id="uefi">UEFI</h3>
+<table>
+<tr><th>Partition</th><th>Size</th><th>Type</th><th>File system</th><th>Mount point</th></tr>
+<tr><td><code>/dev/sda1</code></td><td>1 GiB</td><td>EFI System</td><td>FAT32</td><td><code>/boot/efi</code></td></tr>
+<tr><td><code>/dev/sda2</code></td><td>rest of the disk</td><td>Linux filesystem</td><td>ext4</td><td><code>/</code></td></tr>
+</table>
+<h3 id="legacy-bios">Legacy BIOS</h3>
+<table>
+<tr><th>Partition</th><th>Size</th><th>Type</th><th>File system</th><th>Mount point</th></tr>
+<tr><td><code>/dev/sda1</code></td><td>1 MiB</td><td>BIOS boot</td><td>none</td><td>none (GRUB writes its code here)</td></tr>
+<tr><td><code>/dev/sda2</code></td><td>rest of the disk</td><td>Linux filesystem</td><td>ext4</td><td><code>/</code></td></tr>
+</table>
+<h3 id="both-a-disk-that-boots-either-way">Both (a disk that boots either way)</h3>
+<p>Make the 1 MiB BIOS boot partition first, then the EFI System Partition, then root. This is what
+<code>systemlinux-install</code> does, and it lets you move the disk to any computer.</p>
+<h3 id="optional-partitions">Optional partitions</h3>
+<ul>
+<li><strong>Swap.</strong> Not needed: systemLinux turns on 4 GB of compressed swap in memory (zram) at every boot.
+A swap partition helps when you build big programs with little RAM; see <a href="swap.html">Swap</a>.</li>
+<li><strong>Separate <code>/home</code>.</strong> Keeps your files when you reinstall. Make root at least 40 GB then.</li>
+<li><strong>Separate <code>/boot</code>.</strong> Needed with an encrypted root, see <a href="#encryption">below</a>.</li>
+</ul>
+<div class="note"><strong>Note:</strong> The live system can create <strong>ext4</strong>, FAT32 and swap. Its initramfs
+can also mount XFS, Btrfs and F2FS roots, but <code>mkfs.xfs</code> and <code>mkfs.btrfs</code> are not on the ISO, so
+this Handbook uses ext4.</div>
+
+<h2 id="partitioning">Partitioning</h2>
+<h3 id="with-sfdisk-scripted">With sfdisk (scripted)</h3>
+<p><code>sfdisk</code> reads the whole layout from one line each. <code>U</code> is the EFI System type, <code>L</code>
+Linux filesystem, <code>S</code> Linux swap; the long number is the BIOS boot type. A size left empty means "the rest
+of the disk".</p>
+<pre class="term"><span class="p">#</span> wipefs -a "$DISK"                     <span class="c"># removes old partition tables and signatures</span>
+
+<span class="c"># UEFI: ESP + root</span>
+<span class="p">#</span> printf 'label: gpt\n,1G,U\n,,L\n' | sfdisk "$DISK"
+
+<span class="c"># legacy BIOS: BIOS boot + root</span>
+<span class="p">#</span> printf 'label: gpt\n,1M,21686148-6449-6E6F-744E-656564454649\n,,L\n' | sfdisk "$DISK"
+
+<span class="c"># both: BIOS boot + ESP + root</span>
+<span class="p">#</span> printf 'label: gpt\n,1M,21686148-6449-6E6F-744E-656564454649\n,1G,U\n,,L\n' | sfdisk "$DISK"
+
+<span class="c"># UEFI with an 8 GiB swap partition: ESP + swap + root</span>
+<span class="p">#</span> printf 'label: gpt\n,1G,U\n,8G,S\n,,L\n' | sfdisk "$DISK"</pre>
+<h3 id="with-cfdisk-menus">With cfdisk (menus)</h3>
+<p><code>cfdisk "$DISK"</code> shows the disk and lets you create partitions with the arrow keys. On an empty disk it
+asks for the label type: choose <strong>gpt</strong>. Use <em>New</em> for each partition, <em>Type</em> to set
+"EFI System", "BIOS boot" or "Linux swap" (new partitions are "Linux filesystem"), then <em>Write</em> and type
+<code>yes</code>. <code>fdisk "$DISK"</code> works too if you prefer its one-letter commands (<kbd>g</kbd> new GPT,
+<kbd>n</kbd> new partition, <kbd>t</kbd> type, <kbd>w</kbd> write).</p>
+<p>Check the result:</p>
+<pre class="term"><span class="p">#</span> lsblk "$DISK"
+<span class="p">#</span> fdisk -l "$DISK"</pre>
+<p>From here on the examples use the UEFI layout: <code>ESP=/dev/sda1</code> and <code>ROOT=/dev/sda2</code>. With the
+"both" layout they are <code>/dev/sda2</code> and <code>/dev/sda3</code>; on NVMe <code>/dev/nvme0n1p1</code> and so on.</p>
+<pre class="term"><span class="p">#</span> ESP=/dev/sda1 ROOT=/dev/sda2</pre>
+
+<h2 id="creating-file-systems">Creating file systems</h2>
+<pre class="term"><span class="p">#</span> mkfs.ext4 -L systemLinux "$ROOT"
+<span class="p">#</span> mkfs.fat -F 32 -n EFI "$ESP"           <span class="c"># UEFI only, and only for a new ESP: never reformat Windows' ESP</span></pre>
+<p>With a swap partition (in the swap layout above, <code>/dev/sda2</code> is swap and <code>/dev/sda3</code> root):</p>
+<pre class="term"><span class="p">#</span> mkswap -L swap /dev/sda2
+<span class="p">#</span> swapon /dev/sda2</pre>
+
+<h2 id="encryption">Encryption (optional)</h2>
+<p>To encrypt the root partition with LUKS, add a separate, unencrypted <code>/boot</code> partition of 1 GiB before
+root. GRUB 2.12 cannot open LUKS2 volumes made with cryptsetup's default key function (Argon2), so the kernel and
+initramfs stay on <code>/boot</code> and the initramfs unlocks root. The UEFI layout becomes:</p>
+<pre class="term"><span class="p">#</span> printf 'label: gpt\n,1G,U\n,1G,L\n,,L\n' | sfdisk "$DISK"
+<span class="p">#</span> ESP=/dev/sda1 BOOT=/dev/sda2 ROOT=/dev/sda3
+<span class="p">#</span> mkfs.fat -F 32 -n EFI "$ESP"
+<span class="p">#</span> mkfs.ext4 -L boot "$BOOT"
+<span class="p">#</span> cryptsetup luksFormat "$ROOT"           <span class="c"># type YES, then the passphrase twice</span>
+<span class="p">#</span> cryptsetup open "$ROOT" root
+<span class="p">#</span> mkfs.ext4 -L systemLinux /dev/mapper/root</pre>
+<p>From now on mount <code>/dev/mapper/root</code> where the Handbook says <code>$ROOT</code>, and keep the UUID of the
+<em>encrypted</em> partition (<code>blkid -s UUID -o value /dev/sda3</code>) for the bootloader. The initramfs
+recognises a LUKS partition by itself and asks for the passphrase at boot. More in
+<a href="luks.html">Disk encryption</a>.</p>
+<div class="warning"><strong>Warning:</strong> A forgotten passphrase cannot be recovered. Nobody can get your data
+back, including you.</div>
+
+<h2 id="mounting">Mounting</h2>
+<p>Mount the root file system on <code>/mnt</code>. The rest is mounted after the stage is extracted.</p>
+<pre class="term"><span class="p">#</span> mount "$ROOT" /mnt                       <span class="c"># encrypted: mount /dev/mapper/root /mnt</span>
+<span class="p">#</span> mkdir -p /mnt/boot
+<span class="p">#</span> mount "$BOOT" /mnt/boot                  <span class="c"># only with a separate /boot partition</span>
+<span class="p">#</span> mkdir -p /mnt/home &amp;&amp; mount /dev/sdXN /mnt/home   <span class="c"># only with a separate /home</span></pre>
+<div class="note"><strong>Note:</strong> Do not mount the EFI System Partition yet. It is FAT32, which cannot store file
+owners, and the stage would try to set them. <a href="handbook-config.html">Chapter 6</a> mounts it.</div>
+
+<p>Next: <a href="handbook-stage.html">4. Installing the stage</a>.</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/handbook-disks.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/handbook-disks.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

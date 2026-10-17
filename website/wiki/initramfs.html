@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Initramfs - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html" class="on">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Boot process</div>
+<h1>Initramfs</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="kernel.html">Kernel</a></li><li><a href="kernel-parameters.html">Kernel parameters</a></li><li><a href="luks.html">Disk encryption (LUKS)</a></li><li><a href="recovery.html">Recovery</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#what-it-contains"><span>1</span> What it contains</a></li><li><a href="#what-it-does"><span>2</span> What it does</a></li><li><a href="#one-initramfs-for-every-machine"><span>3</span> One initramfs for every machine</a></li></ol></div></div>
+<!-- content -->
+<!-- related: kernel kernel-parameters luks recovery -->
+<p>The <strong>initramfs</strong> (<code>/boot/initrd.img</code>) is a small file system the kernel unpacks into memory
+and starts before the real system. Its job is to make the root file system reachable: load the disk drivers, find
+the partition, unlock it, mount it, and hand over to dinit.</p>
+
+<h2 id="what-it-contains">What it contains</h2>
+<ul>
+<li><code>/init</code>, a shell script (the source is
+<a href="https://github.com/tortr-rs/systemLinux/blob/main/tools/live-image/init">tools/live-image/init</a>)</li>
+<li>busybox, for the shell and basic tools</li>
+<li>cryptsetup, for LUKS</li>
+<li>the kernel modules for disks and file systems: every SATA, SCSI, NVMe, USB storage, MMC and virtio driver, plus
+ext4, XFS, Btrfs, F2FS, FAT, exFAT, ISO 9660, squashfs, overlayfs and dm-crypt</li>
+</ul>
+<p>Look inside with <code>zstd -dc /boot/initrd.img | cpio -t | less</code> (cpio is not in the base system: <code>sudo get install cpio</code>).</p>
+
+<h2 id="what-it-does">What it does</h2>
+<ol>
+<li>Mounts <code>/proc</code>, <code>/sys</code> and <code>/dev</code>, and reads the
+<a href="kernel-parameters.html">kernel parameters</a>.</li>
+<li>Loads the storage modules and every driver the hardware asks for.</li>
+<li>Depending on the parameters, finds:
+  <ul>
+  <li>with <code>root=</code>: the root partition (a Handbook install). If it starts with a LUKS header, asks for
+  the passphrase and opens it as <code>/dev/mapper/root</code>. Mounts it read-write on the new root.</li>
+  <li>with <code>systemlinux.image=</code>: the system partition of an image install, its squashfs image and the
+  writable layer in <code>/persist</code>.</li>
+  <li>with neither: the live medium, on any disk or inside an ISO file on a disk.</li>
+  </ul></li>
+<li>Moves <code>/proc</code>, <code>/sys</code> and <code>/dev</code> into the new root, mounts <code>/run</code>, and
+runs <code>switch_root</code> to <code>/usr/bin/dinit</code>.</li>
+</ol>
+<p>When something is missing it prints why and opens a shell ("[live] starting a shell"). Fix the problem there (for
+example <code>cryptsetup open</code> by hand, or look at <code>/proc/partitions</code>), then type <code>exit</code>
+and it tries again.</p>
+
+<h2 id="one-initramfs-for-every-machine">One initramfs for every machine</h2>
+<p>The initramfs is the same on the ISO and on every installed system, and does not depend on your hardware or
+configuration. You never have to regenerate it after changing <code>/etc</code>. It only changes with the kernel: the
+modules inside it must match the kernel version, which is why a kernel update always copies both files together
+(<a href="kernel.html#updating-the-kernel">Kernel</a>).</p>
+<div class="note"><strong>Note:</strong> There is no tool to build an initramfs on an installed system yet. It is made
+by <code>tools/live-image/build-initrd.sh</code> during the ISO build.</div>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/initramfs.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/initramfs.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

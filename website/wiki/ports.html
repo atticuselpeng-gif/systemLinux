@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ports tree - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html" class="on">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Software</div>
+<h1>Ports tree</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="get.html">get</a></li><li><a href="profiles.html">Package profiles</a></li><li><a href="contributing.html">Contributing</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#layout"><span>1</span> Layout</a></li><li><a href="#a-recipe"><span>2</span> A recipe</a></li><li><a href="#keeping-it-up-to-date"><span>3</span> Keeping it up to date</a></li><li><a href="#unverified-ports"><span>4</span> Unverified ports</a></li></ol></div></div>
+<!-- content -->
+<!-- related: get profiles contributing -->
+<p>The <strong>ports tree</strong> is the collection of recipes <a href="get.html">get</a> builds software from. It
+lives in <code>/usr/ports</code> on every system and in the
+<a href="https://github.com/tortr-rs/systemLinux/tree/main/ports">ports/ folder of the repository</a>. Browse it on
+the <a href="../packages.html">Packages</a> page.</p>
+
+<h2 id="layout">Layout</h2>
+<p>Each port is a folder <code>CATEGORY/NAME</code> with at least a <code>recipe</code> file:</p>
+<pre>/usr/ports/
+├── dev-apps/neovim/recipe
+├── sys-app/seatd/
+│   ├── recipe
+│   └── dinit/seatd          <span class="c"># a dinit service, installed into /etc/dinit.d</span>
+└── sys-app/greetd/
+    ├── recipe
+    ├── dinit/greetd
+    └── files/etc/greetd/config.toml   <span class="c"># copied into the package as it is</span></pre>
+<table>
+<tr><th>Category</th><th>Contents</th></tr>
+<tr><td><code>sys-app</code></td><td>system tools, daemons, file system utilities, firmware</td></tr>
+<tr><td><code>dev-apps</code></td><td>developer tools, editors, build systems</td></tr>
+<tr><td><code>dev-libs</code></td><td>libraries</td></tr>
+<tr><td><code>dev-python</code>, <code>dev-perl</code></td><td>Python and Perl modules (generated from PyPI and CPAN)</td></tr>
+<tr><td><code>lang</code></td><td>compilers and language runtimes</td></tr>
+<tr><td><code>net</code></td><td>networking</td></tr>
+<tr><td><code>x11</code></td><td>graphical programs, Wayland and X11</td></tr>
+<tr><td><code>media</code></td><td>audio and video</td></tr>
+<tr><td><code>text</code>, <code>shells</code>, <code>sec</code>, <code>db</code>, <code>sci</code>, <code>games</code></td><td>what their names say</td></tr>
+</table>
+
+<h2 id="a-recipe">A recipe</h2>
+<pre>version=0.9.1
+description=Seat management daemon (lets Wayland compositors use the GPU and input)
+url=https://git.sr.ht/~kennylevinsen/seatd/archive/0.9.1.tar.gz
+sha256=819979c922a0be258aed133d93920bce6a3d3565a60588d6d372ce9db2712cd3
+build=meson
+configure_args=-Dlibseat-logind=disabled -Dserver=enabled -Dman-pages=disabled -Dexamples=disabled
+requires=dev-apps/meson dev-apps/ninja
+check=pkgconfig:libseat</pre>
+<p><code>url</code> is the source, <code>sha256</code> its checksum, <code>build</code> the build system,
+<code>requires</code> the dependencies, and <code>check</code> tells get how to see that the base system already
+provides the package. A port without a <code>url</code> is a <em>meta</em> port that only pulls in others. The
+<a href="../packaging.html">Packaging guide</a> documents every key.</p>
+
+<h2 id="keeping-it-up-to-date">Keeping it up to date</h2>
+<p><code>sudo get sync</code> downloads the ports tree of the latest release (<code>ports.tar.xz</code>), checks its
+checksum and replaces <code>/usr/ports</code> with it. To follow the development version instead, use a git
+checkout:</p>
+<pre class="term"><span class="p">$</span> git clone https://github.com/tortr-rs/systemLinux ~/systemLinux
+<span class="p">$</span> sudo GET_PORTS=$HOME/systemLinux/ports get install NAME</pre>
+
+<h2 id="unverified-ports">Unverified ports</h2>
+<p>Many ports were written or generated in bulk and have not all been built on a real system yet. If one fails,
+report it; if you fix it, send the fix (<a href="contributing.html">Contributing</a>).</p>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/ports.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/ports.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

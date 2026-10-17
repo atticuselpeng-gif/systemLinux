@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graphics drivers - systemLinux Wiki</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<!-- header -->
+<header class="masthead"><div class="wrap">
+<a class="brand" href="../index.html"><img src="../logo.svg" alt="" width="40" height="40">systemLinux</a>
+<div class="tagline">source-based &middot; dinit &middot; no systemd<br>owned by everyone who uses it</div>
+</div></header>
+<nav class="tabs"><div class="wrap"><a href="../index.html">Home</a><a href="../news.html">News</a><a href="../about.html">About</a><a href="../download.html">Download</a><a href="../wiki/index.html" class="on">Wiki</a><a href="../get.html">get</a><a href="../packages.html">Packages</a><a href="../packaging.html">Packaging</a><a href="../system.html">System</a><a href="https://github.com/tortr-rs/systemLinux">Source</a></div></nav>
+<!-- /header -->
+<div class="wrap page wiki">
+<nav class="wiki-nav"><a class="wiki-home" href="index.html">systemLinux Wiki</a>
+<h4>Handbook</h4><ul>
+<li><a href="handbook.html">Handbook: overview</a></li>
+<li><a href="handbook-media.html">1. Installation media</a></li>
+<li><a href="handbook-live.html">2. Booting the live system</a></li>
+<li><a href="handbook-disks.html">3. Preparing the disks</a></li>
+<li><a href="handbook-stage.html">4. Installing the stage</a></li>
+<li><a href="handbook-chroot.html">5. Entering the new system</a></li>
+<li><a href="handbook-config.html">6. Configuring the system</a></li>
+<li><a href="handbook-kernel.html">7. Kernel and initramfs</a></li>
+<li><a href="handbook-bootloader.html">8. Bootloader</a></li>
+<li><a href="handbook-finalizing.html">9. Finalizing</a></li>
+</ul><h4>Installation</h4><ul>
+<li><a href="quick-install.html">Quick install (systemlinux-install)</a></li>
+<li><a href="dual-boot.html">Dual boot</a></li>
+<li><a href="general-recommendations.html">General recommendations</a></li>
+</ul><h4>Software</h4><ul>
+<li><a href="get.html">get</a></li>
+<li><a href="ports.html">Ports tree</a></li>
+<li><a href="profiles.html">Package profiles</a></li>
+</ul><h4>System administration</h4><ul>
+<li><a href="dinit.html">dinit</a></li>
+<li><a href="users-and-groups.html">Users and groups</a></li>
+<li><a href="sudo.html">sudo</a></li>
+<li><a href="fstab.html">fstab</a></li>
+<li><a href="swap.html">Swap</a></li>
+<li><a href="system-time.html">System time</a></li>
+<li><a href="locale.html">Locale</a></li>
+<li><a href="linux-console.html">Linux console</a></li>
+<li><a href="system-maintenance.html">System maintenance</a></li>
+</ul><h4>Boot process</h4><ul>
+<li><a href="kernel.html">Kernel</a></li>
+<li><a href="kernel-parameters.html">Kernel parameters</a></li>
+<li><a href="initramfs.html">Initramfs</a></li>
+<li><a href="grub.html">GRUB</a></li>
+<li><a href="luks.html">Disk encryption (LUKS)</a></li>
+</ul><h4>Hardware</h4><ul>
+<li><a href="firmware.html">Firmware</a></li>
+<li><a href="graphics.html" class="on">Graphics drivers</a></li>
+<li><a href="pipewire.html">Sound (PipeWire)</a></li>
+<li><a href="bluetooth.html">Bluetooth</a></li>
+<li><a href="printing.html">Printing (CUPS)</a></li>
+<li><a href="laptop.html">Laptop</a></li>
+</ul><h4>Networking</h4><ul>
+<li><a href="network-configuration.html">Network configuration</a></li>
+<li><a href="wireless.html">Wireless</a></li>
+<li><a href="ssh.html">OpenSSH</a></li>
+</ul><h4>Desktop</h4><ul>
+<li><a href="desktop.html">Graphical session</a></li>
+<li><a href="sway.html">Sway</a></li>
+<li><a href="xorg.html">Xorg</a></li>
+<li><a href="i3.html">i3</a></li>
+<li><a href="greetd.html">greetd (login manager)</a></li>
+</ul><h4>Help</h4><ul>
+<li><a href="recovery.html">Recovery</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="contributing.html">Contributing</a></li>
+<li><a href="building-the-iso.html">Building the ISO</a></li>
+</ul><h4>Elsewhere</h4><ul><li><a href="../packages.html">Packages</a></li><li><a href="../packaging.html">Packaging guide</a></li><li><a href="https://github.com/tortr-rs/systemLinux/issues">Report a bug</a></li></ul></nav>
+<main class="main">
+<div class="crumbs"><a href="index.html">Wiki</a> &rsaquo; Hardware</div>
+<h1>Graphics drivers</h1>
+<div class="wiki-boxes"><div class="related"><b>Related articles</b><ul><li><a href="firmware.html">Firmware</a></li><li><a href="desktop.html">Graphical session</a></li><li><a href="sway.html">Sway</a></li><li><a href="xorg.html">Xorg</a></li></ul></div><div class="toc"><b>Contents</b><ol><li><a href="#drivers"><span>1</span> Drivers</a></li><li><a href="#installing-mesa"><span>2</span> Installing Mesa</a></li><li><a href="#checking"><span>3</span> Checking</a></li><li><a href="#troubleshooting"><span>4</span> Troubleshooting</a></li></ol></div></div>
+<!-- content -->
+<!-- related: firmware desktop sway xorg -->
+<p>The kernel has the drivers that set the screen mode (<em>KMS</em>) for Intel, AMD and NVIDIA (nouveau) GPUs and for
+virtual machines. 3D acceleration (OpenGL) comes from <strong>Mesa</strong>, which Wayland compositors and X11 both use.</p>
+
+<h2 id="drivers">Drivers</h2>
+<table>
+<tr><th>GPU</th><th>Kernel driver</th><th>Mesa driver</th><th>Firmware</th></tr>
+<tr><td>Intel (Gen 8 / Broadwell and newer)</td><td><code>i915</code>, <code>xe</code></td><td>iris</td><td>recommended</td></tr>
+<tr><td>Intel (older)</td><td><code>i915</code></td><td>crocus, i915</td><td>no</td></tr>
+<tr><td>AMD (GCN and newer)</td><td><code>amdgpu</code></td><td>radeonsi</td><td><strong>required</strong></td></tr>
+<tr><td>AMD/ATI (older)</td><td><code>radeon</code></td><td>r600, r300</td><td>required</td></tr>
+<tr><td>NVIDIA</td><td><code>nouveau</code></td><td>nouveau</td><td>required for acceleration</td></tr>
+<tr><td>QEMU / VirtualBox / VMware</td><td><code>virtio_gpu</code>, <code>bochs</code>, <code>vmwgfx</code></td><td>virgl, llvmpipe</td><td>no</td></tr>
+<tr><td>anything else</td><td>simpledrm (the firmware's framebuffer)</td><td>llvmpipe (in software)</td><td>no</td></tr>
+</table>
+<p>Firmware: <code>sudo get install linux-firmware</code> (<a href="firmware.html">Firmware</a>).</p>
+<div class="note"><strong>Note:</strong> NVIDIA's proprietary driver is not available. nouveau works for desktops but
+is slow on recent NVIDIA cards. Vulkan drivers are not built yet; the <code>vulkan-loader</code> port exists for
+programs that link to it.</div>
+
+<h2 id="installing-mesa">Installing Mesa</h2>
+<p>Mesa is pulled in automatically by <code>sway</code>, <code>xorg-server</code> and every other graphical port. To
+install it alone:</p>
+<pre class="term"><span class="p">$</span> sudo get install mesa</pre>
+<p>Mesa is a big build (it needs LLVM for the AMD and software drivers): expect it to take a while on the first
+desktop install.</p>
+
+<h2 id="checking">Checking</h2>
+<pre class="term"><span class="p">$</span> ls /dev/dri                             <span class="c"># card0 and renderD128: the kernel driver works</span>
+<span class="p">$</span> sudo dmesg | grep -iE 'drm|i915|amdgpu|nouveau'
+<span class="p">$</span> sudo get install mesa-demos &amp;&amp; eglinfo | grep -i renderer   <span class="c"># inside the graphical session</span></pre>
+<p>If the renderer is "llvmpipe", Mesa is drawing in software: the GPU driver or its firmware is missing, or your user
+is not in the <code>video</code> group.</p>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong>Black screen during boot:</strong> boot once with <code>nomodeset</code>
+(<a href="kernel-parameters.html">Kernel parameters</a>) to get a console, then install the firmware.</li>
+<li><strong>Tearing or flicker on Intel laptops:</strong> try <code>i915.enable_psr=0</code>.</li>
+<li><strong>Sway says "Failed to open any DRM device":</strong> seatd is not running or you are not in
+<code>video</code>; see <a href="sway.html#troubleshooting">Sway</a>.</li>
+</ul>
+<!-- /content -->
+<p class="wiki-edit"><a href="https://github.com/tortr-rs/systemLinux/edit/main/website/wiki/graphics.html">Edit this page on GitHub</a> &middot; <a href="https://github.com/tortr-rs/systemLinux/commits/main/website/wiki/graphics.html">History</a></p>
+</main>
+</div>
+<!-- footer -->
+<footer><div class="wrap">
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="../about.html#mascot">credits</a>)</span>
+<a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
+</div></footer>
+<!-- /footer -->
+</body>
+</html>

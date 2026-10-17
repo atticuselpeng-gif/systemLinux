@@ -48,7 +48,7 @@ system already provides are not rebuilt, and the build system (configure, autoto
 
 The ISO ships the build tools a source-based system needs: gcc/g++, make, binutils, cmake, meson, ninja, autotools, pkg-config, perl and python. The ports tree is in `/usr/ports`; `get sync` updates it from the latest release.
 
-Website: `website/` (plain HTML; the Handbook is `website/handbook.html`) · Download: [GitHub release `v0.2.5`](https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.5)
+Website: `website/` (plain HTML; the wiki and its Handbook are `website/wiki/`, built with `tools/website.py`) · Download: [GitHub release `v0.2.5`](https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.5)
 
 The `v0.2.5` release publishes the ISO, its checksum and the ports tree:
 
