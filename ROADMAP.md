@@ -9,15 +9,15 @@ live ISO, and there is no elogind (seatd, the login-time runtime directory and a
 - **0.2.5: install by hand.** Stage tarball, the systemLinux Wiki with a Gentoo-style Handbook, `root=UUID=` boot with
   LUKS, GRUB that boots on UEFI from any build host, desktop sessions without elogind, `linux-firmware`.
 - **0.2.6: build inside the stage.** `build_iso.sh` works like Gentoo's catalyst: it chroots into a seed stage and
-  builds the release there, so any Linux distribution can build it. The build can `get install` ports into the image.
+  builds the release there, so any Linux distribution can build it, and installs ports into the image with `get`
+  (which already works on the live system).
   `systemlinux-install` makes stage installs (no more image installs, which also fixes `--luks`). An initramfs
   builder on the installed system. ModemManager stops printing over the login prompt.
 - **0.2.7: the graphics stack in the image.** Mesa (without LLVM), wlroots, Sway, foot, seatd, PipeWire and
   WirePlumber, fonts and the `desktop-runtime` profile, built as ports into the image. CI build time stays under the
   runners' limit.
 - **0.2.8: the live desktop.** A `live` user logged in automatically into Sway on tty1, `firefox-bin`, foot, a launcher,
-  and the systemLinux theme: wallpaper, Sway configuration, waybar, GTK, icon and cursor themes. The installer runs from
-  a foot window, and installed systems get the same desktop.
+  and the theme: a Tux wallpaper. The installer runs from a foot window, and installed systems get the same desktop.
 - **0.2.9: release candidate.** A graphical smoke test in CI (QEMU screenshots: Sway and Firefox appear), ISO size and
   memory checks, the wiki updated for the live desktop.
 - **0.3.0: the themed Sway live ISO**, with Firefox and foot.
