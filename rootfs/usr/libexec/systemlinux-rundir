@@ -1,0 +1,12 @@
+#!/bin/sh
+# Run by pam_exec when a session opens (/etc/pam.d/system-login): create /run/user/UID, the per-user runtime
+# directory ($XDG_RUNTIME_DIR) that Wayland compositors, PipeWire and the session D-Bus need. There is no
+# elogind/systemd-logind to do it. The directory lives on /run (tmpfs), so it is gone after a reboot.
+[ "${PAM_TYPE:-}" = open_session ] || exit 0
+uid=$(id -u "$PAM_USER" 2>/dev/null) || exit 0
+gid=$(id -g "$PAM_USER")
+d=/run/user/$uid
+[ -d "$d" ] && exit 0
+mkdir -p -m 755 /run/user
+mkdir -m 700 "$d"
+chown "$uid:$gid" "$d"

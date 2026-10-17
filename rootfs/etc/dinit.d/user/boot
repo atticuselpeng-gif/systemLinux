@@ -1,0 +1,5 @@
+# The user-mode dinit's default service. Start it from your window manager's config (sway: `exec dinit`,
+# i3: `exec --no-startup-id dinit`) or ~/.xinitrc. Everything in boot.d starts with it: the session D-Bus here,
+# and PipeWire/WirePlumber once those ports are installed. Your own ~/.config/dinit.d/boot replaces this one.
+type = internal
+waits-for.d = /etc/dinit.d/user/boot.d

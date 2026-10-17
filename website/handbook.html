@@ -33,6 +33,7 @@
       <li><a href="#hb-7">First boot</a></li>
       <li><a href="#hb-8">Installing software</a></li>
       <li><a href="#hb-9">Managing installed packages</a></li>
+      <li><a href="#hb-9d">A desktop: sway or i3</a></li>
       <li><a href="#hb-10">Moving to a new version</a></li>
       <li><a href="#hb-11">Recovery</a></li>
       <li><a href="#hb-12">If something goes wrong</a></li>
@@ -48,17 +49,17 @@
         </ul></div>
 
       <div class="chapter" id="hb-2"><h2>2. Make a bootable USB stick</h2>
-        <p>Download the ISO from the <a href="https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.4">release page</a> and check it:</p>
-        <pre class="term"><span class="p">$</span> sha256sum -c systemLinux-0.2.4-x86_64.iso.sha256
-systemLinux-0.2.4-x86_64.iso: OK</pre>
+        <p>Download the ISO from the <a href="https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.5">release page</a> and check it:</p>
+        <pre class="term"><span class="p">$</span> sha256sum -c systemLinux-0.2.5-x86_64.iso.sha256
+systemLinux-0.2.5-x86_64.iso: OK</pre>
         <p>Copy it onto a <strong>Ventoy</strong> stick, or write it straight to a stick (this erases the stick):</p>
         <pre class="term"><span class="p">$</span> lsblk                                  <span class="c"># find the stick, e.g. /dev/sdb</span>
-<span class="p">$</span> sudo dd if=systemLinux-0.2.4-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync</pre>
+<span class="p">$</span> sudo dd if=systemLinux-0.2.5-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync</pre>
         <p>On Windows use Rufus in <em>DD image</em> mode, or balenaEtcher.</p>
         <p><strong>Virtual machine:</strong> attach the ISO as a CD and give the VM a new empty disk. For example with QEMU:</p>
         <pre class="term"><span class="p">$</span> qemu-img create -f qcow2 disk.qcow2 20G
 <span class="p">$</span> qemu-system-x86_64 -enable-kvm -cpu host -m 4G -smp 4 \
-    -drive file=disk.qcow2,if=virtio -cdrom systemLinux-0.2.4-x86_64.iso -nic user</pre></div>
+    -drive file=disk.qcow2,if=virtio -cdrom systemLinux-0.2.5-x86_64.iso -nic user</pre></div>
 
       <div class="chapter" id="hb-3"><h2>3. Boot the live system</h2>
         <p>Restart, open the firmware&rsquo;s boot menu (usually F12, F10, F8 or Esc) and pick the stick. The systemLinux menu offers:</p>
@@ -172,9 +173,24 @@ root
       <div class="chapter" id="hb-9"><h2>9. Managing installed packages</h2>
         <p><code>get list</code> shows what is installed (<code>*</code> marks what you asked for, the rest are dependencies), <code>get files NAME</code> lists a package&rsquo;s files, and <code>get autoremove</code> removes dependencies nothing needs any more. A package never silently overwrites a file that belongs to another package; an existing file in <code>/etc</code> is kept and the new one is put next to it as <code>FILE.get-new</code>.</p></div>
 
+      <div class="chapter" id="hb-9d"><h2>A desktop: sway or i3</h2>
+        <p>systemLinux has no login manager or elogind yet: you log in on the console and start your window manager yourself. Firmware first, if your Wi-Fi card or GPU needs it (most laptops do):</p>
+        <pre class="term"><span class="p">$</span> sudo get install linux-firmware         <span class="c"># then reboot</span></pre>
+        <p><strong>Sway</strong> (Wayland) uses seatd to reach the GPU and keyboard:</p>
+        <pre class="term"><span class="p">$</span> sudo get install sway foot pipewire wireplumber
+<span class="p">$</span> sudo dinitctl enable seatd
+<span class="p">$</span> mkdir -p ~/.config/sway &amp;&amp; cp /etc/sway/config ~/.config/sway/
+<span class="p">$</span> echo 'exec dinit' &gt;&gt; ~/.config/sway/config
+<span class="p">$</span> sway</pre>
+        <p><strong>i3</strong> (X11):</p>
+        <pre class="term"><span class="p">$</span> sudo get install xorg-server xinit i3 i3status dmenu pipewire wireplumber
+<span class="p">$</span> printf 'exec dinit &amp;\nexec i3\n' &gt; ~/.xinitrc
+<span class="p">$</span> startx</pre>
+        <p><code>exec dinit</code> starts your own session services: the session D-Bus, and PipeWire with WirePlumber for sound. They are in <code>/etc/dinit.d/user</code>; add your own in <code>~/.config/dinit.d</code>, and see them with <code>dinitctl list</code>. Your user is in the <code>video</code>, <code>audio</code> and <code>input</code> groups, which seatd, sound and input need.</p></div>
+
       <div class="chapter" id="hb-10"><h2>10. Moving to a new version</h2>
         <p>There is no in-place upgrade yet. Back up your files (see <a href="#hb-11">Recovery</a>), write the new ISO to a stick and install again.</p>
-        <div class="note"><strong>Coming from 0.2.3 or older:</strong> those images had wrong file owners, so <code>sudo</code> and <code>su</code> fail with &ldquo;operation not permitted&rdquo;. Install 0.2.4 fresh; updating the old install does not fix it.</div></div>
+        <div class="note"><strong>Coming from 0.2.3 or older:</strong> those images had wrong file owners, so <code>sudo</code> and <code>su</code> fail with &ldquo;operation not permitted&rdquo;. Install 0.2.4 or newer fresh; updating the old install does not fix it.</div></div>
 
       <div class="chapter" id="hb-11"><h2>11. Recovery</h2>
         <p><strong>Older image:</strong> the GRUB menu lists every image on the disk, and a <em>debug</em> entry for each that shows all boot messages.</p>
@@ -193,7 +209,7 @@ root
         <ul>
           <li><strong>The stick does not boot:</strong> check the checksum, try the stick&rsquo;s other entry in the firmware menu (UEFI or legacy), turn Secure Boot off, or write it with <code>dd</code> instead of Ventoy.</li>
           <li><strong>Boot stops or the screen stays black:</strong> pick the <em>debug</em> entry to see the messages. In the GRUB menu you can press <code>e</code> and remove <code>quiet</code> too.</li>
-          <li><strong>&ldquo;Operation not permitted&rdquo; with sudo or su:</strong> you are on an install from 0.2.3 or older; install 0.2.4 fresh. <code>su</code> also refuses users who are not in the <code>wheel</code> group (<code>id</code> shows your groups).</li>
+          <li><strong>&ldquo;Operation not permitted&rdquo; with sudo or su:</strong> you are on an install from 0.2.3 or older; install 0.2.4 or newer fresh. <code>su</code> also refuses users who are not in the <code>wheel</code> group (<code>id</code> shows your groups).</li>
           <li><strong>No Wi-Fi:</strong> a card whose firmware is not bundled will not start. Ethernet or a USB phone tether always work.</li>
           <li><strong>The installer stops with &ldquo;has mounted partitions&rdquo;:</strong> unmount them (<code>umount /dev/sdXN</code>) and run it again.</li>
           <li><strong>Wrong disk:</strong> there is no undo. Read the <code>lsblk</code> output and the installer&rsquo;s summary before typing <code>yes</code>.</li>
@@ -207,7 +223,7 @@ root
 </div>
 <!-- footer -->
 <footer><div class="wrap">
-<span>systemLinux 0.2.4</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="about.html#mascot">credits</a>)</span>
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="about.html#mascot">credits</a>)</span>
 <a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
 </div></footer>
 <!-- /footer -->

@@ -1,0 +1,4 @@
+# The session message bus, at $XDG_RUNTIME_DIR/bus (DBUS_SESSION_BUS_ADDRESS is set in /etc/profile.d/xdg-runtime.sh)
+type = process
+command = /usr/bin/dbus-daemon --session --nofork --nopidfile --address=unix:path=$XDG_RUNTIME_DIR/bus
+smooth-recovery = true

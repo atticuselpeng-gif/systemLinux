@@ -82,7 +82,15 @@ for recipe in "$PORTS"/*/*/recipe; do
         for f in "$dir"/patches/*; do case "$f" in *.patch) ;; *) err "$atom: patches/ may only hold *.patch files" ;; esac; done
     fi
     if [ -d "$dir/dinit" ]; then
-        for f in "$dir"/dinit/*; do grep -q '^type[[:space:]]*=' "$f" || err "$atom: dinit/${f##*/} is not a dinit service (no type =)"; done
+        # system services, and user services in dinit/user (boot.d holds only links that pick what starts)
+        for f in "$dir"/dinit/* "$dir"/dinit/user/*; do
+            [ -f "$f" ] && [ ! -L "$f" ] || continue
+            grep -q '^type[[:space:]]*=' "$f" || err "$atom: dinit/${f#"$dir"/dinit/} is not a dinit service (no type =)"
+        done
+        for f in "$dir"/dinit/user/boot.d/*; do
+            [ -e "$f" ] || [ -L "$f" ] || continue
+            [ -f "$dir/dinit/user/${f##*/}" ] || err "$atom: dinit/user/boot.d/${f##*/} names no service in dinit/user"
+        done
     fi
     case "$req" in *[!A-Za-z0-9._+/\ -]*) err "$atom: invalid characters in requires" ;; esac
     REQ[$atom]=$req

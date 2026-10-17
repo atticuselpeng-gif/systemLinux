@@ -20,11 +20,11 @@
 <main class="main">
 <!-- content -->
 <h1>Packages</h1>
-<p>The ports tree has <b>1619</b> packages. Install any of them with <code>get install NAME</code>; dependencies are
+<p>The ports tree has <b>1620</b> packages. Install any of them with <code>get install NAME</code>; dependencies are
 built first. <span class="tag">bin</span> ports install the project's own official build instead of compiling it,
 <span class="tag">service</span> ports come with a dinit service and <span class="tag">meta</span> ports only pull in other
 packages. Missing something? <a href="packaging.html">Write a port</a>.</p>
-<input class="search" id="q" type="search" placeholder="Search 1619 packages by name or description" autofocus>
+<input class="search" id="q" type="search" placeholder="Search 1620 packages by name or description" autofocus>
 <table class="pkgs"><thead><tr><th>Package</th><th>Version</th><th>Description</th></tr></thead>
 <tbody id="rows">
 <tr><td><span class="cat">db/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/db/duckdb"><b>duckdb</b></a></td><td>1.2.1</td><td></td></tr>
@@ -404,7 +404,7 @@ packages. Missing something? <a href="packaging.html">Write a port</a>.</p>
 <tr><td><span class="cat">dev-libs/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/dev-libs/pam"><b>pam</b></a></td><td>1.6.1</td><td></td></tr>
 <tr><td><span class="cat">dev-libs/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/dev-libs/pango"><b>pango</b></a></td><td>1.54.0</td><td>Text layout and rendering library</td></tr>
 <tr><td><span class="cat">dev-libs/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/dev-libs/pcre2"><b>pcre2</b></a></td><td>10.44</td><td></td></tr>
-<tr><td><span class="cat">dev-libs/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/dev-libs/pipewire"><b>pipewire</b></a></td><td>1.6.9</td><td>Audio and video server (replaces PulseAudio and JACK)</td></tr>
+<tr><td><span class="cat">dev-libs/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/dev-libs/pipewire"><b>pipewire</b></a><span class="tag">service</span></td><td>1.6.9</td><td>Audio and video server (replaces PulseAudio and JACK)</td></tr>
 <tr><td><span class="cat">dev-libs/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/dev-libs/pixman"><b>pixman</b></a></td><td>0.44.2</td><td>Low-level pixel manipulation library</td></tr>
 <tr><td><span class="cat">dev-libs/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/dev-libs/poco"><b>poco</b></a></td><td></td><td></td></tr>
 <tr><td><span class="cat">dev-libs/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/dev-libs/popt"><b>popt</b></a></td><td>1.19</td><td></td></tr>
@@ -1026,7 +1026,7 @@ packages. Missing something? <a href="packaging.html">Write a port</a>.</p>
 <tr><td><span class="cat">media/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/media/rawtherapee-bin"><b>rawtherapee-bin</b></a><span class="tag">bin</span></td><td>5.13</td><td>Raw photo processing (official AppImage)</td></tr>
 <tr><td><span class="cat">media/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/media/shotcut-bin"><b>shotcut-bin</b></a><span class="tag">bin</span></td><td>26.9.27</td><td>Video editor (official AppImage)</td></tr>
 <tr><td><span class="cat">media/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/media/vorbis-tools"><b>vorbis-tools</b></a></td><td>1.4.2</td><td></td></tr>
-<tr><td><span class="cat">media/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/media/wireplumber"><b>wireplumber</b></a></td><td>0.5.18</td><td>PipeWire session manager</td></tr>
+<tr><td><span class="cat">media/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/media/wireplumber"><b>wireplumber</b></a><span class="tag">service</span></td><td>0.5.18</td><td>PipeWire session manager</td></tr>
 <tr><td><span class="cat">media/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/media/yt-dlp-bin"><b>yt-dlp-bin</b></a><span class="tag">bin</span></td><td>2026.08.19</td><td>Download videos from YouTube and other sites</td></tr>
 <tr><td><span class="cat">net/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/net/adguardhome-bin"><b>adguardhome-bin</b></a><span class="tag">bin</span><span class="tag">service</span></td><td>0.107.79</td><td>Network-wide ad and tracker blocking DNS server</td></tr>
 <tr><td><span class="cat">net/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/net/anubis"><b>anubis</b></a></td><td>4.3</td><td>Outgoing mail processor</td></tr>
@@ -1305,6 +1305,7 @@ packages. Missing something? <a href="packaging.html">Write a port</a>.</p>
 <tr><td><span class="cat">sys-app/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/sys-app/kubectx-bin"><b>kubectx-bin</b></a><span class="tag">bin</span></td><td>0.11.0</td><td>Switch Kubernetes contexts and namespaces</td></tr>
 <tr><td><span class="cat">sys-app/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/sys-app/less"><b>less</b></a></td><td></td><td></td></tr>
 <tr><td><span class="cat">sys-app/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/sys-app/libcap"><b>libcap</b></a></td><td>2.70</td><td></td></tr>
+<tr><td><span class="cat">sys-app/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/sys-app/linux-firmware"><b>linux-firmware</b></a></td><td>20260916</td><td>Firmware for Wi-Fi cards, GPUs, Bluetooth and more (kernel.org&#x27;s official release)</td></tr>
 <tr><td><span class="cat">sys-app/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/sys-app/lm-sensors"><b>lm-sensors</b></a></td><td></td><td></td></tr>
 <tr><td><span class="cat">sys-app/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/sys-app/logrotate"><b>logrotate</b></a></td><td>3.21.0</td><td></td></tr>
 <tr><td><span class="cat">sys-app/</span><a href="https://github.com/tortr-rs/systemLinux/tree/main/ports/sys-app/lshw"><b>lshw</b></a></td><td></td><td></td></tr>
@@ -1669,7 +1670,7 @@ packages. Missing something? <a href="packaging.html">Write a port</a>.</p>
 </div>
 <!-- footer -->
 <footer><div class="wrap">
-<span>systemLinux 0.2.4</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="about.html#mascot">credits</a>)</span>
+<span>systemLinux 0.2.5</span><span>Owned by everyone who uses it.</span><span>Tux by Larry Ewing and The GIMP (<a href="about.html#mascot">credits</a>)</span>
 <a href="https://github.com/tortr-rs/systemLinux">Source</a><a href="https://github.com/tortr-rs/systemLinux/issues">Issues</a><a href="https://github.com/tortr-rs/systemLinux/releases">Releases</a>
 </div></footer>
 <!-- /footer -->

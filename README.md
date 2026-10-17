@@ -6,7 +6,7 @@
   <img src="assets/logo.png" alt="systemLinux logo: a golden wheat ear on a dark green circle" width="160">
 </p>
 
-# systemLinux 0.2.4
+# systemLinux 0.2.5
 
 A small source-based x86_64 GNU/Linux distribution: **dinit** as init (no systemd anywhere, eudev for devices),
 Ubuntu's newest generic kernel with its full module tree, and a GNU userland on glibc (GNU bash 5.3 is `/bin/bash`
@@ -14,12 +14,10 @@ and `/bin/sh`, coreutils, tar, sed, gawk, findutils). The live ISO boots in UEFI
 with `systemlinux-install` or step by step with the Handbook. It ships the build tools, so software is built from
 source with `get` and the ports tree of over a thousand recipes.
 
-**New in 0.2.4** (see `CHANGELOG.md`):
-* **253 Python and 226 Perl modules**, generated from PyPI and CPAN with their dependencies, and 47 more GNU
-  packages. The ports tree has 1619 recipes.
-* **The JetBrains IDEs and Kdenlive** as `-bin` ports (official builds).
-* **Python ports build again** (with the base system's gpep517), Perl ports check that a module really loads, and
-  recipes can add C compiler flags for old code (`cflags=`).
+**New in 0.2.5** (see `CHANGELOG.md`):
+* **Desktop sessions without elogind:** your runtime directory is created at login, and a per-user dinit starts the
+  session D-Bus, PipeWire and WirePlumber (`exec dinit` in your sway or i3 config).
+* **`linux-firmware`:** kernel.org's firmware for Wi-Fi cards, GPUs and Bluetooth, one `get install` away.
 
 ## Mascot
 
@@ -50,20 +48,20 @@ system already provides are not rebuilt, and the build system (configure, autoto
 
 The ISO ships the build tools a source-based system needs: gcc/g++, make, binutils, cmake, meson, ninja, autotools, pkg-config, perl and python. The ports tree is in `/usr/ports`; `get sync` updates it from the latest release.
 
-Website: `website/` (plain HTML; the Handbook is `website/handbook.html`) · Download: [GitHub release `v0.2.4`](https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.4)
+Website: `website/` (plain HTML; the Handbook is `website/handbook.html`) · Download: [GitHub release `v0.2.5`](https://github.com/tortr-rs/systemLinux/releases/tag/v0.2.5)
 
-The `v0.2.4` release publishes the ISO, its checksum and the ports tree:
+The `v0.2.5` release publishes the ISO, its checksum and the ports tree:
 
 | File | |
 |---|---|
-| [`systemLinux-0.2.4-x86_64.iso`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.4/systemLinux-0.2.4-x86_64.iso) | the live and installer ISO |
-| [`systemLinux-0.2.4-x86_64.iso.sha256`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.4/systemLinux-0.2.4-x86_64.iso.sha256) | its checksum |
-| [`ports.tar.xz`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.4/ports.tar.xz) | the ports tree (`get sync`) |
+| [`systemLinux-0.2.5-x86_64.iso`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.5/systemLinux-0.2.5-x86_64.iso) | the live and installer ISO |
+| [`systemLinux-0.2.5-x86_64.iso.sha256`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.5/systemLinux-0.2.5-x86_64.iso.sha256) | its checksum |
+| [`ports.tar.xz`](https://github.com/tortr-rs/systemLinux/releases/download/v0.2.5/ports.tar.xz) | the ports tree (`get sync`) |
 
 The release includes a separate checksum file. After downloading both files, verify the ISO with:
 
 ```sh
-sha256sum -c systemLinux-0.2.4-x86_64.iso.sha256
+sha256sum -c systemLinux-0.2.5-x86_64.iso.sha256
 ```
 
 See `ROADMAP.md` for what's still deliberately not done (NVIDIA proprietary, Secure Boot, etc.).
@@ -223,7 +221,7 @@ see the message `build_iso.sh` prints if something is missing). The installer's 
 copied from the host into the image.
 
 ```sh
-./build_iso.sh    # systemLinux-0.2.4-x86_64.iso and systemLinux-0.2.4-x86_64.iso.sha256   (or: make iso)
+./build_iso.sh    # systemLinux-0.2.5-x86_64.iso and systemLinux-0.2.5-x86_64.iso.sha256   (or: make iso)
 ```
 
 It also writes `profiles-out/profile-*.tar.xz` for the release (upload them next to the ISO; `get profile`
@@ -239,11 +237,11 @@ as artifacts.
 ### Cutting a release
 
 1. Make sure `VERSION` and `CHANGELOG.md` are right on `main`.
-2. Tag and push: `git tag v0.2.4 && git push origin v0.2.4` (`v0.2` also triggers it; `get profile` maps
-   `VERSION` 0.2.4 to the `v0.2.4` release, so prefer `v0.2.4`).
+2. Tag and push: `git tag v0.2.5 && git push origin v0.2.5` (`v0.2` also triggers it; `get profile` maps
+   `VERSION` 0.2.5 to the `v0.2.5` release, so prefer `v0.2.5`).
 3. `.github/workflows/release.yml` builds the ISO and creates the GitHub Release with the ISO, profiles,
    `SHA256SUMS` and the changelog entry as notes (it verifies the checksums first). The website links point at
-   `releases/download/v0.2.4/`.
+   `releases/download/v0.2.5/`.
 
 The full ISO build needs a real Linux host with sudo, ~30 GB of disk and the tools listed above
 (xorriso, mtools, pahole, ...); it is not verified in the restricted agent sandbox, so run `./build_iso.sh`
@@ -251,7 +249,7 @@ locally or via the `Build ISO` workflow (`workflow_dispatch`) before pushing the
 
 ## Installing to disk
 
-1. Write the ISO to a USB stick (`dd if=systemLinux-0.2.4-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync`,
+1. Write the ISO to a USB stick (`dd if=systemLinux-0.2.5-x86_64.iso of=/dev/sdX bs=4M status=progress conv=fsync`,
    or copy it onto a Ventoy stick) and boot it in UEFI or legacy BIOS mode.
 2. At the live console, run `sudo systemlinux-install` and answer its prompts (disk or
    existing partition, computer name, your account, timezone, keymap, optional LUKS
