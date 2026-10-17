@@ -30,7 +30,8 @@ args=(-m 2G -smp 2 -no-reboot -display none -serial "file:$W/serial.log"
 case "$MODE" in
     bios) ;;
     uefi)
-        OVMF=${OVMF:-$(ls /usr/share/OVMF/OVMF_CODE_4M.fd /usr/share/OVMF/OVMF_CODE.fd /usr/share/ovmf/OVMF.fd /usr/share/edk2/ovmf/OVMF_CODE.fd /usr/share/qemu/OVMF.fd 2>/dev/null | head -n1)}
+        # ls fails when some of the candidates are missing (the usual case): with pipefail that would end the script
+        OVMF=${OVMF:-$( (ls /usr/share/OVMF/OVMF_CODE_4M.fd /usr/share/OVMF/OVMF_CODE.fd /usr/share/ovmf/OVMF.fd /usr/share/edk2/ovmf/OVMF_CODE.fd /usr/share/qemu/OVMF.fd 2>/dev/null || true) | head -n1)}
         [ -n "$OVMF" ] && [ -f "$OVMF" ] || { echo "boot-smoke: no OVMF firmware found (set OVMF=)" >&2; exit 2; }
         args+=(-drive "if=pflash,format=raw,readonly=on,file=$OVMF") ;;
     *) echo "boot-smoke: mode must be bios or uefi" >&2; exit 2 ;;
