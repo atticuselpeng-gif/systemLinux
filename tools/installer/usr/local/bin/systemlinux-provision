@@ -41,14 +41,14 @@ BANNER
 case "$USERN" in *[!a-z0-9_-]*|'') echo "systemlinux-provision: invalid user name '$USERN'" >&2; exit 1 ;; esac
 IFS= read -r PW1; IFS= read -r PW2
 [ -n "$PW1" ] && [ "$PW1" = "$PW2" ] || { echo "systemlinux-provision: password empty or not confirmed" >&2; exit 1; }
-for g in wheel networkmanager; do
+for g in wheel networkmanager video audio input; do
     grep -q "^$g:" "$ROOT/etc/group" || groupadd -R "$ROOT" -r "$g"
 done
 if grep -q "^$USERN:" "$ROOT/etc/passwd"; then
-    usermod -R "$ROOT" -aG wheel,networkmanager "$USERN"
+    usermod -R "$ROOT" -aG wheel,networkmanager,video,audio,input "$USERN"
 else
     SH=/bin/sh; [ -e "$ROOT/bin/bash" ] && SH=/bin/bash
-    useradd -R "$ROOT" -m -s "$SH" -G wheel,networkmanager "$USERN"
+    useradd -R "$ROOT" -m -s "$SH" -G wheel,networkmanager,video,audio,input "$USERN"
 fi
 printf '%s:%s\n' "$USERN" "$PW1" | chpasswd -R "$ROOT"
 if [ "$SUDO" = 1 ]; then

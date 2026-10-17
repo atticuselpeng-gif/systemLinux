@@ -1,0 +1,5 @@
+# PipeWire's session manager: finds the sound cards and routes audio
+type = process
+command = /usr/bin/wireplumber
+depends-on = pipewire
+smooth-recovery = true

@@ -1,0 +1,5 @@
+# PipeWire, per user (user-mode dinit: /etc/dinit.d/user/boot starts it)
+type = process
+command = /usr/bin/pipewire
+waits-for = dbus
+smooth-recovery = true

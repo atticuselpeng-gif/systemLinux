@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.2.5
+
+### Added
+- **`systemlinux-upgrade`**: upgrades an installed system to the latest release (or `--iso FILE`). The new release's
+  image goes to `/boot/images/<version>` next to the running one and becomes GRUB's default; `/persist` (your files,
+  accounts, settings and `get` packages) is kept as it is. The previous version stays in the GRUB menu, and
+  `--rollback` makes it the default again. `--check` says whether a newer release exists, `--list` shows the
+  installed versions; only the newest three images are kept.
+- **Desktop sessions without elogind**: `pam_exec` creates `/run/user/UID` at login
+  (`/usr/libexec/systemlinux-rundir`), `/etc/profile.d/xdg-runtime.sh` exports `XDG_RUNTIME_DIR` and
+  `DBUS_SESSION_BUS_ADDRESS`, and a user-mode dinit (`exec dinit` from sway/i3) starts the services in
+  `/etc/dinit.d/user/boot.d`: the session D-Bus, and PipeWire, pipewire-pulse and WirePlumber when those ports are
+  installed (they now ship dinit user services).
+- **`sys-app/linux-firmware`** 20260916: kernel.org's firmware release, installed zstd-compressed (951 MB).
+
+### Changed
+- New users are added to the `video`, `audio` and `input` groups (seatd, ALSA, libinput).
+- PipeWire no longer starts pipewire-pulse itself (its own user service does).
+
 ## 0.2.4
 
 ### Added

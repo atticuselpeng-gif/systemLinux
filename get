@@ -456,6 +456,7 @@ install_atom() { # ATOM EXPLICIT
     rm -rf "$WORK"; WORK=''
     if [ -d "$PORTS/$a/dinit" ]; then
         for svc in "$PORTS/$a"/dinit/*; do [ -f "$svc" ] && say "service ${svc##*/} installed: dinitctl enable ${svc##*/}"; done
+        [ -d "$PORTS/$a/dinit/user/boot.d" ] && say "user services installed: they start with your session's dinit (exec dinit in your sway/i3 config)"
     fi
 }
 

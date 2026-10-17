@@ -1,0 +1,5 @@
+# PulseAudio clients (Firefox, pavucontrol, ...) talk to PipeWire through this
+type = process
+command = /usr/bin/pipewire-pulse
+depends-on = pipewire
+smooth-recovery = true
