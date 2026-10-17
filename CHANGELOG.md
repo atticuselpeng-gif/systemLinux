@@ -27,6 +27,11 @@
 - `mount-fstab` also turns on the swap listed in `/etc/fstab`.
 - The stage no longer carries a D-Bus machine id; every install makes its own on first boot.
 
+### Fixed
+- Installed systems booted to a `grub>` shell on UEFI when the ISO was built on Ubuntu: its `grub-install` put Ubuntu's
+  prebuilt Secure Boot image on the ESP, which does not find `grub.cfg` without shim. The copied `grub-install` now
+  passes `--no-uefi-secure-boot` when the build host's supports it.
+
 ## 0.2.5
 
 ### Added

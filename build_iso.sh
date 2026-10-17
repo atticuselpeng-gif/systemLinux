@@ -133,6 +133,13 @@ sudo "$BUILD_DIR/tools/sudo/build.sh" "$STAGE"
 # /usr/lib: the host's 64-bit glibc over the 32-bit one, which broke every program with a ../lib RUNPATH, e.g. cargo)
 sudo "$BUILD_DIR/tools/overlay-common/copy-host-tools.sh" "$STAGE" grub-install "$GRUB_MKIMAGE" grub-probe grub-editenv \
     grub-set-default grub-reboot efibootmgr mkfs.fat "$GRUB_BIOS_SETUP" cryptsetup
+# Ubuntu's grub-install puts its prebuilt Secure Boot image on the ESP, which only finds the grub.cfg next to it when
+# shim starts it: started directly it falls back to a grub> shell. --no-uefi-secure-boot builds a normal image with
+# the boot partition's UUID in it. Other distributions' grub-install has no such option and always does that.
+if grub-install --help 2>&1 | grep -q -- '--no-uefi-secure-boot'; then
+    sudo sed -i 's|/bin/grub-install "\$@"|/bin/grub-install --no-uefi-secure-boot "$@"|' "$STAGE/usr/bin/grub-install"
+    grep -q -- '--no-uefi-secure-boot' "$STAGE/usr/bin/grub-install" || { echo "ERROR: could not patch the grub-install launcher"; exit 1; }
+fi
 GRUBDATA=0
 for d in /usr/lib/grub /usr/lib64/grub /usr/share/grub /usr/lib/grub2 /usr/share/grub2; do
     if [ -d "$d" ]; then sudo mkdir -p "$STAGE$d"; sudo cp -a "$d/." "$STAGE$d/"; GRUBDATA=1; fi
