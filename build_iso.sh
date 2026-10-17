@@ -5,7 +5,8 @@
 # daemons, docs, locales, compilers or language runtimes. After installing, `get --profile build-toolchain`
 # (and common-build-deps, lang-runtimes, ...) adds the build stack; `get URL` builds source tarballs.
 #
-#   ./build_iso.sh    (checks ports and dinit services first, then builds)  -> systemLinux-0.2.2-x86_64.iso + .sha256  (root shell, console only, installable with the handbook)
+#   ./build_iso.sh    (checks ports and dinit services first, then builds)  -> systemLinux-VER-x86_64.iso + .sha256  (root shell, console only, installable with the handbook)
+#                     and systemLinux-stage-VER-x86_64.tar.xz + .sha256 (the same system, for stage-tarball installs)
 #
 # Run from a normal terminal (sudo needs a password prompt). Works from any Linux host with
 # grub2, xorriso, mtools, squashfs-tools and cpio on PATH (install them with your host's own
@@ -28,6 +29,7 @@ KERNEL=${KERNEL:-}
 IMAGE_VERSION=$(cat "$BUILD_DIR/VERSION")
 PROFILES_OUT=${PROFILES_OUT:-$BUILD_DIR/profiles-out}
 ISO=${ISO:-$BUILD_DIR/systemLinux-$IMAGE_VERSION-x86_64.iso}
+STAGE_TAR=${STAGE_TAR:-$BUILD_DIR/systemLinux-stage-$IMAGE_VERSION-x86_64.tar.xz}
 cd "$BUILD_DIR"
 # fail early, with the fix, instead of halfway through the kernel build
 missing=
@@ -184,6 +186,13 @@ if [ -d "$MODULES_ROOT/lib/modules/$KVER" ]; then
 fi
 # owners, setuid bits and private files (git keeps none of them): su, passwd and sudo need this
 sudo "$BUILD_DIR/tools/overlay-common/fix-perms.sh" "$STAGE"
+# the same system as a stage tarball, for Gentoo-style installs (partition, extract, chroot, kernel, GRUB) onto a
+# normal writable root. Numeric owners, so the target's own passwd/group decide nothing at extract time; GNU tar
+# and bsdtar both take these flags.
+sudo tar -C "$STAGE" --numeric-owner --xattrs -cf - . | xz -T0 -6 > "$STAGE_TAR.part"
+mv "$STAGE_TAR.part" "$STAGE_TAR"
+(cd "$(dirname "$STAGE_TAR")" && sha256sum "$(basename "$STAGE_TAR")" > "$(basename "$STAGE_TAR").sha256")
+ls -lh "$STAGE_TAR"
 sudo mksquashfs "$STAGE" "$WORKSPACE/live/rootfs.squashfs" -comp zstd -Xcompression-level 6 -b 1M -noappend -no-xattrs
 sudo rm -rf "$STAGE"
 sudo chown "$USER" "$WORKSPACE/live/rootfs.squashfs"
@@ -255,3 +264,4 @@ tar -cJf "$PROFILES_OUT/ports.tar.xz" --owner=0 --group=0 --sort=name ports
 sudo rm -rf "$WORKSPACE"
 (cd "$(dirname "$ISO")" && sha256sum "$(basename "$ISO")" | tee "$(basename "$ISO").sha256")
 echo "SUCCESS: $ISO"
+echo "         $STAGE_TAR"

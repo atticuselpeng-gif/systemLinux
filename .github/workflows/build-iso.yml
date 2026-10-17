@@ -50,6 +50,7 @@ jobs:
           VERSION=$(cat VERSION)
           mkdir -p dist
           mv "systemLinux-$VERSION-x86_64.iso" "systemLinux-$VERSION-x86_64.iso.sha256" dist/
+          mv "systemLinux-stage-$VERSION-x86_64.tar.xz" "systemLinux-stage-$VERSION-x86_64.tar.xz.sha256" dist/
           if [ -d profiles-out ]; then cp profiles-out/* dist/; fi
           cd dist
           sha256sum -- * | grep -v '\.sha256$' > ../SHA256SUMS
